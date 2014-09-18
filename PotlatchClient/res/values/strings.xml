@@ -164,10 +164,10 @@
     <string name="story_edit_default_value_longitude"></string>
 
     <!-- Login Activity Strings -->
-    <string name="login_activity_example_program_disclaimer">Login</string>
     <string name="login_activity_login">Login</string>
     <string name="login_activity_password">Password:</string>
-    <string name="login_activity_login_id">Login ID:</string>
+    <string name="login_activity_email">Email:</string>
+    <string name="login_background_description">Photo of Taiwan Sandcastle Competition</string>
 
     <!-- story Edit Activity Strings : Buttons -->
     <string name="story_edit_button_message_save">Save</string>
@@ -204,6 +204,5 @@
     <string name="hello_world">Hello world!</string>
     <string name="record_button_label">Record</string>
     <string name="title_activity_sound_record">SoundRecordActivity</string>
-    <string name="example_program_disclaimer">Login</string>
 
 </resources>

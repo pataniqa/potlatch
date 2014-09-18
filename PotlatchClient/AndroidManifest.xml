@@ -6,19 +6,19 @@
     android:versionName="1.0" >
     
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="17" />
+        android:minSdkVersion="14"
+        android:targetSdkVersion="21" />
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Line 12 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" /> <!-- Line 14 -->
+    <uses-permission android:name="android.permission.CAMERA" /> 
 
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- Line 21 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> 
     
     <application
         android:allowBackup="true"
@@ -32,14 +32,14 @@
         
         <activity android:name="com.pataniqa.coursera.potlatch.ui.LoginActivity">  
              <intent-filter>
-                <action android:name="android.intent.action.MAIN" /> <!-- Line 35 -->
+                <action android:name="android.intent.action.MAIN" /> 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         
         <!-- THIS IS THE CREATION ACTIVITY -->
         <activity android:name="com.pataniqa.coursera.potlatch.ui.CreateStoryActivity" 
-            android:permission="android.permission.ACCESS_FINE_LOCATION"> <!-- AVOID PRIVILEGE ESCALATION - You need this permission to obtain location in this activity -->
+            android:permission="android.permission.ACCESS_FINE_LOCATION"> 
         </activity>
         
         <!-- THIS IS THE SINGLE VIEW ACTIVITY -->
@@ -47,15 +47,15 @@
         </activity>
         
         <!-- THIS IS THE EDIT ACTIVITY -->
-        <activity android:name="com.pataniqa.coursera.potlatch.ui.EditStoryActivity" > <!-- Line 49 -->
+        <activity android:name="com.pataniqa.coursera.potlatch.ui.EditStoryActivity" > 
         </activity>
         
         <!-- THIS IS THE SOUND RECORD ACTIVITY -->
         <activity
             android:name="com.pataniqa.coursera.potlatch.ui.SoundRecordActivity"
             android:label="@string/title_activity_sound_record"
-            android:permission="android.permission.RECORD_AUDIO"> <!-- AVOID PRIVILEGE ESCALATION - You need this permission to record audio -->
-            <intent-filter> 										<!-- Line 56 -->
+            android:permission="android.permission.RECORD_AUDIO">
+            <intent-filter> 									
                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
             </intent-filter>
         </activity>
