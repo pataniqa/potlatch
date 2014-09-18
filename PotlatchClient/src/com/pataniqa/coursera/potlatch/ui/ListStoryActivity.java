@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -52,12 +53,13 @@ public class ListStoryActivity extends StoryActivityBase {
         Log.d(LOG_TAG, "onCreate");
 
         // Set up the UI
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        getActionBar().setDisplayShowTitleEnabled(false);
+        getActionBar().setDisplayShowHomeEnabled(false);
         setContentView(R.layout.list_story_activity);
         
         getActionBar().show();
-        getActionBar().setDisplayShowTitleEnabled(false);
-        getActionBar().setDisplayShowHomeEnabled(false);
-        
+
         // Instantiate the resolver and the ArrayList
         resolver = new PotlatchResolver(this);
         mStoryData = new ArrayList<StoryData>();

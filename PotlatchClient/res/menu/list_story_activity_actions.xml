@@ -2,17 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-            android:id="@+id/itemAdd"
-            android:showAsAction="ifRoom|withText"
-            android:title="ADD">
-    </item>
+        android:id="@+id/action_search"
+        android:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/ic_fa_search"
+        android:showAsAction="always"
+        android:title="Search"/>
     <item
-            android:id="@+id/itemRefresh"
-            android:showAsAction="ifRoom|withText"
-            android:title="REFRESH">
-    </item>
+        android:id="@+id/action_location_found"
+        android:icon="@drawable/ic_fa_group"
+        android:showAsAction="always"
+        android:title="Top gift givers"/>
     <item
-            android:id="@+id/itemHelp"
-            android:title="HELP">
-    </item>
+        android:id="@+id/action_home"
+        android:icon="@drawable/ic_fa_home"
+        android:showAsAction="always"
+        android:title="Home"/>
+
 </menu>
