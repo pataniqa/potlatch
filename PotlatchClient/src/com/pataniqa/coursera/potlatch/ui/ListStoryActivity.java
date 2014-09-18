@@ -85,16 +85,16 @@ public class ListStoryActivity extends StoryActivityBase {
 		});
     }
     
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.list_story_activity_menu, menu);
-//        
-////        MenuItem searchItem = menu.findItem(R.id.action_search);
-////        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-//        // Configure the search info and add any event listeners
-//        return super.onCreateOptionsMenu(menu);
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.list_story_activity_menu, menu);
+        
+//        MenuItem searchItem = menu.findItem(R.id.action_search);
+//        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        // Configure the search info and add any event listeners
+        return super.onCreateOptionsMenu(menu);
+    }
 
     // When the refresh button is clicked, update our local StoryData ArrayList with data from the database
     public void refreshButtonClicked (View v) {
