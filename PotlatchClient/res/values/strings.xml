@@ -67,9 +67,9 @@
 
 
     <!-- story List Activity Strings -->
-    <string name="story_list_button_label_add">ADD</string>
-    <string name="story_list_button_label_refresh">REFRESH</string>
-    <string name="story_list_filter_hint">Tag Filter...</string>
+    <string name="gift_list_button_label_add">ADD</string>
+    <string name="gift_list_button_label_refresh">REFRESH</string>
+    <string name="gift_list_filter_hint">Search titles...</string>
 
     <!-- tags List Activity Strings -->
     <string name="tags_list_button_label_add">ADD</string>
@@ -204,5 +204,11 @@
     <string name="hello_world">Hello world!</string>
     <string name="record_button_label">Record</string>
     <string name="title_activity_sound_record">SoundRecordActivity</string>
+    <string name="action_search">Search</string>
+    <string name="action_tip_gift_givers">Top gift givers</string>
+    <string name="action_home">Home</string>
+    <string name="story_list_button_label_add">ADD</string>
+    <string name="story_list_button_label_refresh">REFRESH</string>
+    <string name="story_list_filter_hint">Tag Filter...</string>
 
 </resources>

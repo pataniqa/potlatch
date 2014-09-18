@@ -21,7 +21,7 @@ public class StorageUtilities {
 	public static final String LOG_TAG = StorageUtilities.class.getCanonicalName();
 	
 	// Constant that denote whether a file should be stored publicly or privately
-	public static final int SECURITY_PUBLIC = 0; // Line 24
+	public static final int SECURITY_PUBLIC = 0; 
 	public static final int SECURITY_PRIVATE = 1;
 	
 	// Constant that denotes what media type a file should be stored as.
@@ -53,11 +53,11 @@ public class StorageUtilities {
 		Log.d(LOG_TAG, "getOutputMediaFile() type:" + type);
 		
 		// Get the current time stamp
-		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US) // Line 56
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US) 
 		.format(new Date());
 
 		// The directory where we'll store the file
-		File storageDir = null;		// Line 59
+		File storageDir = null;	
 		
 		// The name of the file we'll return
 		File outputFile = null;
@@ -73,7 +73,7 @@ public class StorageUtilities {
 			storageDir = context.getFilesDir();
 		}
 		// Otherwise, store the file in a public directory depending on its media type.
-		else {	// Line 76
+		else {	
 			switch (type) {
 				case MEDIA_TYPE_IMAGE:
 					storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
@@ -89,7 +89,7 @@ public class StorageUtilities {
 		
 		// If a name was specified, use that filename.
 		if (name != null && storageDir != null) {
-			outputFile = new File(storageDir.getPath() + File.separator + name);	// Line 92
+			outputFile = new File(storageDir.getPath() + File.separator + name);
 		}
 		// Otherwise, determine filename based on media type.
 		else if (storageDir != null){
@@ -125,7 +125,7 @@ public class StorageUtilities {
 	public static Uri getOutputMediaFileUri(Context context, int type, int security, String name){
 		File outFile = getOutputMediaFile(context, type, security, name);
 		if (outFile != null)
-			return Uri.fromFile(outFile);	// Line 128
+			return Uri.fromFile(outFile);	
 		
 		return null;
 	}

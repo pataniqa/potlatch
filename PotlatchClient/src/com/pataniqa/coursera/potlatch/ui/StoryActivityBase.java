@@ -23,7 +23,7 @@ public class StoryActivityBase extends Activity {
 	 * Open the LoginActivity
 	 */
 	public void openLoginActivity() {
-		Intent intent = newLoginActivityIntent(this); // Line 74
+		Intent intent = newLoginActivityIntent(this); 
 		startActivity(intent);
 	}
 	
@@ -78,7 +78,7 @@ public class StoryActivityBase extends Activity {
 	public static Intent newStoryViewIntent(Activity activity, long index) {
 		Intent intent = new Intent();
 		intent.setClass(activity, ViewStoryActivity.class);
-		intent.putExtra(ViewStoryActivity.rowIdentifyerTAG, index);	// Line 129
+		intent.putExtra(ViewStoryActivity.rowIdentifyerTAG, index);	
 		return intent;
 	}
 
@@ -91,7 +91,7 @@ public class StoryActivityBase extends Activity {
 
 	public static Intent newListStoryIntent(Activity activity) {
 		Intent intent = new Intent();
-		intent.setClass(activity, ListStoryActivity.class); // Line 142
+		intent.setClass(activity, ListStoryActivity.class); 
 		return intent;
 	}
 

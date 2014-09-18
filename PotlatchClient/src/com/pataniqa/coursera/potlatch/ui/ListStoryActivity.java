@@ -2,18 +2,23 @@ package com.pataniqa.coursera.potlatch.ui;
 
 import java.util.ArrayList;
 
-import com.pataniqa.coursera.potlatch.provider.PotlatchSchema;
-import com.pataniqa.coursera.potlatch.storage.PotlatchResolver;
-import com.pataniqa.coursera.potlatch.storage.StoryData;
-
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
+
 import com.pataniqa.coursera.potlatch.R;
+import com.pataniqa.coursera.potlatch.provider.PotlatchSchema;
+import com.pataniqa.coursera.potlatch.storage.PotlatchResolver;
+import com.pataniqa.coursera.potlatch.storage.StoryData;
 
 /**
  * This activity lists all the stories currently stored in the database
@@ -42,7 +47,7 @@ public class ListStoryActivity extends StoryActivityBase {
         Log.d(LOG_TAG, "onCreate");
         
         // Set up the UI
-        setContentView(R.layout.list_story_activity);	// Line 92
+        setContentView(R.layout.list_story_activity);	
         
         // Instantiate the resolver and the ArrayList
         resolver = new PotlatchResolver(this);
@@ -54,11 +59,11 @@ public class ListStoryActivity extends StoryActivityBase {
 		filterET = (EditText) findViewById(R.id.story_listview_tags_filter);
 
 		// customize the ListView in whatever desired ways.
-		lv.setBackgroundColor(Color.GRAY);	// Line 104
+		lv.setBackgroundColor(Color.GRAY);	
 		
 		// Instantiate the adapter using our local StoryData ArrayList.
 		aa = new StoryDataArrayAdaptor(this,
-				R.layout.story_listview_custom_row, mStoryData);	// Line 108
+				R.layout.story_listview_custom_row, mStoryData);	
 
 		// Update our StoryData ArrayList with data from the database
 		updateStoryData();
@@ -79,6 +84,17 @@ public class ListStoryActivity extends StoryActivityBase {
 		    }
 		});
     }
+    
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.list_story_activity_menu, menu);
+//        
+////        MenuItem searchItem = menu.findItem(R.id.action_search);
+////        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+//        // Configure the search info and add any event listeners
+//        return super.onCreateOptionsMenu(menu);
+//    }
 
     // When the refresh button is clicked, update our local StoryData ArrayList with data from the database
     public void refreshButtonClicked (View v) {
@@ -92,7 +108,7 @@ public class ListStoryActivity extends StoryActivityBase {
     
     // When the Login button is clicked, open the LoginActivity
     public void loginButtonClicked(View v) {
-    	openLoginActivity();	// Line 142
+    	openLoginActivity();
     }
     
     // Update mStoryData with the data currently in the database
@@ -102,7 +118,7 @@ public class ListStoryActivity extends StoryActivityBase {
 			// Clear our local cache of StoryData
 			mStoryData.clear();
 
-			String filterWord = filterET.getText().toString();	// Line 152
+			String filterWord = filterET.getText().toString();
 
 			// create String that will match with 'like' in query
 			filterWord = "%" + filterWord + "%";
@@ -113,7 +129,7 @@ public class ListStoryActivity extends StoryActivityBase {
 					new String[] { filterWord }, null);
 
 			// Add all of them to our local ArrayList
-			mStoryData.addAll(currentList2);		// Line 163
+			mStoryData.addAll(currentList2);	
 			
 			// Let the ArrayAdaptor know that we changed the data in its array.
 			aa.notifyDataSetChanged();

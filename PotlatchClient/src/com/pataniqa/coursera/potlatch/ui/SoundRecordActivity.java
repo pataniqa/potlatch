@@ -71,7 +71,7 @@ public class SoundRecordActivity extends Activity {
         try {
             mPlayer.setDataSource(mFileName);	
             mPlayer.prepare();
-            mPlayer.start();	// Line 123
+            mPlayer.start();
         } catch (IOException e) {
             Log.e(LOG_TAG, "prepare() failed");
         }
@@ -87,7 +87,7 @@ public class SoundRecordActivity extends Activity {
     private void startRecording() {
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);	// Line 139
+        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);	
         mRecorder.setOutputFile(mFileName);
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
@@ -97,7 +97,7 @@ public class SoundRecordActivity extends Activity {
             Log.e(LOG_TAG, "prepare() failed");
         }
 
-        mRecorder.start();	// Line 149
+        mRecorder.start();	
     }
 
     // Stops the MediaRecorder

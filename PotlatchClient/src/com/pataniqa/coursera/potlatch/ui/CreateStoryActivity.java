@@ -225,10 +225,10 @@ public class CreateStoryActivity extends StoryActivityBase {
 		Log.v(LOG_TAG, "addAudioClicked(View) called.");
 		
 		//Create an intent to start the SoundRecordActivity
-		Intent soundIntent = new Intent(this, SoundRecordActivity.class);	// Line 275
+		Intent soundIntent = new Intent(this, SoundRecordActivity.class);
 		
 		// Tell the sound activity where to store the recorded audio.
-		String fileName = StorageUtilities.getOutputMediaFile(this, // Line 278
+		String fileName = StorageUtilities.getOutputMediaFile(this, 
 				StorageUtilities.MEDIA_TYPE_AUDIO, 
 				StorageUtilities.SECURITY_PUBLIC,
 				null).getAbsolutePath();
@@ -247,14 +247,14 @@ public class CreateStoryActivity extends StoryActivityBase {
 	 * Method to be called when the Add Photo button is pressed.
 	 */
 	public void addPhotoClicked(View aView) {
-		Log.v(LOG_TAG, "addPhotoClicked(View) called.");	// Line 297
+		Log.v(LOG_TAG, "addPhotoClicked(View) called.");	
 		
 		// Create an intent that asks for an image to be captured
 		Intent cameraIntent = new Intent(
 				android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 		
 		// Tell the capturing activity where to store the image
-		Uri uriPath = StorageUtilities.getOutputMediaFileUri(this, // Line 304
+		Uri uriPath = StorageUtilities.getOutputMediaFileUri(this, 
 				StorageUtilities.MEDIA_TYPE_IMAGE, 
 				StorageUtilities.SECURITY_PUBLIC,
 				null);
@@ -267,7 +267,7 @@ public class CreateStoryActivity extends StoryActivityBase {
 				imagePath);
 
 		// Start the activity
-		startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST); // Line 317
+		startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST); 
 	}
 
 	/**
@@ -287,7 +287,7 @@ public class CreateStoryActivity extends StoryActivityBase {
 				// provider.
 
 				Toast.makeText(getApplicationContext(),
-						"New Location obtained.", Toast.LENGTH_LONG).show(); // Line 337
+						"New Location obtained.", Toast.LENGTH_LONG).show(); 
 				setLocation(location);
 				locationManager.removeUpdates(this);
 
@@ -332,7 +332,7 @@ public class CreateStoryActivity extends StoryActivityBase {
 	 */
 	public void setLocation(Location location) {
 		
-		Log.d(LOG_TAG, "setLocation =" + location);		// Line 382
+		Log.d(LOG_TAG, "setLocation =" + location);	
 		
 		loc = location;
 		double latitude = loc.getLatitude();
@@ -371,7 +371,7 @@ public class CreateStoryActivity extends StoryActivityBase {
 		else if (requestCode == CreateStoryActivity.MIC_SOUND_REQUEST) {
 			// If we successfully recorded sound, grab the results.
 			if (resultCode == SoundRecordActivity.RESULT_OK) {
-				audioPath = (String) data.getExtras().get("data");  // Line 421
+				audioPath = (String) data.getExtras().get("data"); 
 				audioLocation.setText(audioPath.toString());
 			}
 			// If not, let the user know.

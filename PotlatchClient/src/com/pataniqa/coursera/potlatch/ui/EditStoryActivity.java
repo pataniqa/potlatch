@@ -22,7 +22,7 @@ import com.pataniqa.coursera.potlatch.R;
 public class EditStoryActivity extends StoryActivityBase {
 	
 	// The tag used for debugging with Logcat
-	final static public String LOG_TAG = EditStoryActivity.class // Line 72 
+	final static public String LOG_TAG = EditStoryActivity.class 
 			.getCanonicalName();
 
 	// variable for passing around row index
@@ -84,7 +84,7 @@ public class EditStoryActivity extends StoryActivityBase {
 		longitudeET = (EditText) findViewById(R.id.story_edit_longitude);
 		
 		// set the EditTexts to this Story's Values
-		setValuesToDefault();  // Line 134
+		setValuesToDefault();  
 
 	}
 
@@ -92,7 +92,7 @@ public class EditStoryActivity extends StoryActivityBase {
 	public void clickListener(View v) {
 		switch (v.getId()) {
 		case R.id.story_edit_button_save:
-			doSaveButtonClick();	// Line 142
+			doSaveButtonClick();	
 			break;
 		case R.id.story_edit_button_reset:
 			doResetButtonClick();
@@ -149,7 +149,7 @@ public class EditStoryActivity extends StoryActivityBase {
 		String imageName = imageNameEditable.toString();
 
 		String tags = tagsEditable.toString();
-		Double latitude = Double.valueOf(latitudeEditable.toString());		// Line 199
+		Double latitude = Double.valueOf(latitudeEditable.toString());		
 		Double longitude = Double.valueOf(longitudeEditable.toString());
 		
 		long storyTime = StoryCreator.componentTimeToTimestamp(storyDate.getYear(),
@@ -163,7 +163,7 @@ public class EditStoryActivity extends StoryActivityBase {
 
 		// Make sure the new StoryData has the same key as the old one so that it will
 		// replace the old one in the database.
-		rValue.key = mData.key;		// Line 213
+		rValue.key = mData.key;		
 
 		// return StoryData object with new values
 		return rValue;
@@ -199,7 +199,7 @@ public class EditStoryActivity extends StoryActivityBase {
 			titleET.setText(storyData.title);
 			bodyET.setText(storyData.body);
 			imageNameET.setText(storyData.imageName);
-			imageMetaDataET.setText(storyData.imageLink);	// Line 249
+			imageMetaDataET.setText(storyData.imageLink);
 			tagsET.setText(storyData.tags);
 			creationTimeTV.setText(Long.valueOf(storyData.creationTime)
 					.toString());

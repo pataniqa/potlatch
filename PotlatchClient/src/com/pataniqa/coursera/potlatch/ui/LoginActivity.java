@@ -34,7 +34,7 @@ public class LoginActivity extends StoryActivityBase{
 		super.onCreate(savedInstanceState);
 		
 		// Setup the UI
-		setContentView(R.layout.login_activity);	// Line 36
+		setContentView(R.layout.login_activity);
 		
 		//Find the edit texts
 		mLoginId = (EditText) findViewById(R.id.username);
@@ -46,9 +46,9 @@ public class LoginActivity extends StoryActivityBase{
 	 * Get the file used for storing login credentials
 	 */
 	public static File getLoginFile (Context context) {
-		return StorageUtilities.getOutputMediaFile(context, 	// Line 48
+		return StorageUtilities.getOutputMediaFile(context, 
 				StorageUtilities.MEDIA_TYPE_TEXT, 
-				StorageUtilities.SECURITY_PRIVATE,  //TODO Change the security mode to store the data to PRIVATE.
+				StorageUtilities.SECURITY_PRIVATE, 
 				"login.txt");
 	}
 	
@@ -57,7 +57,7 @@ public class LoginActivity extends StoryActivityBase{
 	 */
 	public static long getLoginId(Context context) {
 		// Get the output file for the login information
-		File loginFile = getLoginFile(context);		// Line 59
+		File loginFile = getLoginFile(context);		
 		
 		String out = null;
 		
@@ -70,7 +70,7 @@ public class LoginActivity extends StoryActivityBase{
 				return Long.parseLong(out);
 			} catch (Exception e) {
 				// This should never really happen
-				Log.e(LOG_TAG, "Unable to get LoginID from file");	// Line 72
+				Log.e(LOG_TAG, "Unable to get LoginID from file");
 			}
 		}
 
@@ -89,7 +89,7 @@ public class LoginActivity extends StoryActivityBase{
 		// If it already exists, read the login information from the file and display it
 		if (loginFile != null && loginFile.exists()) {
 			try {
-				Scanner sc = new Scanner(loginFile);	// Line 91
+				Scanner sc = new Scanner(loginFile);
 				sc.nextLine();
 				out = sc.nextLine();
 				sc.close();
@@ -111,7 +111,7 @@ public class LoginActivity extends StoryActivityBase{
 		// Save the input login information in a file so that the rest of the app can access it.
 		File loginFile = getLoginFile(this);
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(loginFile));	// Line 113
+			BufferedWriter writer = new BufferedWriter(new FileWriter(loginFile));	
 			writer.write(mLoginId.getText().toString());
 			writer.newLine();
 			writer.write(mPassword.getText().toString());
@@ -121,7 +121,7 @@ public class LoginActivity extends StoryActivityBase{
 			Log.e(LOG_TAG, "Problem in loginClicked");
 		}
 		finally {
-			openListStoryActivity();	// Line 123
+			openListStoryActivity();
 		}
 	}
 }

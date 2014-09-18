@@ -29,13 +29,13 @@
             android:layout_weight="1"
             android:onClick="refreshButtonClicked"
             android:text="@string/story_list_button_label_refresh" />
-
+        
         <Button
             android:id="@+id/login_button"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:onClick="loginButtonClicked"
+            android:onClick="loginButtonClicked"            
             android:text="Login" />
     </LinearLayout>
 

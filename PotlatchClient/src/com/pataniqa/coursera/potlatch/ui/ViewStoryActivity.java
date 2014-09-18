@@ -26,8 +26,7 @@ import com.pataniqa.coursera.potlatch.R;
  */
 public class ViewStoryActivity extends StoryActivityBase {
 
-	// A tag used for debugging with Logcat
-	private static final String LOG_TAG = ViewStoryActivity.class	// Line 77
+	private static final String LOG_TAG = ViewStoryActivity.class
 			.getCanonicalName();
 	
 	// The StoryData we're displaying
@@ -68,7 +67,7 @@ public class ViewStoryActivity extends StoryActivityBase {
 		setContentView(R.layout.view_story_activity);
 		
 		// Create a resolver to help us retrieve data from the database
-		resolver = new PotlatchResolver(this);	// Line 118
+		resolver = new PotlatchResolver(this);	
 		
 		// Get actual references to the instantiated UI objects
 		loginIdTV = (TextView) findViewById(R.id.story_view_value_login_id);
@@ -118,7 +117,7 @@ public class ViewStoryActivity extends StoryActivityBase {
 	
 	// Fills out the UI elements with data from a StoryData in the database specified by a unique key
 	public void setUiToStoryData(long getUniqueKey) throws RemoteException {
-		Log.d(LOG_TAG, "setUiToStoryData");	// Line 168
+		Log.d(LOG_TAG, "setUiToStoryData");	
 		
 		// Get the StoryData from the database
 		storyData = resolver.getStoryDataViaRowID(getUniqueKey);
@@ -180,7 +179,7 @@ public class ViewStoryActivity extends StoryActivityBase {
 		String message;
 
 		message = getResources().getString(
-				R.string.story_view_deletion_dialog_message);	// Line 230
+				R.string.story_view_deletion_dialog_message);
 
 		// Show a dialog confirming that the user wants to delete this story
 		new AlertDialog.Builder(this)
@@ -211,7 +210,7 @@ public class ViewStoryActivity extends StoryActivityBase {
 
 	// Get the unique key associated with the StoryData we're displaying
 	public long getUniqueKey() {
-		return getIntent().getLongExtra(rowIdentifyerTAG, 0);	// Line 261
+		return getIntent().getLongExtra(rowIdentifyerTAG, 0);
 	}
 	
 	// A clickListener that forwards clicks to the appropriate function
