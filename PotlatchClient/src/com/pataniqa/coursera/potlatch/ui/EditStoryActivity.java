@@ -61,7 +61,7 @@ public class EditStoryActivity extends StoryActivityBase {
 		// Setup the UI
 		setContentView(R.layout.edit_story_activity);
 		
-		// Start the MoocResolver to help us get/set data in the database
+		// Start the Resolver to help us get/set data in the database
 		resolver = new PotlatchResolver(this);
 		
 		// Get the Buttons

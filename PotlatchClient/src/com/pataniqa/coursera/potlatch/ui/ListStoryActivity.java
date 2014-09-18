@@ -95,7 +95,7 @@ public class ListStoryActivity extends StoryActivityBase {
     	openLoginActivity();	// Line 142
     }
     
-    // Update mStoryData with the data currently in the database using MoocResolver
+    // Update mStoryData with the data currently in the database
     public void updateStoryData() {
 		Log.d(LOG_TAG, "updateStoryData");
 		try {

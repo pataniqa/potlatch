@@ -33,7 +33,7 @@ public class PotlatchResolver {
 		
 		// Simply forward construction to the super class
 		public mSQLiteOpenHelper (Context context) {
-			super(context, "iRememberSecurityDatabase", null, 1);
+			super(context, "PotlatchSecurityDatabase", null, 1);
 		}
 		
 		// When the database is created, create a table to store our story data, if it does not exist.
@@ -53,13 +53,13 @@ public class PotlatchResolver {
 			
 			createTable.append(");");
 			
-			Log.d("MoocResolver", "onCreate() called: " + createTable.toString());
+			Log.d("PotlatchResolver", "onCreate() called: " + createTable.toString());
 			
 			try {
 				db.execSQL(createTable.toString());
 			}
 			catch (SQLException e) {
-				Log.e("MoocResolver", e.getMessage());
+				Log.e("PotlatchResolver", e.getMessage());
 			}
 		}
 
@@ -71,7 +71,7 @@ public class PotlatchResolver {
 	}
 	
 	// The name of the table that will store our story data in the database
-	private static final String tableName = "iRememberTable";
+	private static final String tableName = "PotlatchTable";
 	
 	/**
 	 * Constructor

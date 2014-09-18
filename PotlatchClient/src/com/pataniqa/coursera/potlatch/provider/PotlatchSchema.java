@@ -23,7 +23,7 @@ public class PotlatchSchema {
 	 * ConentProvider Related Constants
 	 */
 	public static final String AUTHORITY = ORGANIZATIONAL_NAME + "."
-			+ PROJECT_NAME + ".moocprovider";
+			+ PROJECT_NAME + ".provider";
 	private static final Uri BASE_URI = Uri.parse("content://" + AUTHORITY);
 
 	// Define a static class that represents description of stored content
