@@ -1,0 +1,26 @@
+# Gradle
+.gradle/
+build/
+
+# IntelliJ IDEA files
+.idea/
+out/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse files
+.settings
+.classpath
+.projectbuild
+.gradle
+bin
+
+# gedit backup files
+*~
+
+#Eclipse dot files generated through gradle
+.classpath
+.project
+.settings
+
