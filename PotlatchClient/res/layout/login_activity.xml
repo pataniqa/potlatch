@@ -7,9 +7,9 @@
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:src="@drawable/background"
+        android:contentDescription="@string/login_background_description"
         android:scaleType="centerCrop"
-        android:contentDescription="@string/login_background_description" />
+        android:src="@drawable/background" />
 
     <TextView
         android:id="@+id/login_title"
@@ -18,7 +18,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dip"
         android:layout_marginTop="30dip"
-        android:background="#30ffffff"
+        android:background="#40ffffff"
         android:padding="12dp"
         android:text="@string/app_name"
         android:textColor="#ff000000"
@@ -34,6 +34,8 @@
         android:layout_marginBottom="20dip"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
+        android:background="#a0ffffff"
+        android:padding="12dp"
         android:hint="@string/login_activity_email"
         android:inputType="text" >
     </EditText>
@@ -46,6 +48,8 @@
         android:layout_marginBottom="30dip"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
+        android:background="#a0ffffff"
+        android:padding="12dp"
         android:hint="@string/login_activity_password"
         android:inputType="textPassword" >
     </EditText>
@@ -56,6 +60,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/password"
         android:layout_centerHorizontal="true"
+        android:background="#a0ffffff"
+        android:padding="12dp"
         android:onClick="loginClicked"
         android:text="@string/login_activity_login" >
     </Button>

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/storyListViewLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical" >
 
     <!-- Row for Buttons -->
@@ -29,13 +28,13 @@
             android:layout_weight="1"
             android:onClick="refreshButtonClicked"
             android:text="@string/story_list_button_label_refresh" />
-        
+
         <Button
             android:id="@+id/login_button"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:onClick="loginButtonClicked"            
+            android:onClick="loginButtonClicked"
             android:text="Login" />
     </LinearLayout>
 

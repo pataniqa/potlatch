@@ -5,14 +5,15 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.Scanner;
 
-import com.pataniqa.coursera.potlatch.storage.StorageUtilities;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
+
 import com.pataniqa.coursera.potlatch.R;
+import com.pataniqa.coursera.potlatch.storage.StorageUtilities;
 
 /**
  * The activity that allows the user to provide login information.
@@ -34,12 +35,13 @@ public class LoginActivity extends StoryActivityBase{
 		super.onCreate(savedInstanceState);
 		
 		// Setup the UI
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        getActionBar().hide();
 		setContentView(R.layout.login_activity);
 		
 		//Find the edit texts
 		mLoginId = (EditText) findViewById(R.id.username);
 		mPassword = (EditText) findViewById(R.id.password);
-		
 	}
 
 	/**
