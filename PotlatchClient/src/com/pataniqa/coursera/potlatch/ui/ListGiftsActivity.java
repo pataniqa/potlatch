@@ -155,7 +155,7 @@ public class ListGiftsActivity extends GiftActivityBase implements SwipeRefreshL
             giftData.clear();
 
             // create String that will match with 'like' in query
-            String filterWord = String.format("\\%%s\\%", giftQuery);
+            String filterWord = "%" + giftQuery + "%";
 
             // Get all the GiftData in the database
             ArrayList<GiftData> currentList2 = resolver.queryGiftData(null, PotlatchSchema.Gift.Cols.TITLE

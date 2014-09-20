@@ -19,13 +19,12 @@ public class StorageUtilities {
 
     private static final String LOG_TAG = StorageUtilities.class.getCanonicalName();
 
-    // Constant that denote whether a file should be stored publicly or
-    // privately
     public static final int SECURITY_PUBLIC = 0;
     public static final int SECURITY_PRIVATE = 1;
 
     // Constant that denotes what media type a file should be stored as.
     public static final int MEDIA_TYPE_IMAGE = 1;
+    public static final int MEDIA_FILE_VIDEO = 2;
     public static final int MEDIA_TYPE_TEXT = 3;
 
     /**
@@ -121,10 +120,7 @@ public class StorageUtilities {
      */
     public static Uri getOutputMediaFileUri(Context context, int type, int security, String name) {
         File outFile = getOutputMediaFile(context, type, security, name);
-        if (outFile != null)
-            return Uri.fromFile(outFile);
-
-        return null;
+        return outFile != null ? Uri.fromFile(outFile) : null;
     }
 
 }

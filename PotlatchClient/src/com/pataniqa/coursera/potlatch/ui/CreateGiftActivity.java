@@ -5,18 +5,20 @@ import java.io.File;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
-import android.text.Editable;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
@@ -36,7 +38,7 @@ public class CreateGiftActivity extends GiftActivityBase {
     // Used as the request codes in startActivityForResult().
     static final int CAMERA_PIC_REQUEST = 1;
     static final int GALLERY_PIC_REQUEST = 2;
-    static final int VIDEO_REQUEST = 3;
+    static final int CAMERA_VIDEO_REQUEST = 3;
 
     // The various UI elements we use
     private EditText titleInput;
@@ -44,10 +46,11 @@ public class CreateGiftActivity extends GiftActivityBase {
     private ImageView imageView;
 
     // Making this static keeps it from getting GC'd when we take pictures
-    private static Uri imagePath;
-    private Uri fileUri;
+    private static Uri imagePath = null;
+    private static Uri videoPath = null;
     private Uri imagePathFinal = null;
-    
+    private Uri videoPathFinal = null;
+
     private PotlatchResolver resolver;
 
     @Override
@@ -101,47 +104,40 @@ public class CreateGiftActivity extends GiftActivityBase {
     }
 
     public void selectPhotoClicked(View view) {
-        Log.v(LOG_TAG, "selectPhotoClicked(View) called.");
+        Log.v(LOG_TAG, "selectPhotoClicked");
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        saveImageToLocalMedia(galleryIntent, GALLERY_PIC_REQUEST);
+        startActivityForResult(galleryIntent, GALLERY_PIC_REQUEST);
     }
 
     public void addPhotoClicked(View aView) {
-        Log.v(LOG_TAG, "addPhotoClicked(View) called.");
+        Log.v(LOG_TAG, "addPhotoClicked");
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        saveImageToLocalMedia(cameraIntent, CAMERA_PIC_REQUEST);
-    }
-
-    private void saveImageToLocalMedia(Intent intent, int result) {
-        Uri tmpImagePath = StorageUtilities.getOutputMediaFileUri(this,
-                StorageUtilities.MEDIA_TYPE_IMAGE, StorageUtilities.SECURITY_PUBLIC, null);
-
-        if (tmpImagePath != null) {
-            imagePath = tmpImagePath;
-            intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imagePath);
-            startActivityForResult(intent, result);
-        }
+        imagePath = StorageUtilities.getOutputMediaFileUri(this, StorageUtilities.MEDIA_TYPE_IMAGE,
+                StorageUtilities.SECURITY_PUBLIC, null);
+        cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imagePath);
+        startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
     }
 
     public void addVideoClicked(View v) {
         Log.v(LOG_TAG, "addVideoClicked(View) called.");
-        // TODO
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        videoPath = StorageUtilities.getOutputMediaFileUri(this, StorageUtilities.MEDIA_FILE_VIDEO,
+                StorageUtilities.SECURITY_PUBLIC, null);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, videoPath);
+        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+        startActivityForResult(intent, CAMERA_VIDEO_REQUEST);
     }
 
     public void buttonCreateClicked(View v) {
-        Log.d(LOG_TAG, "accept button pressed");
-
-        Editable titleCreateable = titleInput.getText();
-        Editable bodyCreateable = descriptionInput.getText();
+        Log.d(LOG_TAG, "buttonCreateClicked");
 
         long loginId = 0;
         long GiftId = 0;
-        String title = String.valueOf(titleCreateable.toString());
-        String body = String.valueOf(bodyCreateable.toString());
-        String videoLink = fileUri != null ? fileUri.toString() : "";
+        String title = String.valueOf(titleInput.getText().toString());
+        String body = String.valueOf(descriptionInput.getText().toString());
+        String videoLink = videoPathFinal != null ? videoPathFinal.toString() : "";
         String imageData = imagePathFinal != null ? imagePathFinal.toString() : "";
-
         GiftData newData = new GiftData(loginId, GiftId, title, body, videoLink, imageData);
 
         Log.d(LOG_TAG, "newGiftData:" + newData);
@@ -157,48 +153,54 @@ public class CreateGiftActivity extends GiftActivityBase {
     }
 
     public void buttonCancelClicked(View v) {
-        Log.d(LOG_TAG, "cancel button pressed");
+        Log.d(LOG_TAG, "buttonCancelClicked");
         finish();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(LOG_TAG, "CreateFragment onActivtyResult called. requestCode: " + requestCode
-                + " resultCode:" + resultCode + "data:" + data);
+        Log.d(LOG_TAG, "onActivityResult requestCode: " + requestCode + " resultCode:" + resultCode
+                + "data:" + data);
 
         switch (requestCode) {
         case CreateGiftActivity.CAMERA_PIC_REQUEST:
-            imageResult(resultCode);
-            break;
-        case CreateGiftActivity.GALLERY_PIC_REQUEST:
-            imageResult(resultCode);
-            break;
-        case CreateGiftActivity.VIDEO_REQUEST:
-            // TODO
-            break;
-        }
-    }
+            if (resultCode == CreateGiftActivity.RESULT_OK) {
+                imagePathFinal = imagePath;
+                File image = new File(imagePathFinal.getPath());
 
-    private void imageResult(int resultCode) {
-        switch (resultCode) {
-        case CreateGiftActivity.RESULT_OK:
-            imagePathFinal = imagePath;
-            File image = new File(imagePathFinal.getPath());
-
-            if (image != null && image.exists()) {
-                Log.d(LOG_TAG, "image link is valid");
-
-                Bitmap bmp = BitmapFactory.decodeFile(image.getAbsolutePath());
-                imageView.setVisibility(View.VISIBLE);
-                imageView.setImageBitmap(bmp);
+                if (image != null && image.exists()) {
+                    Log.d(LOG_TAG, "image link is valid");
+                    Bitmap bmp = BitmapFactory.decodeFile(image.getAbsolutePath());
+                    imageView.setVisibility(View.VISIBLE);
+                    imageView.setImageBitmap(bmp);
+                } else if (resultCode != CreateGiftActivity.RESULT_CANCELED) {
+                    Toast.makeText(getApplicationContext(), "Image capture failed.",
+                            Toast.LENGTH_LONG).show();
+                }
             }
             break;
-        case CreateGiftActivity.RESULT_CANCELED:
+        case CreateGiftActivity.GALLERY_PIC_REQUEST:
+            Uri selectedImage = data.getData();
+            String[] filePath = { MediaStore.Images.Media.DATA };
+            Cursor cursor = getContentResolver().query(selectedImage, filePath, null, null, null);
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePath[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+            Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+            imageView.setVisibility(View.VISIBLE);
+            imageView.setImageBitmap(thumbnail);
+            imageView.setScaleType(ScaleType.FIT_CENTER);
             break;
-        default:
-            Toast.makeText(getApplicationContext(), "Image capture failed.", Toast.LENGTH_LONG)
-                    .show();
+        case CreateGiftActivity.CAMERA_VIDEO_REQUEST:
+            if (resultCode == CreateGiftActivity.RESULT_OK) {
+                videoPathFinal = videoPath;
+            } else if (resultCode != CreateGiftActivity.RESULT_CANCELED) {
+                Toast.makeText(getApplicationContext(), "Video capture failed.",
+                        Toast.LENGTH_LONG).show();
+            }
             break;
         }
     }
+
 }
