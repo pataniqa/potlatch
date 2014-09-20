@@ -22,12 +22,6 @@ public class GiftActivityBase extends Activity {
         startActivity(intent);
     }
 
-    public void openViewGiftActivity(long index) {
-        Log.d(LOG_TAG, "openGiftViewActivity(" + index + ")");
-        Intent intent = newGiftViewIntent(this, index);
-        startActivity(intent);
-    }
-
     public void openEditGiftActivity(final long index) {
         Log.d(LOG_TAG, "openEditGiftActivity(" + index + ")");
         Intent intent = newEditGiftIntent(this, index);
@@ -48,13 +42,6 @@ public class GiftActivityBase extends Activity {
 
     public static Intent newLoginActivityIntent(Activity activity) {
         return new Intent(activity, LoginActivity.class);
-    }
-
-    public static Intent newGiftViewIntent(Activity activity, long index) {
-        Intent intent = new Intent();
-        intent.setClass(activity, ViewGiftActivity.class);
-        intent.putExtra(ViewGiftActivity.rowIdentifyerTAG, index);
-        return intent;
     }
 
     public static Intent newEditGiftIntent(Activity activity, long index) {

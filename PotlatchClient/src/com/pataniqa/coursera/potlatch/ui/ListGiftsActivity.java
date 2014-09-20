@@ -82,7 +82,7 @@ public class ListGiftsActivity extends GiftActivityBase implements
 
                 // When an item is clicked, open the ViewGiftActivity so the
                 // user can view it in full screen
-                openViewGiftActivity((giftData.get(position)).KEY_ID);
+                openEditGiftActivity((giftData.get(position)).KEY_ID);
             }
         });
     }

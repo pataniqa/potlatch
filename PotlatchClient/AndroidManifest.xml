@@ -40,10 +40,6 @@
         <activity android:name="com.pataniqa.coursera.potlatch.ui.CreateGiftActivity" >
         </activity>
 
-        <!-- THIS IS THE SINGLE VIEW ACTIVITY -->
-        <activity android:name="com.pataniqa.coursera.potlatch.ui.ViewGiftActivity" >
-        </activity>
-
         <!-- THIS IS THE EDIT ACTIVITY -->
         <activity android:name="com.pataniqa.coursera.potlatch.ui.EditGiftActivity" >
         </activity>
