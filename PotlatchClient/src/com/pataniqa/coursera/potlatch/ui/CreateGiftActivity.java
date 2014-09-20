@@ -30,7 +30,6 @@ public class CreateGiftActivity extends GiftActivityBase {
     // The various UI elements we use
     private EditText titleET;
     private EditText bodyET;
-    private EditText imageNameET;
     private TextView imageLocation;
 
     // Making this static keeps it from getting GC'd when we take pictures
@@ -52,7 +51,6 @@ public class CreateGiftActivity extends GiftActivityBase {
         // Get references to all the UI elements
         titleET = (EditText) findViewById(R.id.gift_create_value_title);
         bodyET = (EditText) findViewById(R.id.gift_create_value_body);
-        imageNameET = (EditText) findViewById(R.id.gift_create_value_image_name);
         imageLocation = (TextView) findViewById(R.id.gift_create_value_image_location);
     }
 
@@ -60,7 +58,6 @@ public class CreateGiftActivity extends GiftActivityBase {
     public void buttonClearClicked(View v) {
         titleET.setText("" + "");
         bodyET.setText("" + "");
-        imageNameET.setText("" + "");
     }
 
     // Close this activity if the cancel button is clicked
@@ -76,14 +73,12 @@ public class CreateGiftActivity extends GiftActivityBase {
         // local Editables
         Editable titleCreateable = titleET.getText();
         Editable bodyCreateable = bodyET.getText();
-        Editable imageNameCreateable = imageNameET.getText();
 
         long loginId = 0;
         long GiftId = 0;
         String title = "";
         String body = "";
         String videoLink = "";
-        String imageName = "";
         String imageData = "";
 
         // pull values from Editables
@@ -94,7 +89,6 @@ public class CreateGiftActivity extends GiftActivityBase {
         if (fileUri != null) {
             videoLink = fileUri.toString();
         }
-        imageName = String.valueOf(imageNameCreateable.toString());
         if (imagePathFinal != null) {
             imageData = imagePathFinal.toString();
         }
@@ -103,8 +97,7 @@ public class CreateGiftActivity extends GiftActivityBase {
         GiftData newData = new GiftData(-1,
         // -1 row index, because there is no way to know which
         // row it will go into
-                loginId, GiftId, title, body, videoLink, imageName, imageData);
-        Log.d(LOG_TAG, "imageName" + imageNameET.getText());
+                loginId, GiftId, title, body, videoLink, imageData);
 
         Log.d(LOG_TAG, "newGiftData:" + newData);
 

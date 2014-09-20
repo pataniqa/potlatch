@@ -86,30 +86,6 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:visibility="gone" />
 
-            <!-- imageName -->
-
-            <TextView
-                android:id="@+id/gift_view_label_image_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/gift_view_value_video_link"
-                android:layout_gravity="left"
-                android:text="@string/image_name"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/gift_view_value_image_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/gift_view_label_image_name"
-                android:text="@string/gift_view_edittext_image_name_default_value"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:visibility="gone" />
-
             <!-- imageMetaData -->
 
             <TextView
@@ -130,7 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="160dp"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/gift_view_value_image_name"
+                android:layout_below="@+id/gift_view_value_video_link"
                 android:contentDescription="Content desc."
                 android:src="@drawable/ic_launcher"
                 android:text="@string/gift_view_edittext_image_meta_data_default_value"

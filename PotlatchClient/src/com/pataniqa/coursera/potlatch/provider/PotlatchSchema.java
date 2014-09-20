@@ -47,12 +47,12 @@ public class PotlatchSchema {
 
         // the names and order of ALL columns, including internal use ones
         public static final String[] ALL_COLUMN_NAMES = { Cols.ID, Cols.LOGIN_ID, Cols.GIFT_ID,
-                Cols.TITLE, Cols.BODY, Cols.VIDEO_LINK, Cols.IMAGE_NAME, Cols.IMAGE_LINK };
+                Cols.TITLE, Cols.BODY, Cols.VIDEO_LINK, Cols.IMAGE_LINK };
 
         // the names and order of ALL column types, including internal use ones
         // (for use with SQLite)
         public static final String[] ALL_COLUMN_TYPES = { "integer", "integer", "integer", "text",
-                "text", "text", "text", "text", "text" };
+                "text", "text", "text", "text" };
 
         public static ContentValues initializeWithDefault(final ContentValues assignedValues) {
             // final Long now = Long.valueOf(System.currentTimeMillis());
@@ -73,9 +73,6 @@ public class PotlatchSchema {
             if (!setValues.containsKey(Cols.VIDEO_LINK)) {
                 setValues.put(Cols.VIDEO_LINK, "");
             }
-            if (!setValues.containsKey(Cols.IMAGE_NAME)) {
-                setValues.put(Cols.IMAGE_NAME, "");
-            }
             if (!setValues.containsKey(Cols.IMAGE_LINK)) {
                 setValues.put(Cols.IMAGE_LINK, "");
             }
@@ -91,7 +88,6 @@ public class PotlatchSchema {
             public static final String TITLE = "TITLE";
             public static final String BODY = "BODY";
             public static final String VIDEO_LINK = "VIDEO_LINK";
-            public static final String IMAGE_NAME = "IMAGE_NAME";
             public static final String IMAGE_LINK = "IMAGE_LINK";
         }
     }

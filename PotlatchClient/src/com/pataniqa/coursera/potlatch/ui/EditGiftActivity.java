@@ -28,7 +28,6 @@ public class EditGiftActivity extends GiftActivityBase {
     private TextView GiftIdET;
     private EditText titleET;
     private EditText bodyET;
-    private EditText imageNameET;
     private EditText imageMetaDataET;
 
     // custom ContentResolver wrapper.
@@ -51,7 +50,6 @@ public class EditGiftActivity extends GiftActivityBase {
         GiftIdET = (TextView) findViewById(R.id.gift_edit_gift_id);
         titleET = (EditText) findViewById(R.id.gift_edit_title);
         bodyET = (EditText) findViewById(R.id.gift_edit_body);
-        imageNameET = (EditText) findViewById(R.id.gift_edit_image_name);
         imageMetaDataET = (EditText) findViewById(R.id.gift_edit_image_meta_data);
 
         // set the EditTexts to this Gift's Values
@@ -109,16 +107,14 @@ public class EditGiftActivity extends GiftActivityBase {
         // Get the editables from the UI
         Editable titleEditable = titleET.getText();
         Editable bodyEditable = bodyET.getText();
-        Editable imageNameEditable = imageMetaDataET.getText();
 
         // Pull values from Editables
         String title = titleEditable.toString();
         String body = bodyEditable.toString();
-        String imageName = imageNameEditable.toString();
 
         // Construct the Gift Data Object
         GiftData rValue = new GiftData(getUniqueKey(), mData.loginId, mData.giftId, title, body, 
-                mData.videoLink, imageName, mData.imageLink);
+                mData.videoLink, mData.imageLink);
 
         // Make sure the new GiftData has the same key as the old one so that
         // it will
@@ -159,7 +155,6 @@ public class EditGiftActivity extends GiftActivityBase {
             GiftIdET.setText(Long.valueOf(GiftData.giftId).toString());
             titleET.setText(GiftData.title);
             bodyET.setText(GiftData.body);
-            imageNameET.setText(GiftData.imageName);
             imageMetaDataET.setText(GiftData.imageLink);
             return true;
         }

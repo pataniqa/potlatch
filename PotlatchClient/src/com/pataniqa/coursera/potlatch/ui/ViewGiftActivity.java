@@ -36,7 +36,6 @@ public class ViewGiftActivity extends GiftActivityBase {
     private TextView titleTV;
     private TextView bodyTV;
     private TextView videoLinkTV;
-    private TextView imageNameTV;
 
     private ImageView imageMetaDataView;
 
@@ -57,14 +56,12 @@ public class ViewGiftActivity extends GiftActivityBase {
         titleTV = (TextView) findViewById(R.id.gift_view_value_title);
         bodyTV = (TextView) findViewById(R.id.gift_view_value_body);
         videoLinkTV = (TextView) findViewById(R.id.gift_view_value_video_link);
-        imageNameTV = (TextView) findViewById(R.id.gift_view_value_image_name);
         imageMetaDataView = (ImageView) findViewById(R.id.gift_view_value_image_meta_data);
 
         // Set the default values
         titleTV.setText("" + "");
         bodyTV.setText("" + "");
         videoLinkTV.setText("" + "");
-        imageNameTV.setText("" + "");
 
         try {
             // Fill out all the UI elements with data from our GiftData
@@ -93,12 +90,10 @@ public class ViewGiftActivity extends GiftActivityBase {
             titleTV.setText(String.valueOf(giftData.title).toString());
             bodyTV.setText(String.valueOf(giftData.body).toString());
             videoLinkTV.setText(String.valueOf(giftData.videoLink).toString());
-            imageNameTV.setText(String.valueOf(giftData.imageName).toString());
 
             Log.d(LOG_TAG, "image file path: " + giftData.imageLink);
 
             // Set up image
-            imageNameTV.setVisibility(View.GONE);
             imageMetaDataView.setVisibility(View.GONE);
 
             if (giftData.imageLink != null && giftData.imageLink.equals("") == false
@@ -109,8 +104,6 @@ public class ViewGiftActivity extends GiftActivityBase {
 
                 if (image != null && image.exists()) {
                     Log.d(LOG_TAG, "image link is valid");
-                    imageNameTV.setVisibility(View.VISIBLE);
-                    imageNameTV.setText("Image");
 
                     Bitmap bmp = BitmapFactory.decodeFile(image.getAbsolutePath());
                     imageMetaDataView.setVisibility(View.VISIBLE);

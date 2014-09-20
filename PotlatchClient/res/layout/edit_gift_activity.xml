@@ -125,26 +125,6 @@
                 android:hint="@string/empty_default_value"
                 android:visibility="gone" />
 
-            <!-- image_name label/value pair -->
-
-            <TextView
-                android:id="@+id/gift_edit_image_name_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/gift_edit_image_name"
-                android:layout_alignBottom="@+id/gift_edit_image_name"
-                android:layout_alignParentLeft="true"
-                android:text="@string/image_name"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <EditText
-                android:id="@+id/gift_edit_image_name"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/gift_edit_video_link"
-                android:hint="@string/empty_default_value" />
-
             <!-- image_meta_data label/value pair -->
 
             <TextView
@@ -163,7 +143,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/gift_edit_image_name"
+                android:layout_below="@+id/gift_edit_video_link"
                 android:hint="@string/empty_default_value"
                 android:visibility="gone" />
 

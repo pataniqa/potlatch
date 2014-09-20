@@ -26,10 +26,8 @@
     <string name="gift_view_edittext_title_default_value">Title</string>
     <string name="gift_view_edittext_body_default_value">Body</string>
     <string name="gift_view_edittext_video_link_default_value">VideoLink</string>
-    <string name="gift_view_edittext_image_name_default_value">ImageName</string>
     <string name="gift_view_edittext_image_meta_data_default_value">ImageData</string>
     <string name="video_link">VideoLink</string>
-    <string name="image_name">ImageName</string>
     <string name="image_meta_data">ImageData</string>
 
     <!-- **** Strings for List Activity for each Relation **** -->
@@ -48,10 +46,7 @@
     <string name="login_activity_email">Email:</string>
     <string name="login_background_description">Photo of Taiwan Sandcastle Competition</string>
 
-    <string name="username">Username:</string>
-    <string name="username_hint">username Hint!</string>
     <string name="password">Password:</string>
-    <string name="password_hint">password Hint!</string>
     <string name="login">Login</string>
     <string name="authenticating">Authenticating</string>
     <string name="action_settings">Settings</string>

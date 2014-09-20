@@ -39,7 +39,6 @@ public class GiftData implements Parcelable {
     public String title;
     public String body;
     public String videoLink;
-    public String imageName;
     public String imageLink;
 
     /**
@@ -52,18 +51,16 @@ public class GiftData implements Parcelable {
      * @param title
      * @param body
      * @param videoLink
-     * @param imageName
      * @param imageLink
      */
     public GiftData(long KEY_ID, long loginId, long giftId, String title, String body,
-            String videoLink, String imageName, String imageLink) {
+            String videoLink, String imageLink) {
         this.KEY_ID = KEY_ID;
         this.loginId = loginId;
         this.giftId = giftId;
         this.title = title;
         this.body = body;
         this.videoLink = videoLink;
-        this.imageName = imageName;
         this.imageLink = imageLink;
     }
 
@@ -76,12 +73,11 @@ public class GiftData implements Parcelable {
      * @param title
      * @param body
      * @param videoLink
-     * @param imageName
      * @param imageLink
      */
     public GiftData(long loginId, long giftId, String title, String body, String videoLink,
-            String imageName, String imageLink) {
-        this(-1, loginId, giftId, title, body, videoLink, imageName, imageLink);
+            String imageLink) {
+        this(-1, loginId, giftId, title, body, videoLink, imageLink);
     }
 
     /**
@@ -93,12 +89,11 @@ public class GiftData implements Parcelable {
      * @param title
      * @param body
      * @param videoLink
-     * @param imageName
      * @param imageLink
      */
     public GiftData(String key, String href, long loginId, long giftId, String title, String body,
-            String videoLink, String imageName, String imageLink) {
-        this(-1, loginId, giftId, title, body, videoLink, imageName, imageLink);
+            String videoLink, String imageLink) {
+        this(-1, loginId, giftId, title, body, videoLink, imageLink);
         this.href = href;
         this.key = key;
     }
@@ -109,8 +104,8 @@ public class GiftData implements Parcelable {
     @Override
     public String toString() {
         return " loginId: " + loginId + " giftId: " + giftId + " title: " + title + " body: "
-                + body + " videoLink: " + videoLink + " imageName: " + imageName + " imageLink: "
-                + imageLink + " href: " + href + " key: " + key;
+                + body + " videoLink: " + videoLink + " imageLink: " + imageLink + " href: " + href
+                + " key: " + key;
     }
 
     /**
@@ -127,7 +122,7 @@ public class GiftData implements Parcelable {
      * Clone this object into a new GiftData
      */
     public GiftData clone() {
-        return new GiftData(loginId, giftId, title, body, videoLink, imageName, imageLink);
+        return new GiftData(loginId, giftId, title, body, videoLink, imageLink);
     }
 
     // these are for parcelable interface
@@ -150,7 +145,6 @@ public class GiftData implements Parcelable {
         dest.writeString(title);
         dest.writeString(body);
         dest.writeString(videoLink);
-        dest.writeString(imageName);
         dest.writeString(imageLink);
     }
 
@@ -177,7 +171,6 @@ public class GiftData implements Parcelable {
         title = in.readString();
         body = in.readString();
         videoLink = in.readString();
-        imageName = in.readString();
         imageLink = in.readString();
     }
 
@@ -207,15 +200,13 @@ public class GiftData implements Parcelable {
         JSONObject bodyJson = (JSONObject) jsonObject.get("body");
         String body = (String) bodyJson.get("value");
         String videoLink = (String) jsonObject.get("videoLink");
-        String imageName = (String) jsonObject.get("imageName");
         String imageMetaData = (String) jsonObject.get("imageLink");
 
         GiftData rValue = null;
         if (hasKeyID == true) {
-            rValue = new GiftData(key, href, loginId, giftId, title, body, videoLink, imageName,
-                    imageMetaData);
+            rValue = new GiftData(key, href, loginId, giftId, title, body, videoLink, imageMetaData);
         } else {
-            rValue = new GiftData(loginId, giftId, title, body, videoLink, imageName, imageMetaData);
+            rValue = new GiftData(loginId, giftId, title, body, videoLink, imageMetaData);
         }
         return rValue;
     }
@@ -227,7 +218,6 @@ public class GiftData implements Parcelable {
         params.add(new BasicNameValuePair("title", title));
         params.add(new BasicNameValuePair("body", body));
         params.add(new BasicNameValuePair("videoLink", videoLink));
-        params.add(new BasicNameValuePair("imageName", imageName));
         return new UrlEncodedFormEntity(params);
     }
 }

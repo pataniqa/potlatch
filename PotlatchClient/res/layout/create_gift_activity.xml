@@ -89,26 +89,6 @@
                 android:layout_below="@+id/gift_create_value_video_button"
                 android:text="" />
 
-            <!-- image_name label/value pair -->
-
-            <TextView
-                android:id="@+id/gift_create_label_image_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/gift_create_value_image_name"
-                android:layout_alignBottom="@+id/gift_create_value_image_name"
-                android:layout_alignParentLeft="true"
-                android:text="@string/image_name" />
-
-            <EditText
-                android:id="@+id/gift_create_value_image_name"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/gift_create_value_video_location"
-                android:inputType="text"
-                android:text="@string/empty_default_value" />
-
             <!-- image_meta_data label/value pair -->
 
             <TextView
@@ -125,7 +105,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/gift_create_value_image_name"
+                android:layout_below="@+id/gift_create_value_video_button"
                 android:onClick="addPhotoClicked"
                 android:text="@string/add_photo" />
 
