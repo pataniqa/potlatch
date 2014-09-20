@@ -24,7 +24,6 @@ public class GiftCreator {
      */
     public static ContentValues getCVfromGift(final GiftData data) {
         ContentValues rValue = new ContentValues();
-        rValue.put(PotlatchSchema.Gift.Cols.GIFT_ID, data.giftId);
         rValue.put(PotlatchSchema.Gift.Cols.TITLE, data.title);
         rValue.put(PotlatchSchema.Gift.Cols.DESCRIPTION, data.description);
         rValue.put(PotlatchSchema.Gift.Cols.VIDEO_URI, data.videoUri);
@@ -58,15 +57,13 @@ public class GiftCreator {
      */
     public static GiftData getGiftDataFromCursor(Cursor cursor) {
         long rowID = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.ID));
-        long loginId = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.LOGIN_ID));
-        long giftId = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.GIFT_ID));
         String title = cursor.getString(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.TITLE));
         String description = cursor.getString(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.DESCRIPTION));
         String videoUri = cursor.getString(cursor
                 .getColumnIndex(PotlatchSchema.Gift.Cols.VIDEO_URI));
         String imageUri = cursor.getString(cursor
                 .getColumnIndex(PotlatchSchema.Gift.Cols.IMAGE_URI));
-        return new GiftData(rowID, giftId, title, description, videoUri, imageUri);
+        return new GiftData(rowID, title, description, videoUri, imageUri);
     }
 
     /**

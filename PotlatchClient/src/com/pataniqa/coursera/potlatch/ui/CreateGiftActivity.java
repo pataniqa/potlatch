@@ -133,13 +133,11 @@ public class CreateGiftActivity extends GiftActivityBase {
     public void buttonCreateClicked(View v) {
         Log.d(LOG_TAG, "buttonCreateClicked");
 
-        long loginId = 0;
-        long GiftId = 0;
         String title = String.valueOf(titleInput.getText().toString());
         String description = String.valueOf(descriptionInput.getText().toString());
         String videoUri = videoPathFinal != null ? videoPathFinal.toString() : "";
         String imageData = imagePathFinal != null ? imagePathFinal.toString() : "";
-        GiftData newData = new GiftData(loginId, GiftId, title, description, videoUri, imageData);
+        GiftData newData = new GiftData(title, description, videoUri, imageData);
 
         Log.d(LOG_TAG, "newGiftData:" + newData);
 

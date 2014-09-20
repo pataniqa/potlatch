@@ -22,9 +22,6 @@ import android.os.Parcelable;
 public class GiftData implements Parcelable {
 
     public final long KEY_ID;
-    public String key;
-    public String href;
-    public long giftId;
     public String title;
     public String description;
     public String videoUri;
@@ -35,16 +32,13 @@ public class GiftData implements Parcelable {
      * already existing object's information from the ContentProvider
      * 
      * @param KEY_ID
-     * @param giftId
      * @param title
      * @param description
      * @param videoUri
      * @param imageUri
      */
-    public GiftData(long KEY_ID, long giftId, String title, String description,
-            String videoUri, String imageUri) {
+    public GiftData(long KEY_ID, String title, String description, String videoUri, String imageUri) {
         this.KEY_ID = KEY_ID;
-        this.giftId = giftId;
         this.title = title;
         this.description = description;
         this.videoUri = videoUri;
@@ -55,32 +49,13 @@ public class GiftData implements Parcelable {
      * Constructor WITHOUT _id, this creates a new object for insertion into the
      * ContentProvider
      * 
-     * @param giftId
      * @param title
      * @param description
      * @param videoUri
      * @param imageUri
      */
-    public GiftData(long giftId, String title, String description, String videoUri,
-            String imageUri) {
-        this(-1, giftId, title, description, videoUri, imageUri);
-    }
-
-    /**
-     * Constructor WITHOUT _id, this creates a new object for insertion into the
-     * ContentProvider
-     * 
-     * @param giftId
-     * @param title
-     * @param description
-     * @param videoUri
-     * @param imageUri
-     */
-    public GiftData(String key, String href, long loginId, long giftId, String title, String description,
-            String videoUri, String imageUri) {
-        this(-1, giftId, title, description, videoUri, imageUri);
-        this.href = href;
-        this.key = key;
+    public GiftData(String title, String description, String videoUri, String imageUri) {
+        this(-1, title, description, videoUri, imageUri);
     }
 
     /**
@@ -88,16 +63,15 @@ public class GiftData implements Parcelable {
      */
     @Override
     public String toString() {
-        return " giftId: " + giftId + " title: " + title + " description: "
-                + description + " videoUri: " + videoUri + " imageUri: " + imageUri + " href: " + href
-                + " key: " + key;
+        return " title: " + title + " description: " + description + " videoUri: " + videoUri
+                + " imageUri: " + imageUri;
     }
 
     /**
      * Clone this object into a new GiftData
      */
     public GiftData clone() {
-        return new GiftData(giftId, title, description, videoUri, imageUri);
+        return new GiftData(title, description, videoUri, imageUri);
     }
 
     /**
@@ -114,7 +88,6 @@ public class GiftData implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(KEY_ID);
-        dest.writeLong(giftId);
         dest.writeString(title);
         dest.writeString(description);
         dest.writeString(videoUri);
@@ -139,7 +112,6 @@ public class GiftData implements Parcelable {
      */
     private GiftData(Parcel in) {
         KEY_ID = in.readLong();
-        giftId = in.readLong();
         title = in.readString();
         description = in.readString();
         videoUri = in.readString();

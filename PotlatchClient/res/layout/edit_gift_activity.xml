@@ -20,49 +20,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <!-- login_id label/value pair -->
-
-            <TextView
-                android:id="@+id/gift_edit_login_id_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/gift_edit_login_id"
-                android:layout_alignBottom="@+id/gift_edit_login_id"
-                android:layout_alignParentLeft="true"
-                android:text="@string/loginID"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <TextView
-                android:id="@+id/gift_edit_login_id"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:hint="@string/empty_default_value" />
-
-            <!-- gift_id label/value pair -->
-
-            <TextView
-                android:id="@+id/gift_edit_gift_id_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/gift_edit_gift_id"
-                android:layout_alignBottom="@+id/gift_edit_gift_id"
-                android:layout_alignParentLeft="true"
-                android:text="@string/gift_id"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/gift_edit_gift_id"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/gift_edit_login_id"
-                android:hint="@string/empty_default_value"
-                android:inputType="none"
-                android:visibility="gone" />
-
             <!-- title label/value pair -->
 
             <TextView
@@ -80,7 +37,6 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/gift_edit_login_id"
                 android:hint="@string/empty_default_value" />
 
             <TextView

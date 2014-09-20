@@ -5,7 +5,6 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pataniqa.coursera.potlatch.R;
@@ -21,7 +20,6 @@ public class EditGiftActivity extends GiftActivityBase {
     public final static String rowIdentifyerTAG = "index";
 
     // The TextViews and EditTexts we use
-    private TextView GiftIdET;
     private EditText titleET;
     private EditText descriptionET;
     private EditText imageUriET;
@@ -42,7 +40,6 @@ public class EditGiftActivity extends GiftActivityBase {
         resolver = new PotlatchResolver(this);
 
         // Get the EditTexts
-        GiftIdET = (TextView) findViewById(R.id.gift_edit_gift_id);
         titleET = (EditText) findViewById(R.id.gift_edit_title);
         descriptionET = (EditText) findViewById(R.id.gift_edit_description);
         imageUriET = (EditText) findViewById(R.id.gift_edit_image_uri);
@@ -99,10 +96,9 @@ public class EditGiftActivity extends GiftActivityBase {
         String description = descriptionET.getText().toString();
 
         // Construct the Gift Data Object
-        GiftData rValue = new GiftData(getUniqueKey(), giftData.giftId, title, description, 
+        GiftData rValue = new GiftData(getUniqueKey(), title, description, 
                 giftData.videoUri, giftData.imageUri);
 
-        rValue.key = giftData.key;
         return rValue;
 
     }
@@ -127,7 +123,6 @@ public class EditGiftActivity extends GiftActivityBase {
             Log.d(LOG_TAG, "setValuesToDefualt :" + GiftData.toString());
 
             // set the EditTexts to the current values
-            GiftIdET.setText(Long.valueOf(GiftData.giftId).toString());
             titleET.setText(GiftData.title);
             descriptionET.setText(GiftData.description);
             imageUriET.setText(GiftData.imageUri);

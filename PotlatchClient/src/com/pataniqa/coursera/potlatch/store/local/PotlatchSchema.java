@@ -55,7 +55,6 @@ public class PotlatchSchema {
             {
                 put(Cols.ID, INTEGER);
                 put(Cols.LOGIN_ID, INTEGER);
-                put(Cols.GIFT_ID, INTEGER);
                 put(Cols.TITLE, TEXT);
                 put(Cols.DESCRIPTION, TEXT);
                 put(Cols.VIDEO_URI, TEXT);
@@ -85,7 +84,6 @@ public class PotlatchSchema {
             public static final String ID = BaseColumns._ID;
             // The name and column index of each column in your database
             public static final String LOGIN_ID = "LOGIN_ID";
-            public static final String GIFT_ID = "GIFT_ID";
             public static final String TITLE = "TITLE";
             public static final String DESCRIPTION = "DESCRIPTION";
             public static final String VIDEO_URI = "VIDEO_URI";
