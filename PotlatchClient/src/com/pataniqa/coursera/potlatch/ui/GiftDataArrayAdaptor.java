@@ -19,13 +19,7 @@ import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GiftData;
 
 /**
- * This is an ArrayAdapter for an array of GiftData. It is used by the ListView
- * present in ListGiftActivity to display each GiftData object in the array as a
- * row in a GUI list.
- * 
- * This is an example of the Adapter pattern. In this case, this class wraps
- * some plain data (GiftData) into an interface that can be recognized and used
- * by the ListView Object.
+ * This is an ArrayAdapter for an array of GiftData. 
  */
 public class GiftDataArrayAdaptor extends ArrayAdapter<GiftData> {
 
@@ -50,7 +44,6 @@ public class GiftDataArrayAdaptor extends ArrayAdapter<GiftData> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        // The view we need to fill out with data
         LinearLayout giftView = null;
 
         try {

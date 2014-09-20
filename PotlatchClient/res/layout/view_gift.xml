@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gift_create_relative_layout2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/gift_create_img"
+        android:layout_width="250dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        android:background="#80ffffff"
+        android:contentDescription="@string/gift_image_description"
+        android:scaleType="center"
+        android:src="@drawable/ic_fa_image" />
+
+    <LinearLayout
+        android:id="@+id/gift_create_linear_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gift_create_img"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/gift_create_select_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/select_photo"
+            android:onClick="selectPhotoButtonClicked"
+            android:src="@drawable/ic_fa_folder" />
+
+        <ImageButton
+            android:id="@+id/gift_new_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/add_photo"
+            android:onClick="addPhotoButtonClicked"
+            android:src="@drawable/ic_action_camera" />
+
+        <ImageButton
+            android:id="@+id/gift_new_video_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/add_video"
+            android:onClick="addVideoButtonClicked"
+            android:src="@drawable/ic_action_video" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/gift_create_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/gift_create_linear_layout"
+        android:hint="@string/title"
+        android:inputType="text"
+        android:text="@string/empty_default_value" />
+
+    <EditText
+        android:id="@+id/gift_create_description"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/gift_create_title"
+        android:gravity="top|left"
+        android:hint="@string/description"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:maxLines="10"
+        android:minLines="6"
+        android:scrollbars="vertical"
+        android:text="@string/empty_default_value" />
+
+</RelativeLayout>

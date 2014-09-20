@@ -10,7 +10,7 @@ import com.pataniqa.coursera.potlatch.R;
 /**
  * The activity that allows the user to provide login information.
  */
-public class LoginActivity extends GiftActivityBase {
+public class LoginActivity extends GiftActivity {
 
     private static final String LOG_TAG = LoginActivity.class.getCanonicalName();
 

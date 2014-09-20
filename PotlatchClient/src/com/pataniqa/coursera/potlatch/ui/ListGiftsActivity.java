@@ -22,7 +22,7 @@ import com.pataniqa.coursera.potlatch.model.GiftData;
 import com.pataniqa.coursera.potlatch.store.IPotlatchStore;
 import com.pataniqa.coursera.potlatch.store.local.PotlatchResolver;
 
-public class ListGiftsActivity extends GiftActivityBase implements
+public class ListGiftsActivity extends GiftActivity implements
         SwipeRefreshLayout.OnRefreshListener {
 
     private static final String LOG_TAG = ListGiftsActivity.class.getCanonicalName();
@@ -62,7 +62,6 @@ public class ListGiftsActivity extends GiftActivityBase implements
         // Instantiate the resolver and the ArrayList
         resolver = new PotlatchResolver(this);
         giftData = new ArrayList<GiftData>();
-
 
         // Instantiate the adapter using our local GiftData ArrayList.
         arrayAdapter = new GiftDataArrayAdaptor(this, R.layout.gift_listview_custom_row, giftData);
