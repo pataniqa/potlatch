@@ -26,7 +26,7 @@ public class StoryCreator {
 	 *            StoryData to be converted.
 	 * @return ContentValues that is created from the StoryData object
 	 */
-	public static ContentValues getCVfromStory(final StoryData data) {
+	public static ContentValues getCVfromStory(final GiftData data) {
 		ContentValues rValue = new ContentValues();
 		rValue.put(PotlatchSchema.Story.Cols.LOGIN_ID, data.loginId);
 		rValue.put(PotlatchSchema.Story.Cols.STORY_ID, data.storyId);
@@ -51,9 +51,9 @@ public class StoryCreator {
 	 *            passed in cursor to get StoryData(s) of.
 	 * @return ArrayList<StoryData\> The set of StoryData
 	 */
-	public static ArrayList<StoryData> getStoryDataArrayListFromCursor(
+	public static ArrayList<GiftData> getStoryDataArrayListFromCursor(
 			Cursor cursor) {
-		ArrayList<StoryData> rValue = new ArrayList<StoryData>();
+		ArrayList<GiftData> rValue = new ArrayList<GiftData>();
 		if (cursor != null) {
 			if (cursor.moveToFirst()) {
 				do {
@@ -71,7 +71,7 @@ public class StoryCreator {
 	 *            passed in cursor
 	 * @return StoryData object
 	 */
-	public static StoryData getStoryDataFromCursor(Cursor cursor) {
+	public static GiftData getStoryDataFromCursor(Cursor cursor) {
 
 		long rowID = cursor.getLong(cursor
 				.getColumnIndex(PotlatchSchema.Story.Cols.ID));
@@ -103,7 +103,7 @@ public class StoryCreator {
 				.getColumnIndex(PotlatchSchema.Story.Cols.LONGITUDE));
 
 		// construct the returned object
-		StoryData rValue = new StoryData(rowID, loginId, storyId, title, body,
+		GiftData rValue = new GiftData(rowID, loginId, storyId, title, body,
 				audioLink, videoLink, imageName, imageMetaData, tags,
 				creationTime, storyTime, latitude, longitude);
 

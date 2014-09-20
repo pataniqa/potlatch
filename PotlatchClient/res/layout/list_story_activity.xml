@@ -13,29 +13,6 @@
         android:orientation="horizontal"
         android:padding="3dp" >
 
-        <Button
-            android:id="@+id/story_listview_create"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:onClick="createButtonClicked"
-            android:text="@string/story_list_button_label_add" />
-
-        <Button
-            android:id="@+id/story_listview_refresh"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:onClick="refreshButtonClicked"
-            android:text="@string/story_list_button_label_refresh" />
-
-        <Button
-            android:id="@+id/login_button"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:onClick="loginButtonClicked"
-            android:text="Login" />
     </LinearLayout>
 
     <EditText
@@ -48,10 +25,22 @@
         <requestFocus />
     </EditText>
 
-    <ListView
-        android:id="@+id/android:list"
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-    </ListView>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ListView
+                android:id="@+id/android:list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </ListView>
+        </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

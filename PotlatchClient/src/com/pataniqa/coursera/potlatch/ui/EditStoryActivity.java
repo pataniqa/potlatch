@@ -2,7 +2,7 @@ package com.pataniqa.coursera.potlatch.ui;
 
 import com.pataniqa.coursera.potlatch.storage.PotlatchResolver;
 import com.pataniqa.coursera.potlatch.storage.StoryCreator;
-import com.pataniqa.coursera.potlatch.storage.StoryData;
+import com.pataniqa.coursera.potlatch.storage.GiftData;
 
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -52,7 +52,7 @@ public class EditStoryActivity extends StoryActivityBase {
 	// custom ContentResolver wrapper.
 	PotlatchResolver resolver;
 
-	StoryData mData;
+	GiftData mData;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +113,7 @@ public class EditStoryActivity extends StoryActivityBase {
 		Toast.makeText(this, "Updated.", Toast.LENGTH_SHORT).show();
 		
 		// Make the story data from the UI
-		StoryData story = makeStoryDataFromUI();
+		GiftData story = makeStoryDataFromUI();
 		
 		// If we succeeded, go ahead and update the data in the database
 		if (story != null) {
@@ -133,7 +133,7 @@ public class EditStoryActivity extends StoryActivityBase {
 	}
 
 	// Use the data the user input into the UI to construct a StoryData object
-	public StoryData makeStoryDataFromUI() {
+	public GiftData makeStoryDataFromUI() {
 
 		// Get the editables from the UI
 		Editable titleEditable = titleET.getText();
@@ -156,7 +156,7 @@ public class EditStoryActivity extends StoryActivityBase {
 				storyDate.getMonth(), storyDate.getDayOfMonth(), 0, 0);
 
 		// Construct the Story Data Object
-		StoryData rValue = new StoryData(getUniqueKey(), mData.loginId,
+		GiftData rValue = new GiftData(getUniqueKey(), mData.loginId,
 				mData.storyId, title, body, mData.audioLink, mData.videoLink,
 				imageName, mData.imageLink, tags, mData.creationTime,
 				storyTime, latitude, longitude);
@@ -180,7 +180,7 @@ public class EditStoryActivity extends StoryActivityBase {
 	 */
 	public boolean setValuesToDefault() {
 
-		StoryData storyData;
+		GiftData storyData;
 		try {
 			storyData = resolver.getStoryDataViaRowID(getUniqueKey());
 		} catch (RemoteException e) {

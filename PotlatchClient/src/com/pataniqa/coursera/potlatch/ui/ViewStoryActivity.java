@@ -4,7 +4,7 @@ import java.io.File;
 
 import com.pataniqa.coursera.potlatch.storage.PotlatchResolver;
 import com.pataniqa.coursera.potlatch.storage.StoryCreator;
-import com.pataniqa.coursera.potlatch.storage.StoryData;
+import com.pataniqa.coursera.potlatch.storage.GiftData;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -30,7 +30,7 @@ public class ViewStoryActivity extends StoryActivityBase {
 			.getCanonicalName();
 	
 	// The StoryData we're displaying
-	StoryData storyData;
+	GiftData storyData;
 
 	// The UI elements we'll be using
 	TextView loginIdTV;

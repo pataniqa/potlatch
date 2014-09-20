@@ -27,10 +27,8 @@ import android.os.Parcelable;
  * the 'ContentValues', and the 'Cursor' classes from the use with
  * ContentProviders or SQLiteDatabases.
  * 
- * @author Michael A. Walker
- * 
  */
-public class StoryData implements Parcelable {
+public class GiftData implements Parcelable {
 
 	public final long KEY_ID;
 	public String key;
@@ -67,7 +65,7 @@ public class StoryData implements Parcelable {
 	 * @param latitude
 	 * @param longitude
 	 */
-	public StoryData(long loginId, long storyId, String title, String body,
+	public GiftData(long loginId, long storyId, String title, String body,
 			String audioLink, String videoLink, String imageName,
 			String imageMetaData, String tags, long creationTime,
 			long storyTime, double latitude, double longitude) {
@@ -106,7 +104,7 @@ public class StoryData implements Parcelable {
 	 * @param latitude
 	 * @param longitude
 	 */
-	public StoryData(long KEY_ID, long loginId, long storyId, String title,
+	public GiftData(long KEY_ID, long loginId, long storyId, String title,
 			String body, String audioLink, String videoLink, String imageName,
 			String imageLink, String tags, long creationTime, long storyTime,
 			double latitude, double longitude) {
@@ -153,8 +151,8 @@ public class StoryData implements Parcelable {
 	/**
 	 * Clone this object into a new StoryData
 	 */
-	public StoryData clone() {
-		return new StoryData(loginId, storyId, title, body, audioLink,
+	public GiftData clone() {
+		return new GiftData(loginId, storyId, title, body, audioLink,
 				videoLink, imageName, imageLink, tags, creationTime, storyTime,
 				latitude, longitude);
 	}
@@ -192,20 +190,20 @@ public class StoryData implements Parcelable {
 	/**
 	 * Used for writing a copy of this object to a Parcel, do not manually call.
 	 */
-	public static final Parcelable.Creator<StoryData> CREATOR = new Parcelable.Creator<StoryData>() {
-		public StoryData createFromParcel(Parcel in) {
-			return new StoryData(in);
+	public static final Parcelable.Creator<GiftData> CREATOR = new Parcelable.Creator<GiftData>() {
+		public GiftData createFromParcel(Parcel in) {
+			return new GiftData(in);
 		}
 
-		public StoryData[] newArray(int size) {
-			return new StoryData[size];
+		public GiftData[] newArray(int size) {
+			return new GiftData[size];
 		}
 	};
 
 	/**
 	 * Used for writing a copy of this object to a Parcel, do not manually call.
 	 */
-	private StoryData(Parcel in) {
+	private GiftData(Parcel in) {
 		KEY_ID = in.readLong();
 		loginId = in.readLong();
 		storyId = in.readLong();
@@ -228,7 +226,7 @@ public class StoryData implements Parcelable {
 	 * @param jsonObject
 	 * @throws JSONException
 	 */
-	public static StoryData createObjectFromJSON(JSONObject jsonObject)
+	public static GiftData createObjectFromJSON(JSONObject jsonObject)
 			throws JSONException {
 
 		boolean hasKeyID = false;
@@ -258,13 +256,13 @@ public class StoryData implements Parcelable {
 		double latitude = jsonObject.getDouble("latitude");
 		double longitude = jsonObject.getDouble("longitude");
 
-		StoryData rValue = null;
+		GiftData rValue = null;
 		if (hasKeyID == true) {
-			rValue = new StoryData(key, href, loginId, storyId, title, body,
+			rValue = new GiftData(key, href, loginId, storyId, title, body,
 					audioLink, videoLink, imageName, imageMetaData, tags,
 					creationTime, storyTime, latitude, longitude);
 		} else {
-			rValue = new StoryData(loginId, storyId, title, body, audioLink,
+			rValue = new GiftData(loginId, storyId, title, body, audioLink,
 					videoLink, imageName, imageMetaData, tags, creationTime,
 					storyTime, latitude, longitude);
 		}
@@ -307,7 +305,7 @@ public class StoryData implements Parcelable {
 	 * @param latitude
 	 * @param longitude
 	 */
-	public StoryData(String key, String href, long loginId, long storyId,
+	public GiftData(String key, String href, long loginId, long storyId,
 			String title, String body, String audioLink, String videoLink,
 			String imageName, String imageMetaData, String tags,
 			long creationTime, long storyTime, double latitude, double longitude) {

@@ -8,14 +8,29 @@
         android:showAsAction="always"
         android:title="Search"/>
     <item
+        android:id="@+id/action_me"
+        android:icon="@drawable/ic_action_person"
+        android:showAsAction="always"
+        android:title="Me"/>
+    <item
         android:id="@+id/action_location_found"
         android:icon="@drawable/ic_fa_group"
         android:showAsAction="always"
         android:title="Top gift givers"/>
     <item
-        android:id="@+id/action_home"
-        android:icon="@drawable/ic_fa_home"
+        android:id="@+id/action_grid"
+        android:icon="@drawable/ic_action_select_all"
         android:showAsAction="always"
-        android:title="Home"/>
-
+        android:title="Grid"/>
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_action_settings"
+        android:showAsAction="always"
+        android:title="Settings"/>
+    <item
+        android:id="@+id/action_new"
+        android:icon="@drawable/ic_action_new"
+        android:showAsAction="always"
+        android:title="New"/>
+    
 </menu>

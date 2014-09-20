@@ -6,7 +6,7 @@ import java.util.Locale;
 import com.pataniqa.coursera.potlatch.storage.PotlatchResolver;
 import com.pataniqa.coursera.potlatch.storage.StorageUtilities;
 import com.pataniqa.coursera.potlatch.storage.StoryCreator;
-import com.pataniqa.coursera.potlatch.storage.StoryData;
+import com.pataniqa.coursera.potlatch.storage.GiftData;
 
 import android.content.Context;
 import android.content.Intent;
@@ -191,7 +191,7 @@ public class CreateStoryActivity extends StoryActivityBase {
 				storyDate.getMonth(), storyDate.getDayOfMonth(), 0, 0);
 
 		// new StoryData object with above info
-		StoryData newData = new StoryData(
+		GiftData newData = new GiftData(
 				-1,
 				// -1 row index, because there is no way to know which
 				// row it will go into

@@ -3,7 +3,7 @@ package com.pataniqa.coursera.potlatch.ui;
 import java.util.List;
 
 import com.pataniqa.coursera.potlatch.storage.StoryCreator;
-import com.pataniqa.coursera.potlatch.storage.StoryData;
+import com.pataniqa.coursera.potlatch.storage.GiftData;
 
 import android.content.Context;
 import android.util.Log;
@@ -25,9 +25,9 @@ import com.pataniqa.coursera.potlatch.R;
  * some plain data (StoryData) into an interface that can be recognized and used
  * by the ListView Object.
  */
-public class StoryDataArrayAdaptor extends ArrayAdapter<StoryData> {
+public class GiftDataArrayAdaptor extends ArrayAdapter<GiftData> {
 
-    private static final String LOG_TAG = StoryDataArrayAdaptor.class.getCanonicalName();
+    private static final String LOG_TAG = GiftDataArrayAdaptor.class.getCanonicalName();
 
     // The resource ID of a Layout used for instantiating Views
     int resource;
@@ -40,7 +40,7 @@ public class StoryDataArrayAdaptor extends ArrayAdapter<StoryData> {
      *            Views
      * @param _items The actual objects we're representing
      */
-    public StoryDataArrayAdaptor(Context context, int resource, List<StoryData> items) {
+    public GiftDataArrayAdaptor(Context context, int resource, List<GiftData> items) {
         super(context, resource, items);
         Log.v(LOG_TAG, "constructor()");
         this.resource = resource;
@@ -65,7 +65,7 @@ public class StoryDataArrayAdaptor extends ArrayAdapter<StoryData> {
 
         try {
             // Get the data from the ArrayList
-            StoryData item = getItem(position);
+            GiftData item = getItem(position);
 
             // The ID of the data in the database
             long KEY_ID = item.KEY_ID;

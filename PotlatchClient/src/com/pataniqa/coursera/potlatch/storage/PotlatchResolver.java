@@ -119,7 +119,7 @@ public class PotlatchResolver {
 	 * @return row ID of inserted StoryData in the ContentProvider
 	 * @throws RemoteException
 	 */
-	public long insert(final StoryData storyObject) throws RemoteException {
+	public long insert(final GiftData storyObject) throws RemoteException {
 		ContentValues tempCV = storyObject.getCV();
 		tempCV.remove(PotlatchSchema.Story.Cols.ID);
 		SQLiteDatabase db = helper.getWritableDatabase();
@@ -142,7 +142,7 @@ public class PotlatchResolver {
 	 * @return an ArrayList of StoryData objects
 	 * @throws RemoteException
 	 */
-	public ArrayList<StoryData> queryStoryData(final String[] projection,
+	public ArrayList<GiftData> queryStoryData(final String[] projection,
 			final String selection, final String[] selectionArgs,
 			final String sortOrder) throws RemoteException {
 		// query the database
@@ -150,7 +150,7 @@ public class PotlatchResolver {
 		Cursor result = db.query(tableName, projection, selection,
 				selectionArgs, null, null, sortOrder);
 		// make return object
-		ArrayList<StoryData> rValue = new ArrayList<StoryData>();
+		ArrayList<GiftData> rValue = new ArrayList<GiftData>();
 		// convert cursor to reutrn object
 		rValue.addAll(StoryCreator.getStoryDataArrayListFromCursor(result));
 		result.close();
@@ -175,7 +175,7 @@ public class PotlatchResolver {
 	 * @return number of rows changed
 	 * @throws RemoteException
 	 */
-	public int updateStoryData(final StoryData values, final String selection,
+	public int updateStoryData(final GiftData values, final String selection,
 			final String[] selectionArgs) throws RemoteException {
 		
 		SQLiteDatabase db = helper.getWritableDatabase();
@@ -195,7 +195,7 @@ public class PotlatchResolver {
 	 * @return an ArrayList containing all the StoryData objects
 	 * @throws RemoteException
 	 */
-	public ArrayList<StoryData> getAllStoryData() throws RemoteException {
+	public ArrayList<GiftData> getAllStoryData() throws RemoteException {
 		return queryStoryData(null, null, null, null);
 	}
 
@@ -206,10 +206,10 @@ public class PotlatchResolver {
 	 * @return StoryData at the given rowID
 	 * @throws RemoteException
 	 */
-	public StoryData getStoryDataViaRowID(final long rowID)
+	public GiftData getStoryDataViaRowID(final long rowID)
 			throws RemoteException {
 		String[] selectionArgs = { String.valueOf(rowID) };
-		ArrayList<StoryData> results = queryStoryData(null,
+		ArrayList<GiftData> results = queryStoryData(null,
 				PotlatchSchema.Story.Cols.ID + "= ?", selectionArgs, null);
 		if (results.size() > 0) {
 			return results.get(0);
@@ -241,7 +241,7 @@ public class PotlatchResolver {
 	 * @return number of rows altered
 	 * @throws RemoteException
 	 */
-	public int updateStoryWithID(StoryData data) throws RemoteException {
+	public int updateStoryWithID(GiftData data) throws RemoteException {
 		String selection = "_id = ?";
 		String[] selectionArgs = { String.valueOf(data.KEY_ID) };
 		return updateStoryData(data, selection, selectionArgs);
