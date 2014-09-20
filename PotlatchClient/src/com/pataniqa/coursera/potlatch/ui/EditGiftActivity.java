@@ -32,7 +32,6 @@ public class EditGiftActivity extends GiftActivityBase {
     EditText bodyET;
     EditText imageNameET;
     EditText imageMetaDataET;
-    EditText audioLinkET;
 
     // Button(s) used
     Button saveButton;
@@ -64,7 +63,6 @@ public class EditGiftActivity extends GiftActivityBase {
         storyIdET = (TextView) findViewById(R.id.story_edit_story_id);
         titleET = (EditText) findViewById(R.id.story_edit_title);
         bodyET = (EditText) findViewById(R.id.story_edit_body);
-        audioLinkET = (EditText) findViewById(R.id.story_edit_audio_link);
         imageNameET = (EditText) findViewById(R.id.story_edit_image_name);
         imageMetaDataET = (EditText) findViewById(R.id.story_edit_image_meta_data);
 
@@ -131,7 +129,7 @@ public class EditGiftActivity extends GiftActivityBase {
         String imageName = imageNameEditable.toString();
 
         // Construct the Story Data Object
-        GiftData rValue = new GiftData(getUniqueKey(), mData.loginId, mData.giftId, title, body, mData.audioLink,
+        GiftData rValue = new GiftData(getUniqueKey(), mData.loginId, mData.giftId, title, body, 
                 mData.videoLink, imageName, mData.imageLink);
 
         // Make sure the new StoryData has the same key as the old one so that

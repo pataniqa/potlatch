@@ -2,9 +2,6 @@ package com.pataniqa.coursera.potlatch.ui;
 
 import java.util.List;
 
-import com.pataniqa.coursera.potlatch.storage.GiftCreator;
-import com.pataniqa.coursera.potlatch.storage.GiftData;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.pataniqa.coursera.potlatch.R;
+import com.pataniqa.coursera.potlatch.storage.GiftData;
 
 /**
  * This is an ArrayAdapter for an array of StoryData. It is used by the ListView

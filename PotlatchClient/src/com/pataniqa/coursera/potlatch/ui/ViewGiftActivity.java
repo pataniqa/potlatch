@@ -35,7 +35,6 @@ public class ViewGiftActivity extends GiftActivityBase {
     TextView giftIdTV;
     TextView titleTV;
     TextView bodyTV;
-    TextView audioLinkTV;
     TextView videoLinkTV;
     TextView imageNameTV;
 
@@ -66,7 +65,6 @@ public class ViewGiftActivity extends GiftActivityBase {
         giftIdTV = (TextView) findViewById(R.id.story_view_value_story_id);
         titleTV = (TextView) findViewById(R.id.story_view_value_title);
         bodyTV = (TextView) findViewById(R.id.story_view_value_body);
-        audioLinkTV = (TextView) findViewById(R.id.story_view_value_audio_link);
         videoLinkTV = (TextView) findViewById(R.id.story_view_value_video_link);
         imageNameTV = (TextView) findViewById(R.id.story_view_value_image_name);
         imageMetaDataView = (ImageView) findViewById(R.id.story_view_value_image_meta_data);
@@ -76,7 +74,6 @@ public class ViewGiftActivity extends GiftActivityBase {
         giftIdTV.setText("" + 0);
         titleTV.setText("" + "");
         bodyTV.setText("" + "");
-        audioLinkTV.setText("" + "");
         videoLinkTV.setText("" + "");
         imageNameTV.setText("" + "");
 
@@ -110,7 +107,6 @@ public class ViewGiftActivity extends GiftActivityBase {
             giftIdTV.setText(Long.valueOf(giftData.giftId).toString());
             titleTV.setText(String.valueOf(giftData.title).toString());
             bodyTV.setText(String.valueOf(giftData.body).toString());
-            audioLinkTV.setText(String.valueOf(giftData.audioLink).toString());
             videoLinkTV.setText(String.valueOf(giftData.videoLink).toString());
             imageNameTV.setText(String.valueOf(giftData.imageName).toString());
 
