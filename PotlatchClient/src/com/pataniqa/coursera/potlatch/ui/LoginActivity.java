@@ -123,7 +123,7 @@ public class LoginActivity extends GiftActivityBase{
 			Log.e(LOG_TAG, "Problem in loginClicked");
 		}
 		finally {
-			openListStoryActivity();
+			openListGiftActivity();
 		}
 	}
 }

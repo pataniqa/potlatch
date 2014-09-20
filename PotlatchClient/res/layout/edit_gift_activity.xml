@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/StoryEditRelativeLayout"
+    android:id="@+id/GiftEditRelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
@@ -15,7 +15,7 @@
         android:layout_marginBottom="55dp" >
 
         <RelativeLayout
-            android:id="@+id/StoryEditRelativeLayoutScrollable"
+            android:id="@+id/GiftEditRelativeLayoutScrollable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -23,155 +23,155 @@
             <!-- login_id label/value pair -->
 
             <TextView
-                android:id="@+id/story_edit_login_id_label"
+                android:id="@+id/gift_edit_login_id_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_edit_login_id"
-                android:layout_alignBottom="@+id/story_edit_login_id"
+                android:layout_alignBaseline="@+id/gift_edit_login_id"
+                android:layout_alignBottom="@+id/gift_edit_login_id"
                 android:layout_alignParentLeft="true"
-                android:text="@string/story_edit_label_login_id"
+                android:text="@string/gift_edit_label_login_id"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                android:id="@+id/story_edit_login_id"
+                android:id="@+id/gift_edit_login_id"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:hint="@string/story_edit_default_value_login_id" />
+                android:hint="@string/gift_edit_default_value_login_id" />
 
-            <!-- story_id label/value pair -->
+            <!-- gift_id label/value pair -->
 
             <TextView
-                android:id="@+id/story_edit_story_id_label"
+                android:id="@+id/gift_edit_gift_id_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_edit_story_id"
-                android:layout_alignBottom="@+id/story_edit_story_id"
+                android:layout_alignBaseline="@+id/gift_edit_gift_id"
+                android:layout_alignBottom="@+id/gift_edit_gift_id"
                 android:layout_alignParentLeft="true"
-                android:text="@string/story_edit_label_story_id"
+                android:text="@string/gift_edit_label_gift_id"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:visibility="gone" />
 
             <TextView
-                android:id="@+id/story_edit_story_id"
+                android:id="@+id/gift_edit_gift_id"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_edit_login_id"
-                android:hint="@string/story_edit_default_value_story_id"
+                android:layout_below="@+id/gift_edit_login_id"
+                android:hint="@string/gift_edit_default_value_gift_id"
                 android:inputType="none"
                 android:visibility="gone" />
 
             <!-- title label/value pair -->
 
             <TextView
-                android:id="@+id/story_edit_title_label"
+                android:id="@+id/gift_edit_title_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_edit_title"
-                android:layout_alignBottom="@+id/story_edit_title"
+                android:layout_alignBaseline="@+id/gift_edit_title"
+                android:layout_alignBottom="@+id/gift_edit_title"
                 android:layout_alignParentLeft="true"
-                android:text="@string/story_edit_label_title"
+                android:text="@string/gift_edit_label_title"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                android:id="@+id/story_edit_title"
+                android:id="@+id/gift_edit_title"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_edit_login_id"
-                android:hint="@string/story_edit_default_value_title" />
+                android:layout_below="@+id/gift_edit_login_id"
+                android:hint="@string/gift_edit_default_value_title" />
 
             <!-- body label/value pair -->
 
             <TextView
-                android:id="@+id/story_edit_body_label"
+                android:id="@+id/gift_edit_body_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_edit_body"
-                android:layout_alignBottom="@+id/story_edit_body"
+                android:layout_alignBaseline="@+id/gift_edit_body"
+                android:layout_alignBottom="@+id/gift_edit_body"
                 android:layout_alignParentLeft="true"
-                android:text="@string/story_edit_label_body"
+                android:text="@string/gift_edit_label_body"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                android:id="@+id/story_edit_body"
+                android:id="@+id/gift_edit_body"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_edit_title"
-                android:hint="@string/story_edit_default_value_body" />
+                android:layout_below="@+id/gift_edit_title"
+                android:hint="@string/gift_edit_default_value_body" />
 
             <!-- video_link label/value pair -->
 
             <TextView
-                android:id="@+id/story_edit_video_link_label"
+                android:id="@+id/gift_edit_video_link_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_edit_video_link"
-                android:layout_alignBottom="@+id/story_edit_video_link"
+                android:layout_alignBaseline="@+id/gift_edit_video_link"
+                android:layout_alignBottom="@+id/gift_edit_video_link"
                 android:layout_alignParentLeft="true"
-                android:text="@string/story_edit_label_video_link"
+                android:text="@string/gift_edit_label_video_link"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:visibility="gone" />
 
             <EditText
-                android:id="@+id/story_edit_video_link"
+                android:id="@+id/gift_edit_video_link"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_edit_title"
-                android:hint="@string/story_edit_default_value_video_link"
+                android:layout_below="@+id/gift_edit_title"
+                android:hint="@string/gift_edit_default_value_video_link"
                 android:visibility="gone" />
 
             <!-- image_name label/value pair -->
 
             <TextView
-                android:id="@+id/story_edit_image_name_label"
+                android:id="@+id/gift_edit_image_name_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_edit_image_name"
-                android:layout_alignBottom="@+id/story_edit_image_name"
+                android:layout_alignBaseline="@+id/gift_edit_image_name"
+                android:layout_alignBottom="@+id/gift_edit_image_name"
                 android:layout_alignParentLeft="true"
-                android:text="@string/story_edit_label_image_name"
+                android:text="@string/gift_edit_label_image_name"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                android:id="@+id/story_edit_image_name"
+                android:id="@+id/gift_edit_image_name"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_edit_video_link"
-                android:hint="@string/story_edit_default_value_image_name" />
+                android:layout_below="@+id/gift_edit_video_link"
+                android:hint="@string/gift_edit_default_value_image_name" />
 
             <!-- image_meta_data label/value pair -->
 
             <TextView
-                android:id="@+id/story_edit_image_meta_data_label"
+                android:id="@+id/gift_edit_image_meta_data_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_edit_image_meta_data"
-                android:layout_alignBottom="@+id/story_edit_image_meta_data"
+                android:layout_alignBaseline="@+id/gift_edit_image_meta_data"
+                android:layout_alignBottom="@+id/gift_edit_image_meta_data"
                 android:layout_alignParentLeft="true"
-                android:text="@string/story_edit_label_image_meta_data"
+                android:text="@string/gift_edit_label_image_meta_data"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:visibility="gone" />
 
             <EditText
-                android:id="@+id/story_edit_image_meta_data"
+                android:id="@+id/gift_edit_image_meta_data"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_edit_image_name"
-                android:hint="@string/story_edit_default_value_image_meta_data"
+                android:layout_below="@+id/gift_edit_image_name"
+                android:hint="@string/gift_edit_default_value_image_meta_data"
                 android:visibility="gone" />
 
         </RelativeLayout>
     </ScrollView>
 
     <Button
-        android:id="@+id/story_edit_button_save"
+        android:id="@+id/gift_edit_button_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -179,26 +179,26 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="32dp"
         android:onClick="clickListener"
-        android:text="@string/story_edit_button_message_save" />
+        android:text="@string/gift_edit_button_message_save" />
 
     <Button
-        android:id="@+id/story_edit_button_reset"
+        android:id="@+id/gift_edit_button_reset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/story_edit_button_save"
+        android:layout_alignBottom="@+id/gift_edit_button_save"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:onClick="clickListener"
-        android:text="@string/story_edit_button_message_reset" />
+        android:text="@string/gift_edit_button_message_reset" />
 
     <Button
-        android:id="@+id/story_edit_button_cancel"
+        android:id="@+id/gift_edit_button_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="21dp"
         android:onClick="clickListener"
-        android:text="@string/story_edit_button_message_cancel" />
+        android:text="@string/gift_edit_button_message_cancel" />
 
 </RelativeLayout>

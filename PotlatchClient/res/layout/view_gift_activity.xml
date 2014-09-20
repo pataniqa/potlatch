@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/StoryViewRelativeLayout"
+    android:id="@+id/GiftViewRelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
@@ -15,7 +15,7 @@
         android:layout_marginBottom="55dp" >
 
         <RelativeLayout
-            android:id="@+id/StoryViewRelativeLayoutInner"
+            android:id="@+id/GiftViewRelativeLayoutInner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -23,117 +23,117 @@
             <!-- title -->
 
             <TextView
-                android:id="@+id/story_view_label_title"
+                android:id="@+id/gift_view_label_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_gravity="left"
-                android:text="@string/story_view_label_title"
+                android:text="@string/gift_view_label_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/story_view_value_title"
+                android:id="@+id/gift_view_value_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_view_label_title"
-                android:text="@string/story_view_edittext_title_default_value"
+                android:layout_below="@+id/gift_view_label_title"
+                android:text="@string/gift_view_edittext_title_default_value"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
             <!-- body -->
 
             <TextView
-                android:id="@+id/story_view_label_body"
+                android:id="@+id/gift_view_label_body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/story_view_value_title"
+                android:layout_below="@+id/gift_view_value_title"
                 android:layout_gravity="left"
-                android:text="@string/story_view_label_body"
+                android:text="@string/gift_view_label_body"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/story_view_value_body"
+                android:id="@+id/gift_view_value_body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_view_label_body"
-                android:text="@string/story_view_edittext_body_default_value"
+                android:layout_below="@+id/gift_view_label_body"
+                android:text="@string/gift_view_edittext_body_default_value"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <!-- videoLink -->
 
             <TextView
-                android:id="@+id/story_view_label_video_link"
+                android:id="@+id/gift_view_label_video_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/story_view_label_body"
+                android:layout_below="@+id/gift_view_label_body"
                 android:layout_gravity="left"
-                android:text="@string/story_view_label_video_link"
+                android:text="@string/gift_view_label_video_link"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
                 android:visibility="gone" />
 
             <TextView
-                android:id="@+id/story_view_value_video_link"
+                android:id="@+id/gift_view_value_video_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_view_label_video_link"
-                android:text="@string/story_view_edittext_video_link_default_value"
+                android:layout_below="@+id/gift_view_label_video_link"
+                android:text="@string/gift_view_edittext_video_link_default_value"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:visibility="gone" />
 
             <!-- imageName -->
 
             <TextView
-                android:id="@+id/story_view_label_image_name"
+                android:id="@+id/gift_view_label_image_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/story_view_value_video_link"
+                android:layout_below="@+id/gift_view_value_video_link"
                 android:layout_gravity="left"
-                android:text="@string/story_view_label_image_name"
+                android:text="@string/gift_view_label_image_name"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
                 android:visibility="gone" />
 
             <TextView
-                android:id="@+id/story_view_value_image_name"
+                android:id="@+id/gift_view_value_image_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_view_label_image_name"
-                android:text="@string/story_view_edittext_image_name_default_value"
+                android:layout_below="@+id/gift_view_label_image_name"
+                android:text="@string/gift_view_edittext_image_name_default_value"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:visibility="gone" />
 
             <!-- imageMetaData -->
 
             <TextView
-                android:id="@+id/story_view_label_image_meta_data"
+                android:id="@+id/gift_view_label_image_meta_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_view_value_image_meta_data"
-                android:layout_alignBottom="@+id/story_view_value_image_meta_data"
+                android:layout_alignBaseline="@+id/gift_view_value_image_meta_data"
+                android:layout_alignBottom="@+id/gift_view_value_image_meta_data"
                 android:layout_alignParentLeft="true"
                 android:layout_gravity="left"
-                android:text="@string/story_view_label_image_meta_data"
+                android:text="@string/gift_view_label_image_meta_data"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
                 android:visibility="gone" />
 
             <ImageView
-                android:id="@+id/story_view_value_image_meta_data"
+                android:id="@+id/gift_view_value_image_meta_data"
                 android:layout_width="wrap_content"
                 android:layout_height="160dp"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_view_value_image_name"
+                android:layout_below="@+id/gift_view_value_image_name"
                 android:contentDescription="Content desc."
                 android:src="@drawable/ic_launcher"
-                android:text="@string/story_view_edittext_image_meta_data_default_value"
+                android:text="@string/gift_view_edittext_image_meta_data_default_value"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:visibility="gone" />
 
@@ -141,7 +141,7 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/button_story_view_to_edit"
+        android:id="@+id/button_gift_view_to_edit"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -149,19 +149,19 @@
         android:layout_marginTop="26dp"
         android:onClick="clickListener"
         android:padding="3dp"
-        android:text="@string/story_view_button_label_edit"
+        android:text="@string/gift_view_button_label_edit"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
-        android:id="@+id/button_story_view_to_delete"
+        android:id="@+id/button_gift_view_to_delete"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button_story_view_to_edit"
-        android:layout_alignBottom="@+id/button_story_view_to_edit"
+        android:layout_alignBaseline="@+id/button_gift_view_to_edit"
+        android:layout_alignBottom="@+id/button_gift_view_to_edit"
         android:layout_alignParentRight="true"
         android:onClick="clickListener"
         android:padding="3dp"
-        android:text="@string/story_view_button_label_delete"
+        android:text="@string/gift_view_button_label_delete"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

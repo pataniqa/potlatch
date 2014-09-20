@@ -20,7 +20,7 @@ import com.pataniqa.coursera.potlatch.storage.GiftData;
 import com.pataniqa.coursera.potlatch.storage.PotlatchResolver;
 
 /**
- * This activity lets a user view a story in full screen mode.
+ * This activity lets a user view a Gift in full screen mode.
  */
 public class ViewGiftActivity extends GiftActivityBase {
 
@@ -29,7 +29,7 @@ public class ViewGiftActivity extends GiftActivityBase {
     // Used to pass around the row ID of stories
     public final static String rowIdentifyerTAG = "index";
 
-    // The StoryData we're displaying
+    // The GiftData we're displaying
     private GiftData giftData;
 
     // The UI elements we'll be using
@@ -54,11 +54,11 @@ public class ViewGiftActivity extends GiftActivityBase {
         resolver = new PotlatchResolver(this);
 
         // Get actual references to the instantiated UI objects
-        titleTV = (TextView) findViewById(R.id.story_view_value_title);
-        bodyTV = (TextView) findViewById(R.id.story_view_value_body);
-        videoLinkTV = (TextView) findViewById(R.id.story_view_value_video_link);
-        imageNameTV = (TextView) findViewById(R.id.story_view_value_image_name);
-        imageMetaDataView = (ImageView) findViewById(R.id.story_view_value_image_meta_data);
+        titleTV = (TextView) findViewById(R.id.gift_view_value_title);
+        bodyTV = (TextView) findViewById(R.id.gift_view_value_body);
+        videoLinkTV = (TextView) findViewById(R.id.gift_view_value_video_link);
+        imageNameTV = (TextView) findViewById(R.id.gift_view_value_image_name);
+        imageMetaDataView = (ImageView) findViewById(R.id.gift_view_value_image_meta_data);
 
         // Set the default values
         titleTV.setText("" + "");
@@ -67,18 +67,18 @@ public class ViewGiftActivity extends GiftActivityBase {
         imageNameTV.setText("" + "");
 
         try {
-            // Fill out all the UI elements with data from our StoryData
+            // Fill out all the UI elements with data from our GiftData
             setUiToGiftData(getUniqueKey());
         } catch (RemoteException e) {
             Toast.makeText(this, "Error retrieving information from local data store.",
                     Toast.LENGTH_LONG).show();
-            Log.e(LOG_TAG, "Error getting Story data from C.P.");
+            Log.e(LOG_TAG, "Error getting Gift data from C.P.");
             // e.printStackTrace();
         }
 
     }
 
-    // Fills out the UI elements with data from a StoryData in the database
+    // Fills out the UI elements with data from a GiftData in the database
     // specified by a unique key
     public void setUiToGiftData(long getUniqueKey) throws RemoteException {
         Log.d(LOG_TAG, "setUiToGiftData");
@@ -87,7 +87,7 @@ public class ViewGiftActivity extends GiftActivityBase {
         giftData = resolver.getGiftDataViaRowID(getUniqueKey);
 
         if (giftData != null) {
-            Log.d(LOG_TAG, "setUiToStoryData + storyData:" + giftData.toString());
+            Log.d(LOG_TAG, "setUiToGiftData + GiftData:" + giftData.toString());
 
             // Fill in the appropriate UI elements
             titleTV.setText(String.valueOf(giftData.title).toString());
@@ -123,26 +123,26 @@ public class ViewGiftActivity extends GiftActivityBase {
 
     // Action to be performed when the edit button is pressed
     private void editButtonPressed() {
-        openEditStoryActivity(giftData.KEY_ID);
+        openEditGiftActivity(giftData.KEY_ID);
     }
 
     // Action to be performed when the delete button is pressed
     private void deleteButtonPressed() {
         String message;
 
-        message = getResources().getString(R.string.story_view_deletion_dialog_message);
+        message = getResources().getString(R.string.gift_view_deletion_dialog_message);
 
-        // Show a dialog confirming that the user wants to delete this story
+        // Show a dialog confirming that the user wants to delete this Gift
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle(R.string.story_view_deletion_dialog_title)
+                .setTitle(R.string.gift_view_deletion_dialog_title)
                 .setMessage(message)
-                .setPositiveButton(R.string.story_view_deletion_dialog_yes,
+                .setPositiveButton(R.string.gift_view_deletion_dialog_yes,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
-                                    resolver.deleteAllStoryWithRowID(giftData.KEY_ID);
+                                    resolver.deleteAllGiftWithRowID(giftData.KEY_ID);
                                 } catch (RemoteException e) {
                                     Log.e(LOG_TAG, "RemoteException Caught => " + e.getMessage());
                                     e.printStackTrace();
@@ -152,10 +152,10 @@ public class ViewGiftActivity extends GiftActivityBase {
 
                             }
 
-                        }).setNegativeButton(R.string.story_view_deletion_dialog_no, null).show();
+                        }).setNegativeButton(R.string.gift_view_deletion_dialog_no, null).show();
     }
 
-    // Get the unique key associated with the StoryData we're displaying
+    // Get the unique key associated with the GiftData we're displaying
     public long getUniqueKey() {
         return getIntent().getLongExtra(rowIdentifyerTAG, 0);
     }
@@ -163,10 +163,10 @@ public class ViewGiftActivity extends GiftActivityBase {
     // A clickListener that forwards clicks to the appropriate function
     public void clickListener(View view) {
         switch (view.getId()) {
-        case R.id.button_story_view_to_delete:
+        case R.id.button_gift_view_to_delete:
             deleteButtonPressed();
             break;
-        case R.id.button_story_view_to_edit:
+        case R.id.button_gift_view_to_edit:
             editButtonPressed();
             break;
         default:

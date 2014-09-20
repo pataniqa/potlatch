@@ -141,32 +141,32 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/story_create_button_save"
+        android:id="@+id/gift_create_button_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="32dp"
         android:onClick="buttonCreateClicked"
-        android:text="@string/story_create_button_label_create" />
+        android:text="@string/gift_create_button_label_create" />
 
     <Button
-        android:id="@+id/story_create_button_reset"
+        android:id="@+id/gift_create_button_reset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:onClick="buttonClearClicked"
-        android:text="@string/story_create_button_label_clear" />
+        android:text="@string/gift_create_button_label_clear" />
 
     <Button
-        android:id="@+id/story_create_button_cancel"
+        android:id="@+id/gift_create_button_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="21dp"
         android:onClick="buttonCancelClicked"
-        android:text="@string/story_create_button_label_cancel" />
+        android:text="@string/gift_create_button_label_cancel" />
 
 </RelativeLayout>

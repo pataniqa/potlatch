@@ -18,7 +18,7 @@ import com.pataniqa.coursera.potlatch.provider.PotlatchSchema;
  * with a ContentProvider which communicates with a server on the web.
  * 
  * However, to simplify this assignment and remove any dependencies on the database server being online,
- * we removed the ContentResolver and instead are storing StoryData in the default SQLite Database that 
+ * we removed the ContentResolver and instead are storing GiftData in the default SQLite Database that 
  * is hosted by the device. 
  * 
  */
@@ -36,7 +36,7 @@ public class PotlatchResolver {
 			super(context, "PotlatchSecurityDatabase", null, 1);
 		}
 		
-		// When the database is created, create a table to store our story data, if it does not exist.
+		// When the database is created, create a table to store our Gift data, if it does not exist.
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 			
@@ -70,7 +70,7 @@ public class PotlatchResolver {
 		
 	}
 	
-	// The name of the table that will store our story data in the database
+	// The name of the table that will store our Gift data in the database
 	private static final String tableName = "PotlatchTable";
 	
 	/**
@@ -96,15 +96,15 @@ public class PotlatchResolver {
 	 * Delete for each ORM Data Type
 	 */
 	/**
-	 * Delete all StoryData(s) from the database that match the
+	 * Delete all GiftData(s) from the database that match the
 	 * selectionArgs
 	 * 
 	 * @param selection
 	 * @param selectionArgs
-	 * @return number of StoryData rows deleted
+	 * @return number of GiftData rows deleted
 	 * @throws RemoteException
 	 */
-	public int deleteStoryData(final String selection,
+	public int deleteGiftData(final String selection,
 			final String[] selectionArgs) throws RemoteException {
 		SQLiteDatabase db = helper.getWritableDatabase();
 		int res = db.delete(tableName, selection, selectionArgs);
@@ -112,15 +112,15 @@ public class PotlatchResolver {
 	}
 
 	/**
-	 * Insert a new StoryData object into the database
+	 * Insert a new GiftData object into the database
 	 * 
-	 * @param storyObject
+	 * @param GiftObject
 	 *            object to be inserted
-	 * @return row ID of inserted StoryData in the ContentProvider
+	 * @return row ID of inserted GiftData in the ContentProvider
 	 * @throws RemoteException
 	 */
-	public long insert(final GiftData storyObject) throws RemoteException {
-		ContentValues tempCV = storyObject.getCV();
+	public long insert(final GiftData GiftObject) throws RemoteException {
+		ContentValues tempCV = GiftObject.getCV();
 		tempCV.remove(PotlatchSchema.Gift.Cols.ID);
 		SQLiteDatabase db = helper.getWritableDatabase();
 		long res = db.insert(tableName, null, tempCV);
@@ -133,13 +133,13 @@ public class PotlatchResolver {
 	 */
 
 	/**
-	 * Query the database for StoryData conforming to certain specifications.
+	 * Query the database for GiftData conforming to certain specifications.
 	 * 
 	 * @param projection
 	 * @param selection
 	 * @param selectionArgs
 	 * @param sortOrder
-	 * @return an ArrayList of StoryData objects
+	 * @return an ArrayList of GiftData objects
 	 * @throws RemoteException
 	 */
 	public ArrayList<GiftData> queryGiftData(final String[] projection,
@@ -167,7 +167,7 @@ public class PotlatchResolver {
 	 */
 
 	/**
-	 * Update the specified StoryData with new values.
+	 * Update the specified GiftData with new values.
 	 * 
 	 * @param values
 	 * @param selection
@@ -175,7 +175,7 @@ public class PotlatchResolver {
 	 * @return number of rows changed
 	 * @throws RemoteException
 	 */
-	public int updateStoryData(final GiftData values, final String selection,
+	public int updateGiftData(final GiftData values, final String selection,
 			final String[] selectionArgs) throws RemoteException {
 		
 		SQLiteDatabase db = helper.getWritableDatabase();
@@ -190,20 +190,20 @@ public class PotlatchResolver {
 	 */
 
 	/**
-	 * Get all the StoryData objects current stored in the Content Provider
+	 * Get all the GiftData objects current stored in the Content Provider
 	 * 
-	 * @return an ArrayList containing all the StoryData objects
+	 * @return an ArrayList containing all the GiftData objects
 	 * @throws RemoteException
 	 */
-	public ArrayList<GiftData> getAllStoryData() throws RemoteException {
+	public ArrayList<GiftData> getAllGiftData() throws RemoteException {
 		return queryGiftData(null, null, null, null);
 	}
 
 	/**
-	 * Get a StoryData from the data stored at the given rowID
+	 * Get a GiftData from the data stored at the given rowID
 	 * 
 	 * @param rowID
-	 * @return StoryData at the given rowID
+	 * @return GiftData at the given rowID
 	 * @throws RemoteException
 	 */
 	public GiftData getGiftDataViaRowID(final long rowID)
@@ -219,7 +219,7 @@ public class PotlatchResolver {
 	}
 
 	/**
-	 * Delete All rows, from AllStory table, that have the given rowID. (Should
+	 * Delete All rows, from AllGift table, that have the given rowID. (Should
 	 * only be 1 row, but Content Providers/SQLite3 deletes all rows with
 	 * provided rowID)
 	 * 
@@ -227,13 +227,13 @@ public class PotlatchResolver {
 	 * @return number of rows deleted
 	 * @throws RemoteException
 	 */
-	public int deleteAllStoryWithRowID(long rowID) throws RemoteException {
+	public int deleteAllGiftWithRowID(long rowID) throws RemoteException {
 		String[] args = { String.valueOf(rowID) };
-		return deleteStoryData(PotlatchSchema.Gift.Cols.ID + " = ? ", args);
+		return deleteGiftData(PotlatchSchema.Gift.Cols.ID + " = ? ", args);
 	}
 
 	/**
-	 * Updates all StoryData stored with the provided StoryData's 'KEY_ID'
+	 * Updates all GiftData stored with the provided GiftData's 'KEY_ID'
 	 * (should only be 1 row of data in the content provider, but content
 	 * provider implementation will update EVERY row that matches.)
 	 * 
@@ -241,10 +241,10 @@ public class PotlatchResolver {
 	 * @return number of rows altered
 	 * @throws RemoteException
 	 */
-	public int updateStoryWithID(GiftData data) throws RemoteException {
+	public int updateGiftWithID(GiftData data) throws RemoteException {
 		String selection = "_id = ?";
 		String[] selectionArgs = { String.valueOf(data.KEY_ID) };
-		return updateStoryData(data, selection, selectionArgs);
+		return updateGiftData(data, selection, selectionArgs);
 	}
 
 	

@@ -16,12 +16,12 @@ import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.storage.GiftData;
 
 /**
- * This is an ArrayAdapter for an array of StoryData. It is used by the ListView
- * present in ListStoryActivity to display each StoryData object in the array as
+ * This is an ArrayAdapter for an array of GiftData. It is used by the ListView
+ * present in ListGiftActivity to display each GiftData object in the array as
  * a row in a GUI list.
  * 
  * This is an example of the Adapter pattern. In this case, this class wraps
- * some plain data (StoryData) into an interface that can be recognized and used
+ * some plain data (GiftData) into an interface that can be recognized and used
  * by the ListView Object.
  */
 public class GiftDataArrayAdaptor extends ArrayAdapter<GiftData> {
@@ -81,10 +81,10 @@ public class GiftDataArrayAdaptor extends ArrayAdapter<GiftData> {
                 todoView = (LinearLayout) convertView;
             }
 
-            TextView KEY_IDTV = (TextView) todoView.findViewById(R.id.story_listview_custom_row_KEY_ID_textView);
+            TextView KEY_IDTV = (TextView) todoView.findViewById(R.id.gift_listview_custom_row_KEY_ID_textView);
             KEY_IDTV.setText("Key ID: " + KEY_ID);
             
-            TextView titleTV = (TextView) todoView.findViewById(R.id.story_listview_custom_row_title_textView);
+            TextView titleTV = (TextView) todoView.findViewById(R.id.gift_listview_custom_row_title_textView);
             titleTV.setText("" + title);
 
         } catch (Exception e) {

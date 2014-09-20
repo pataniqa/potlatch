@@ -17,7 +17,7 @@ import com.pataniqa.coursera.potlatch.storage.PotlatchResolver;
 import com.pataniqa.coursera.potlatch.storage.StorageUtilities;
 
 /**
- * The activity that allows a user to create and save a story.
+ * The activity that allows a user to create and save a Gift.
  */
 public class CreateGiftActivity extends GiftActivityBase {
 
@@ -68,7 +68,7 @@ public class CreateGiftActivity extends GiftActivityBase {
         finish(); // same as hitting 'back' button
     }
 
-    // Create a StoryData object from the input data and store it using the
+    // Create a GiftData object from the input data and store it using the
     // resolver
     public void buttonCreateClicked(View v) {
         Log.d(LOG_TAG, "create button pressed");
@@ -79,7 +79,7 @@ public class CreateGiftActivity extends GiftActivityBase {
         Editable imageNameCreateable = imageNameET.getText();
 
         long loginId = 0;
-        long storyId = 0;
+        long GiftId = 0;
         String title = "";
         String body = "";
         String videoLink = "";
@@ -88,7 +88,7 @@ public class CreateGiftActivity extends GiftActivityBase {
 
         // pull values from Editables
         loginId = LoginActivity.getLoginId(this);
-        storyId = 1; // TODO Pull this from somewhere.
+        GiftId = 1; // TODO Pull this from somewhere.
         title = String.valueOf(titleCreateable.toString());
         body = String.valueOf(bodyCreateable.toString());
         if (fileUri != null) {
@@ -99,14 +99,14 @@ public class CreateGiftActivity extends GiftActivityBase {
             imageData = imagePathFinal.toString();
         }
 
-        // new StoryData object with above info
+        // new GiftData object with above info
         GiftData newData = new GiftData(-1,
         // -1 row index, because there is no way to know which
         // row it will go into
-                loginId, storyId, title, body, videoLink, imageName, imageData);
+                loginId, GiftId, title, body, videoLink, imageName, imageData);
         Log.d(LOG_TAG, "imageName" + imageNameET.getText());
 
-        Log.d(LOG_TAG, "newStoryData:" + newData);
+        Log.d(LOG_TAG, "newGiftData:" + newData);
 
         // insert it through Resolver to be put into the database
         try {

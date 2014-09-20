@@ -14,7 +14,7 @@ import com.pataniqa.coursera.potlatch.storage.GiftData;
 import com.pataniqa.coursera.potlatch.storage.PotlatchResolver;
 
 /**
- * This activity allows users to edit some parts of a previously posted story
+ * This activity allows users to edit some parts of a previously posted Gift
  */
 public class EditGiftActivity extends GiftActivityBase {
 
@@ -25,7 +25,7 @@ public class EditGiftActivity extends GiftActivityBase {
 
     // The TextViews and EditTexts we use
     private TextView loginIdET;
-    private TextView storyIdET;
+    private TextView GiftIdET;
     private EditText titleET;
     private EditText bodyET;
     private EditText imageNameET;
@@ -47,14 +47,14 @@ public class EditGiftActivity extends GiftActivityBase {
         resolver = new PotlatchResolver(this);
 
         // Get the EditTexts
-        loginIdET = (TextView) findViewById(R.id.story_edit_login_id);
-        storyIdET = (TextView) findViewById(R.id.story_edit_story_id);
-        titleET = (EditText) findViewById(R.id.story_edit_title);
-        bodyET = (EditText) findViewById(R.id.story_edit_body);
-        imageNameET = (EditText) findViewById(R.id.story_edit_image_name);
-        imageMetaDataET = (EditText) findViewById(R.id.story_edit_image_meta_data);
+        loginIdET = (TextView) findViewById(R.id.gift_edit_login_id);
+        GiftIdET = (TextView) findViewById(R.id.gift_edit_gift_id);
+        titleET = (EditText) findViewById(R.id.gift_edit_title);
+        bodyET = (EditText) findViewById(R.id.gift_edit_body);
+        imageNameET = (EditText) findViewById(R.id.gift_edit_image_name);
+        imageMetaDataET = (EditText) findViewById(R.id.gift_edit_image_meta_data);
 
-        // set the EditTexts to this Story's Values
+        // set the EditTexts to this Gift's Values
         setValuesToDefault();
 
     }
@@ -62,13 +62,13 @@ public class EditGiftActivity extends GiftActivityBase {
     // The listener for the various buttons
     public void clickListener(View v) {
         switch (v.getId()) {
-        case R.id.story_edit_button_save:
+        case R.id.gift_edit_button_save:
             doSaveButtonClick();
             break;
-        case R.id.story_edit_button_reset:
+        case R.id.gift_edit_button_reset:
             doResetButtonClick();
             break;
-        case R.id.story_edit_button_cancel:
+        case R.id.gift_edit_button_cancel:
             doCancelButtonClick();
             break;
         default:
@@ -83,13 +83,13 @@ public class EditGiftActivity extends GiftActivityBase {
     public void doSaveButtonClick() {
         Toast.makeText(this, "Updated.", Toast.LENGTH_SHORT).show();
 
-        // Make the story data from the UI
-        GiftData story = makeStoryDataFromUI();
+        // Make the Gift data from the UI
+        GiftData Gift = makeGiftDataFromUI();
 
         // If we succeeded, go ahead and update the data in the database
-        if (story != null) {
+        if (Gift != null) {
             try {
-                resolver.updateStoryWithID(story);
+                resolver.updateGiftWithID(Gift);
             } catch (RemoteException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -103,8 +103,8 @@ public class EditGiftActivity extends GiftActivityBase {
 
     }
 
-    // Use the data the user input into the UI to construct a StoryData object
-    public GiftData makeStoryDataFromUI() {
+    // Use the data the user input into the UI to construct a GiftData object
+    public GiftData makeGiftDataFromUI() {
 
         // Get the editables from the UI
         Editable titleEditable = titleET.getText();
@@ -116,16 +116,16 @@ public class EditGiftActivity extends GiftActivityBase {
         String body = bodyEditable.toString();
         String imageName = imageNameEditable.toString();
 
-        // Construct the Story Data Object
+        // Construct the Gift Data Object
         GiftData rValue = new GiftData(getUniqueKey(), mData.loginId, mData.giftId, title, body, 
                 mData.videoLink, imageName, mData.imageLink);
 
-        // Make sure the new StoryData has the same key as the old one so that
+        // Make sure the new GiftData has the same key as the old one so that
         // it will
         // replace the old one in the database.
         rValue.key = mData.key;
 
-        // return StoryData object with new values
+        // return GiftData object with new values
         return rValue;
 
     }
@@ -141,33 +141,33 @@ public class EditGiftActivity extends GiftActivityBase {
      */
     public boolean setValuesToDefault() {
 
-        GiftData storyData;
+        GiftData GiftData;
         try {
-            storyData = resolver.getGiftDataViaRowID(getUniqueKey());
+            GiftData = resolver.getGiftDataViaRowID(getUniqueKey());
         } catch (RemoteException e) {
             Log.d(LOG_TAG, "" + e.getMessage());
             e.printStackTrace();
             return false;
         }
 
-        if (storyData != null) {
-            mData = storyData;
-            Log.d(LOG_TAG, "setValuesToDefualt :" + storyData.toString());
+        if (GiftData != null) {
+            mData = GiftData;
+            Log.d(LOG_TAG, "setValuesToDefualt :" + GiftData.toString());
 
             // set the EditTexts to the current values
-            loginIdET.setText(Long.valueOf(storyData.loginId).toString());
-            storyIdET.setText(Long.valueOf(storyData.giftId).toString());
-            titleET.setText(storyData.title);
-            bodyET.setText(storyData.body);
-            imageNameET.setText(storyData.imageName);
-            imageMetaDataET.setText(storyData.imageLink);
+            loginIdET.setText(Long.valueOf(GiftData.loginId).toString());
+            GiftIdET.setText(Long.valueOf(GiftData.giftId).toString());
+            titleET.setText(GiftData.title);
+            bodyET.setText(GiftData.body);
+            imageNameET.setText(GiftData.imageName);
+            imageMetaDataET.setText(GiftData.imageLink);
             return true;
         }
         return false;
     }
 
     /**
-     * Returns the unique identifier of this StoryData in the database
+     * Returns the unique identifier of this GiftData in the database
      */
     public long getUniqueKey() {
         return getIntent().getLongExtra(rowIdentifyerTAG, 0);

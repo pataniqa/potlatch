@@ -11,7 +11,7 @@ import com.pataniqa.coursera.potlatch.provider.PotlatchSchema;
 
 /**
  * GiftCreator is a helper class that does convenience functions for converting
- * between the Custom ORM objects (such as StoryData), ContentValues, and
+ * between the Custom ORM objects (such as GiftData), ContentValues, and
  * Cursors.
  */
 public class GiftCreator {
@@ -35,9 +35,9 @@ public class GiftCreator {
     }
 
     /**
-     * Get all of the StoryData from the passed in cursor.
+     * Get all of the GiftData from the passed in cursor.
      * 
-     * @param cursor passed in cursor to get StoryData(s) of.
+     * @param cursor passed in cursor to get GiftData(s) of.
      * @return ArrayList<GiftData\> The set of GiftData
      */
     public static ArrayList<GiftData> getGiftDataArrayListFromCursor(Cursor cursor) {
@@ -53,7 +53,7 @@ public class GiftCreator {
     }
 
     /**
-     * Get the first StoryData from the passed in cursor.
+     * Get the first GiftData from the passed in cursor.
      * 
      * @param cursor passed in cursor
      * @return GiftData object

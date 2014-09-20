@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 
 /**
- * Base class for all StoryData UI activities.
+ * Base class for all GiftData UI activities.
  * 
  * This class provides convenience functions for switching between the various
  * activities in the application.
@@ -26,42 +26,42 @@ public class GiftActivityBase extends Activity {
     }
 
     /**
-     * Open the ViewStoryActivity
+     * Open the ViewGiftActivity
      * 
-     * @param index The index in the database of the StoryData to display
+     * @param index The index in the database of the GiftData to display
      */
     public void openViewGiftActivity(long index) {
-        Log.d(LOG_TAG, "openStoryViewActivity(" + index + ")");
-        Intent intent = newStoryViewIntent(this, index);
+        Log.d(LOG_TAG, "openGiftViewActivity(" + index + ")");
+        Intent intent = newGiftViewIntent(this, index);
         startActivity(intent);
     }
 
     /**
-     * Open the EditStoryActivity
+     * Open the EditGiftActivity
      * 
-     * @param index The index in the database of the StoryData to edit
+     * @param index The index in the database of the GiftData to edit
      */
-    public void openEditStoryActivity(final long index) {
-        Log.d(LOG_TAG, "openEditStoryActivity(" + index + ")");
-        Intent intent = newEditStoryIntent(this, index);
+    public void openEditGiftActivity(final long index) {
+        Log.d(LOG_TAG, "openEditGiftActivity(" + index + ")");
+        Intent intent = newEditGiftIntent(this, index);
         startActivity(intent);
     }
 
     /**
-     * Open the CreateStoryActivity
+     * Open the CreateGiftActivity
      */
     public void openCreateGiftActivity() {
-        Log.d(LOG_TAG, "openCreateStoryActivity");
-        Intent intent = newCreateStoryIntent(this);
+        Log.d(LOG_TAG, "openCreateGiftActivity");
+        Intent intent = newCreateGiftIntent(this);
         startActivity(intent);
     }
 
     /**
-     * Open the ListStoryActivity
+     * Open the ListGiftActivity
      */
-    public void openListStoryActivity() {
-        Log.d(LOG_TAG, "openCreateStoryActivity");
-        Intent intent = newListStoryIntent(this);
+    public void openListGiftActivity() {
+        Log.d(LOG_TAG, "openCreateGiftActivity");
+        Intent intent = newListGiftIntent(this);
         startActivity(intent);
     }
 
@@ -75,27 +75,27 @@ public class GiftActivityBase extends Activity {
         return new Intent(activity, LoginActivity.class);
     }
 
-    public static Intent newStoryViewIntent(Activity activity, long index) {
+    public static Intent newGiftViewIntent(Activity activity, long index) {
         Intent intent = new Intent();
         intent.setClass(activity, ViewGiftActivity.class);
         intent.putExtra(ViewGiftActivity.rowIdentifyerTAG, index);
         return intent;
     }
 
-    public static Intent newEditStoryIntent(Activity activity, long index) {
+    public static Intent newEditGiftIntent(Activity activity, long index) {
         Intent intent = new Intent();
         intent.setClass(activity, EditGiftActivity.class);
         intent.putExtra(EditGiftActivity.rowIdentifyerTAG, index);
         return intent;
     }
 
-    public static Intent newListStoryIntent(Activity activity) {
+    public static Intent newListGiftIntent(Activity activity) {
         Intent intent = new Intent();
         intent.setClass(activity, ListGiftsActivity.class);
         return intent;
     }
 
-    public static Intent newCreateStoryIntent(Activity activity) {
+    public static Intent newCreateGiftIntent(Activity activity) {
         Intent intent = new Intent();
         intent.setClass(activity, CreateGiftActivity.class);
         return intent;

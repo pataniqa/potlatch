@@ -26,18 +26,18 @@ public class PotlatchSchema {
     // entity.
     public static class Gift {
         // define a URI paths to access entity
-        // BASE_URI/story - for list of story(s)
-        // BASE_URI/story/* - retrieve specific story by id
-        public static final String PATH = "story";
+        // BASE_URI/gift - for list of gifts(s)
+        // BASE_URI/gift/* - retrieve specific gift by id
+        public static final String PATH = "gift";
         public static final int PATH_TOKEN = 110;
 
-        public static final String PATH_FOR_ID = "story/*";
+        public static final String PATH_FOR_ID = "gift/*";
         public static final int PATH_FOR_ID_TOKEN = 120;
 
-        // URI for all content stored as story entity
+        // URI for all content stored as gift entity
         public static final Uri CONTENT_URI = BASE_URI.buildUpon().appendPath(PATH).build();
 
-        private final static String MIME_TYPE_END = "story";
+        private final static String MIME_TYPE_END = "gift";
 
         // define the MIME type of data in the content provider
         public static final String CONTENT_TYPE_DIR = ORGANIZATIONAL_NAME + ".cursor.dir/"
@@ -87,7 +87,7 @@ public class PotlatchSchema {
             public static final String ID = BaseColumns._ID; // convention
             // The name and column index of each column in your database
             public static final String LOGIN_ID = "LOGIN_ID";
-            public static final String GIFT_ID = "STORY_ID";
+            public static final String GIFT_ID = "GIFT_ID";
             public static final String TITLE = "TITLE";
             public static final String BODY = "BODY";
             public static final String VIDEO_LINK = "VIDEO_LINK";

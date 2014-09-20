@@ -6,7 +6,7 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/story_listview_custom_row_KEY_ID_textView"
+        android:id="@+id/gift_listview_custom_row_KEY_ID_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -15,7 +15,7 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/story_listview_custom_row_title_textView"
+        android:id="@+id/gift_listview_custom_row_title_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
@@ -23,7 +23,7 @@
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/story_listview_custom_row_tags_textView"
+        android:id="@+id/gift_listview_custom_row_tags_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
@@ -31,7 +31,7 @@
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/story_listview_custom_row_creation_time_textView"
+        android:id="@+id/gift_listview_custom_row_creation_time_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
