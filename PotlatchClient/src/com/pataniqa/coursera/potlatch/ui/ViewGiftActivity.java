@@ -36,8 +36,7 @@ public class ViewGiftActivity extends GiftActivityBase {
     private TextView titleTV;
     private TextView bodyTV;
     private TextView videoLinkTV;
-
-    private ImageView imageMetaDataView;
+    private ImageView imageView;
 
     // Helps us retrieve data from the database
     private PotlatchResolver resolver;
@@ -56,7 +55,7 @@ public class ViewGiftActivity extends GiftActivityBase {
         titleTV = (TextView) findViewById(R.id.gift_view_value_title);
         bodyTV = (TextView) findViewById(R.id.gift_view_value_body);
         videoLinkTV = (TextView) findViewById(R.id.gift_view_value_video_link);
-        imageMetaDataView = (ImageView) findViewById(R.id.gift_view_value_image_meta_data);
+        imageView = (ImageView) findViewById(R.id.gift_view_value_image_meta_data);
 
         // Set the default values
         titleTV.setText("");
@@ -74,8 +73,6 @@ public class ViewGiftActivity extends GiftActivityBase {
 
     }
 
-    // Fills out the UI elements with data from a GiftData in the database
-    // specified by a unique key
     public void setUiToGiftData(long getUniqueKey) throws RemoteException {
         Log.d(LOG_TAG, "setUiToGiftData");
 
@@ -93,7 +90,7 @@ public class ViewGiftActivity extends GiftActivityBase {
             Log.d(LOG_TAG, "image file path: " + giftData.imageLink);
 
             // Set up image
-            imageMetaDataView.setVisibility(View.GONE);
+            imageView.setVisibility(View.GONE);
 
             if (giftData.imageLink != null && giftData.imageLink.equals("") == false
                     && giftData.imageLink.equals("null") == false) {
@@ -105,20 +102,18 @@ public class ViewGiftActivity extends GiftActivityBase {
                     Log.d(LOG_TAG, "image link is valid");
 
                     Bitmap bmp = BitmapFactory.decodeFile(image.getAbsolutePath());
-                    imageMetaDataView.setVisibility(View.VISIBLE);
-                    imageMetaDataView.setImageBitmap(bmp);
+                    imageView.setVisibility(View.VISIBLE);
+                    imageView.setImageBitmap(bmp);
                 }
             }
 
         }
     }
 
-    // Action to be performed when the edit button is pressed
     private void editButtonPressed() {
         openEditGiftActivity(giftData.KEY_ID);
     }
 
-    // Action to be performed when the delete button is pressed
     private void deleteButtonPressed() {
         String message;
 
@@ -147,12 +142,10 @@ public class ViewGiftActivity extends GiftActivityBase {
                         }).setNegativeButton(R.string.no, null).show();
     }
 
-    // Get the unique key associated with the GiftData we're displaying
     public long getUniqueKey() {
         return getIntent().getLongExtra(rowIdentifyerTAG, 0);
     }
 
-    // A clickListener that forwards clicks to the appropriate function
     public void clickListener(View view) {
         switch (view.getId()) {
         case R.id.button_gift_view_to_delete:

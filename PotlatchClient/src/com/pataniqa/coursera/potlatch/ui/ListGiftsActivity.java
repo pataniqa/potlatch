@@ -23,9 +23,6 @@ import com.pataniqa.coursera.potlatch.provider.PotlatchSchema;
 import com.pataniqa.coursera.potlatch.storage.GiftData;
 import com.pataniqa.coursera.potlatch.storage.PotlatchResolver;
 
-/**
- * This activity lists all the stories currently stored in the database
- */
 public class ListGiftsActivity extends GiftActivityBase implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final String LOG_TAG = ListGiftsActivity.class.getCanonicalName();

@@ -2,7 +2,6 @@ package com.pataniqa.coursera.potlatch.ui;
 
 import android.os.Bundle;
 import android.os.RemoteException;
-import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -13,9 +12,6 @@ import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.storage.GiftData;
 import com.pataniqa.coursera.potlatch.storage.PotlatchResolver;
 
-/**
- * This activity allows users to edit some parts of a previously posted Gift
- */
 public class EditGiftActivity extends GiftActivityBase {
 
     private final static String LOG_TAG = EditGiftActivity.class.getCanonicalName();
@@ -33,7 +29,7 @@ public class EditGiftActivity extends GiftActivityBase {
     // custom ContentResolver wrapper.
     private PotlatchResolver resolver;
 
-    private GiftData mData;
+    private GiftData giftData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +53,6 @@ public class EditGiftActivity extends GiftActivityBase {
 
     }
 
-    // The listener for the various buttons
     public void clickListener(View v) {
         switch (v.getId()) {
         case R.id.gift_edit_button_save:
@@ -77,7 +72,6 @@ public class EditGiftActivity extends GiftActivityBase {
         setValuesToDefault();
     }
 
-    // Update the provided values in the database
     public void doSaveButtonClick() {
         Toast.makeText(this, "Updated.", Toast.LENGTH_SHORT).show();
 
@@ -101,40 +95,23 @@ public class EditGiftActivity extends GiftActivityBase {
 
     }
 
-    // Use the data the user input into the UI to construct a GiftData object
     public GiftData makeGiftDataFromUI() {
-
-        // Get the editables from the UI
-        Editable titleEditable = titleET.getText();
-        Editable bodyEditable = bodyET.getText();
-
-        // Pull values from Editables
-        String title = titleEditable.toString();
-        String body = bodyEditable.toString();
+        String title = titleET.getText().toString();
+        String description = bodyET.getText().toString();
 
         // Construct the Gift Data Object
-        GiftData rValue = new GiftData(getUniqueKey(), mData.loginId, mData.giftId, title, body, 
-                mData.videoLink, mData.imageLink);
+        GiftData rValue = new GiftData(getUniqueKey(), giftData.loginId, giftData.giftId, title, description, 
+                giftData.videoLink, giftData.imageLink);
 
-        // Make sure the new GiftData has the same key as the old one so that
-        // it will
-        // replace the old one in the database.
-        rValue.key = mData.key;
-
-        // return GiftData object with new values
+        rValue.key = giftData.key;
         return rValue;
 
     }
 
     public void doCancelButtonClick() {
-        finish(); // same as hitting 'back' button
+        finish(); 
     }
 
-    /**
-     * Sets all the UI elements to their original values
-     * 
-     * @return
-     */
     public boolean setValuesToDefault() {
 
         GiftData GiftData;
@@ -147,7 +124,7 @@ public class EditGiftActivity extends GiftActivityBase {
         }
 
         if (GiftData != null) {
-            mData = GiftData;
+            giftData = GiftData;
             Log.d(LOG_TAG, "setValuesToDefualt :" + GiftData.toString());
 
             // set the EditTexts to the current values
@@ -161,9 +138,6 @@ public class EditGiftActivity extends GiftActivityBase {
         return false;
     }
 
-    /**
-     * Returns the unique identifier of this GiftData in the database
-     */
     public long getUniqueKey() {
         return getIntent().getLongExtra(rowIdentifyerTAG, 0);
     }

@@ -56,5 +56,6 @@
     <string name="content_description">Content Description</string>
     <string name="select_photo">Select photo</string>
     <string name="add_video">Create Video</string>
+    <string name="gift_image_description">The Gift</string>
 
 </resources>

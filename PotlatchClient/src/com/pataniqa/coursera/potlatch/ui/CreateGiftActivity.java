@@ -1,8 +1,12 @@
 package com.pataniqa.coursera.potlatch.ui;
 
+import java.io.File;
+
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -12,9 +16,10 @@ import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SearchView;
-import android.widget.Toast;
 import android.widget.SearchView.OnQueryTextListener;
+import android.widget.Toast;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.storage.GiftData;
@@ -30,17 +35,20 @@ public class CreateGiftActivity extends GiftActivityBase {
 
     // Used as the request codes in startActivityForResult().
     static final int CAMERA_PIC_REQUEST = 1;
-    static final int MIC_SOUND_REQUEST = 3;
+    static final int GALLERY_PIC_REQUEST = 2;
+    static final int VIDEO_REQUEST = 3;
 
     // The various UI elements we use
-    private EditText titleET;
-    private EditText descriptionET;
+    private EditText titleInput;
+    private EditText descriptionInput;
+    private ImageView imageView;
 
     // Making this static keeps it from getting GC'd when we take pictures
     private static Uri imagePath;
     private Uri fileUri;
-    private PotlatchResolver resolver;
     private Uri imagePathFinal = null;
+    
+    private PotlatchResolver resolver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +61,13 @@ public class CreateGiftActivity extends GiftActivityBase {
         setContentView(R.layout.create_gift_activity);
         getActionBar().show();
 
+        // Get references to all the UI elements
+        imageView = (ImageView) findViewById(R.id.gift_create_img);
+        titleInput = (EditText) findViewById(R.id.gift_create_value_title);
+        descriptionInput = (EditText) findViewById(R.id.gift_create_value_description);
+
         // Start a resolver to help us store/retrieve data from a database
         resolver = new PotlatchResolver(this);
-
-        // Get references to all the UI elements
-        titleET = (EditText) findViewById(R.id.gift_create_value_title);
-        descriptionET = (EditText) findViewById(R.id.gift_create_value_description);
     }
 
     @Override
@@ -91,54 +100,52 @@ public class CreateGiftActivity extends GiftActivityBase {
         return true;
     }
 
-    // Reset all the fields to their default values
-    public void buttonClearClicked(View v) {
-        titleET.setText("");
-        descriptionET.setText("");
+    public void selectPhotoClicked(View view) {
+        Log.v(LOG_TAG, "selectPhotoClicked(View) called.");
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        saveImageToLocalMedia(galleryIntent, GALLERY_PIC_REQUEST);
     }
 
-    // Close this activity if the cancel button is clicked
-    public void buttonCancelClicked(View v) {
-        finish(); // same as hitting 'back' button
+    public void addPhotoClicked(View aView) {
+        Log.v(LOG_TAG, "addPhotoClicked(View) called.");
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        saveImageToLocalMedia(cameraIntent, CAMERA_PIC_REQUEST);
     }
 
-    // Create a GiftData object from the input data and store it using the
-    // resolver
+    private void saveImageToLocalMedia(Intent intent, int result) {
+        Uri tmpImagePath = StorageUtilities.getOutputMediaFileUri(this,
+                StorageUtilities.MEDIA_TYPE_IMAGE, StorageUtilities.SECURITY_PUBLIC, null);
+
+        if (tmpImagePath != null) {
+            imagePath = tmpImagePath;
+            intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imagePath);
+            startActivityForResult(intent, result);
+        }
+    }
+
+    public void addVideoClicked(View v) {
+        Log.v(LOG_TAG, "addVideoClicked(View) called.");
+        // TODO
+    }
+
     public void buttonCreateClicked(View v) {
-        Log.d(LOG_TAG, "create button pressed");
+        Log.d(LOG_TAG, "accept button pressed");
 
-        // local Editables
-        Editable titleCreateable = titleET.getText();
-        Editable bodyCreateable = descriptionET.getText();
+        Editable titleCreateable = titleInput.getText();
+        Editable bodyCreateable = descriptionInput.getText();
 
         long loginId = 0;
         long GiftId = 0;
-        String title = "";
-        String body = "";
-        String videoLink = "";
-        String imageData = "";
+        String title = String.valueOf(titleCreateable.toString());
+        String body = String.valueOf(bodyCreateable.toString());
+        String videoLink = fileUri != null ? fileUri.toString() : "";
+        String imageData = imagePathFinal != null ? imagePathFinal.toString() : "";
 
-        // pull values from Editables
-        loginId = LoginActivity.getLoginId(this);
-        GiftId = 1; // TODO Pull this from somewhere.
-        title = String.valueOf(titleCreateable.toString());
-        body = String.valueOf(bodyCreateable.toString());
-        if (fileUri != null) {
-            videoLink = fileUri.toString();
-        }
-        if (imagePathFinal != null) {
-            imageData = imagePathFinal.toString();
-        }
-
-        // new GiftData object with above info
-        GiftData newData = new GiftData(-1,
-        // -1 row index, because there is no way to know which
-        // row it will go into
-                loginId, GiftId, title, body, videoLink, imageData);
+        GiftData newData = new GiftData(loginId, GiftId, title, body, videoLink, imageData);
 
         Log.d(LOG_TAG, "newGiftData:" + newData);
 
-        // insert it through Resolver to be put into the database
         try {
             resolver.insert(newData);
         } catch (RemoteException e) {
@@ -146,56 +153,52 @@ public class CreateGiftActivity extends GiftActivityBase {
             e.printStackTrace();
         }
 
-        finish(); // same as hitting 'back' button
-
+        finish();
     }
 
-    /**
-     * Method to be called when the Add Photo button is pressed.
-     */
-    public void addPhotoClicked(View aView) {
-        Log.v(LOG_TAG, "addPhotoClicked(View) called.");
-
-        // Create an intent that asks for an image to be captured
-        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-
-        // Tell the capturing activity where to store the image
-        Uri uriPath = StorageUtilities.getOutputMediaFileUri(this,
-                StorageUtilities.MEDIA_TYPE_IMAGE, StorageUtilities.SECURITY_PUBLIC, null);
-
-        if (uriPath == null)
-            return;
-
-        imagePath = uriPath;
-        cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imagePath);
-
-        // Start the activity
-        startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+    public void buttonCancelClicked(View v) {
+        Log.d(LOG_TAG, "cancel button pressed");
+        finish();
     }
 
-    /**
-     * This is called when an activity that we've started returns a result.
-     * 
-     * In our case, we're looking for the results returned from the
-     * SoundRecordActivity or the Camera Activity
-     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         Log.d(LOG_TAG, "CreateFragment onActivtyResult called. requestCode: " + requestCode
                 + " resultCode:" + resultCode + "data:" + data);
 
-        if (requestCode == CreateGiftActivity.CAMERA_PIC_REQUEST) {
-            if (resultCode == CreateGiftActivity.RESULT_OK) {
-                // Image captured and saved to fileUri specified in the Intent
-                imagePathFinal = imagePath;
-            } else if (resultCode == CreateGiftActivity.RESULT_CANCELED) {
-                // User cancelled the image capture
-            } else {
-                // Image capture failed, advise user
-                Toast.makeText(getApplicationContext(), "Image capture failed.", Toast.LENGTH_LONG)
-                        .show();
+        switch (requestCode) {
+        case CreateGiftActivity.CAMERA_PIC_REQUEST:
+            imageResult(resultCode);
+            break;
+        case CreateGiftActivity.GALLERY_PIC_REQUEST:
+            imageResult(resultCode);
+            break;
+        case CreateGiftActivity.VIDEO_REQUEST:
+            // TODO
+            break;
+        }
+    }
+
+    private void imageResult(int resultCode) {
+        switch (resultCode) {
+        case CreateGiftActivity.RESULT_OK:
+            imagePathFinal = imagePath;
+            File image = new File(imagePathFinal.getPath());
+
+            if (image != null && image.exists()) {
+                Log.d(LOG_TAG, "image link is valid");
+
+                Bitmap bmp = BitmapFactory.decodeFile(image.getAbsolutePath());
+                imageView.setVisibility(View.VISIBLE);
+                imageView.setImageBitmap(bmp);
             }
+            break;
+        case CreateGiftActivity.RESULT_CANCELED:
+            break;
+        default:
+            Toast.makeText(getApplicationContext(), "Image capture failed.", Toast.LENGTH_LONG)
+                    .show();
+            break;
         }
     }
 }

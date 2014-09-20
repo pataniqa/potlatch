@@ -17,59 +17,34 @@ public class GiftActivityBase extends Activity {
 
     private static final String LOG_TAG = GiftActivityBase.class.getCanonicalName();
 
-    /**
-     * Open the LoginActivity
-     */
     public void openLoginActivity() {
         Intent intent = newLoginActivityIntent(this);
         startActivity(intent);
     }
 
-    /**
-     * Open the ViewGiftActivity
-     * 
-     * @param index The index in the database of the GiftData to display
-     */
     public void openViewGiftActivity(long index) {
         Log.d(LOG_TAG, "openGiftViewActivity(" + index + ")");
         Intent intent = newGiftViewIntent(this, index);
         startActivity(intent);
     }
 
-    /**
-     * Open the EditGiftActivity
-     * 
-     * @param index The index in the database of the GiftData to edit
-     */
     public void openEditGiftActivity(final long index) {
         Log.d(LOG_TAG, "openEditGiftActivity(" + index + ")");
         Intent intent = newEditGiftIntent(this, index);
         startActivity(intent);
     }
 
-    /**
-     * Open the CreateGiftActivity
-     */
     public void openCreateGiftActivity() {
         Log.d(LOG_TAG, "openCreateGiftActivity");
         Intent intent = newCreateGiftIntent(this);
         startActivity(intent);
     }
 
-    /**
-     * Open the ListGiftActivity
-     */
     public void openListGiftActivity() {
         Log.d(LOG_TAG, "openCreateGiftActivity");
         Intent intent = newListGiftIntent(this);
         startActivity(intent);
     }
-
-    /*************************************************************************/
-    /*
-     * Create Intents for the various Activities
-     */
-    /*************************************************************************/
 
     public static Intent newLoginActivityIntent(Activity activity) {
         return new Intent(activity, LoginActivity.class);
