@@ -136,10 +136,10 @@ public class CreateGiftActivity extends GiftActivityBase {
         long loginId = 0;
         long GiftId = 0;
         String title = String.valueOf(titleInput.getText().toString());
-        String body = String.valueOf(descriptionInput.getText().toString());
-        String videoLink = videoPathFinal != null ? videoPathFinal.toString() : "";
+        String description = String.valueOf(descriptionInput.getText().toString());
+        String videoUri = videoPathFinal != null ? videoPathFinal.toString() : "";
         String imageData = imagePathFinal != null ? imagePathFinal.toString() : "";
-        GiftData newData = new GiftData(loginId, GiftId, title, body, videoLink, imageData);
+        GiftData newData = new GiftData(loginId, GiftId, title, description, videoUri, imageData);
 
         Log.d(LOG_TAG, "newGiftData:" + newData);
 
@@ -170,7 +170,7 @@ public class CreateGiftActivity extends GiftActivityBase {
                 File image = new File(imagePathFinal.getPath());
 
                 if (image != null && image.exists()) {
-                    Log.d(LOG_TAG, "image link is valid");
+                    Log.d(LOG_TAG, "image URI is valid");
                     Bitmap bmp = BitmapFactory.decodeFile(image.getAbsolutePath());
                     imageView.setVisibility(View.VISIBLE);
                     imageView.setImageBitmap(bmp);

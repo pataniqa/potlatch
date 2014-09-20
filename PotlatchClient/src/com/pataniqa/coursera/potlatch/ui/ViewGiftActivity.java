@@ -35,8 +35,8 @@ public class ViewGiftActivity extends GiftActivityBase {
 
     // The UI elements we'll be using
     private TextView titleTV;
-    private TextView bodyTV;
-    private TextView videoLinkTV;
+    private TextView descriptionTV;
+    private TextView videoUriTV;
     private ImageView imageView;
 
     // Helps us retrieve data from the database
@@ -54,14 +54,14 @@ public class ViewGiftActivity extends GiftActivityBase {
 
         // Get actual references to the instantiated UI objects
         titleTV = (TextView) findViewById(R.id.gift_view_value_title);
-        bodyTV = (TextView) findViewById(R.id.gift_view_value_body);
-        videoLinkTV = (TextView) findViewById(R.id.gift_view_value_video_link);
-        imageView = (ImageView) findViewById(R.id.gift_view_value_image_meta_data);
+        descriptionTV = (TextView) findViewById(R.id.gift_view_value_description);
+        videoUriTV = (TextView) findViewById(R.id.gift_view_value_video_uri);
+        imageView = (ImageView) findViewById(R.id.gift_view_value_image_uri);
 
         // Set the default values
         titleTV.setText("");
-        bodyTV.setText("");
-        videoLinkTV.setText("");
+        descriptionTV.setText("");
+        videoUriTV.setText("");
 
         try {
             // Fill out all the UI elements with data from our GiftData
@@ -85,8 +85,8 @@ public class ViewGiftActivity extends GiftActivityBase {
 
             // Fill in the appropriate UI elements
             titleTV.setText(String.valueOf(giftData.title).toString());
-            bodyTV.setText(String.valueOf(giftData.description).toString());
-            videoLinkTV.setText(String.valueOf(giftData.videoUri).toString());
+            descriptionTV.setText(String.valueOf(giftData.description).toString());
+            videoUriTV.setText(String.valueOf(giftData.videoUri).toString());
 
             Log.d(LOG_TAG, "image file path: " + giftData.imageUri);
 
@@ -95,12 +95,12 @@ public class ViewGiftActivity extends GiftActivityBase {
 
             if (giftData.imageUri != null && giftData.imageUri.equals("") == false
                     && giftData.imageUri.equals("null") == false) {
-                Log.d(LOG_TAG, "image link is valid" + giftData.imageUri);
+                Log.d(LOG_TAG, "image URI is valid" + giftData.imageUri);
                 Uri uri = Uri.parse(giftData.imageUri);
                 File image = new File(uri.getPath());
 
                 if (image != null && image.exists()) {
-                    Log.d(LOG_TAG, "image link is valid");
+                    Log.d(LOG_TAG, "image URI is valid");
 
                     Bitmap bmp = BitmapFactory.decodeFile(image.getAbsolutePath());
                     imageView.setVisibility(View.VISIBLE);

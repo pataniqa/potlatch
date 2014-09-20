@@ -97,9 +97,9 @@ public class PotlatchSchema {
             public static final String LOGIN_ID = "LOGIN_ID";
             public static final String GIFT_ID = "GIFT_ID";
             public static final String TITLE = "TITLE";
-            public static final String DESCRIPTION = "BODY";
-            public static final String VIDEO_URI = "VIDEO_LINK";
-            public static final String IMAGE_URI = "IMAGE_LINK";
+            public static final String DESCRIPTION = "DESCRIPTION";
+            public static final String VIDEO_URI = "VIDEO_URI";
+            public static final String IMAGE_URI = "IMAGE_URI";
         }
     }
 

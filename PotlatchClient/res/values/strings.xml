@@ -22,8 +22,8 @@
     <string name="confirm_delete">Are you sure you want to Delete this Entry?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="video_link">VideoLink</string>
-    <string name="image_meta_data">ImageData</string>
+    <string name="video_uri">Video</string>
+    <string name="image_uri">ImageData</string>
     <string name="gift_list_filter_hint">Search titles..</string>
     <string name="description">Description:</string>
     <string name="record">Record</string>

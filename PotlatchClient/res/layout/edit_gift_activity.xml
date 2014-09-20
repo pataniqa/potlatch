@@ -83,41 +83,39 @@
                 android:layout_below="@+id/gift_edit_login_id"
                 android:hint="@string/empty_default_value" />
 
-            <!-- body label/value pair -->
-
             <TextView
-                android:id="@+id/gift_edit_body_label"
+                android:id="@+id/gift_edit_description_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/gift_edit_body"
-                android:layout_alignBottom="@+id/gift_edit_body"
+                android:layout_alignBaseline="@+id/gift_edit_description"
+                android:layout_alignBottom="@+id/gift_edit_description"
                 android:layout_alignParentLeft="true"
                 android:text="@string/description"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                android:id="@+id/gift_edit_body"
+                android:id="@+id/gift_edit_description"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/gift_edit_title"
                 android:hint="@string/empty_default_value" />
 
-            <!-- video_link label/value pair -->
+            <!-- video_uri label/value pair -->
 
             <TextView
-                android:id="@+id/gift_edit_video_link_label"
+                android:id="@+id/gift_edit_video_uri_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/gift_edit_video_link"
-                android:layout_alignBottom="@+id/gift_edit_video_link"
+                android:layout_alignBaseline="@+id/gift_edit_video_uri"
+                android:layout_alignBottom="@+id/gift_edit_video_uri"
                 android:layout_alignParentLeft="true"
-                android:text="@string/video_link"
+                android:text="@string/video_uri"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:visibility="gone" />
 
             <EditText
-                android:id="@+id/gift_edit_video_link"
+                android:id="@+id/gift_edit_video_uri"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -125,25 +123,23 @@
                 android:hint="@string/empty_default_value"
                 android:visibility="gone" />
 
-            <!-- image_meta_data label/value pair -->
-
             <TextView
-                android:id="@+id/gift_edit_image_meta_data_label"
+                android:id="@+id/gift_edit_image_uri_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/gift_edit_image_meta_data"
-                android:layout_alignBottom="@+id/gift_edit_image_meta_data"
+                android:layout_alignBaseline="@+id/gift_edit_image_uri"
+                android:layout_alignBottom="@+id/gift_edit_image_uri"
                 android:layout_alignParentLeft="true"
-                android:text="@string/image_meta_data"
+                android:text="@string/image_uri"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:visibility="gone" />
 
             <EditText
-                android:id="@+id/gift_edit_image_meta_data"
+                android:id="@+id/gift_edit_image_uri"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/gift_edit_video_link"
+                android:layout_below="@+id/gift_edit_video_uri"
                 android:hint="@string/empty_default_value"
                 android:visibility="gone" />
 

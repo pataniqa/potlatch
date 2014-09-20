@@ -39,19 +39,19 @@ public class GiftData implements Parcelable {
      * @param loginId
      * @param giftId
      * @param title
-     * @param body
-     * @param videoLink
-     * @param imageLink
+     * @param description
+     * @param videoUri
+     * @param imageUri
      */
-    public GiftData(long KEY_ID, long loginId, long giftId, String title, String body,
-            String videoLink, String imageLink) {
+    public GiftData(long KEY_ID, long loginId, long giftId, String title, String description,
+            String videoUri, String imageUri) {
         this.KEY_ID = KEY_ID;
         this.loginId = loginId;
         this.giftId = giftId;
         this.title = title;
-        this.description = body;
-        this.videoUri = videoLink;
-        this.imageUri = imageLink;
+        this.description = description;
+        this.videoUri = videoUri;
+        this.imageUri = imageUri;
     }
 
     /**
@@ -61,13 +61,13 @@ public class GiftData implements Parcelable {
      * @param loginId
      * @param giftId
      * @param title
-     * @param body
-     * @param videoLink
-     * @param imageLink
+     * @param description
+     * @param videoUri
+     * @param imageUri
      */
-    public GiftData(long loginId, long giftId, String title, String body, String videoLink,
-            String imageLink) {
-        this(-1, loginId, giftId, title, body, videoLink, imageLink);
+    public GiftData(long loginId, long giftId, String title, String description, String videoUri,
+            String imageUri) {
+        this(-1, loginId, giftId, title, description, videoUri, imageUri);
     }
 
     /**
@@ -77,13 +77,13 @@ public class GiftData implements Parcelable {
      * @param loginId
      * @param giftId
      * @param title
-     * @param body
-     * @param videoLink
-     * @param imageLink
+     * @param description
+     * @param videoUri
+     * @param imageUri
      */
-    public GiftData(String key, String href, long loginId, long giftId, String title, String body,
-            String videoLink, String imageLink) {
-        this(-1, loginId, giftId, title, body, videoLink, imageLink);
+    public GiftData(String key, String href, long loginId, long giftId, String title, String description,
+            String videoUri, String imageUri) {
+        this(-1, loginId, giftId, title, description, videoUri, imageUri);
         this.href = href;
         this.key = key;
     }
@@ -93,8 +93,8 @@ public class GiftData implements Parcelable {
      */
     @Override
     public String toString() {
-        return " loginId: " + loginId + " giftId: " + giftId + " title: " + title + " body: "
-                + description + " videoLink: " + videoUri + " imageLink: " + imageUri + " href: " + href
+        return " loginId: " + loginId + " giftId: " + giftId + " title: " + title + " description: "
+                + description + " videoUri: " + videoUri + " imageUri: " + imageUri + " href: " + href
                 + " key: " + key;
     }
 

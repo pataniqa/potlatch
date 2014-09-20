@@ -24,8 +24,8 @@ public class EditGiftActivity extends GiftActivityBase {
     private TextView loginIdET;
     private TextView GiftIdET;
     private EditText titleET;
-    private EditText bodyET;
-    private EditText imageMetaDataET;
+    private EditText descriptionET;
+    private EditText imageUriET;
 
     // custom ContentResolver wrapper.
     private IPotlatchStore resolver;
@@ -46,8 +46,8 @@ public class EditGiftActivity extends GiftActivityBase {
         loginIdET = (TextView) findViewById(R.id.gift_edit_login_id);
         GiftIdET = (TextView) findViewById(R.id.gift_edit_gift_id);
         titleET = (EditText) findViewById(R.id.gift_edit_title);
-        bodyET = (EditText) findViewById(R.id.gift_edit_body);
-        imageMetaDataET = (EditText) findViewById(R.id.gift_edit_image_meta_data);
+        descriptionET = (EditText) findViewById(R.id.gift_edit_description);
+        imageUriET = (EditText) findViewById(R.id.gift_edit_image_uri);
 
         // set the EditTexts to this Gift's Values
         setValuesToDefault();
@@ -98,7 +98,7 @@ public class EditGiftActivity extends GiftActivityBase {
 
     public GiftData makeGiftDataFromUI() {
         String title = titleET.getText().toString();
-        String description = bodyET.getText().toString();
+        String description = descriptionET.getText().toString();
 
         // Construct the Gift Data Object
         GiftData rValue = new GiftData(getUniqueKey(), giftData.loginId, giftData.giftId, title, description, 
@@ -132,8 +132,8 @@ public class EditGiftActivity extends GiftActivityBase {
             loginIdET.setText(Long.valueOf(GiftData.loginId).toString());
             GiftIdET.setText(Long.valueOf(GiftData.giftId).toString());
             titleET.setText(GiftData.title);
-            bodyET.setText(GiftData.description);
-            imageMetaDataET.setText(GiftData.imageUri);
+            descriptionET.setText(GiftData.description);
+            imageUriET.setText(GiftData.imageUri);
             return true;
         }
         return false;

@@ -20,8 +20,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <!-- title -->
-
             <TextView
                 android:id="@+id/gift_view_label_title"
                 android:layout_width="wrap_content"
@@ -40,10 +38,9 @@
                 android:layout_below="@+id/gift_view_label_title"
                 android:text="@string/title"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-            <!-- body -->
 
             <TextView
-                android:id="@+id/gift_view_label_body"
+                android:id="@+id/gift_view_label_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -54,62 +51,58 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/gift_view_value_body"
+                android:id="@+id/gift_view_value_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/gift_view_label_body"
+                android:layout_below="@+id/gift_view_label_description"
                 android:text="@string/description"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <!-- videoLink -->
-
             <TextView
-                android:id="@+id/gift_view_label_video_link"
+                android:id="@+id/gift_view_label_video_uri"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/gift_view_label_body"
+                android:layout_below="@+id/gift_view_label_description"
                 android:layout_gravity="left"
-                android:text="@string/video_link"
+                android:text="@string/video_uri"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
                 android:visibility="gone" />
 
             <TextView
-                android:id="@+id/gift_view_value_video_link"
+                android:id="@+id/gift_view_value_video_uri"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/gift_view_label_video_link"
-                android:text="@string/video_link"
+                android:layout_below="@+id/gift_view_label_video_uri"
+                android:text="@string/video_uri"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:visibility="gone" />
 
-            <!-- imageMetaData -->
-
             <TextView
-                android:id="@+id/gift_view_label_image_meta_data"
+                android:id="@+id/gift_view_label_image_uri"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/gift_view_value_image_meta_data"
-                android:layout_alignBottom="@+id/gift_view_value_image_meta_data"
+                android:layout_alignBaseline="@+id/gift_view_value_image_uri"
+                android:layout_alignBottom="@+id/gift_view_value_image_uri"
                 android:layout_alignParentLeft="true"
                 android:layout_gravity="left"
-                android:text="@string/image_meta_data"
+                android:text="@string/image_uri"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
                 android:visibility="gone" />
 
             <ImageView
-                android:id="@+id/gift_view_value_image_meta_data"
+                android:id="@+id/gift_view_value_image_uri"
                 android:layout_width="wrap_content"
                 android:layout_height="160dp"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/gift_view_value_video_link"
+                android:layout_below="@+id/gift_view_value_video_uri"
                 android:contentDescription="@string/content_description"
                 android:src="@drawable/ic_launcher"
-                android:text="@string/image_meta_data"
+                android:text="@string/image_uri"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:visibility="gone" />
 

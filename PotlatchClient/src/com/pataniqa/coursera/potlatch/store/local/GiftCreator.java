@@ -62,12 +62,12 @@ public class GiftCreator {
         long loginId = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.LOGIN_ID));
         long giftId = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.GIFT_ID));
         String title = cursor.getString(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.TITLE));
-        String body = cursor.getString(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.DESCRIPTION));
+        String description = cursor.getString(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.DESCRIPTION));
         String videoUri = cursor.getString(cursor
                 .getColumnIndex(PotlatchSchema.Gift.Cols.VIDEO_URI));
         String imageUri = cursor.getString(cursor
                 .getColumnIndex(PotlatchSchema.Gift.Cols.IMAGE_URI));
-        return new GiftData(rowID, loginId, giftId, title, body, videoUri, imageUri);
+        return new GiftData(rowID, loginId, giftId, title, description, videoUri, imageUri);
     }
 
     /**
