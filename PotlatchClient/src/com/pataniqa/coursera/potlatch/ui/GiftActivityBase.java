@@ -13,10 +13,10 @@ import android.util.Log;
  * 
  */
 @SuppressLint("Registered")
-public class StoryActivityBase extends Activity {
+public class GiftActivityBase extends Activity {
 
 	// A tag used for debugging with Logcat
-	private static final String LOG_TAG = StoryActivityBase.class
+	private static final String LOG_TAG = GiftActivityBase.class
 			.getCanonicalName();
 
 	/**
@@ -31,7 +31,7 @@ public class StoryActivityBase extends Activity {
 	 *  Open the ViewStoryActivity
 	 * @param index		The index in the database of the StoryData to display
 	 */
-	public void openViewStoryActivity(long index) {
+	public void openViewGiftActivity(long index) {
 		Log.d(LOG_TAG, "openStoryViewActivity(" + index + ")");
 		Intent intent = newStoryViewIntent(this, index);
 		startActivity(intent);
@@ -50,7 +50,7 @@ public class StoryActivityBase extends Activity {
 	/**
 	 * Open the CreateStoryActivity
 	 */
-	public void openCreateStoryActivity() {
+	public void openCreateGiftActivity() {
 		Log.d(LOG_TAG, "openCreateStoryActivity");
 		Intent intent = newCreateStoryIntent(this);
 		startActivity(intent);
@@ -77,27 +77,27 @@ public class StoryActivityBase extends Activity {
 	
 	public static Intent newStoryViewIntent(Activity activity, long index) {
 		Intent intent = new Intent();
-		intent.setClass(activity, ViewStoryActivity.class);
-		intent.putExtra(ViewStoryActivity.rowIdentifyerTAG, index);	
+		intent.setClass(activity, ViewGiftActivity.class);
+		intent.putExtra(ViewGiftActivity.rowIdentifyerTAG, index);	
 		return intent;
 	}
 
 	public static Intent newEditStoryIntent(Activity activity, long index) {
 		Intent intent = new Intent();
-		intent.setClass(activity, EditStoryActivity.class);
-		intent.putExtra(EditStoryActivity.rowIdentifyerTAG, index);
+		intent.setClass(activity, EditGiftActivity.class);
+		intent.putExtra(EditGiftActivity.rowIdentifyerTAG, index);
 		return intent;
 	}
 
 	public static Intent newListStoryIntent(Activity activity) {
 		Intent intent = new Intent();
-		intent.setClass(activity, ListStoryActivity.class); 
+		intent.setClass(activity, ListGiftsActivity.class); 
 		return intent;
 	}
 
 	public static Intent newCreateStoryIntent(Activity activity) {
 		Intent intent = new Intent();
-		intent.setClass(activity, CreateStoryActivity.class);
+		intent.setClass(activity, CreateGiftActivity.class);
 		return intent;
 	}
 }

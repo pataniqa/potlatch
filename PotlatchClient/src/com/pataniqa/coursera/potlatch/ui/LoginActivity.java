@@ -18,7 +18,7 @@ import com.pataniqa.coursera.potlatch.storage.StorageUtilities;
 /**
  * The activity that allows the user to provide login information.
  */
-public class LoginActivity extends StoryActivityBase{
+public class LoginActivity extends GiftActivityBase{
 
 	// A tag used for debugging with Logcat
 	static final String LOG_TAG = LoginActivity.class.getCanonicalName();

@@ -17,7 +17,7 @@ import com.pataniqa.coursera.potlatch.provider.PotlatchSchema;
  * @author Michael A. Walker
  * 
  */
-public class StoryCreator {
+public class GiftCreator {
 
 	/**
 	 * Create a ContentValues from a provided StoryData.
@@ -29,7 +29,7 @@ public class StoryCreator {
 	public static ContentValues getCVfromStory(final GiftData data) {
 		ContentValues rValue = new ContentValues();
 		rValue.put(PotlatchSchema.Story.Cols.LOGIN_ID, data.loginId);
-		rValue.put(PotlatchSchema.Story.Cols.STORY_ID, data.storyId);
+		rValue.put(PotlatchSchema.Story.Cols.STORY_ID, data.giftId);
 		rValue.put(PotlatchSchema.Story.Cols.TITLE, data.title);
 		rValue.put(PotlatchSchema.Story.Cols.BODY, data.body);
 		rValue.put(PotlatchSchema.Story.Cols.AUDIO_LINK, data.audioLink);
@@ -38,7 +38,7 @@ public class StoryCreator {
 		rValue.put(PotlatchSchema.Story.Cols.IMAGE_LINK, data.imageLink);
 		rValue.put(PotlatchSchema.Story.Cols.TAGS, data.tags);
 		rValue.put(PotlatchSchema.Story.Cols.CREATION_TIME, data.creationTime);
-		rValue.put(PotlatchSchema.Story.Cols.STORY_TIME, data.storyTime);
+		rValue.put(PotlatchSchema.Story.Cols.STORY_TIME, data.giftTime);
 		rValue.put(PotlatchSchema.Story.Cols.LATITUDE, data.latitude);
 		rValue.put(PotlatchSchema.Story.Cols.LONGITUDE, data.longitude);
 		return rValue;

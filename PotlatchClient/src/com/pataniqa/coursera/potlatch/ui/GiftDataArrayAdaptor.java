@@ -2,7 +2,7 @@ package com.pataniqa.coursera.potlatch.ui;
 
 import java.util.List;
 
-import com.pataniqa.coursera.potlatch.storage.StoryCreator;
+import com.pataniqa.coursera.potlatch.storage.GiftCreator;
 import com.pataniqa.coursera.potlatch.storage.GiftData;
 
 import android.content.Context;
@@ -70,7 +70,7 @@ public class GiftDataArrayAdaptor extends ArrayAdapter<GiftData> {
             // The ID of the data in the database
             long KEY_ID = item.KEY_ID;
             String title = item.title;
-            long storyDate = item.storyTime;
+            long storyDate = item.giftTime;
 
             // If there's no View to be recycled, instantiate a new View
             if (convertView == null) {
@@ -94,7 +94,7 @@ public class GiftDataArrayAdaptor extends ArrayAdapter<GiftData> {
             
             TextView creationTimeTV = (TextView) todoView
                     .findViewById(R.id.story_listview_custom_row_creation_time_textView);
-            creationTimeTV.setText("" + StoryCreator.getStringDate(storyDate));
+            creationTimeTV.setText("" + GiftCreator.getStringDate(storyDate));
 
         } catch (Exception e) {
             Toast.makeText(getContext(), "exception in ArrayAdpter: " + e.getMessage(), Toast.LENGTH_SHORT).show();

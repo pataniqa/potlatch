@@ -1,7 +1,7 @@
 package com.pataniqa.coursera.potlatch.ui;
 
 import com.pataniqa.coursera.potlatch.storage.PotlatchResolver;
-import com.pataniqa.coursera.potlatch.storage.StoryCreator;
+import com.pataniqa.coursera.potlatch.storage.GiftCreator;
 import com.pataniqa.coursera.potlatch.storage.GiftData;
 
 import android.os.Bundle;
@@ -19,10 +19,10 @@ import com.pataniqa.coursera.potlatch.R;
 /**
  * This activity allows users to edit some parts of a previously posted story
  */
-public class EditStoryActivity extends StoryActivityBase {
+public class EditGiftActivity extends GiftActivityBase {
 	
 	// The tag used for debugging with Logcat
-	final static public String LOG_TAG = EditStoryActivity.class 
+	final static public String LOG_TAG = EditGiftActivity.class 
 			.getCanonicalName();
 
 	// variable for passing around row index
@@ -59,7 +59,7 @@ public class EditStoryActivity extends StoryActivityBase {
 		super.onCreate(savedInstanceState);
 		
 		// Setup the UI
-		setContentView(R.layout.edit_story_activity);
+		setContentView(R.layout.edit_gift_activity);
 		
 		// Start the Resolver to help us get/set data in the database
 		resolver = new PotlatchResolver(this);
@@ -152,12 +152,12 @@ public class EditStoryActivity extends StoryActivityBase {
 		Double latitude = Double.valueOf(latitudeEditable.toString());		
 		Double longitude = Double.valueOf(longitudeEditable.toString());
 		
-		long storyTime = StoryCreator.componentTimeToTimestamp(storyDate.getYear(),
+		long storyTime = GiftCreator.componentTimeToTimestamp(storyDate.getYear(),
 				storyDate.getMonth(), storyDate.getDayOfMonth(), 0, 0);
 
 		// Construct the Story Data Object
 		GiftData rValue = new GiftData(getUniqueKey(), mData.loginId,
-				mData.storyId, title, body, mData.audioLink, mData.videoLink,
+				mData.giftId, title, body, mData.audioLink, mData.videoLink,
 				imageName, mData.imageLink, tags, mData.creationTime,
 				storyTime, latitude, longitude);
 
@@ -195,7 +195,7 @@ public class EditStoryActivity extends StoryActivityBase {
 			
 			// set the EditTexts to the current values
 			loginIdET.setText(Long.valueOf(storyData.loginId).toString());  
-			storyIdET.setText(Long.valueOf(storyData.storyId).toString());
+			storyIdET.setText(Long.valueOf(storyData.giftId).toString());
 			titleET.setText(storyData.title);
 			bodyET.setText(storyData.body);
 			imageNameET.setText(storyData.imageName);

@@ -3,7 +3,7 @@ package com.pataniqa.coursera.potlatch.ui;
 import java.io.File;
 
 import com.pataniqa.coursera.potlatch.storage.PotlatchResolver;
-import com.pataniqa.coursera.potlatch.storage.StoryCreator;
+import com.pataniqa.coursera.potlatch.storage.GiftCreator;
 import com.pataniqa.coursera.potlatch.storage.GiftData;
 
 import android.app.AlertDialog;
@@ -24,9 +24,9 @@ import com.pataniqa.coursera.potlatch.R;
 /**
  * This activity lets a user view a story in full screen mode.
  */
-public class ViewStoryActivity extends StoryActivityBase {
+public class ViewGiftActivity extends GiftActivityBase {
 
-	private static final String LOG_TAG = ViewStoryActivity.class
+	private static final String LOG_TAG = ViewGiftActivity.class
 			.getCanonicalName();
 	
 	// The StoryData we're displaying
@@ -64,7 +64,7 @@ public class ViewStoryActivity extends StoryActivityBase {
 		super.onCreate(savedInstanceState);
 		
 		// Set up the UI
-		setContentView(R.layout.view_story_activity);
+		setContentView(R.layout.view_gift_activity);
 		
 		// Create a resolver to help us retrieve data from the database
 		resolver = new PotlatchResolver(this);	
@@ -128,15 +128,15 @@ public class ViewStoryActivity extends StoryActivityBase {
 			
 			// Fill in the appropriate UI elements
 			loginIdTV.setText(Long.valueOf(storyData.loginId).toString());
-			storyIdTV.setText(Long.valueOf(storyData.storyId).toString());
+			storyIdTV.setText(Long.valueOf(storyData.giftId).toString());
 			titleTV.setText(String.valueOf(storyData.title).toString());
 			bodyTV.setText(String.valueOf(storyData.body).toString());
 			audioLinkTV.setText(String.valueOf(storyData.audioLink).toString());
 			videoLinkTV.setText(String.valueOf(storyData.videoLink).toString());
 			imageNameTV.setText(String.valueOf(storyData.imageName).toString());
 			tagsTV.setText(String.valueOf(storyData.tags).toString());
-			creationTimeTV.setText(StoryCreator.getStringDate(storyData.creationTime));
-			storyTimeTV.setText(StoryCreator.getStringDate(storyData.storyTime));
+			creationTimeTV.setText(GiftCreator.getStringDate(storyData.creationTime));
+			storyTimeTV.setText(GiftCreator.getStringDate(storyData.giftTime));
 
 			latitudeTV.setText(Double.valueOf(storyData.latitude).toString());
 			longitudeTV.setText(Double.valueOf(storyData.longitude).toString());

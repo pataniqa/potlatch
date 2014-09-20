@@ -152,7 +152,7 @@ public class PotlatchResolver {
 		// make return object
 		ArrayList<GiftData> rValue = new ArrayList<GiftData>();
 		// convert cursor to reutrn object
-		rValue.addAll(StoryCreator.getStoryDataArrayListFromCursor(result));
+		rValue.addAll(GiftCreator.getStoryDataArrayListFromCursor(result));
 		result.close();
 		
 		//close the database

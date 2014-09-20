@@ -5,26 +5,6 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <!-- Row for Buttons -->
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="3dp" >
-
-    </LinearLayout>
-
-    <EditText
-        android:id="@+id/story_listview_tags_filter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/story_list_filter_hint" >
-
-        <requestFocus />
-    </EditText>
-
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipe_container"
@@ -40,7 +20,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
             </ListView>
+            
         </ScrollView>
+        
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

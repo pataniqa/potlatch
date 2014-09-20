@@ -5,7 +5,7 @@ import java.util.Locale;
 
 import com.pataniqa.coursera.potlatch.storage.PotlatchResolver;
 import com.pataniqa.coursera.potlatch.storage.StorageUtilities;
-import com.pataniqa.coursera.potlatch.storage.StoryCreator;
+import com.pataniqa.coursera.potlatch.storage.GiftCreator;
 import com.pataniqa.coursera.potlatch.storage.GiftData;
 
 import android.content.Context;
@@ -29,10 +29,10 @@ import com.pataniqa.coursera.potlatch.R;
 /**
  * The activity that allows a user to create and save a story.
  */
-public class CreateStoryActivity extends StoryActivityBase {
+public class CreateGiftActivity extends GiftActivityBase {
 
 	// Tag used for debugging with Logcat
-	private final static String LOG_TAG = CreateStoryActivity.class
+	private final static String LOG_TAG = CreateGiftActivity.class
 			.getCanonicalName();
 
 	// Used as the request codes in startActivityForResult().
@@ -80,7 +80,7 @@ public class CreateStoryActivity extends StoryActivityBase {
 		super.onCreate(savedInstanceState);
 		
 		// Setup the UI
-		setContentView(R.layout.create_story_activity);
+		setContentView(R.layout.create_gift_activity);
 		
 		// Start a resolver to help us store/retrieve data from a database
 		resolver = new PotlatchResolver(this);
@@ -187,7 +187,7 @@ public class CreateStoryActivity extends StoryActivityBase {
 		
 		creationTime = cal2.getTimeInMillis();
 				
-		storyTime = StoryCreator.componentTimeToTimestamp(storyDate.getYear(),
+		storyTime = GiftCreator.componentTimeToTimestamp(storyDate.getYear(),
 				storyDate.getMonth(), storyDate.getDayOfMonth(), 0, 0);
 
 		// new StoryData object with above info
@@ -354,12 +354,12 @@ public class CreateStoryActivity extends StoryActivityBase {
 		Log.d(LOG_TAG, "CreateFragment onActivtyResult called. requestCode: "
 				+ requestCode + " resultCode:" + resultCode + "data:" + data);
 		
-		if (requestCode == CreateStoryActivity.CAMERA_PIC_REQUEST) {
-			if (resultCode == CreateStoryActivity.RESULT_OK) {
+		if (requestCode == CreateGiftActivity.CAMERA_PIC_REQUEST) {
+			if (resultCode == CreateGiftActivity.RESULT_OK) {
 				// Image captured and saved to fileUri specified in the Intent
 				imagePathFinal = imagePath;
 				imageLocation.setText(imagePathFinal.toString());
-			} else if (resultCode == CreateStoryActivity.RESULT_CANCELED) {
+			} else if (resultCode == CreateGiftActivity.RESULT_CANCELED) {
 				// User cancelled the image capture
 			} else {
 				// Image capture failed, advise user
@@ -368,7 +368,7 @@ public class CreateStoryActivity extends StoryActivityBase {
 						.show();
 			}
 		} 
-		else if (requestCode == CreateStoryActivity.MIC_SOUND_REQUEST) {
+		else if (requestCode == CreateGiftActivity.MIC_SOUND_REQUEST) {
 			// If we successfully recorded sound, grab the results.
 			if (resultCode == SoundRecordActivity.RESULT_OK) {
 				audioPath = (String) data.getExtras().get("data"); 

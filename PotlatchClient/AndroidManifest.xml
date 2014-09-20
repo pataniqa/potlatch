@@ -27,7 +27,7 @@
         android:largeHeap="true"
         android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
         <activity
-            android:name="com.pataniqa.coursera.potlatch.ui.ListStoryActivity"
+            android:name="com.pataniqa.coursera.potlatch.ui.ListGiftsActivity"
             android:label="@string/title_activity_main" />
         
         <activity android:name="com.pataniqa.coursera.potlatch.ui.LoginActivity">  
@@ -38,16 +38,16 @@
         </activity>
         
         <!-- THIS IS THE CREATION ACTIVITY -->
-        <activity android:name="com.pataniqa.coursera.potlatch.ui.CreateStoryActivity" 
+        <activity android:name="com.pataniqa.coursera.potlatch.ui.CreateGiftActivity" 
             android:permission="android.permission.ACCESS_FINE_LOCATION"> 
         </activity>
         
         <!-- THIS IS THE SINGLE VIEW ACTIVITY -->
-        <activity android:name="com.pataniqa.coursera.potlatch.ui.ViewStoryActivity" >
+        <activity android:name="com.pataniqa.coursera.potlatch.ui.ViewGiftActivity" >
         </activity>
         
         <!-- THIS IS THE EDIT ACTIVITY -->
-        <activity android:name="com.pataniqa.coursera.potlatch.ui.EditStoryActivity" > 
+        <activity android:name="com.pataniqa.coursera.potlatch.ui.EditGiftActivity" > 
         </activity>
         
         <!-- THIS IS THE SOUND RECORD ACTIVITY -->
