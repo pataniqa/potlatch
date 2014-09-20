@@ -24,7 +24,6 @@ public class GiftCreator {
      */
     public static ContentValues getCVfromGift(final GiftData data) {
         ContentValues rValue = new ContentValues();
-        rValue.put(PotlatchSchema.Gift.Cols.LOGIN_ID, data.loginId);
         rValue.put(PotlatchSchema.Gift.Cols.GIFT_ID, data.giftId);
         rValue.put(PotlatchSchema.Gift.Cols.TITLE, data.title);
         rValue.put(PotlatchSchema.Gift.Cols.DESCRIPTION, data.description);
@@ -67,7 +66,7 @@ public class GiftCreator {
                 .getColumnIndex(PotlatchSchema.Gift.Cols.VIDEO_URI));
         String imageUri = cursor.getString(cursor
                 .getColumnIndex(PotlatchSchema.Gift.Cols.IMAGE_URI));
-        return new GiftData(rowID, loginId, giftId, title, description, videoUri, imageUri);
+        return new GiftData(rowID, giftId, title, description, videoUri, imageUri);
     }
 
     /**

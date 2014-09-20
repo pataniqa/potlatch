@@ -7,14 +7,7 @@
     <string name="title_activity_main">Potlatch</string>
     <string name="authority">org.pataniqa.potlatch.provider.Provider</string>
 
-    <!-- ******************* Defined Colors ****************** -->
-    <color name="cyan">#00ffff</color>
-    <color name="gray">#808080</color>
-    <color name="lightblue">#add8e6</color>
-
-    <!-- **** Strings for View Activity for each Relation **** -->
-
-    <!-- location View Activity Strings -->
+    <!-- View / Activity Strings -->
     
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
@@ -57,5 +50,8 @@
     <string name="select_photo">Select photo</string>
     <string name="add_video">Create Video</string>
     <string name="gift_image_description">The Gift</string>
+    <string name="like">Like</string>
+    <string name="chain">Chain</string>
+    <string name="flag">Flag</string>
 
 </resources>

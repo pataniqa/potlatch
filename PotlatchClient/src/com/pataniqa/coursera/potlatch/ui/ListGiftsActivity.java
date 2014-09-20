@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -64,9 +63,6 @@ public class ListGiftsActivity extends GiftActivityBase implements SwipeRefreshL
 
         // Get the ListView that will be displayed
         ListView lv = (ListView) findViewById(android.R.id.list);
-
-        // customize the ListView in whatever desired ways.
-        lv.setBackgroundColor(Color.GRAY);
 
         // Instantiate the adapter using our local GiftData ArrayList.
         arrayAdapter = new GiftDataArrayAdaptor(this, R.layout.gift_listview_custom_row, giftData);

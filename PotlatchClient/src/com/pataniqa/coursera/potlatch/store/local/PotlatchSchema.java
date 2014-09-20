@@ -15,7 +15,7 @@ import android.provider.BaseColumns;
  * database access.
  */
 public class PotlatchSchema {
-
+    
     public static final String ORGANIZATIONAL_NAME = "org.pataniqa";
     public static final String PROJECT_NAME = "potlatch";
 

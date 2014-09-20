@@ -174,6 +174,7 @@ public class CreateGiftActivity extends GiftActivityBase {
                     Bitmap bmp = BitmapFactory.decodeFile(image.getAbsolutePath());
                     imageView.setVisibility(View.VISIBLE);
                     imageView.setImageBitmap(bmp);
+                    imageView.setScaleType(ScaleType.FIT_CENTER);
                 } else if (resultCode != CreateGiftActivity.RESULT_CANCELED) {
                     Toast.makeText(getApplicationContext(), "Image capture failed.",
                             Toast.LENGTH_LONG).show();
@@ -185,9 +186,9 @@ public class CreateGiftActivity extends GiftActivityBase {
             String[] filePath = { MediaStore.Images.Media.DATA };
             Cursor cursor = getContentResolver().query(selectedImage, filePath, null, null, null);
             cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePath[0]);
-            String picturePath = cursor.getString(columnIndex);
+            String picturePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
             cursor.close();
+            imagePathFinal = Uri.fromFile(new File(picturePath));
             Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
             imageView.setVisibility(View.VISIBLE);
             imageView.setImageBitmap(thumbnail);

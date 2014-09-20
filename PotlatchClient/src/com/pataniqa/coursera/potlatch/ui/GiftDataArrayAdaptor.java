@@ -3,11 +3,15 @@ package com.pataniqa.coursera.potlatch.ui;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,7 +45,7 @@ public class GiftDataArrayAdaptor extends ArrayAdapter<GiftData> {
      */
     public GiftDataArrayAdaptor(Context context, int resource, List<GiftData> items) {
         super(context, resource, items);
-        Log.v(LOG_TAG, "constructor()");
+        Log.v(LOG_TAG, "constructor");
         this.resource = resource;
     }
 
@@ -60,38 +64,39 @@ public class GiftDataArrayAdaptor extends ArrayAdapter<GiftData> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         // The view we need to fill out with data
-        LinearLayout todoView = null;
+        LinearLayout giftView = null;
 
         try {
             // Get the data from the ArrayList
             GiftData item = getItem(position);
 
-            // The ID of the data in the database
-            long KEY_ID = item.KEY_ID;
-            String title = item.title;
-
             // If there's no View to be recycled, instantiate a new View
             if (convertView == null) {
-                todoView = new LinearLayout(getContext());
-                String inflater = Context.LAYOUT_INFLATER_SERVICE;
-                LayoutInflater vi = (LayoutInflater) getContext().getSystemService(inflater);
-                vi.inflate(resource, todoView, true);
+                giftView = new LinearLayout(getContext());
+                LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                vi.inflate(resource, giftView, true);
             } else {
                 // Otherwise, use the View that's already been instantiated
-                todoView = (LinearLayout) convertView;
+                giftView = (LinearLayout) convertView;
             }
-
-            TextView KEY_IDTV = (TextView) todoView.findViewById(R.id.gift_listview_custom_row_KEY_ID_textView);
-            KEY_IDTV.setText("Key ID: " + KEY_ID);
             
-            TextView titleTV = (TextView) todoView.findViewById(R.id.gift_listview_custom_row_title_textView);
-            titleTV.setText("" + title);
+            Bitmap thumbnail = (BitmapFactory.decodeFile(item.imageUri));
+            ImageView imageView = (ImageView) giftView.findViewById(R.id.gift_listview_custom_row_img);
+            imageView.setVisibility(View.VISIBLE);
+            imageView.setImageBitmap(thumbnail);
+            imageView.setScaleType(ScaleType.FIT_CENTER);
+
+            TextView titleTV = (TextView) giftView.findViewById(R.id.gift_listview_custom_row_title_textView);
+            titleTV.setText("" + item.title);
+            
+            TextView descriptionTV = (TextView) giftView.findViewById(R.id.gift_listview_custom_row_description_textView);
+            descriptionTV.setText("" + item.description);
 
         } catch (Exception e) {
             Toast.makeText(getContext(), "exception in ArrayAdpter: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
-        return todoView;
+        return giftView;
     }
 
 }

@@ -26,6 +26,8 @@ import com.pataniqa.coursera.potlatch.store.IPotlatchStore;
  * 
  */
 public class PotlatchResolver implements IPotlatchStore {
+    
+    private static final String LOG_TAG = PotlatchSchema.class.getCanonicalName();
 
     private static final String tableName = "PotlatchTable";
 
@@ -50,11 +52,12 @@ public class PotlatchResolver implements IPotlatchStore {
             createTable.append("create table if not exists " + tableName + " (");
             createTable.append(PotlatchSchema.Gift.Cols.ID + " integer primary key autoincrement ");
             for (Map.Entry<String, String> entry : PotlatchSchema.Gift.COLUMNS.entrySet()) {
-                createTable.append(", " + entry.getKey() + " " + entry.getValue());
+                if (!entry.getKey().equals(PotlatchSchema.Gift.Cols.ID))
+                    createTable.append(", " + entry.getKey() + " " + entry.getValue());
             }
             createTable.append(");");
 
-            Log.d("PotlatchResolver", "onCreate() called: " + createTable.toString());
+            Log.d(LOG_TAG, "onCreate() called: " + createTable.toString());
 
             try {
                 db.execSQL(createTable.toString());
@@ -93,7 +96,7 @@ public class PotlatchResolver implements IPotlatchStore {
      * @return number of GiftData rows deleted
      * @throws RemoteException
      */
-    public int deleteGiftData(final String selection, final String[] selectionArgs)
+    private int deleteGiftData(final String selection, final String[] selectionArgs)
             throws RemoteException {
         SQLiteDatabase db = helper.getWritableDatabase();
         int res = db.delete(tableName, selection, selectionArgs);
@@ -133,7 +136,7 @@ public class PotlatchResolver implements IPotlatchStore {
      * @return number of rows changed
      * @throws RemoteException
      */
-    public int updateGiftData(final GiftData values, final String selection,
+    private int updateGiftData(final GiftData values, final String selection,
             final String[] selectionArgs) throws RemoteException {
 
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -153,7 +156,7 @@ public class PotlatchResolver implements IPotlatchStore {
      * @return an ArrayList containing all the GiftData objects
      * @throws RemoteException
      */
-    public ArrayList<GiftData> getAllGiftData() throws RemoteException {
+    private ArrayList<GiftData> getAllGiftData() throws RemoteException {
         return queryGiftData(null, null, null, null);
     }
 
@@ -181,6 +184,9 @@ public class PotlatchResolver implements IPotlatchStore {
     @Override
     public ArrayList<GiftData> getGiftsThatMatchTitle(String title) throws RemoteException {
         // create String that will match with 'like' in query
+        if (title == null || title.isEmpty())
+            return getAllGiftData();
+        
         String filterWord = "%" + title + "%";
 
         // Get all the GiftData in the database
