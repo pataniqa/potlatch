@@ -67,8 +67,8 @@ public class CreateGiftActivity extends GiftActivityBase {
 
         // Get references to all the UI elements
         imageView = (ImageView) findViewById(R.id.gift_create_img);
-        titleInput = (EditText) findViewById(R.id.gift_create_value_title);
-        descriptionInput = (EditText) findViewById(R.id.gift_create_value_description);
+        titleInput = (EditText) findViewById(R.id.gift_create_title);
+        descriptionInput = (EditText) findViewById(R.id.gift_create_description);
 
         // Start a resolver to help us store/retrieve data from a database
         resolver = new PotlatchResolver(this);

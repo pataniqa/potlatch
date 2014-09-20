@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/GiftCreateRelativeLayout"
+    android:id="@+id/gift_create_relative_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:orientation="horizontal" >
 
     <ScrollView
-        android:id="@+id/scrollView1"
+        android:id="@+id/gift_create_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -15,7 +15,7 @@
         android:layout_marginBottom="55dp" >
 
         <RelativeLayout
-            android:id="@+id/giftRelativeLayout"
+            android:id="@+id/gift_create_relative_layout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -32,7 +32,7 @@
                 android:contentDescription="@string/gift_image_description" />
 
             <LinearLayout
-                android:id="@+id/image_creator_buttons"
+                android:id="@+id/gift_create_linear_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/gift_create_img"
@@ -48,7 +48,7 @@
                     android:contentDescription="@string/select_photo" />
 
                 <ImageButton
-                    android:id="@+id/gift_create_new_image_button"
+                    android:id="@+id/gift_new_image_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="addPhotoClicked"
@@ -56,7 +56,7 @@
                     android:contentDescription="@string/add_photo" />
 
                 <ImageButton
-                    android:id="@+id/gift_create_new_video_button"
+                    android:id="@+id/gift_new_video_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="addVideoClicked"
@@ -65,21 +65,21 @@
             </LinearLayout>
 
             <EditText
-                android:id="@+id/gift_create_value_title"
+                android:id="@+id/gift_create_title"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/image_creator_buttons"
+                android:layout_below="@+id/gift_create_linear_layout"
                 android:hint="@string/title"
                 android:inputType="text"
                 android:text="@string/empty_default_value" />
 
             <EditText
-                android:id="@+id/gift_create_value_description"
+                android:id="@+id/gift_create_description"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/gift_create_value_title"
+                android:layout_below="@+id/gift_create_title"
                 android:gravity="top|left"
                 android:hint="@string/description"
                 android:inputType="textMultiLine"
@@ -99,7 +99,7 @@
         android:orientation="horizontal" >
 
         <ImageButton
-            android:id="@+id/gift_create_button_save"
+            android:id="@+id/gift_create_save_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="buttonCreateClicked"
@@ -107,7 +107,7 @@
             android:contentDescription="@string/create" />
 
         <ImageButton
-            android:id="@+id/gift_create_button_cancel"
+            android:id="@+id/gift_create_cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="buttonCancelClicked"
