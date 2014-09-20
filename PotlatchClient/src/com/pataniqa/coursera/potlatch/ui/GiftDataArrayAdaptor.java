@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.storage.GiftData;
+import com.pataniqa.coursera.potlatch.model.GiftData;
 
 /**
  * This is an ArrayAdapter for an array of GiftData. It is used by the ListView

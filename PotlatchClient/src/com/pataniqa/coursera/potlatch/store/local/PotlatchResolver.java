@@ -1,4 +1,4 @@
-package com.pataniqa.coursera.potlatch.storage;
+package com.pataniqa.coursera.potlatch.store.local;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -12,7 +12,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.pataniqa.coursera.potlatch.provider.PotlatchSchema;
+import com.pataniqa.coursera.potlatch.model.GiftData;
+import com.pataniqa.coursera.potlatch.store.IPotlatchStore;
 
 /**
  * This used to be a wrapper for a ContentResolver to a single URI, which would
@@ -24,7 +25,7 @@ import com.pataniqa.coursera.potlatch.provider.PotlatchSchema;
  * storing GiftData in the default SQLite Database that is hosted by the device.
  * 
  */
-public class PotlatchResolver {
+public class PotlatchResolver implements IPotlatchStore {
 
     private static final String tableName = "PotlatchTable";
 
@@ -100,15 +101,9 @@ public class PotlatchResolver {
         return res;
     }
 
-    /**
-     * Insert a new GiftData object into the database
-     * 
-     * @param gift object to be inserted
-     * @return row ID of inserted GiftData in the ContentProvider
-     * @throws RemoteException
-     */
+    @Override
     public long insert(final GiftData gift) throws RemoteException {
-        ContentValues tempCV = gift.getCV();
+        ContentValues tempCV = GiftCreator.getCVfromGift(gift); 
         tempCV.remove(PotlatchSchema.Gift.Cols.ID);
         SQLiteDatabase db = helper.getWritableDatabase();
         long res = db.insert(tableName, null, tempCV);
@@ -116,16 +111,7 @@ public class PotlatchResolver {
         return res;
     }
 
-    /**
-     * Query the database for GiftData conforming to certain specifications.
-     * 
-     * @param projection
-     * @param selection
-     * @param selectionArgs
-     * @param sortOrder
-     * @return an ArrayList of GiftData objects
-     * @throws RemoteException
-     */
+    @Override
     public ArrayList<GiftData> queryGiftData(final String[] projection, final String selection,
             final String[] selectionArgs, final String sortOrder) throws RemoteException {
         SQLiteDatabase db = helper.getReadableDatabase();
@@ -151,7 +137,7 @@ public class PotlatchResolver {
             final String[] selectionArgs) throws RemoteException {
 
         SQLiteDatabase db = helper.getWritableDatabase();
-        int res = db.update(tableName, values.getCV(), selection, selectionArgs);
+        int res = db.update(tableName, GiftCreator.getCVfromGift(values), selection, selectionArgs);
         db.close();
         return res;
     }
@@ -171,13 +157,7 @@ public class PotlatchResolver {
         return queryGiftData(null, null, null, null);
     }
 
-    /**
-     * Get a GiftData from the data stored at the given rowID
-     * 
-     * @param rowID
-     * @return GiftData at the given rowID
-     * @throws RemoteException
-     */
+    @Override
     public GiftData getGiftDataViaRowID(final long rowID) throws RemoteException {
         String[] selectionArgs = { String.valueOf(rowID) };
         ArrayList<GiftData> results = queryGiftData(null, PotlatchSchema.Gift.Cols.ID + "= ?",
@@ -185,33 +165,27 @@ public class PotlatchResolver {
         return results.size() > 0 ? results.get(0) : null;
     }
 
-    /**
-     * Delete All rows, from AllGift table, that have the given rowID. (Should
-     * only be 1 row, but Content Providers/SQLite3 deletes all rows with
-     * provided rowID)
-     * 
-     * @param rowID
-     * @return number of rows deleted
-     * @throws RemoteException
-     */
+    @Override
     public int deleteAllGiftWithRowID(long rowID) throws RemoteException {
         String[] args = { String.valueOf(rowID) };
         return deleteGiftData(PotlatchSchema.Gift.Cols.ID + " = ? ", args);
     }
 
-    /**
-     * Updates all GiftData stored with the provided GiftData's 'KEY_ID' (should
-     * only be 1 row of data in the content provider, but content provider
-     * implementation will update EVERY row that matches.)
-     * 
-     * @param data
-     * @return number of rows altered
-     * @throws RemoteException
-     */
+    @Override
     public int updateGiftWithID(GiftData data) throws RemoteException {
         String selection = "_id = ?";
         String[] selectionArgs = { String.valueOf(data.KEY_ID) };
         return updateGiftData(data, selection, selectionArgs);
+    }
+
+    @Override
+    public ArrayList<GiftData> getGiftsThatMatchTitle(String title) throws RemoteException {
+        // create String that will match with 'like' in query
+        String filterWord = "%" + title + "%";
+
+        // Get all the GiftData in the database
+        return queryGiftData(null, PotlatchSchema.Gift.Cols.TITLE
+                + " LIKE ? ", new String[] { filterWord }, null);
     }
 
 }

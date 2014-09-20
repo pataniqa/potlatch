@@ -1,4 +1,4 @@
-package com.pataniqa.coursera.potlatch.storage;
+package com.pataniqa.coursera.potlatch.store.local;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,7 +7,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.text.format.DateFormat;
 
-import com.pataniqa.coursera.potlatch.provider.PotlatchSchema;
+import com.pataniqa.coursera.potlatch.model.GiftData;
 
 /**
  * GiftCreator is a helper class that does convenience functions for converting

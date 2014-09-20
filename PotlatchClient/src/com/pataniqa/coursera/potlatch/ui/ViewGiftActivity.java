@@ -16,8 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.storage.GiftData;
-import com.pataniqa.coursera.potlatch.storage.PotlatchResolver;
+import com.pataniqa.coursera.potlatch.model.GiftData;
+import com.pataniqa.coursera.potlatch.store.IPotlatchStore;
+import com.pataniqa.coursera.potlatch.store.local.PotlatchResolver;
 
 /**
  * This activity lets a user view a Gift in full screen mode.
@@ -39,7 +40,7 @@ public class ViewGiftActivity extends GiftActivityBase {
     private ImageView imageView;
 
     // Helps us retrieve data from the database
-    private PotlatchResolver resolver;
+    private IPotlatchStore resolver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

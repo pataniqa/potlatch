@@ -9,8 +9,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.storage.GiftData;
-import com.pataniqa.coursera.potlatch.storage.PotlatchResolver;
+import com.pataniqa.coursera.potlatch.model.GiftData;
+import com.pataniqa.coursera.potlatch.store.IPotlatchStore;
+import com.pataniqa.coursera.potlatch.store.local.PotlatchResolver;
 
 public class EditGiftActivity extends GiftActivityBase {
 
@@ -27,7 +28,7 @@ public class EditGiftActivity extends GiftActivityBase {
     private EditText imageMetaDataET;
 
     // custom ContentResolver wrapper.
-    private PotlatchResolver resolver;
+    private IPotlatchStore resolver;
 
     private GiftData giftData;
 

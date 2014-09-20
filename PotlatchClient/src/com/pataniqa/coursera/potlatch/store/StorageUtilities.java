@@ -1,4 +1,4 @@
-package com.pataniqa.coursera.potlatch.storage;
+package com.pataniqa.coursera.potlatch.store;
 
 import java.io.File;
 import java.text.SimpleDateFormat;

@@ -24,9 +24,10 @@ import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.storage.GiftData;
-import com.pataniqa.coursera.potlatch.storage.PotlatchResolver;
-import com.pataniqa.coursera.potlatch.storage.StorageUtilities;
+import com.pataniqa.coursera.potlatch.model.GiftData;
+import com.pataniqa.coursera.potlatch.store.IPotlatchStore;
+import com.pataniqa.coursera.potlatch.store.StorageUtilities;
+import com.pataniqa.coursera.potlatch.store.local.PotlatchResolver;
 
 /**
  * The activity that allows a user to create and save a Gift.
@@ -51,7 +52,7 @@ public class CreateGiftActivity extends GiftActivityBase {
     private Uri imagePathFinal = null;
     private Uri videoPathFinal = null;
 
-    private PotlatchResolver resolver;
+    private IPotlatchStore resolver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,4 +1,4 @@
-package com.pataniqa.coursera.potlatch.provider;
+package com.pataniqa.coursera.potlatch.store.local;
 
 import java.util.Map;
 import java.util.TreeMap;

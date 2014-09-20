@@ -19,16 +19,16 @@ import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.provider.PotlatchSchema;
-import com.pataniqa.coursera.potlatch.storage.GiftData;
-import com.pataniqa.coursera.potlatch.storage.PotlatchResolver;
+import com.pataniqa.coursera.potlatch.model.GiftData;
+import com.pataniqa.coursera.potlatch.store.IPotlatchStore;
+import com.pataniqa.coursera.potlatch.store.local.PotlatchResolver;
 
 public class ListGiftsActivity extends GiftActivityBase implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final String LOG_TAG = ListGiftsActivity.class.getCanonicalName();
 
     // A resolver that helps us store/retrieve data from the database
-    private PotlatchResolver resolver;
+    private IPotlatchStore resolver;
 
     // Used as a native container for the stories we retrieve from the database
     private ArrayList<GiftData> giftData;
@@ -154,15 +154,8 @@ public class ListGiftsActivity extends GiftActivityBase implements SwipeRefreshL
             // Clear our local cache of GiftData
             giftData.clear();
 
-            // create String that will match with 'like' in query
-            String filterWord = "%" + giftQuery + "%";
-
-            // Get all the GiftData in the database
-            ArrayList<GiftData> currentList2 = resolver.queryGiftData(null, PotlatchSchema.Gift.Cols.TITLE
-                    + " LIKE ? ", new String[] { filterWord }, null);
-
             // Add all of them to our local ArrayList
-            giftData.addAll(currentList2);
+            giftData.addAll(resolver.getGiftsThatMatchTitle(giftQuery));
 
             // Let the ArrayAdaptor know that we changed the data in its array.
             arrayAdapter.notifyDataSetChanged();

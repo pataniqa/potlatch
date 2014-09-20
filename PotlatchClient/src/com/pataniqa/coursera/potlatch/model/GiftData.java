@@ -1,6 +1,5 @@
-package com.pataniqa.coursera.potlatch.storage;
+package com.pataniqa.coursera.potlatch.model;
 
-import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -100,16 +99,6 @@ public class GiftData implements Parcelable {
     }
 
     /**
-     * Helper Method that allows easy conversion of object's data into an
-     * appropriate ContentValues
-     * 
-     * @return contentValues A new ContentValues object
-     */
-    public ContentValues getCV() {
-        return GiftCreator.getCVfromGift(this);
-    }
-
-    /**
      * Clone this object into a new GiftData
      */
     public GiftData clone() {
@@ -124,7 +113,6 @@ public class GiftData implements Parcelable {
         return 0;
     }
 
-    
     /**
      * Used for writing a copy of this object to a Parcel, do not manually call.
      */
