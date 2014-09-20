@@ -20,51 +20,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <!-- loginId -->
-
-            <TextView
-                android:id="@+id/story_view_label_login_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_gravity="left"
-                android:text="@string/story_view_label_login_id"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/story_view_value_login_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_view_label_login_id"
-                android:text="@string/story_view_edittext_login_id_default_value"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-            <!-- storyId -->
-
-            <TextView
-                android:id="@+id/story_view_label_story_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_view_value_story_id"
-                android:layout_alignBottom="@+id/story_view_value_story_id"
-                android:layout_alignParentLeft="true"
-                android:layout_gravity="left"
-                android:text="@string/story_view_label_story_id"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/story_view_value_story_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_view_value_login_id"
-                android:text="@string/story_view_edittext_story_id_default_value"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:visibility="gone" />
             <!-- title -->
 
             <TextView
@@ -72,7 +27,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/story_view_value_login_id"
                 android:layout_gravity="left"
                 android:text="@string/story_view_label_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"

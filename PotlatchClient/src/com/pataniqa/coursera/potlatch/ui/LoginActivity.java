@@ -21,11 +21,11 @@ import com.pataniqa.coursera.potlatch.storage.StorageUtilities;
 public class LoginActivity extends GiftActivityBase{
 
 	// A tag used for debugging with Logcat
-	static final String LOG_TAG = LoginActivity.class.getCanonicalName();
+	private static final String LOG_TAG = LoginActivity.class.getCanonicalName();
 	
 	// The edit texts used
-	EditText mLoginId;
-	EditText mPassword;
+	private EditText mLoginId;
+	private EditText mPassword;
 	
 	// Make sure we use maximum security to store login credentials
 	static final int MAX_SECURITY = Integer.MAX_VALUE;

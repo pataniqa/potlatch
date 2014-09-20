@@ -1,8 +1,7 @@
 package com.pataniqa.coursera.potlatch.storage;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
+import java.util.Date;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -78,41 +77,12 @@ public class GiftCreator {
     }
 
     /**
-     * A convenience function for converting a date expressed in minutes, days,
-     * and hours into a millisecond time stamp.
-     * 
-     * @param year
-     * @param month
-     * @param day
-     * @param hour
-     * @param minute
-     * @return
-     */
-    public static long componentTimeToTimestamp(int year, int month, int day, int hour, int minute) {
-
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, month);
-        c.set(Calendar.DAY_OF_MONTH, day);
-        c.set(Calendar.HOUR, hour);
-        c.set(Calendar.MINUTE, minute);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
-
-        return c.getTimeInMillis();
-    }
-
-    /**
-     * A convenience function for converting a millisecond time stamp into a
-     * String format
+     * Converting a millisecond time stamp into a String
      * 
      * @param timestamp
-     * @return
+     * @return The date in dd-MM-yyyy format
      */
     public static String getStringDate(long timestamp) {
-        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-        cal.setTimeInMillis(timestamp);
-        String date = DateFormat.format("dd-MM-yyyy", cal).toString();
-        return date;
+        return DateFormat.format("dd-MM-yyyy", new Date(timestamp)).toString();
     }
 }

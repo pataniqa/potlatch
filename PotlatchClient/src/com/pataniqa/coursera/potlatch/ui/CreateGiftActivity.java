@@ -1,16 +1,12 @@
 package com.pataniqa.coursera.potlatch.ui;
 
-import java.util.Calendar;
-
 import android.content.Intent;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +21,6 @@ import com.pataniqa.coursera.potlatch.storage.StorageUtilities;
  */
 public class CreateGiftActivity extends GiftActivityBase {
 
-    // Tag used for debugging with Logcat
     private final static String LOG_TAG = CreateGiftActivity.class.getCanonicalName();
 
     // Used as the request codes in startActivityForResult().
@@ -35,24 +30,14 @@ public class CreateGiftActivity extends GiftActivityBase {
     // The various UI elements we use
     private EditText titleET;
     private EditText bodyET;
-    private Button videoCaptureButton;
     private EditText imageNameET;
-    private Button imageCaptureButton;
     private TextView imageLocation;
-    private TextView videoLocation;
-    private Button buttonCreate;
-    private Button buttonClear;
-    private Button buttonCancel;
 
     // Making this static keeps it from getting GC'd when we take pictures
-    static Uri imagePath; 
-    Uri fileUri;
-    String audioPath;
-    Location loc;
-
-    PotlatchResolver resolver;
-
-    Uri imagePathFinal = null;
+    private static Uri imagePath; 
+    private Uri fileUri;
+    private PotlatchResolver resolver;
+    private Uri imagePathFinal = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,16 +52,8 @@ public class CreateGiftActivity extends GiftActivityBase {
         // Get references to all the UI elements
         titleET = (EditText) findViewById(R.id.gift_create_value_title);
         bodyET = (EditText) findViewById(R.id.gift_create_value_body);
-        videoCaptureButton = (Button) findViewById(R.id.gift_create_value_video_button);
         imageNameET = (EditText) findViewById(R.id.gift_create_value_image_name);
-        imageCaptureButton = (Button) findViewById(R.id.gift_create_value_image_button);
-
         imageLocation = (TextView) findViewById(R.id.gift_create_value_image_location);
-        videoLocation = (TextView) findViewById(R.id.gift_create_value_video_location);
-
-        buttonClear = (Button) findViewById(R.id.story_create_button_reset);
-        buttonCancel = (Button) findViewById(R.id.story_create_button_cancel);
-        buttonCreate = (Button) findViewById(R.id.story_create_button_save);
     }
 
     // Reset all the fields to their default values
@@ -100,9 +77,6 @@ public class CreateGiftActivity extends GiftActivityBase {
         Editable titleCreateable = titleET.getText();
         Editable bodyCreateable = bodyET.getText();
         Editable imageNameCreateable = imageNameET.getText();
-
-        Calendar cal = Calendar.getInstance();
-        cal.getTimeInMillis();
 
         long loginId = 0;
         long storyId = 0;

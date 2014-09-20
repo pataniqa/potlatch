@@ -5,7 +5,6 @@ import android.os.RemoteException;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,11 +18,10 @@ import com.pataniqa.coursera.potlatch.storage.PotlatchResolver;
  */
 public class EditGiftActivity extends GiftActivityBase {
 
-    // The tag used for debugging with Logcat
-    final static public String LOG_TAG = EditGiftActivity.class.getCanonicalName();
+    private final static String LOG_TAG = EditGiftActivity.class.getCanonicalName();
 
     // variable for passing around row index
-    final static public String rowIdentifyerTAG = "index";
+    public final static String rowIdentifyerTAG = "index";
 
     // The TextViews and EditTexts we use
     private TextView loginIdET;
@@ -32,11 +30,6 @@ public class EditGiftActivity extends GiftActivityBase {
     private EditText bodyET;
     private EditText imageNameET;
     private EditText imageMetaDataET;
-
-    // Button(s) used
-    private Button saveButton;
-    private Button resetButton;
-    private Button cancelButton;
 
     // custom ContentResolver wrapper.
     private PotlatchResolver resolver;
@@ -52,11 +45,6 @@ public class EditGiftActivity extends GiftActivityBase {
 
         // Start the Resolver to help us get/set data in the database
         resolver = new PotlatchResolver(this);
-
-        // Get the Buttons
-        saveButton = (Button) findViewById(R.id.story_edit_button_save);
-        resetButton = (Button) findViewById(R.id.story_edit_button_reset);
-        cancelButton = (Button) findViewById(R.id.story_edit_button_cancel);
 
         // Get the EditTexts
         loginIdET = (TextView) findViewById(R.id.story_edit_login_id);
