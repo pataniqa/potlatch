@@ -3,7 +3,9 @@ package com.pataniqa.coursera.potlatch.ui;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
+import android.widget.EditText;
 
 /**
  * Base class for all GiftData UI activities.
@@ -43,5 +45,17 @@ abstract class GiftActivity extends Activity {
         Intent intent = new Intent();
         intent.setClass(this, ListGiftsActivity.class);
         startActivity(intent);
+    }
+    
+    public static String editTextToString(EditText et) {
+        return String.valueOf(et.getText().toString());
+    }
+    
+    public static String uriToString(Uri u) {
+        return u != null ? u.toString() : "";
+    }
+    
+    public static Uri stringToUri(String s) {
+        return !s.isEmpty() ? Uri.parse(s) : null;
     }
 }

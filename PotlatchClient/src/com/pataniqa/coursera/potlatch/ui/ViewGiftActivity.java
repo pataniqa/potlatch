@@ -36,9 +36,9 @@ abstract class ViewGiftActivity extends GiftActivity {
     private final static String LOG_TAG = CreateGiftActivity.class.getCanonicalName();
 
     // Used as the request codes in startActivityForResult().
-    static final int CAMERA_PIC_REQUEST = 1;
-    static final int GALLERY_PIC_REQUEST = 2;
-    static final int CAMERA_VIDEO_REQUEST = 3;
+    private static final int CAMERA_PIC_REQUEST = 1;
+    private static final int GALLERY_PIC_REQUEST = 2;
+    private static final int CAMERA_VIDEO_REQUEST = 3;
 
     // The various UI elements we use
     protected EditText titleInput;
@@ -124,8 +124,7 @@ abstract class ViewGiftActivity extends GiftActivity {
         try {
             resolver.insert(newData);
         } catch (RemoteException e) {
-            Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage());
-            e.printStackTrace();
+            Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }
 
         finish();
@@ -142,7 +141,7 @@ abstract class ViewGiftActivity extends GiftActivity {
                 + "data:" + data);
 
         switch (requestCode) {
-        case CreateGiftActivity.CAMERA_PIC_REQUEST:
+        case CAMERA_PIC_REQUEST:
             if (resultCode == CreateGiftActivity.RESULT_OK) {
                 imagePathFinal = imagePath;
                 File image = new File(imagePathFinal.getPath());
@@ -159,7 +158,7 @@ abstract class ViewGiftActivity extends GiftActivity {
                 }
             }
             break;
-        case CreateGiftActivity.GALLERY_PIC_REQUEST:
+        case GALLERY_PIC_REQUEST:
             Uri selectedImage = data.getData();
             String[] filePath = { MediaStore.Images.Media.DATA };
             Cursor cursor = getContentResolver().query(selectedImage, filePath, null, null, null);
@@ -172,7 +171,7 @@ abstract class ViewGiftActivity extends GiftActivity {
             imageView.setImageBitmap(thumbnail);
             imageView.setScaleType(ScaleType.FIT_CENTER);
             break;
-        case CreateGiftActivity.CAMERA_VIDEO_REQUEST:
+        case CAMERA_VIDEO_REQUEST:
             if (resultCode == CreateGiftActivity.RESULT_OK) {
                 videoPathFinal = videoPath;
             } else if (resultCode != CreateGiftActivity.RESULT_CANCELED) {
@@ -188,11 +187,10 @@ abstract class ViewGiftActivity extends GiftActivity {
     }
 
     protected GiftData makeGiftDataFromUI() {
-        String title = String.valueOf(titleInput.getText().toString());
-        String description = String.valueOf(descriptionInput.getText().toString());
-        String videoUri = videoPathFinal != null ? videoPathFinal.toString() : "";
-        String imageData = imagePathFinal != null ? imagePathFinal.toString() : "";
+        String title = editTextToString(titleInput);
+        String description = editTextToString(descriptionInput);
+        String videoUri = uriToString(videoPathFinal);
+        String imageData = uriToString(imagePathFinal);
         return new GiftData(getUniqueKey(), title, description, videoUri, imageData);
     }
-
 }

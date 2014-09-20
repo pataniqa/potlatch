@@ -76,7 +76,7 @@ public class GiftDataArrayAdaptor extends ArrayAdapter<GiftData> {
         } catch (Exception e) {
             Toast.makeText(getContext(), "exception in ArrayAdpter: " + e.getMessage(),
                     Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
+            Log.e(LOG_TAG, e.getMessage(), e);
         }
 
         return giftView;

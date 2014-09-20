@@ -156,8 +156,7 @@ public class ListGiftsActivity extends GiftActivity implements
             // Let the ArrayAdaptor know that we changed the data in its array.
             arrayAdapter.notifyDataSetChanged();
         } catch (Exception e) {
-            Log.e(LOG_TAG, "Error connecting to Content Provider" + e.getMessage());
-            e.printStackTrace();
+            Log.e(LOG_TAG, "Error connecting to Content Provider" + e.getMessage(), e);
         }
     }
 

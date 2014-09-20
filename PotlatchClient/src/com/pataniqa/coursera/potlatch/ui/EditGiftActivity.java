@@ -56,14 +56,13 @@ public class EditGiftActivity extends ViewGiftActivity {
                 imageView.setImageURI(Uri.parse(giftData.imageUri));
                 imageView.setVisibility(View.VISIBLE);
                 imageView.setScaleType(ScaleType.FIT_CENTER);
-                imagePathFinal = !giftData.imageUri.isEmpty() ? Uri.parse(giftData.imageUri) : null;
-                videoPathFinal = !giftData.videoUri.isEmpty() ? Uri.parse(giftData.videoUri) : null;
+                imagePathFinal = stringToUri(giftData.imageUri);
+                videoPathFinal = stringToUri(giftData.videoUri);
                 return true;
             }
             return false;
         } catch (RemoteException e) {
-            Log.d(LOG_TAG, "" + e.getMessage());
-            e.printStackTrace();
+            Log.e(LOG_TAG, "" + e.getMessage(), e);
             return false;
         }
     }
@@ -75,11 +74,8 @@ public class EditGiftActivity extends ViewGiftActivity {
             try {
                 resolver.updateGiftWithID(gift);
             } catch (RemoteException e) {
-                e.printStackTrace();
-                return;
+                Log.e(LOG_TAG, "" + e.getMessage(), e);
             }
-        } else {
-            return;
         }
 
         finish();
@@ -89,8 +85,7 @@ public class EditGiftActivity extends ViewGiftActivity {
         try {
             resolver.deleteAllGiftWithRowID(getUniqueKey());
         } catch (RemoteException e) {
-            e.printStackTrace();
-            return;
+            Log.e(LOG_TAG, "" + e.getMessage(), e);
         }
         finish();
     }
