@@ -24,8 +24,8 @@ public class LoginActivity extends GiftActivityBase{
 	private static final String LOG_TAG = LoginActivity.class.getCanonicalName();
 	
 	// The edit texts used
-	private EditText mLoginId;
-	private EditText mPassword;
+	private EditText loginId;
+	private EditText password;
 	
 	// Make sure we use maximum security to store login credentials
 	static final int MAX_SECURITY = Integer.MAX_VALUE;
@@ -40,8 +40,8 @@ public class LoginActivity extends GiftActivityBase{
 		setContentView(R.layout.login_activity);
 		
 		//Find the edit texts
-		mLoginId = (EditText) findViewById(R.id.username);
-		mPassword = (EditText) findViewById(R.id.password);
+		loginId = (EditText) findViewById(R.id.username);
+		password = (EditText) findViewById(R.id.password);
 	}
 
 	/**
@@ -114,9 +114,9 @@ public class LoginActivity extends GiftActivityBase{
 		File loginFile = getLoginFile(this);
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(loginFile));	
-			writer.write(mLoginId.getText().toString());
+			writer.write(loginId.getText().toString());
 			writer.newLine();
-			writer.write(mPassword.getText().toString());
+			writer.write(password.getText().toString());
 			writer.newLine();
 			writer.close();
 		} catch (Exception e) {

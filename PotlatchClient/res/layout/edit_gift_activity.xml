@@ -92,7 +92,7 @@
                 android:layout_alignBaseline="@+id/gift_edit_body"
                 android:layout_alignBottom="@+id/gift_edit_body"
                 android:layout_alignParentLeft="true"
-                android:text="@string/body"
+                android:text="@string/description"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText

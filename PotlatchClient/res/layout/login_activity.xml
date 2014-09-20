@@ -36,7 +36,7 @@
         android:layout_marginRight="10dip"
         android:background="#a0ffffff"
         android:padding="12dp"
-        android:hint="@string/login_activity_email"
+        android:hint="@string/email"
         android:inputType="text" >
     </EditText>
 

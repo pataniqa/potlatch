@@ -59,9 +59,9 @@ public class ViewGiftActivity extends GiftActivityBase {
         imageMetaDataView = (ImageView) findViewById(R.id.gift_view_value_image_meta_data);
 
         // Set the default values
-        titleTV.setText("" + "");
-        bodyTV.setText("" + "");
-        videoLinkTV.setText("" + "");
+        titleTV.setText("");
+        bodyTV.setText("");
+        videoLinkTV.setText("");
 
         try {
             // Fill out all the UI elements with data from our GiftData
@@ -70,7 +70,6 @@ public class ViewGiftActivity extends GiftActivityBase {
             Toast.makeText(this, "Error retrieving information from local data store.",
                     Toast.LENGTH_LONG).show();
             Log.e(LOG_TAG, "Error getting Gift data from C.P.");
-            // e.printStackTrace();
         }
 
     }
@@ -123,12 +122,12 @@ public class ViewGiftActivity extends GiftActivityBase {
     private void deleteButtonPressed() {
         String message;
 
-        message = getResources().getString(R.string.gift_view_deletion_dialog_message);
+        message = getResources().getString(R.string.confirm_delete);
 
         // Show a dialog confirming that the user wants to delete this Gift
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle(R.string.gift_view_deletion_dialog_title)
+                .setTitle(R.string.closing_activity)
                 .setMessage(message)
                 .setPositiveButton(R.string.yes,
                         new DialogInterface.OnClickListener() {

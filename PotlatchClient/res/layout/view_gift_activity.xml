@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/gift_view_label_title"
-                android:text="@string/gift_view_edittext_title_default_value"
+                android:text="@string/title"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
             <!-- body -->
 
@@ -49,7 +49,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/gift_view_value_title"
                 android:layout_gravity="left"
-                android:text="@string/body"
+                android:text="@string/description"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold" />
 
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/gift_view_label_body"
-                android:text="@string/gift_view_edittext_body_default_value"
+                android:text="@string/description"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <!-- videoLink -->
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/gift_view_label_video_link"
-                android:text="@string/gift_view_edittext_video_link_default_value"
+                android:text="@string/video_link"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:visibility="gone" />
 
@@ -109,7 +109,7 @@
                 android:layout_below="@+id/gift_view_value_video_link"
                 android:contentDescription="Content desc."
                 android:src="@drawable/ic_launcher"
-                android:text="@string/gift_view_edittext_image_meta_data_default_value"
+                android:text="@string/image_meta_data"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:visibility="gone" />
 

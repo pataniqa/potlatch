@@ -24,6 +24,8 @@ import com.pataniqa.coursera.potlatch.provider.PotlatchSchema;
  */
 public class PotlatchResolver {
 
+    private static final String tableName = "PotlatchTable";
+    
 	// A private instance of our locally defined mSQLiteOpenHelper
 	private mSQLiteOpenHelper helper;
 
@@ -69,9 +71,6 @@ public class PotlatchResolver {
 		}
 		
 	}
-	
-	// The name of the table that will store our Gift data in the database
-	private static final String tableName = "PotlatchTable";
 	
 	/**
 	 * Constructor
@@ -128,10 +127,6 @@ public class PotlatchResolver {
 		return res;
 	}
 
-	/*
-	 * Query for each ORM Data Type
-	 */
-
 	/**
 	 * Query the database for GiftData conforming to certain specifications.
 	 * 
@@ -161,10 +156,6 @@ public class PotlatchResolver {
 		// return 'return object'
 		return rValue;
 	}
-
-	/*
-	 * Update for each ORM Data Type
-	 */
 
 	/**
 	 * Update the specified GiftData with new values.

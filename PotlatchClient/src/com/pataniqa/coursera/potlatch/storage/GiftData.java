@@ -1,14 +1,5 @@
 package com.pataniqa.coursera.potlatch.storage;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -125,19 +116,19 @@ public class GiftData implements Parcelable {
         return new GiftData(loginId, giftId, title, body, videoLink, imageLink);
     }
 
-    // these are for parcelable interface
-    @Override
     /**
      * Used for writing a copy of this object to a Parcel, do not manually call.
      */
+    @Override
     public int describeContents() {
         return 0;
     }
 
-    @Override
+    
     /**
      * Used for writing a copy of this object to a Parcel, do not manually call.
      */
+    @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(KEY_ID);
         dest.writeLong(loginId);
@@ -174,50 +165,4 @@ public class GiftData implements Parcelable {
         imageLink = in.readString();
     }
 
-    /**
-     * Creates a GiftData object from a JSONObject
-     * 
-     * @param jsonObject
-     * @throws JSONException
-     */
-    public static GiftData createObjectFromJSON(JSONObject jsonObject) throws JSONException {
-
-        boolean hasKeyID = false;
-        String key = null;
-        if (jsonObject.has("key")) {
-            key = (String) jsonObject.get("key");
-            hasKeyID = true;
-        }
-
-        String href = null;
-        if (!jsonObject.isNull("href")) {
-            href = (String) jsonObject.get("href");
-        }
-
-        long loginId = jsonObject.getLong("loginId");
-        long giftId = jsonObject.getLong("giftId");
-        String title = (String) jsonObject.get("title");
-        JSONObject bodyJson = (JSONObject) jsonObject.get("body");
-        String body = (String) bodyJson.get("value");
-        String videoLink = (String) jsonObject.get("videoLink");
-        String imageMetaData = (String) jsonObject.get("imageLink");
-
-        GiftData rValue = null;
-        if (hasKeyID == true) {
-            rValue = new GiftData(key, href, loginId, giftId, title, body, videoLink, imageMetaData);
-        } else {
-            rValue = new GiftData(loginId, giftId, title, body, videoLink, imageMetaData);
-        }
-        return rValue;
-    }
-
-    public UrlEncodedFormEntity getUrlEncodedFormEntity() throws UnsupportedEncodingException {
-        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("loginId", "" + loginId));
-        params.add(new BasicNameValuePair("giftId", "" + giftId));
-        params.add(new BasicNameValuePair("title", title));
-        params.add(new BasicNameValuePair("body", body));
-        params.add(new BasicNameValuePair("videoLink", videoLink));
-        return new UrlEncodedFormEntity(params);
-    }
 }

@@ -56,8 +56,8 @@ public class CreateGiftActivity extends GiftActivityBase {
 
     // Reset all the fields to their default values
     public void buttonClearClicked(View v) {
-        titleET.setText("" + "");
-        bodyET.setText("" + "");
+        titleET.setText("");
+        bodyET.setText("");
     }
 
     // Close this activity if the cancel button is clicked

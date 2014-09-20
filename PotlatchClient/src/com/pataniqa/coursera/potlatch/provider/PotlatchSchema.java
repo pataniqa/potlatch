@@ -1,5 +1,8 @@
 package com.pataniqa.coursera.potlatch.provider;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 import android.content.ContentValues;
 import android.net.Uri;
 import android.provider.BaseColumns;
@@ -31,13 +34,13 @@ public class PotlatchSchema {
         public static final String PATH = "gift";
         public static final int PATH_TOKEN = 110;
 
-        public static final String PATH_FOR_ID = "gift/*";
+        public static final String PATH_FOR_ID = PATH + "/*";
         public static final int PATH_FOR_ID_TOKEN = 120;
 
         // URI for all content stored as gift entity
         public static final Uri CONTENT_URI = BASE_URI.buildUpon().appendPath(PATH).build();
 
-        private final static String MIME_TYPE_END = "gift";
+        private final static String MIME_TYPE_END = PATH;
 
         // define the MIME type of data in the content provider
         public static final String CONTENT_TYPE_DIR = ORGANIZATIONAL_NAME + ".cursor.dir/"
@@ -45,43 +48,51 @@ public class PotlatchSchema {
         public static final String CONTENT_ITEM_TYPE = ORGANIZATIONAL_NAME + ".cursor.item/"
                 + ORGANIZATIONAL_NAME + "." + MIME_TYPE_END;
 
+        private static final String INTEGER = "integer";
+        private static final String TEXT = "text";
+        
+        private static Map<String, String> columns = new TreeMap<String, String>() {
+            {
+                put(Cols.ID, INTEGER);
+                put(Cols.LOGIN_ID, INTEGER);
+                put(Cols.GIFT_ID, INTEGER);
+                put(Cols.TITLE, TEXT);
+                put(Cols.BODY, TEXT);
+                put(Cols.VIDEO_LINK, TEXT);
+                put(Cols.IMAGE_LINK, TEXT);
+            }
+        };
+
         // the names and order of ALL columns, including internal use ones
-        public static final String[] ALL_COLUMN_NAMES = { Cols.ID, Cols.LOGIN_ID, Cols.GIFT_ID,
-                Cols.TITLE, Cols.BODY, Cols.VIDEO_LINK, Cols.IMAGE_LINK };
+        public static final String[] ALL_COLUMN_NAMES = columns.keySet().toArray(
+                new String[columns.keySet().size()]);
 
         // the names and order of ALL column types, including internal use ones
         // (for use with SQLite)
-        public static final String[] ALL_COLUMN_TYPES = { "integer", "integer", "integer", "text",
-                "text", "text", "text", "text" };
+        public static final String[] ALL_COLUMN_TYPES = columns.values().toArray(
+                new String[columns.values().size()]);
 
         public static ContentValues initializeWithDefault(final ContentValues assignedValues) {
             // final Long now = Long.valueOf(System.currentTimeMillis());
             final ContentValues setValues = (assignedValues == null) ? new ContentValues()
                     : assignedValues;
-            if (!setValues.containsKey(Cols.LOGIN_ID)) {
-                setValues.put(Cols.LOGIN_ID, 0);
-            }
-            if (!setValues.containsKey(Cols.GIFT_ID)) {
-                setValues.put(Cols.GIFT_ID, 0);
-            }
-            if (!setValues.containsKey(Cols.TITLE)) {
-                setValues.put(Cols.TITLE, "");
-            }
-            if (!setValues.containsKey(Cols.BODY)) {
-                setValues.put(Cols.BODY, "");
-            }
-            if (!setValues.containsKey(Cols.VIDEO_LINK)) {
-                setValues.put(Cols.VIDEO_LINK, "");
-            }
-            if (!setValues.containsKey(Cols.IMAGE_LINK)) {
-                setValues.put(Cols.IMAGE_LINK, "");
+            for (Map.Entry<String, String> entry : columns.entrySet()) {
+                String key = entry.getKey(); 
+                if (!key.equals(Cols.ID)) {
+                    if (!setValues.containsKey(key)) {
+                        if (entry.getValue().equals(INTEGER))
+                            setValues.put(key, 0);
+                        else
+                            setValues.put(key, "");
+                    }
+                }
             }
             return setValues;
         }
 
         // a static class to store columns in entity
         public static class Cols {
-            public static final String ID = BaseColumns._ID; // convention
+            public static final String ID = BaseColumns._ID; 
             // The name and column index of each column in your database
             public static final String LOGIN_ID = "LOGIN_ID";
             public static final String GIFT_ID = "GIFT_ID";
