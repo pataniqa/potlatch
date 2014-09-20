@@ -4,19 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Custom ORM container class, for Gift Data.
- * <p>
- * This class is meant as a helper class for those working with the
- * ContentProvider and SQLiteDatabase. The use of this class is completely
- * optional.
- * <p>
- * ORM = Object Relational Mapping
- * http://en.wikipedia.org/wiki/Object-relational_mapping
- * <p>
- * This class is a simple one-off POJO class with some simple ORM additions that
- * allow for conversion between the incompatible types of the POJO java classes,
- * the 'ContentValues', and the 'Cursor' classes from the use with
- * ContentProviders or SQLiteDatabases.
+ * Stores information about gifts.
  * 
  */
 public class GiftData implements Parcelable {

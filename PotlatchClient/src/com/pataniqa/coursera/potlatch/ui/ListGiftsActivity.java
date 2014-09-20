@@ -27,14 +27,8 @@ public class ListGiftsActivity extends GiftActivity implements
 
     private static final String LOG_TAG = ListGiftsActivity.class.getCanonicalName();
 
-    // A resolver that helps us store/retrieve data from the database
     private IPotlatchStore resolver;
-
-    // Used as a native container for the stories we retrieve from the database
     private ArrayList<GiftData> giftData;
-
-    // An adapter that lets the ListView correctly display the data in our
-    // ArrayList.
     private GiftDataArrayAdaptor arrayAdapter;
 
     private String giftQuery = "";
@@ -66,7 +60,6 @@ public class ListGiftsActivity extends GiftActivity implements
         // Instantiate the adapter using our local GiftData ArrayList.
         arrayAdapter = new GiftDataArrayAdaptor(this, R.layout.gift_listview_custom_row, giftData);
 
-        // Update our GiftData ArrayList with data from the database
         updateGifts();
 
         // Tell the ListView which adapter to use to display the data.
@@ -112,6 +105,12 @@ public class ListGiftsActivity extends GiftActivity implements
         });
 
         return true;
+    }
+    
+    @Override
+    protected void onResume () {
+        super.onResume();
+        updateGifts();
     }
 
     private void setGiftQuery(String query) {

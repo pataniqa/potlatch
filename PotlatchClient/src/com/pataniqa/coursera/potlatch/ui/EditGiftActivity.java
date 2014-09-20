@@ -37,7 +37,6 @@ public class EditGiftActivity extends ViewGiftActivity {
         titleInput = (EditText) findViewById(R.id.gift_create_title);
         descriptionInput = (EditText) findViewById(R.id.gift_create_description);
 
-        // Start a resolver to help us store/retrieve data from a database
         resolver = new PotlatchResolver(this);
 
         // set the EditTexts to this Gift's Values
