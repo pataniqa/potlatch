@@ -59,6 +59,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/flag"
             android:onClick="actionFlag"
+            android:layout_marginRight="40dp"
             android:src="@drawable/ic_action_warning" />
 
         <ImageButton
@@ -67,7 +68,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/chain"
             android:onClick="actionChain"
-            android:src="@drawable/ic_action_attachment" />
+            android:src="@drawable/ic_action_forward" />
     </LinearLayout>
 
 </LinearLayout>

@@ -22,7 +22,8 @@ import com.pataniqa.coursera.potlatch.model.GiftData;
 import com.pataniqa.coursera.potlatch.store.IPotlatchStore;
 import com.pataniqa.coursera.potlatch.store.local.PotlatchResolver;
 
-public class ListGiftsActivity extends GiftActivityBase implements SwipeRefreshLayout.OnRefreshListener {
+public class ListGiftsActivity extends GiftActivityBase implements
+        SwipeRefreshLayout.OnRefreshListener {
 
     private static final String LOG_TAG = ListGiftsActivity.class.getCanonicalName();
 
@@ -51,18 +52,17 @@ public class ListGiftsActivity extends GiftActivityBase implements SwipeRefreshL
         getActionBar().setDisplayShowHomeEnabled(false);
         setContentView(R.layout.list_gifts_activity);
         getActionBar().show();
-        
+
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         swipeLayout.setOnRefreshListener(this);
-        swipeLayout.setColorScheme(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
-                android.R.color.holo_orange_light, android.R.color.holo_red_light);
+        swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light, android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         // Instantiate the resolver and the ArrayList
         resolver = new PotlatchResolver(this);
         giftData = new ArrayList<GiftData>();
 
-        // Get the ListView that will be displayed
-        ListView lv = (ListView) findViewById(android.R.id.list);
 
         // Instantiate the adapter using our local GiftData ArrayList.
         arrayAdapter = new GiftDataArrayAdaptor(this, R.layout.gift_listview_custom_row, giftData);
@@ -71,10 +71,11 @@ public class ListGiftsActivity extends GiftActivityBase implements SwipeRefreshL
         updateGifts();
 
         // Tell the ListView which adapter to use to display the data.
-        lv.setAdapter(arrayAdapter);
+        ListView listView = (ListView) findViewById(android.R.id.list);
+        listView.setAdapter(arrayAdapter);
 
         // Set the click listener for the list view
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Log.d(LOG_TAG, "onListItemClick");
                 Log.d(LOG_TAG, "position: " + position + "id = " + (giftData.get(position)).KEY_ID);
@@ -163,13 +164,13 @@ public class ListGiftsActivity extends GiftActivityBase implements SwipeRefreshL
 
     @Override
     public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
+        new Handler().post(new Runnable() {
             @Override
             public void run() {
                 swipeLayout.setRefreshing(false);
                 updateGifts();
             }
-        }, 5000);
+        });
 
     }
 }
