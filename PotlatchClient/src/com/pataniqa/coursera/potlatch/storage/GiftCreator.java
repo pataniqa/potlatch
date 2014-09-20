@@ -33,7 +33,6 @@ public class GiftCreator {
         rValue.put(PotlatchSchema.Gift.Cols.VIDEO_LINK, data.videoLink);
         rValue.put(PotlatchSchema.Gift.Cols.IMAGE_NAME, data.imageName);
         rValue.put(PotlatchSchema.Gift.Cols.IMAGE_LINK, data.imageLink);
-        rValue.put(PotlatchSchema.Gift.Cols.TAGS, data.tags);
         return rValue;
     }
 
@@ -76,7 +75,7 @@ public class GiftCreator {
 
         // construct the returned object
         GiftData rValue = new GiftData(rowID, loginId, giftId, title, body, audioLink, videoLink, imageName,
-                imageMetaData, tags);
+                imageMetaData);
 
         return rValue;
     }

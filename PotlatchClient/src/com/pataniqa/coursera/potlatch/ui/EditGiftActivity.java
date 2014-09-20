@@ -33,7 +33,6 @@ public class EditGiftActivity extends GiftActivityBase {
     EditText imageNameET;
     EditText imageMetaDataET;
     EditText audioLinkET;
-    EditText tagsET;
 
     // Button(s) used
     Button saveButton;
@@ -68,7 +67,6 @@ public class EditGiftActivity extends GiftActivityBase {
         audioLinkET = (EditText) findViewById(R.id.story_edit_audio_link);
         imageNameET = (EditText) findViewById(R.id.story_edit_image_name);
         imageMetaDataET = (EditText) findViewById(R.id.story_edit_image_meta_data);
-        tagsET = (EditText) findViewById(R.id.story_edit_tags);
 
         // set the EditTexts to this Story's Values
         setValuesToDefault();
@@ -126,18 +124,15 @@ public class EditGiftActivity extends GiftActivityBase {
         Editable titleEditable = titleET.getText();
         Editable bodyEditable = bodyET.getText();
         Editable imageNameEditable = imageMetaDataET.getText();
-        Editable tagsEditable = tagsET.getText();
 
         // Pull values from Editables
         String title = titleEditable.toString();
         String body = bodyEditable.toString();
         String imageName = imageNameEditable.toString();
 
-        String tags = tagsEditable.toString();
-
         // Construct the Story Data Object
         GiftData rValue = new GiftData(getUniqueKey(), mData.loginId, mData.giftId, title, body, mData.audioLink,
-                mData.videoLink, imageName, mData.imageLink, tags);
+                mData.videoLink, imageName, mData.imageLink);
 
         // Make sure the new StoryData has the same key as the old one so that
         // it will
@@ -180,7 +175,6 @@ public class EditGiftActivity extends GiftActivityBase {
             bodyET.setText(storyData.body);
             imageNameET.setText(storyData.imageName);
             imageMetaDataET.setText(storyData.imageLink);
-            tagsET.setText(storyData.tags);
             return true;
         }
         return false;

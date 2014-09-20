@@ -21,47 +21,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <!-- login_id label/value pair -->
-
-            <TextView
-                android:id="@+id/gift_create_label_login_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/gift_create_value_login_id"
-                android:layout_alignBottom="@+id/gift_create_value_login_id"
-                android:layout_alignParentLeft="true"
-                android:text="@string/gift_create_label_login_id" />
-
-            <TextView
-                android:id="@+id/gift_create_value_login_id"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:text="@string/gift_create_login_id_default_value" />
-
-            <!-- gift_id label/value pair -->
-
-            <TextView
-                android:id="@+id/gift_create_label_story_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/gift_create_value_story_id"
-                android:layout_alignBottom="@+id/gift_create_value_story_id"
-                android:layout_alignParentLeft="true"
-                android:text="@string/gift_create_label_story_id"
-                android:visibility="gone" />
-
-            <EditText
-                android:id="@+id/gift_create_value_story_id"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/gift_create_value_login_id"
-                android:inputType="text"
-                android:text="@string/gift_create_story_id_default_value"
-                android:visibility="gone" />
-
             <!-- title label/value pair -->
 
             <TextView
@@ -78,7 +37,6 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/gift_create_value_story_id"
                 android:inputType="text"
                 android:text="@string/gift_create_title_default_value" />
 
@@ -208,26 +166,6 @@
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/gift_create_value_image_button"
                 android:text="" />
-
-            <!-- tags label/value pair -->
-
-            <TextView
-                android:id="@+id/gift_create_label_tags"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/gift_create_value_tags"
-                android:layout_alignBottom="@+id/gift_create_value_tags"
-                android:layout_alignParentLeft="true"
-                android:text="@string/gift_create_label_tags" />
-
-            <EditText
-                android:id="@+id/gift_create_value_tags"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/gift_create_value_image_location"
-                android:inputType="text"
-                android:text="@string/gift_create_tags_default_value" />
 
         </RelativeLayout>
     </ScrollView>

@@ -85,9 +85,6 @@ public class GiftDataArrayAdaptor extends ArrayAdapter<GiftData> {
             TextView KEY_IDTV = (TextView) todoView.findViewById(R.id.story_listview_custom_row_KEY_ID_textView);
             KEY_IDTV.setText("Key ID: " + KEY_ID);
             
-            TextView tagsTV = (TextView) todoView.findViewById(R.id.story_listview_custom_row_tags_textView);
-            tagsTV.setText("" + item.tags.toString());
-            
             TextView titleTV = (TextView) todoView.findViewById(R.id.story_listview_custom_row_title_textView);
             titleTV.setText("" + title);
 

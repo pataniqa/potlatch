@@ -34,16 +34,12 @@ public class CreateGiftActivity extends GiftActivityBase {
 	static final int MIC_SOUND_REQUEST = 3;
 
 	// The various UI elements we use
-	TextView loginIdTV;
-	EditText storyIdET;
 	EditText titleET;
 	EditText bodyET;
 	Button audioCaptureButton;
 	Button videoCaptureButton;
 	EditText imageNameET;
 	Button imageCaptureButton;
-	EditText tagsET;
-	EditText storyTimeET;
 
 	TextView imageLocation;
 	TextView videoLocation;
@@ -73,15 +69,12 @@ public class CreateGiftActivity extends GiftActivityBase {
 		resolver = new PotlatchResolver(this);
 		
 		// Get references to all the UI elements
-		loginIdTV = (TextView) findViewById(R.id.gift_create_value_login_id);
-		storyIdET = (EditText) findViewById(R.id.gift_create_value_story_id);
 		titleET = (EditText) findViewById(R.id.gift_create_value_title);
 		bodyET = (EditText) findViewById(R.id.gift_create_value_body);
 		audioCaptureButton = (Button) findViewById(R.id.gift_create_value_audio_link);
 		videoCaptureButton = (Button) findViewById(R.id.gift_create_value_video_button);
 		imageNameET = (EditText) findViewById(R.id.gift_create_value_image_name);
 		imageCaptureButton = (Button) findViewById(R.id.gift_create_value_image_button);
-		tagsET = (EditText) findViewById(R.id.gift_create_value_tags);
 
 		imageLocation = (TextView) findViewById(R.id.gift_create_value_image_location);
 		videoLocation = (TextView) findViewById(R.id.gift_create_value_video_location);
@@ -90,19 +83,13 @@ public class CreateGiftActivity extends GiftActivityBase {
 		buttonClear = (Button) findViewById(R.id.story_create_button_reset);
 		buttonCancel = (Button) findViewById(R.id.story_create_button_cancel);
 		buttonCreate = (Button) findViewById(R.id.story_create_button_save);
-
-		//Set the login ID, if it's been set
-		loginIdTV.setText(String.valueOf(LoginActivity.getLoginId(this)));
-
 	}
 
 	// Reset all the fields to their default values
 	public void buttonClearClicked (View v) {
-		storyIdET.setText("" + 0);
 		titleET.setText("" + "");
 		bodyET.setText("" + "");
 		imageNameET.setText("" + "");
-		tagsET.setText("" + "");
 	}
 	
 	// Close this activity if the cancel button is clicked
@@ -118,7 +105,6 @@ public class CreateGiftActivity extends GiftActivityBase {
 		Editable titleCreateable = titleET.getText();
 		Editable bodyCreateable = bodyET.getText();
 		Editable imageNameCreateable = imageNameET.getText();
-		Editable tagsCreateable = tagsET.getText();
 		
 		Calendar cal = Calendar.getInstance();
 		cal.getTimeInMillis();
@@ -131,7 +117,6 @@ public class CreateGiftActivity extends GiftActivityBase {
 		String videoLink = "";
 		String imageName = "";
 		String imageData = "";
-		String tags = "";
 
 		// pull values from Editables
 		loginId = LoginActivity.getLoginId(this);
@@ -148,7 +133,6 @@ public class CreateGiftActivity extends GiftActivityBase {
 		if (imagePathFinal != null) {
 			imageData = imagePathFinal.toString();
 		}
-		tags = String.valueOf(tagsCreateable.toString());
 
 		// new StoryData object with above info
 		GiftData newData = new GiftData(
@@ -156,7 +140,7 @@ public class CreateGiftActivity extends GiftActivityBase {
 				// -1 row index, because there is no way to know which
 				// row it will go into
 				loginId, storyId, title, body, audioLink, videoLink,
-				imageName, imageData, tags);
+				imageName, imageData);
 		Log.d(LOG_TAG, "imageName"
 				+ imageNameET.getText());
 

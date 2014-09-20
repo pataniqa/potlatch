@@ -41,7 +41,6 @@ public class GiftData implements Parcelable {
 	public String videoLink;
 	public String imageName;
 	public String imageLink;
-	public String tags;
 
 	/**
 	 * Constructor WITHOUT _id, this creates a new object for insertion into the
@@ -55,11 +54,10 @@ public class GiftData implements Parcelable {
 	 * @param videoLink
 	 * @param imageName
 	 * @param imageLink
-	 * @param tags
 	 */
 	public GiftData(long loginId, long giftId, String title, String body,
 			String audioLink, String videoLink, String imageName,
-			String imageMetaData, String tags) {
+			String imageMetaData) {
 		this.KEY_ID = -1;
 		this.loginId = loginId;
 		this.giftId = giftId;
@@ -69,7 +67,6 @@ public class GiftData implements Parcelable {
 		this.videoLink = videoLink;
 		this.imageName = imageName;
 		this.imageLink = imageMetaData;
-		this.tags = tags;
 	}
 
 	/**
@@ -85,11 +82,10 @@ public class GiftData implements Parcelable {
 	 * @param videoLink
 	 * @param imageName
 	 * @param imageLink
-	 * @param tags
 	 */
 	public GiftData(long KEY_ID, long loginId, long giftId, String title,
 			String body, String audioLink, String videoLink, String imageName,
-			String imageLink, String tags) {
+			String imageLink) {
 		this.KEY_ID = KEY_ID;
 		this.loginId = loginId;
 		this.giftId = giftId;
@@ -99,7 +95,6 @@ public class GiftData implements Parcelable {
 		this.videoLink = videoLink;
 		this.imageName = imageName;
 		this.imageLink = imageLink;
-		this.tags = tags;
 	}
 
 	/**
@@ -110,8 +105,7 @@ public class GiftData implements Parcelable {
 		return " loginId: " + loginId + " giftId: " + giftId + " title: "
 				+ title + " body: " + body + " audioLink: " + audioLink
 				+ " videoLink: " + videoLink + " imageName: " + imageName
-				+ " imageLink: " + imageLink + " tags: " + tags
-				+ " href: " + href + " key: " + key;
+				+ " imageLink: " + imageLink + " href: " + href + " key: " + key;
 	}
 
 	/**
@@ -129,7 +123,7 @@ public class GiftData implements Parcelable {
 	 */
 	public GiftData clone() {
 		return new GiftData(loginId, giftId, title, body, audioLink,
-				videoLink, imageName, imageLink, tags);
+				videoLink, imageName, imageLink);
 	}
 
 	// these are for parcelable interface
@@ -155,7 +149,6 @@ public class GiftData implements Parcelable {
 		dest.writeString(videoLink);
 		dest.writeString(imageName);
 		dest.writeString(imageLink);
-		dest.writeString(tags);
 	}
 
 	/**
@@ -184,7 +177,6 @@ public class GiftData implements Parcelable {
 		videoLink = in.readString();
 		imageName = in.readString();
 		imageLink = in.readString();
-		tags = in.readString();
 	}
 
 	/**
@@ -217,15 +209,14 @@ public class GiftData implements Parcelable {
 		String videoLink = (String) jsonObject.get("videoLink");
 		String imageName = (String) jsonObject.get("imageName");
 		String imageMetaData = (String) jsonObject.get("imageLink");
-		String tags = (String) jsonObject.get("tags");
 
 		GiftData rValue = null;
 		if (hasKeyID == true) {
 			rValue = new GiftData(key, href, loginId, giftId, title, body,
-					audioLink, videoLink, imageName, imageMetaData, tags);
+					audioLink, videoLink, imageName, imageMetaData);
 		} else {
 			rValue = new GiftData(loginId, giftId, title, body, audioLink,
-					videoLink, imageName, imageMetaData, tags);
+					videoLink, imageName, imageMetaData);
 		}
 		return rValue;
 	}
@@ -240,7 +231,6 @@ public class GiftData implements Parcelable {
 		params.add(new BasicNameValuePair("audioLink", audioLink));
 		params.add(new BasicNameValuePair("videoLink", videoLink));
 		params.add(new BasicNameValuePair("imageName", imageName));
-		params.add(new BasicNameValuePair("tags", tags));
 		return new UrlEncodedFormEntity(params);
 	}
 
@@ -256,15 +246,10 @@ public class GiftData implements Parcelable {
 	 * @param videoLink
 	 * @param imageName
 	 * @param imageLink
-	 * @param tags
-	 * @param creationTime
-	 * @param giftTime
-	 * @param latitude
-	 * @param longitude
 	 */
 	public GiftData(String key, String href, long loginId, long giftId,
 			String title, String body, String audioLink, String videoLink,
-			String imageName, String imageMetaData, String tags) {
+			String imageName, String imageMetaData) {
 		this.href = href;
 		this.key = key;
 		this.KEY_ID = -1;
@@ -276,6 +261,5 @@ public class GiftData implements Parcelable {
 		this.videoLink = videoLink;
 		this.imageName = imageName;
 		this.imageLink = imageMetaData;
-		this.tags = tags;
 	}
 }

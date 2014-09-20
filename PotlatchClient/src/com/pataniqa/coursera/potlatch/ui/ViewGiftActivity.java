@@ -39,8 +39,6 @@ public class ViewGiftActivity extends GiftActivityBase {
     TextView videoLinkTV;
     TextView imageNameTV;
 
-    TextView tagsTV;
-
     ImageView imageMetaDataView;
 
     // buttons for edit and delete
@@ -71,9 +69,6 @@ public class ViewGiftActivity extends GiftActivityBase {
         audioLinkTV = (TextView) findViewById(R.id.story_view_value_audio_link);
         videoLinkTV = (TextView) findViewById(R.id.story_view_value_video_link);
         imageNameTV = (TextView) findViewById(R.id.story_view_value_image_name);
-
-        tagsTV = (TextView) findViewById(R.id.story_view_value_tags);
-
         imageMetaDataView = (ImageView) findViewById(R.id.story_view_value_image_meta_data);
 
         // Set the default values
@@ -84,7 +79,6 @@ public class ViewGiftActivity extends GiftActivityBase {
         audioLinkTV.setText("" + "");
         videoLinkTV.setText("" + "");
         imageNameTV.setText("" + "");
-        tagsTV.setText("" + "");
 
         editButton = (Button) findViewById(R.id.button_story_view_to_edit);
         deleteButton = (Button) findViewById(R.id.button_story_view_to_delete);
@@ -119,7 +113,6 @@ public class ViewGiftActivity extends GiftActivityBase {
             audioLinkTV.setText(String.valueOf(giftData.audioLink).toString());
             videoLinkTV.setText(String.valueOf(giftData.videoLink).toString());
             imageNameTV.setText(String.valueOf(giftData.imageName).toString());
-            tagsTV.setText(String.valueOf(giftData.tags).toString());
 
             Log.d(LOG_TAG, "image file path: " + giftData.imageLink);
 

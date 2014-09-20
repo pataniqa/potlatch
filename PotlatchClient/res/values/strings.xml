@@ -80,10 +80,8 @@
 
     <!-- story Create Activity Strings -->
 
-    <string name="gift_create_label_login_id">loginId:</string>
-    <string name="gift_create_label_story_id">storyId:</string>
-    <string name="gift_create_label_title">title:</string>
-    <string name="gift_create_label_body">body:</string>
+    <string name="gift_create_label_title">Title:</string>
+    <string name="gift_create_label_body">Description:</string>
     <string name="gift_create_label_audio_link">audioLink:</string>
     <string name="gift_create_label_video_link">videoLink:</string>
     <string name="gift_create_label_image_name">imageName:</string>
@@ -91,8 +89,6 @@
     <string name="gift_create_label_tags">tags:</string>
     <string name="gift_create_label_creation_time">creationTime:</string>
     <string name="gift_create_label_story_time">storyTime:</string>
-    <string name="story_create_label_latitude">latitude:</string>
-    <string name="story_create_label_longitude">longitude:</string>
     <string name="gift_create_login_id_default_value">0</string>
     <string name="gift_create_story_id_default_value">0</string>
     <string name="gift_create_title_default_value"></string>
