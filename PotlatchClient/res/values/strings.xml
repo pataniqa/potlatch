@@ -33,8 +33,6 @@
     <string name="story_view_edittext_tags_default_value">Tags</string>
     <string name="story_view_edittext_creation_time_default_value">CreationTime</string>
     <string name="story_view_edittext_story_time_default_value">StoryTime</string>
-    <string name="story_view_edittext_latitude_default_value">Latitude</string>
-    <string name="story_view_edittext_longitude_default_value">Longitude</string>
     <string name="story_view_label_login_id">LoginId</string>
     <string name="story_view_label_story_id">StoryId</string>
     <string name="story_view_label_title">Title</string>
@@ -43,11 +41,6 @@
     <string name="story_view_label_video_link">VideoLink</string>
     <string name="story_view_label_image_name">ImageName</string>
     <string name="story_view_label_image_meta_data">ImageData</string>
-    <string name="story_view_label_tags">Tags</string>
-    <string name="story_view_label_creation_time">Story Recording Date</string>
-    <string name="story_view_label_story_time">Story Occurrence Date</string>
-    <string name="story_view_label_latitude">Latitude</string>
-    <string name="story_view_label_longitude">Longitude</string>
 
     <!-- location View Activity Strings -->
     <string name="tags_view_button_label_delete">Delete</string>
@@ -87,21 +80,16 @@
     <string name="gift_create_label_image_name">imageName:</string>
     <string name="gift_create_label_image_meta_data">imageMetaData:</string>
     <string name="gift_create_label_tags">tags:</string>
-    <string name="gift_create_label_creation_time">creationTime:</string>
-    <string name="gift_create_label_story_time">storyTime:</string>
     <string name="gift_create_login_id_default_value">0</string>
     <string name="gift_create_story_id_default_value">0</string>
     <string name="gift_create_title_default_value"></string>
     <string name="gift_create_body_default_value"></string>
-    <string name="story_create_audio_link_default_value"></string>
     <string name="story_create_video_link_default_value"></string>
     <string name="gift_create_image_name_default_value"></string>
     <string name="story_create_image_meta_data_default_value"></string>
     <string name="gift_create_tags_default_value"></string>
     <string name="gift_create_creation_time_default_value">0</string>
     <string name="story_create_story_time_default_value">0</string>
-    <string name="story_create_latitude_default_value">0.0</string>
-    <string name="story_create_longitude_default_value">0.0</string>
     <string name="story_create_button_label_clear">Clear</string>
     <string name="story_create_button_label_cancel">Cancel</string>
     <string name="story_create_button_label_create">Create</string>
@@ -116,7 +104,6 @@
     <string name="tags_create_label_tag">tag:</string>
     <string name="tags_create_login_id_default_value">0</string>
     <string name="tags_create_story_id_default_value">0</string>
-    <string name="tags_create_tag_default_value"></string>
     <string name="tags_create_button_label_clear">Clear</string>
     <string name="tags_create_button_label_cancel">Cancel</string>
     <string name="tags_create_button_label_create">Create</string>
@@ -137,11 +124,6 @@
     <string name="story_edit_label_video_link">VideoLink</string>
     <string name="story_edit_label_image_name">ImageName</string>
     <string name="story_edit_label_image_meta_data">Image Name</string>
-    <string name="story_edit_label_tags">Tags</string>
-    <string name="story_edit_label_creation_time">CreationTime</string>
-    <string name="story_edit_label_story_time">StoryTime</string>
-    <string name="story_edit_label_latitude">Latitude</string>
-    <string name="story_edit_label_longitude">Longitude</string>
 
     <!-- story View Activity Strings : Default Values -->
 
@@ -153,11 +135,6 @@
     <string name="story_edit_default_value_video_link"></string>
     <string name="story_edit_default_value_image_name"></string>
     <string name="story_edit_default_value_image_meta_data"></string>
-    <string name="story_edit_default_value_tags"></string>
-    <string name="story_edit_default_value_creation_time"></string>
-    <string name="story_edit_default_value_story_time"></string>
-    <string name="story_edit_default_value_latitude"></string>
-    <string name="story_edit_default_value_longitude"></string>
 
     <!-- Login Activity Strings -->
     <string name="login_activity_login">Login</string>

@@ -53,9 +53,8 @@ public class PotlatchSchema {
 		// the names and order of ALL columns, including internal use ones
 		public static final String[] ALL_COLUMN_NAMES = { Cols.ID,
 				Cols.LOGIN_ID, Cols.GIFT_ID, Cols.TITLE, Cols.BODY,
-				Cols.AUDIO_LINK, Cols.VIDEO_LINK, Cols.IMAGE_NAME,
-				Cols.IMAGE_LINK, Cols.TAGS, Cols.CREATION_TIME,
-				Cols.GIFT_TIME, Cols.LATITUDE, Cols.LONGITUDE };
+				Cols.VIDEO_LINK, Cols.IMAGE_NAME,
+				Cols.IMAGE_LINK };
 
 		// the names and order of ALL column types, including internal use ones (for use with SQLite)
 		public static final String[] ALL_COLUMN_TYPES = { "integer",
@@ -81,9 +80,6 @@ public class PotlatchSchema {
 			if (!setValues.containsKey(Cols.BODY)) {
 				setValues.put(Cols.BODY, "");
 			}
-			if (!setValues.containsKey(Cols.AUDIO_LINK)) {
-				setValues.put(Cols.AUDIO_LINK, "");
-			}
 			if (!setValues.containsKey(Cols.VIDEO_LINK)) {
 				setValues.put(Cols.VIDEO_LINK, "");
 			}
@@ -92,21 +88,6 @@ public class PotlatchSchema {
 			}
 			if (!setValues.containsKey(Cols.IMAGE_LINK)) {
 				setValues.put(Cols.IMAGE_LINK, "");
-			}
-			if (!setValues.containsKey(Cols.TAGS)) {
-				setValues.put(Cols.TAGS, "");
-			}
-			if (!setValues.containsKey(Cols.CREATION_TIME)) {
-				setValues.put(Cols.CREATION_TIME, 0);
-			}
-			if (!setValues.containsKey(Cols.GIFT_TIME)) {
-				setValues.put(Cols.GIFT_TIME, 0);
-			}
-			if (!setValues.containsKey(Cols.LATITUDE)) {
-				setValues.put(Cols.LATITUDE, 0);
-			}
-			if (!setValues.containsKey(Cols.LONGITUDE)) {
-				setValues.put(Cols.LONGITUDE, 0);
 			}
 			return setValues;
 		}
@@ -119,15 +100,9 @@ public class PotlatchSchema {
 			public static final String GIFT_ID = "STORY_ID";
 			public static final String TITLE = "TITLE";
 			public static final String BODY = "BODY";
-			public static final String AUDIO_LINK = "AUDIO_LINK";
 			public static final String VIDEO_LINK = "VIDEO_LINK";
 			public static final String IMAGE_NAME = "IMAGE_NAME";
 			public static final String IMAGE_LINK = "IMAGE_LINK";
-			public static final String TAGS = "TAGS";
-			public static final String CREATION_TIME = "CREATION_TIME";
-			public static final String GIFT_TIME = "STORY_TIME";
-			public static final String LATITUDE = "LATITUDE";
-			public static final String LONGITUDE = "LONGITUDE";
 		}
 	}
 

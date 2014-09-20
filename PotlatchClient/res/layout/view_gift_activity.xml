@@ -107,29 +107,6 @@
                 android:layout_below="@+id/story_view_label_body"
                 android:text="@string/story_view_edittext_body_default_value"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-            <!-- audioLink -->
-
-            <TextView
-                android:id="@+id/story_view_label_audio_link"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/story_view_value_body"
-                android:layout_gravity="left"
-                android:text="@string/story_view_label_audio_link"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/story_view_value_audio_link"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_view_label_audio_link"
-                android:text="@string/story_view_edittext_audio_link_default_value"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:visibility="gone" />
 
             <!-- videoLink -->
 
@@ -138,7 +115,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/story_view_value_audio_link"
+                android:layout_below="@+id/story_view_label_body"
                 android:layout_gravity="left"
                 android:text="@string/story_view_label_video_link"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -206,116 +183,6 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:visibility="gone" />
 
-            <!-- tags -->
-
-            <TextView
-                android:id="@+id/story_view_label_tags"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/story_view_value_image_meta_data"
-                android:layout_gravity="left"
-                android:text="@string/story_view_label_tags"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/story_view_value_tags"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_view_label_tags"
-                android:text="@string/story_view_edittext_tags_default_value"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-            <!-- creationTime -->
-
-            <TextView
-                android:id="@+id/story_view_label_story_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/story_view_value_tags"
-                android:layout_gravity="left"
-                android:text="@string/story_view_label_story_time"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/story_view_value_story_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/story_view_label_story_time"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_view_value_story_time"
-                android:text="story time"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <!-- latitude -->
-
-            <TextView
-                android:id="@+id/story_view_label_creation_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_view_value_creation_time"
-                android:layout_alignBottom="@+id/story_view_value_creation_time"
-                android:layout_alignParentLeft="true"
-                android:layout_gravity="left"
-                android:text="@string/story_view_label_creation_time"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/story_view_value_creation_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_view_value_story_time"
-                android:text="@string/story_view_edittext_creation_time_default_value"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-            <!-- storyTime -->
-
-            <TextView
-                android:id="@+id/story_view_label_latitude"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_view_value_latitude"
-                android:layout_alignBottom="@+id/story_view_value_latitude"
-                android:layout_alignParentLeft="true"
-                android:layout_gravity="left"
-                android:text="@string/story_view_label_latitude"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/story_view_value_latitude"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_view_value_creation_time"
-                android:text="@string/story_view_edittext_latitude_default_value"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-            <!-- longitude -->
-
-            <TextView
-                android:id="@+id/story_view_label_longitude"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_view_value_longitude"
-                android:layout_alignBottom="@+id/story_view_value_longitude"
-                android:layout_alignParentLeft="true"
-                android:layout_gravity="left"
-                android:text="@string/story_view_label_longitude"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/story_view_value_longitude"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_view_value_latitude"
-                android:text="@string/story_view_edittext_longitude_default_value"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
         </RelativeLayout>
     </ScrollView>
 

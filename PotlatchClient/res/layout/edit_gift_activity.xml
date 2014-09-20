@@ -103,28 +103,6 @@
                 android:layout_below="@+id/story_edit_title"
                 android:hint="@string/story_edit_default_value_body" />
 
-            <!-- audio_link label/value pair -->
-
-            <TextView
-                android:id="@+id/story_edit_audio_link_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_edit_audio_link"
-                android:layout_alignBottom="@+id/story_edit_audio_link"
-                android:layout_alignParentLeft="true"
-                android:text="@string/story_edit_label_audio_link"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:visibility="gone" />
-
-            <EditText
-                android:id="@+id/story_edit_audio_link"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_edit_body"
-                android:hint="@string/story_edit_default_value_audio_link"
-                android:visibility="gone" />
-
             <!-- video_link label/value pair -->
 
             <TextView
@@ -143,7 +121,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_edit_audio_link"
+                android:layout_below="@+id/story_edit_title"
                 android:hint="@string/story_edit_default_value_video_link"
                 android:visibility="gone" />
 
@@ -189,114 +167,6 @@
                 android:hint="@string/story_edit_default_value_image_meta_data"
                 android:visibility="gone" />
 
-            <!-- tags label/value pair -->
-
-            <TextView
-                android:id="@+id/story_edit_tags_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_edit_tags"
-                android:layout_alignBottom="@+id/story_edit_tags"
-                android:layout_alignParentLeft="true"
-                android:text="@string/story_edit_label_tags"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <EditText
-                android:id="@+id/story_edit_tags"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_edit_image_meta_data"
-                android:hint="@string/story_edit_default_value_tags" />
-
-            <!-- creation_time label/value pair -->
-
-            <TextView
-                android:id="@+id/story_edit_creation_time_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_edit_creation_time"
-                android:layout_alignBottom="@+id/story_edit_creation_time"
-                android:layout_alignParentLeft="true"
-                android:text="@string/story_edit_label_creation_time"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <TextView
-                android:id="@+id/story_edit_creation_time"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_edit_tags"
-                android:hint="@string/story_edit_default_value_creation_time" />
-
-            <!-- story_time label/value pair -->
-
-            <TextView
-                android:id="@+id/story_edit_story_time_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_edit_value_story_time_date_picker"
-                android:layout_alignBottom="@+id/story_edit_value_story_time_date_picker"
-                android:layout_alignParentLeft="true"
-                android:text="@string/story_edit_label_story_time"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <DatePicker
-                android:id="@+id/story_edit_value_story_time_date_picker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_edit_creation_time"
-                android:layout_marginRight="20dp" />
-
-            <!-- <EditText -->
-            <!-- android:id="@+id/story_edit_story_time" -->
-            <!-- android:layout_width="150dp" -->
-            <!-- android:layout_height="wrap_content" -->
-            <!-- android:layout_alignParentRight="true" -->
-            <!-- android:layout_below="@+id/story_edit_creation_time" -->
-            <!-- android:hint="@string/story_edit_default_value_story_time" /> -->
-
-
-            <!-- latitude label/value pair -->
-
-            <TextView
-                android:id="@+id/story_edit_latitude_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_edit_latitude"
-                android:layout_alignBottom="@+id/story_edit_latitude"
-                android:layout_alignParentLeft="true"
-                android:text="@string/story_edit_label_latitude"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <EditText
-                android:id="@+id/story_edit_latitude"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_edit_value_story_time_date_picker"
-                android:hint="@string/story_edit_default_value_latitude" />
-
-            <!-- longitude label/value pair -->
-
-            <TextView
-                android:id="@+id/story_edit_longitude_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_edit_longitude"
-                android:layout_alignBottom="@+id/story_edit_longitude"
-                android:layout_alignParentLeft="true"
-                android:text="@string/story_edit_label_longitude"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <EditText
-                android:id="@+id/story_edit_longitude"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_edit_latitude"
-                android:hint="@string/story_edit_default_value_longitude" />
         </RelativeLayout>
     </ScrollView>
 
