@@ -1,18 +1,9 @@
 package com.pataniqa.coursera.potlatch.ui;
 
 import java.util.Calendar;
-import java.util.Locale;
 
-import com.pataniqa.coursera.potlatch.storage.PotlatchResolver;
-import com.pataniqa.coursera.potlatch.storage.StorageUtilities;
-import com.pataniqa.coursera.potlatch.storage.GiftCreator;
-import com.pataniqa.coursera.potlatch.storage.GiftData;
-
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -20,11 +11,14 @@ import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.pataniqa.coursera.potlatch.R;
+import com.pataniqa.coursera.potlatch.storage.GiftData;
+import com.pataniqa.coursera.potlatch.storage.PotlatchResolver;
+import com.pataniqa.coursera.potlatch.storage.StorageUtilities;
 
 /**
  * The activity that allows a user to create and save a story.
@@ -49,9 +43,7 @@ public class CreateGiftActivity extends GiftActivityBase {
 	EditText imageNameET;
 	Button imageCaptureButton;
 	EditText tagsET;
-	EditText creationTimeET;
 	EditText storyTimeET;
-	Button locationButton;
 
 	TextView imageLocation;
 	TextView videoLocation;
@@ -60,11 +52,6 @@ public class CreateGiftActivity extends GiftActivityBase {
 	Button buttonCreate;
 	Button buttonClear;
 	Button buttonCancel;
-
-	TextView latitudeValue;
-	TextView longitudeValue;
-
-	DatePicker storyDate;
 
 	static Uri imagePath;	// Making this static keeps it from getting GC'd when we take pictures
 	Uri fileUri;
@@ -95,22 +82,15 @@ public class CreateGiftActivity extends GiftActivityBase {
 		imageNameET = (EditText) findViewById(R.id.gift_create_value_image_name);
 		imageCaptureButton = (Button) findViewById(R.id.gift_create_value_image_button);
 		tagsET = (EditText) findViewById(R.id.gift_create_value_tags);
-		creationTimeET = (EditText) findViewById(R.id.gift_create_value_creation_time);
-		locationButton = (Button) findViewById(R.id.story_create_value_location_button);
 
 		imageLocation = (TextView) findViewById(R.id.gift_create_value_image_location);
 		videoLocation = (TextView) findViewById(R.id.gift_create_value_video_location);
 		audioLocation = (TextView) findViewById(R.id.gift_create_value_audio_location);
 
-		latitudeValue = (TextView) findViewById(R.id.story_create_value_latitude);
-		longitudeValue = (TextView) findViewById(R.id.story_create_value_longitude);
-
 		buttonClear = (Button) findViewById(R.id.story_create_button_reset);
 		buttonCancel = (Button) findViewById(R.id.story_create_button_cancel);
 		buttonCreate = (Button) findViewById(R.id.story_create_button_save);
 
-		storyDate = (DatePicker) findViewById(R.id.gift_create_value_story_time_date_picker);
-		
 		//Set the login ID, if it's been set
 		loginIdTV.setText(String.valueOf(LoginActivity.getLoginId(this)));
 
@@ -123,7 +103,6 @@ public class CreateGiftActivity extends GiftActivityBase {
 		bodyET.setText("" + "");
 		imageNameET.setText("" + "");
 		tagsET.setText("" + "");
-		creationTimeET.setText("" + 0);
 	}
 	
 	// Close this activity if the cancel button is clicked
@@ -133,15 +112,13 @@ public class CreateGiftActivity extends GiftActivityBase {
 	
 	// Create a StoryData object from the input data and store it using the resolver
 	public void buttonCreateClicked (View v) {
-		Log.d(LOG_TAG, "create button pressed, creation time="
-				+ creationTimeET.getText());
+		Log.d(LOG_TAG, "create button pressed");
 
 		// local Editables
 		Editable titleCreateable = titleET.getText();
 		Editable bodyCreateable = bodyET.getText();
 		Editable imageNameCreateable = imageNameET.getText();
 		Editable tagsCreateable = tagsET.getText();
-		Editable creationTimeCreateable = creationTimeET.getText();
 		
 		Calendar cal = Calendar.getInstance();
 		cal.getTimeInMillis();
@@ -155,10 +132,6 @@ public class CreateGiftActivity extends GiftActivityBase {
 		String imageName = "";
 		String imageData = "";
 		String tags = "";
-		long creationTime = 0;
-		long storyTime = 0;
-		double latitude = 0;
-		double longitude = 0;
 
 		// pull values from Editables
 		loginId = LoginActivity.getLoginId(this);
@@ -176,19 +149,6 @@ public class CreateGiftActivity extends GiftActivityBase {
 			imageData = imagePathFinal.toString();
 		}
 		tags = String.valueOf(tagsCreateable.toString());
-		if (loc != null) {
-			latitude = loc.getLatitude();
-			longitude = loc.getLongitude();
-		}
-		Log.d(LOG_TAG, "creation time object:" + creationTimeCreateable);
-		Log.d(LOG_TAG, "creation time as string"
-				+ creationTimeCreateable.toString());
-		Calendar cal2 = Calendar.getInstance(Locale.ENGLISH);
-		
-		creationTime = cal2.getTimeInMillis();
-				
-		storyTime = GiftCreator.componentTimeToTimestamp(storyDate.getYear(),
-				storyDate.getMonth(), storyDate.getDayOfMonth(), 0, 0);
 
 		// new StoryData object with above info
 		GiftData newData = new GiftData(
@@ -196,8 +156,7 @@ public class CreateGiftActivity extends GiftActivityBase {
 				// -1 row index, because there is no way to know which
 				// row it will go into
 				loginId, storyId, title, body, audioLink, videoLink,
-				imageName, imageData, tags, creationTime, storyTime,
-				latitude, longitude);
+				imageName, imageData, tags);
 		Log.d(LOG_TAG, "imageName"
 				+ imageNameET.getText());
 
@@ -268,78 +227,6 @@ public class CreateGiftActivity extends GiftActivityBase {
 
 		// Start the activity
 		startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST); 
-	}
-
-	/**
-	 * Method to be called when the user clicks the "Get Location" button
-	 * @param aView
-	 */
-	public void getLocationClicked(View aView) {
-		
-		// Acquire a reference to the system Location Manager
-		final LocationManager locationManager = (LocationManager) this
-				.getSystemService(Context.LOCATION_SERVICE);
-
-		// Define a listener that responds to location updates
-		LocationListener locationListener = new LocationListener() {
-			public void onLocationChanged(Location location) {
-				// Called when a new location is found by the network location
-				// provider.
-
-				Toast.makeText(getApplicationContext(),
-						"New Location obtained.", Toast.LENGTH_LONG).show(); 
-				setLocation(location);
-				locationManager.removeUpdates(this);
-
-			}
-
-			// We must define these to implement the interface, but we don't do anything when they're triggered.
-			public void onStatusChanged(String provider, int status,
-					Bundle extras) {
-			}
-			public void onProviderEnabled(String provider) {
-			}
-			public void onProviderDisabled(String provider) {
-			}
-		};
-
-		// Register the listener with the Location Manager to receive location
-		// updates
-		if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-			Log.d(LOG_TAG, "locationManager.isProviderEnabled = true/gps");
-			locationManager.requestLocationUpdates(
-					LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-			Location location = locationManager
-					.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-			if (location != null) {
-				setLocation(location);
-			} else {
-				Toast.makeText(getApplicationContext(),
-						"GPS has yet to calculate location.", Toast.LENGTH_LONG)
-						.show();
-			}
-
-		} else {
-			Toast.makeText(getApplicationContext(), "GPS is not enabled.",
-					Toast.LENGTH_LONG).show();
-		}
-		
-	}
-
-	/**
-	 * Update the UI with a new location.
-	 * @param location
-	 */
-	public void setLocation(Location location) {
-		
-		Log.d(LOG_TAG, "setLocation =" + location);	
-		
-		loc = location;
-		double latitude = loc.getLatitude();
-		double longitude = loc.getLongitude();
-
-		latitudeValue.setText("" + latitude);
-		longitudeValue.setText("" + longitude);
 	}
 
 	/**

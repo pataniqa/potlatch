@@ -42,10 +42,6 @@ public class GiftData implements Parcelable {
 	public String imageName;
 	public String imageLink;
 	public String tags;
-	public long creationTime;
-	public long giftTime;
-	public double latitude;
-	public double longitude;
 
 	/**
 	 * Constructor WITHOUT _id, this creates a new object for insertion into the
@@ -60,15 +56,10 @@ public class GiftData implements Parcelable {
 	 * @param imageName
 	 * @param imageLink
 	 * @param tags
-	 * @param creationTime
-	 * @param giftTime
-	 * @param latitude
-	 * @param longitude
 	 */
 	public GiftData(long loginId, long giftId, String title, String body,
 			String audioLink, String videoLink, String imageName,
-			String imageMetaData, String tags, long creationTime,
-			long giftTime, double latitude, double longitude) {
+			String imageMetaData, String tags) {
 		this.KEY_ID = -1;
 		this.loginId = loginId;
 		this.giftId = giftId;
@@ -79,10 +70,6 @@ public class GiftData implements Parcelable {
 		this.imageName = imageName;
 		this.imageLink = imageMetaData;
 		this.tags = tags;
-		this.creationTime = creationTime;
-		this.giftTime = giftTime;
-		this.latitude = latitude;
-		this.longitude = longitude;
 	}
 
 	/**
@@ -99,15 +86,10 @@ public class GiftData implements Parcelable {
 	 * @param imageName
 	 * @param imageLink
 	 * @param tags
-	 * @param creationTime
-	 * @param giftTime
-	 * @param latitude
-	 * @param longitude
 	 */
 	public GiftData(long KEY_ID, long loginId, long giftId, String title,
 			String body, String audioLink, String videoLink, String imageName,
-			String imageLink, String tags, long creationTime, long giftTime,
-			double latitude, double longitude) {
+			String imageLink, String tags) {
 		this.KEY_ID = KEY_ID;
 		this.loginId = loginId;
 		this.giftId = giftId;
@@ -118,10 +100,6 @@ public class GiftData implements Parcelable {
 		this.imageName = imageName;
 		this.imageLink = imageLink;
 		this.tags = tags;
-		this.creationTime = creationTime;
-		this.giftTime = giftTime;
-		this.latitude = latitude;
-		this.longitude = longitude;
 	}
 
 	/**
@@ -133,8 +111,6 @@ public class GiftData implements Parcelable {
 				+ title + " body: " + body + " audioLink: " + audioLink
 				+ " videoLink: " + videoLink + " imageName: " + imageName
 				+ " imageLink: " + imageLink + " tags: " + tags
-				+ " creationTime: " + creationTime + " giftTime: " + giftTime
-				+ " latitude: " + latitude + " longitude: " + longitude
 				+ " href: " + href + " key: " + key;
 	}
 
@@ -153,8 +129,7 @@ public class GiftData implements Parcelable {
 	 */
 	public GiftData clone() {
 		return new GiftData(loginId, giftId, title, body, audioLink,
-				videoLink, imageName, imageLink, tags, creationTime, giftTime,
-				latitude, longitude);
+				videoLink, imageName, imageLink, tags);
 	}
 
 	// these are for parcelable interface
@@ -181,10 +156,6 @@ public class GiftData implements Parcelable {
 		dest.writeString(imageName);
 		dest.writeString(imageLink);
 		dest.writeString(tags);
-		dest.writeLong(creationTime);
-		dest.writeLong(giftTime);
-		dest.writeDouble(latitude);
-		dest.writeDouble(longitude);
 	}
 
 	/**
@@ -214,10 +185,6 @@ public class GiftData implements Parcelable {
 		imageName = in.readString();
 		imageLink = in.readString();
 		tags = in.readString();
-		creationTime = in.readLong();
-		giftTime = in.readLong();
-		latitude = in.readDouble();
-		longitude = in.readDouble();
 	}
 
 	/**
@@ -251,20 +218,14 @@ public class GiftData implements Parcelable {
 		String imageName = (String) jsonObject.get("imageName");
 		String imageMetaData = (String) jsonObject.get("imageLink");
 		String tags = (String) jsonObject.get("tags");
-		long creationTime = jsonObject.getLong("creationTime");
-		long giftTime = jsonObject.getLong("giftTime");
-		double latitude = jsonObject.getDouble("latitude");
-		double longitude = jsonObject.getDouble("longitude");
 
 		GiftData rValue = null;
 		if (hasKeyID == true) {
 			rValue = new GiftData(key, href, loginId, giftId, title, body,
-					audioLink, videoLink, imageName, imageMetaData, tags,
-					creationTime, giftTime, latitude, longitude);
+					audioLink, videoLink, imageName, imageMetaData, tags);
 		} else {
 			rValue = new GiftData(loginId, giftId, title, body, audioLink,
-					videoLink, imageName, imageMetaData, tags, creationTime,
-					giftTime, latitude, longitude);
+					videoLink, imageName, imageMetaData, tags);
 		}
 		return rValue;
 	}
@@ -280,10 +241,6 @@ public class GiftData implements Parcelable {
 		params.add(new BasicNameValuePair("videoLink", videoLink));
 		params.add(new BasicNameValuePair("imageName", imageName));
 		params.add(new BasicNameValuePair("tags", tags));
-		params.add(new BasicNameValuePair("creationTime", "" + creationTime));
-		params.add(new BasicNameValuePair("giftTime", "" + giftTime));
-		params.add(new BasicNameValuePair("latitude", "" + latitude));
-		params.add(new BasicNameValuePair("longitude", "" + longitude));
 		return new UrlEncodedFormEntity(params);
 	}
 
@@ -307,8 +264,7 @@ public class GiftData implements Parcelable {
 	 */
 	public GiftData(String key, String href, long loginId, long giftId,
 			String title, String body, String audioLink, String videoLink,
-			String imageName, String imageMetaData, String tags,
-			long creationTime, long giftTime, double latitude, double longitude) {
+			String imageName, String imageMetaData, String tags) {
 		this.href = href;
 		this.key = key;
 		this.KEY_ID = -1;
@@ -321,9 +277,5 @@ public class GiftData implements Parcelable {
 		this.imageName = imageName;
 		this.imageLink = imageMetaData;
 		this.tags = tags;
-		this.creationTime = creationTime;
-		this.giftTime = giftTime;
-		this.latitude = latitude;
-		this.longitude = longitude;
 	}
 }

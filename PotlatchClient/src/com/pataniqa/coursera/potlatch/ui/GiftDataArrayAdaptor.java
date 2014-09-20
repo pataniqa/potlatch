@@ -70,7 +70,6 @@ public class GiftDataArrayAdaptor extends ArrayAdapter<GiftData> {
             // The ID of the data in the database
             long KEY_ID = item.KEY_ID;
             String title = item.title;
-            long storyDate = item.giftTime;
 
             // If there's no View to be recycled, instantiate a new View
             if (convertView == null) {
@@ -91,10 +90,6 @@ public class GiftDataArrayAdaptor extends ArrayAdapter<GiftData> {
             
             TextView titleTV = (TextView) todoView.findViewById(R.id.story_listview_custom_row_title_textView);
             titleTV.setText("" + title);
-            
-            TextView creationTimeTV = (TextView) todoView
-                    .findViewById(R.id.story_listview_custom_row_creation_time_textView);
-            creationTimeTV.setText("" + GiftCreator.getStringDate(storyDate));
 
         } catch (Exception e) {
             Toast.makeText(getContext(), "exception in ArrayAdpter: " + e.getMessage(), Toast.LENGTH_SHORT).show();

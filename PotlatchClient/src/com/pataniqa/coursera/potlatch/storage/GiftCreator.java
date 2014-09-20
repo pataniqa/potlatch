@@ -34,10 +34,6 @@ public class GiftCreator {
         rValue.put(PotlatchSchema.Gift.Cols.IMAGE_NAME, data.imageName);
         rValue.put(PotlatchSchema.Gift.Cols.IMAGE_LINK, data.imageLink);
         rValue.put(PotlatchSchema.Gift.Cols.TAGS, data.tags);
-        rValue.put(PotlatchSchema.Gift.Cols.CREATION_TIME, data.creationTime);
-        rValue.put(PotlatchSchema.Gift.Cols.GIFT_TIME, data.giftTime);
-        rValue.put(PotlatchSchema.Gift.Cols.LATITUDE, data.latitude);
-        rValue.put(PotlatchSchema.Gift.Cols.LONGITUDE, data.longitude);
         return rValue;
     }
 
@@ -77,14 +73,10 @@ public class GiftCreator {
         String imageName = cursor.getString(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.IMAGE_NAME));
         String imageMetaData = cursor.getString(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.IMAGE_LINK));
         String tags = cursor.getString(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.TAGS));
-        long creationTime = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.CREATION_TIME));
-        long giftTime = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.GIFT_TIME));
-        double latitude = cursor.getDouble(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.LATITUDE));
-        double longitude = cursor.getDouble(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.LONGITUDE));
 
         // construct the returned object
         GiftData rValue = new GiftData(rowID, loginId, giftId, title, body, audioLink, videoLink, imageName,
-                imageMetaData, tags, creationTime, giftTime, latitude, longitude);
+                imageMetaData, tags);
 
         return rValue;
     }
