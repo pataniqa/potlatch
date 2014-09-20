@@ -26,22 +26,22 @@ public class EditGiftActivity extends GiftActivityBase {
     final static public String rowIdentifyerTAG = "index";
 
     // The TextViews and EditTexts we use
-    TextView loginIdET;
-    TextView storyIdET;
-    EditText titleET;
-    EditText bodyET;
-    EditText imageNameET;
-    EditText imageMetaDataET;
+    private TextView loginIdET;
+    private TextView storyIdET;
+    private EditText titleET;
+    private EditText bodyET;
+    private EditText imageNameET;
+    private EditText imageMetaDataET;
 
     // Button(s) used
-    Button saveButton;
-    Button resetButton;
-    Button cancelButton;
+    private Button saveButton;
+    private Button resetButton;
+    private Button cancelButton;
 
     // custom ContentResolver wrapper.
-    PotlatchResolver resolver;
+    private PotlatchResolver resolver;
 
-    GiftData mData;
+    private GiftData mData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -33,17 +33,16 @@ public class CreateGiftActivity extends GiftActivityBase {
     static final int MIC_SOUND_REQUEST = 3;
 
     // The various UI elements we use
-    EditText titleET;
-    EditText bodyET;
-    Button audioCaptureButton;
-    Button videoCaptureButton;
-    EditText imageNameET;
-    Button imageCaptureButton;
-    TextView imageLocation;
-    TextView videoLocation;
-    Button buttonCreate;
-    Button buttonClear;
-    Button buttonCancel;
+    private EditText titleET;
+    private EditText bodyET;
+    private Button videoCaptureButton;
+    private EditText imageNameET;
+    private Button imageCaptureButton;
+    private TextView imageLocation;
+    private TextView videoLocation;
+    private Button buttonCreate;
+    private Button buttonClear;
+    private Button buttonCancel;
 
     // Making this static keeps it from getting GC'd when we take pictures
     static Uri imagePath; 
@@ -68,7 +67,6 @@ public class CreateGiftActivity extends GiftActivityBase {
         // Get references to all the UI elements
         titleET = (EditText) findViewById(R.id.gift_create_value_title);
         bodyET = (EditText) findViewById(R.id.gift_create_value_body);
-        audioCaptureButton = (Button) findViewById(R.id.gift_create_value_audio_link);
         videoCaptureButton = (Button) findViewById(R.id.gift_create_value_video_button);
         imageNameET = (EditText) findViewById(R.id.gift_create_value_image_name);
         imageCaptureButton = (Button) findViewById(R.id.gift_create_value_image_button);
@@ -145,29 +143,6 @@ public class CreateGiftActivity extends GiftActivityBase {
         }
 
         finish(); // same as hitting 'back' button
-
-    }
-
-    /**
-     * Method to be called when Audio Clicked button is pressed.
-     */
-    public void addAudioClicked(View aView) {
-        Log.v(LOG_TAG, "addAudioClicked(View) called.");
-
-        // Create an intent to start the SoundRecordActivity
-        Intent soundIntent = new Intent(this, SoundRecordActivity.class);
-
-        // Tell the sound activity where to store the recorded audio.
-        String fileName = StorageUtilities.getOutputMediaFile(this, StorageUtilities.MEDIA_TYPE_AUDIO,
-                StorageUtilities.SECURITY_PUBLIC, null).getAbsolutePath();
-
-        if (fileName == null)
-            return;
-
-        soundIntent.putExtra("FILENAME", fileName);
-
-        // Start the SoundRecordActivity
-        startActivityForResult(soundIntent, MIC_SOUND_REQUEST);
 
     }
 

@@ -29,7 +29,7 @@ public class GiftDataArrayAdaptor extends ArrayAdapter<GiftData> {
     private static final String LOG_TAG = GiftDataArrayAdaptor.class.getCanonicalName();
 
     // The resource ID of a Layout used for instantiating Views
-    int resource;
+    private int resource;
 
     /**
      * Constructs this adapter
