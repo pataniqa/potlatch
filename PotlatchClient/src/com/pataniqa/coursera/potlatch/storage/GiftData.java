@@ -28,9 +28,9 @@ public class GiftData implements Parcelable {
     public long loginId;
     public long giftId;
     public String title;
-    public String body;
-    public String videoLink;
-    public String imageLink;
+    public String description;
+    public String videoUri;
+    public String imageUri;
 
     /**
      * Constructor WITH _id, this creates a new object for use when pulling
@@ -50,9 +50,9 @@ public class GiftData implements Parcelable {
         this.loginId = loginId;
         this.giftId = giftId;
         this.title = title;
-        this.body = body;
-        this.videoLink = videoLink;
-        this.imageLink = imageLink;
+        this.description = body;
+        this.videoUri = videoLink;
+        this.imageUri = imageLink;
     }
 
     /**
@@ -95,7 +95,7 @@ public class GiftData implements Parcelable {
     @Override
     public String toString() {
         return " loginId: " + loginId + " giftId: " + giftId + " title: " + title + " body: "
-                + body + " videoLink: " + videoLink + " imageLink: " + imageLink + " href: " + href
+                + description + " videoLink: " + videoUri + " imageLink: " + imageUri + " href: " + href
                 + " key: " + key;
     }
 
@@ -113,7 +113,7 @@ public class GiftData implements Parcelable {
      * Clone this object into a new GiftData
      */
     public GiftData clone() {
-        return new GiftData(loginId, giftId, title, body, videoLink, imageLink);
+        return new GiftData(loginId, giftId, title, description, videoUri, imageUri);
     }
 
     /**
@@ -134,9 +134,9 @@ public class GiftData implements Parcelable {
         dest.writeLong(loginId);
         dest.writeLong(giftId);
         dest.writeString(title);
-        dest.writeString(body);
-        dest.writeString(videoLink);
-        dest.writeString(imageLink);
+        dest.writeString(description);
+        dest.writeString(videoUri);
+        dest.writeString(imageUri);
     }
 
     /**
@@ -160,9 +160,9 @@ public class GiftData implements Parcelable {
         loginId = in.readLong();
         giftId = in.readLong();
         title = in.readString();
-        body = in.readString();
-        videoLink = in.readString();
-        imageLink = in.readString();
+        description = in.readString();
+        videoUri = in.readString();
+        imageUri = in.readString();
     }
 
 }

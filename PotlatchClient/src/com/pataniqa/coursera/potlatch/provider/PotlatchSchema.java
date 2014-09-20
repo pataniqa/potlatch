@@ -51,32 +51,32 @@ public class PotlatchSchema {
         private static final String INTEGER = "integer";
         private static final String TEXT = "text";
         
-        private static Map<String, String> columns = new TreeMap<String, String>() {
+        public static Map<String, String> COLUMNS = new TreeMap<String, String>() {
             {
                 put(Cols.ID, INTEGER);
                 put(Cols.LOGIN_ID, INTEGER);
                 put(Cols.GIFT_ID, INTEGER);
                 put(Cols.TITLE, TEXT);
-                put(Cols.BODY, TEXT);
-                put(Cols.VIDEO_LINK, TEXT);
-                put(Cols.IMAGE_LINK, TEXT);
+                put(Cols.DESCRIPTION, TEXT);
+                put(Cols.VIDEO_URI, TEXT);
+                put(Cols.IMAGE_URI, TEXT);
             }
         };
 
         // the names and order of ALL columns, including internal use ones
-        public static final String[] ALL_COLUMN_NAMES = columns.keySet().toArray(
-                new String[columns.keySet().size()]);
+        public static final String[] ALL_COLUMN_NAMES = COLUMNS.keySet().toArray(
+                new String[COLUMNS.keySet().size()]);
 
         // the names and order of ALL column types, including internal use ones
         // (for use with SQLite)
-        public static final String[] ALL_COLUMN_TYPES = columns.values().toArray(
-                new String[columns.values().size()]);
+        public static final String[] ALL_COLUMN_TYPES = COLUMNS.values().toArray(
+                new String[COLUMNS.values().size()]);
 
         public static ContentValues initializeWithDefault(final ContentValues assignedValues) {
             // final Long now = Long.valueOf(System.currentTimeMillis());
             final ContentValues setValues = (assignedValues == null) ? new ContentValues()
                     : assignedValues;
-            for (Map.Entry<String, String> entry : columns.entrySet()) {
+            for (Map.Entry<String, String> entry : COLUMNS.entrySet()) {
                 String key = entry.getKey(); 
                 if (!key.equals(Cols.ID)) {
                     if (!setValues.containsKey(key)) {
@@ -97,9 +97,9 @@ public class PotlatchSchema {
             public static final String LOGIN_ID = "LOGIN_ID";
             public static final String GIFT_ID = "GIFT_ID";
             public static final String TITLE = "TITLE";
-            public static final String BODY = "BODY";
-            public static final String VIDEO_LINK = "VIDEO_LINK";
-            public static final String IMAGE_LINK = "IMAGE_LINK";
+            public static final String DESCRIPTION = "BODY";
+            public static final String VIDEO_URI = "VIDEO_LINK";
+            public static final String IMAGE_URI = "IMAGE_LINK";
         }
     }
 

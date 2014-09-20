@@ -101,7 +101,7 @@ public class EditGiftActivity extends GiftActivityBase {
 
         // Construct the Gift Data Object
         GiftData rValue = new GiftData(getUniqueKey(), giftData.loginId, giftData.giftId, title, description, 
-                giftData.videoLink, giftData.imageLink);
+                giftData.videoUri, giftData.imageUri);
 
         rValue.key = giftData.key;
         return rValue;
@@ -131,8 +131,8 @@ public class EditGiftActivity extends GiftActivityBase {
             loginIdET.setText(Long.valueOf(GiftData.loginId).toString());
             GiftIdET.setText(Long.valueOf(GiftData.giftId).toString());
             titleET.setText(GiftData.title);
-            bodyET.setText(GiftData.body);
-            imageMetaDataET.setText(GiftData.imageLink);
+            bodyET.setText(GiftData.description);
+            imageMetaDataET.setText(GiftData.imageUri);
             return true;
         }
         return false;

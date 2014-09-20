@@ -27,9 +27,9 @@ public class GiftCreator {
         rValue.put(PotlatchSchema.Gift.Cols.LOGIN_ID, data.loginId);
         rValue.put(PotlatchSchema.Gift.Cols.GIFT_ID, data.giftId);
         rValue.put(PotlatchSchema.Gift.Cols.TITLE, data.title);
-        rValue.put(PotlatchSchema.Gift.Cols.BODY, data.body);
-        rValue.put(PotlatchSchema.Gift.Cols.VIDEO_LINK, data.videoLink);
-        rValue.put(PotlatchSchema.Gift.Cols.IMAGE_LINK, data.imageLink);
+        rValue.put(PotlatchSchema.Gift.Cols.DESCRIPTION, data.description);
+        rValue.put(PotlatchSchema.Gift.Cols.VIDEO_URI, data.videoUri);
+        rValue.put(PotlatchSchema.Gift.Cols.IMAGE_URI, data.imageUri);
         return rValue;
     }
 
@@ -58,20 +58,16 @@ public class GiftCreator {
      * @return GiftData object
      */
     public static GiftData getGiftDataFromCursor(Cursor cursor) {
-
         long rowID = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.ID));
         long loginId = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.LOGIN_ID));
         long giftId = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.GIFT_ID));
         String title = cursor.getString(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.TITLE));
-        String body = cursor.getString(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.BODY));
-        String videoLink = cursor.getString(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.VIDEO_LINK));
-        String imageMetaData = cursor.getString(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.IMAGE_LINK));
-
-        // construct the returned object
-        GiftData rValue = new GiftData(rowID, loginId, giftId, title, body, videoLink,
-                imageMetaData);
-
-        return rValue;
+        String body = cursor.getString(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.DESCRIPTION));
+        String videoUri = cursor.getString(cursor
+                .getColumnIndex(PotlatchSchema.Gift.Cols.VIDEO_URI));
+        String imageUri = cursor.getString(cursor
+                .getColumnIndex(PotlatchSchema.Gift.Cols.IMAGE_URI));
+        return new GiftData(rowID, loginId, giftId, title, body, videoUri, imageUri);
     }
 
     /**

@@ -84,18 +84,18 @@ public class ViewGiftActivity extends GiftActivityBase {
 
             // Fill in the appropriate UI elements
             titleTV.setText(String.valueOf(giftData.title).toString());
-            bodyTV.setText(String.valueOf(giftData.body).toString());
-            videoLinkTV.setText(String.valueOf(giftData.videoLink).toString());
+            bodyTV.setText(String.valueOf(giftData.description).toString());
+            videoLinkTV.setText(String.valueOf(giftData.videoUri).toString());
 
-            Log.d(LOG_TAG, "image file path: " + giftData.imageLink);
+            Log.d(LOG_TAG, "image file path: " + giftData.imageUri);
 
             // Set up image
             imageView.setVisibility(View.GONE);
 
-            if (giftData.imageLink != null && giftData.imageLink.equals("") == false
-                    && giftData.imageLink.equals("null") == false) {
-                Log.d(LOG_TAG, "image link is valid" + giftData.imageLink);
-                Uri uri = Uri.parse(giftData.imageLink);
+            if (giftData.imageUri != null && giftData.imageUri.equals("") == false
+                    && giftData.imageUri.equals("null") == false) {
+                Log.d(LOG_TAG, "image link is valid" + giftData.imageUri);
+                Uri uri = Uri.parse(giftData.imageUri);
                 File image = new File(uri.getPath());
 
                 if (image != null && image.exists()) {
