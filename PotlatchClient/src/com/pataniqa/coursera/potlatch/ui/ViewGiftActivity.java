@@ -30,11 +30,11 @@ public class ViewGiftActivity extends GiftActivityBase {
 			.getCanonicalName();
 	
 	// The StoryData we're displaying
-	GiftData storyData;
+	GiftData giftData;
 
 	// The UI elements we'll be using
 	TextView loginIdTV;
-	TextView storyIdTV;
+	TextView giftIdTV;
 	TextView titleTV;
 	TextView bodyTV;
 	TextView audioLinkTV;
@@ -43,7 +43,7 @@ public class ViewGiftActivity extends GiftActivityBase {
 
 	TextView tagsTV;
 	TextView creationTimeTV;
-	TextView storyTimeTV;
+	TextView giftTimeTV;
 	TextView latitudeTV;
 	TextView longitudeTV;
 
@@ -71,7 +71,7 @@ public class ViewGiftActivity extends GiftActivityBase {
 		
 		// Get actual references to the instantiated UI objects
 		loginIdTV = (TextView) findViewById(R.id.story_view_value_login_id);
-		storyIdTV = (TextView) findViewById(R.id.story_view_value_story_id);
+		giftIdTV = (TextView) findViewById(R.id.story_view_value_story_id);
 		titleTV = (TextView) findViewById(R.id.story_view_value_title);
 		bodyTV = (TextView) findViewById(R.id.story_view_value_body);
 		audioLinkTV = (TextView) findViewById(R.id.story_view_value_audio_link);
@@ -80,7 +80,7 @@ public class ViewGiftActivity extends GiftActivityBase {
 
 		tagsTV = (TextView) findViewById(R.id.story_view_value_tags);
 		creationTimeTV = (TextView) findViewById(R.id.story_view_value_creation_time);
-		storyTimeTV = (TextView) findViewById(R.id.story_view_value_story_time);
+		giftTimeTV = (TextView) findViewById(R.id.story_view_value_story_time);
 		latitudeTV = (TextView) findViewById(R.id.story_view_value_latitude);
 		longitudeTV = (TextView) findViewById(R.id.story_view_value_longitude);
 
@@ -88,7 +88,7 @@ public class ViewGiftActivity extends GiftActivityBase {
 
 		// Set the default values
 		loginIdTV.setText("" + 0);
-		storyIdTV.setText("" + 0);
+		giftIdTV.setText("" + 0);
 		titleTV.setText("" + "");
 		bodyTV.setText("" + "");
 		audioLinkTV.setText("" + "");
@@ -104,7 +104,7 @@ public class ViewGiftActivity extends GiftActivityBase {
 
 		try {
 			// Fill out all the UI elements with data from our StoryData
-			setUiToStoryData(getUniqueKey());
+			setUiToGiftData(getUniqueKey());
 		} catch (RemoteException e) {
 			Toast.makeText(this,
 					"Error retrieving information from local data store.",
@@ -116,42 +116,42 @@ public class ViewGiftActivity extends GiftActivityBase {
 	}
 	
 	// Fills out the UI elements with data from a StoryData in the database specified by a unique key
-	public void setUiToStoryData(long getUniqueKey) throws RemoteException {
-		Log.d(LOG_TAG, "setUiToStoryData");	
+	public void setUiToGiftData(long getUniqueKey) throws RemoteException {
+		Log.d(LOG_TAG, "setUiToGiftData");	
 		
-		// Get the StoryData from the database
-		storyData = resolver.getStoryDataViaRowID(getUniqueKey);
+		// Get the GiftData from the database
+		giftData = resolver.getGiftDataViaRowID(getUniqueKey);
 		
-		if (storyData != null) 
+		if (giftData != null) 
 		{
-			Log.d(LOG_TAG, "setUiToStoryData + storyData:" + storyData.toString());
+			Log.d(LOG_TAG, "setUiToStoryData + storyData:" + giftData.toString());
 			
 			// Fill in the appropriate UI elements
-			loginIdTV.setText(Long.valueOf(storyData.loginId).toString());
-			storyIdTV.setText(Long.valueOf(storyData.giftId).toString());
-			titleTV.setText(String.valueOf(storyData.title).toString());
-			bodyTV.setText(String.valueOf(storyData.body).toString());
-			audioLinkTV.setText(String.valueOf(storyData.audioLink).toString());
-			videoLinkTV.setText(String.valueOf(storyData.videoLink).toString());
-			imageNameTV.setText(String.valueOf(storyData.imageName).toString());
-			tagsTV.setText(String.valueOf(storyData.tags).toString());
-			creationTimeTV.setText(GiftCreator.getStringDate(storyData.creationTime));
-			storyTimeTV.setText(GiftCreator.getStringDate(storyData.giftTime));
+			loginIdTV.setText(Long.valueOf(giftData.loginId).toString());
+			giftIdTV.setText(Long.valueOf(giftData.giftId).toString());
+			titleTV.setText(String.valueOf(giftData.title).toString());
+			bodyTV.setText(String.valueOf(giftData.body).toString());
+			audioLinkTV.setText(String.valueOf(giftData.audioLink).toString());
+			videoLinkTV.setText(String.valueOf(giftData.videoLink).toString());
+			imageNameTV.setText(String.valueOf(giftData.imageName).toString());
+			tagsTV.setText(String.valueOf(giftData.tags).toString());
+			creationTimeTV.setText(GiftCreator.getStringDate(giftData.creationTime));
+			giftTimeTV.setText(GiftCreator.getStringDate(giftData.giftTime));
 
-			latitudeTV.setText(Double.valueOf(storyData.latitude).toString());
-			longitudeTV.setText(Double.valueOf(storyData.longitude).toString());
+			latitudeTV.setText(Double.valueOf(giftData.latitude).toString());
+			longitudeTV.setText(Double.valueOf(giftData.longitude).toString());
 
-			Log.d(LOG_TAG, "image file path: " + storyData.imageLink);
+			Log.d(LOG_TAG, "image file path: " + giftData.imageLink);
 			
 			// Set up image
 			imageNameTV.setVisibility(View.GONE);
 			imageMetaDataView.setVisibility(View.GONE);
 
-			if (storyData.imageLink != null
-					&& storyData.imageLink.equals("") == false
-					&& storyData.imageLink.equals("null") == false) {
-				Log.d(LOG_TAG, "image link is valid" + storyData.imageLink);
-				Uri uri = Uri.parse(storyData.imageLink);
+			if (giftData.imageLink != null
+					&& giftData.imageLink.equals("") == false
+					&& giftData.imageLink.equals("null") == false) {
+				Log.d(LOG_TAG, "image link is valid" + giftData.imageLink);
+				Uri uri = Uri.parse(giftData.imageLink);
 				File image = new File(uri.getPath());
 				
 				if (image != null && image.exists()) {
@@ -171,7 +171,7 @@ public class ViewGiftActivity extends GiftActivityBase {
 	
 	// Action to be performed when the edit button is pressed
 	private void editButtonPressed() {
-		openEditStoryActivity(storyData.KEY_ID);
+		openEditStoryActivity(giftData.KEY_ID);
 	}
 
 	// Action to be performed when the delete button is pressed
@@ -192,7 +192,7 @@ public class ViewGiftActivity extends GiftActivityBase {
 							public void onClick(DialogInterface dialog,
 									int which) {
 								try {
-									resolver.deleteAllStoryWithRowID(storyData.KEY_ID);
+									resolver.deleteAllStoryWithRowID(giftData.KEY_ID);
 								} catch (RemoteException e) {
 									Log.e(LOG_TAG, "RemoteException Caught => "
 											+ e.getMessage());

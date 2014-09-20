@@ -42,10 +42,10 @@ public class PotlatchResolver {
 			
 			StringBuilder createTable = new StringBuilder();
 			createTable.append("create table if not exists " + tableName + " (");
-			createTable.append(PotlatchSchema.Story.Cols.ID + " integer primary key autoincrement ");
+			createTable.append(PotlatchSchema.Gift.Cols.ID + " integer primary key autoincrement ");
 			
-			String [] names = PotlatchSchema.Story.ALL_COLUMN_NAMES;
-			String [] types = PotlatchSchema.Story.ALL_COLUMN_TYPES;
+			String [] names = PotlatchSchema.Gift.ALL_COLUMN_NAMES;
+			String [] types = PotlatchSchema.Gift.ALL_COLUMN_TYPES;
 			
 			for (int i = 1; i < names.length; ++i) {
 				createTable.append(", " + names[i] + " " +types[i]);
@@ -121,7 +121,7 @@ public class PotlatchResolver {
 	 */
 	public long insert(final GiftData storyObject) throws RemoteException {
 		ContentValues tempCV = storyObject.getCV();
-		tempCV.remove(PotlatchSchema.Story.Cols.ID);
+		tempCV.remove(PotlatchSchema.Gift.Cols.ID);
 		SQLiteDatabase db = helper.getWritableDatabase();
 		long res = db.insert(tableName, null, tempCV);
 		db.close();
@@ -142,7 +142,7 @@ public class PotlatchResolver {
 	 * @return an ArrayList of StoryData objects
 	 * @throws RemoteException
 	 */
-	public ArrayList<GiftData> queryStoryData(final String[] projection,
+	public ArrayList<GiftData> queryGiftData(final String[] projection,
 			final String selection, final String[] selectionArgs,
 			final String sortOrder) throws RemoteException {
 		// query the database
@@ -152,7 +152,7 @@ public class PotlatchResolver {
 		// make return object
 		ArrayList<GiftData> rValue = new ArrayList<GiftData>();
 		// convert cursor to reutrn object
-		rValue.addAll(GiftCreator.getStoryDataArrayListFromCursor(result));
+		rValue.addAll(GiftCreator.getGiftDataArrayListFromCursor(result));
 		result.close();
 		
 		//close the database
@@ -196,7 +196,7 @@ public class PotlatchResolver {
 	 * @throws RemoteException
 	 */
 	public ArrayList<GiftData> getAllStoryData() throws RemoteException {
-		return queryStoryData(null, null, null, null);
+		return queryGiftData(null, null, null, null);
 	}
 
 	/**
@@ -206,11 +206,11 @@ public class PotlatchResolver {
 	 * @return StoryData at the given rowID
 	 * @throws RemoteException
 	 */
-	public GiftData getStoryDataViaRowID(final long rowID)
+	public GiftData getGiftDataViaRowID(final long rowID)
 			throws RemoteException {
 		String[] selectionArgs = { String.valueOf(rowID) };
-		ArrayList<GiftData> results = queryStoryData(null,
-				PotlatchSchema.Story.Cols.ID + "= ?", selectionArgs, null);
+		ArrayList<GiftData> results = queryGiftData(null,
+				PotlatchSchema.Gift.Cols.ID + "= ?", selectionArgs, null);
 		if (results.size() > 0) {
 			return results.get(0);
 		} else {
@@ -229,7 +229,7 @@ public class PotlatchResolver {
 	 */
 	public int deleteAllStoryWithRowID(long rowID) throws RemoteException {
 		String[] args = { String.valueOf(rowID) };
-		return deleteStoryData(PotlatchSchema.Story.Cols.ID + " = ? ", args);
+		return deleteStoryData(PotlatchSchema.Gift.Cols.ID + " = ? ", args);
 	}
 
 	/**

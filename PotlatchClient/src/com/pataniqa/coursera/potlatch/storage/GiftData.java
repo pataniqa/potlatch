@@ -14,7 +14,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Custom ORM container class, for Story Data.
+ * Custom ORM container class, for Gift Data.
  * <p>
  * This class is meant as a helper class for those working with the
  * ContentProvider and SQLiteDatabase. The use of this class is completely optional.
@@ -145,11 +145,11 @@ public class GiftData implements Parcelable {
 	 * @return contentValues A new ContentValues object
 	 */
 	public ContentValues getCV() {
-		return GiftCreator.getCVfromStory(this);
+		return GiftCreator.getCVfromGift(this);
 	}
 
 	/**
-	 * Clone this object into a new StoryData
+	 * Clone this object into a new GiftData
 	 */
 	public GiftData clone() {
 		return new GiftData(loginId, giftId, title, body, audioLink,
@@ -221,7 +221,7 @@ public class GiftData implements Parcelable {
 	}
 
 	/**
-	 * Creates a StoryData object from a JSONObject
+	 * Creates a GiftData object from a JSONObject
 	 * 
 	 * @param jsonObject
 	 * @throws JSONException
@@ -242,7 +242,7 @@ public class GiftData implements Parcelable {
 		}
 
 		long loginId = jsonObject.getLong("loginId");
-		long storyId = jsonObject.getLong("storyId");
+		long giftId = jsonObject.getLong("giftId");
 		String title = (String) jsonObject.get("title");
 		JSONObject bodyJson = (JSONObject) jsonObject.get("body");
 		String body = (String) bodyJson.get("value");
@@ -252,19 +252,19 @@ public class GiftData implements Parcelable {
 		String imageMetaData = (String) jsonObject.get("imageLink");
 		String tags = (String) jsonObject.get("tags");
 		long creationTime = jsonObject.getLong("creationTime");
-		long storyTime = jsonObject.getLong("storyTime");
+		long giftTime = jsonObject.getLong("giftTime");
 		double latitude = jsonObject.getDouble("latitude");
 		double longitude = jsonObject.getDouble("longitude");
 
 		GiftData rValue = null;
 		if (hasKeyID == true) {
-			rValue = new GiftData(key, href, loginId, storyId, title, body,
+			rValue = new GiftData(key, href, loginId, giftId, title, body,
 					audioLink, videoLink, imageName, imageMetaData, tags,
-					creationTime, storyTime, latitude, longitude);
+					creationTime, giftTime, latitude, longitude);
 		} else {
-			rValue = new GiftData(loginId, storyId, title, body, audioLink,
+			rValue = new GiftData(loginId, giftId, title, body, audioLink,
 					videoLink, imageName, imageMetaData, tags, creationTime,
-					storyTime, latitude, longitude);
+					giftTime, latitude, longitude);
 		}
 		return rValue;
 	}
@@ -273,7 +273,7 @@ public class GiftData implements Parcelable {
 			throws UnsupportedEncodingException {
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("loginId", "" + loginId));
-		params.add(new BasicNameValuePair("storyId", "" + giftId));
+		params.add(new BasicNameValuePair("giftId", "" + giftId));
 		params.add(new BasicNameValuePair("title", title));
 		params.add(new BasicNameValuePair("body", body));
 		params.add(new BasicNameValuePair("audioLink", audioLink));
@@ -281,7 +281,7 @@ public class GiftData implements Parcelable {
 		params.add(new BasicNameValuePair("imageName", imageName));
 		params.add(new BasicNameValuePair("tags", tags));
 		params.add(new BasicNameValuePair("creationTime", "" + creationTime));
-		params.add(new BasicNameValuePair("storyTime", "" + giftTime));
+		params.add(new BasicNameValuePair("giftTime", "" + giftTime));
 		params.add(new BasicNameValuePair("latitude", "" + latitude));
 		params.add(new BasicNameValuePair("longitude", "" + longitude));
 		return new UrlEncodedFormEntity(params);
@@ -292,7 +292,7 @@ public class GiftData implements Parcelable {
 	 * ContentProvider
 	 * 
 	 * @param loginId
-	 * @param storyId
+	 * @param giftId
 	 * @param title
 	 * @param body
 	 * @param audioLink
@@ -301,19 +301,19 @@ public class GiftData implements Parcelable {
 	 * @param imageLink
 	 * @param tags
 	 * @param creationTime
-	 * @param storyTime
+	 * @param giftTime
 	 * @param latitude
 	 * @param longitude
 	 */
-	public GiftData(String key, String href, long loginId, long storyId,
+	public GiftData(String key, String href, long loginId, long giftId,
 			String title, String body, String audioLink, String videoLink,
 			String imageName, String imageMetaData, String tags,
-			long creationTime, long storyTime, double latitude, double longitude) {
+			long creationTime, long giftTime, double latitude, double longitude) {
 		this.href = href;
 		this.key = key;
 		this.KEY_ID = -1;
 		this.loginId = loginId;
-		this.giftId = storyId;
+		this.giftId = giftId;
 		this.title = title;
 		this.body = body;
 		this.audioLink = audioLink;
@@ -322,7 +322,7 @@ public class GiftData implements Parcelable {
 		this.imageLink = imageMetaData;
 		this.tags = tags;
 		this.creationTime = creationTime;
-		this.giftTime = storyTime;
+		this.giftTime = giftTime;
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}

@@ -86,21 +86,21 @@ public class CreateGiftActivity extends GiftActivityBase {
 		resolver = new PotlatchResolver(this);
 		
 		// Get references to all the UI elements
-		loginIdTV = (TextView) findViewById(R.id.story_create_value_login_id);
-		storyIdET = (EditText) findViewById(R.id.story_create_value_story_id);
-		titleET = (EditText) findViewById(R.id.story_create_value_title);
-		bodyET = (EditText) findViewById(R.id.story_create_value_body);
-		audioCaptureButton = (Button) findViewById(R.id.story_create_value_audio_link);
-		videoCaptureButton = (Button) findViewById(R.id.story_create_value_video_button);
-		imageNameET = (EditText) findViewById(R.id.story_create_value_image_name);
-		imageCaptureButton = (Button) findViewById(R.id.story_create_value_image_button);
-		tagsET = (EditText) findViewById(R.id.story_create_value_tags);
-		creationTimeET = (EditText) findViewById(R.id.story_create_value_creation_time);
+		loginIdTV = (TextView) findViewById(R.id.gift_create_value_login_id);
+		storyIdET = (EditText) findViewById(R.id.gift_create_value_story_id);
+		titleET = (EditText) findViewById(R.id.gift_create_value_title);
+		bodyET = (EditText) findViewById(R.id.gift_create_value_body);
+		audioCaptureButton = (Button) findViewById(R.id.gift_create_value_audio_link);
+		videoCaptureButton = (Button) findViewById(R.id.gift_create_value_video_button);
+		imageNameET = (EditText) findViewById(R.id.gift_create_value_image_name);
+		imageCaptureButton = (Button) findViewById(R.id.gift_create_value_image_button);
+		tagsET = (EditText) findViewById(R.id.gift_create_value_tags);
+		creationTimeET = (EditText) findViewById(R.id.gift_create_value_creation_time);
 		locationButton = (Button) findViewById(R.id.story_create_value_location_button);
 
-		imageLocation = (TextView) findViewById(R.id.story_create_value_image_location);
-		videoLocation = (TextView) findViewById(R.id.story_create_value_video_location);
-		audioLocation = (TextView) findViewById(R.id.story_create_value_audio_location);
+		imageLocation = (TextView) findViewById(R.id.gift_create_value_image_location);
+		videoLocation = (TextView) findViewById(R.id.gift_create_value_video_location);
+		audioLocation = (TextView) findViewById(R.id.gift_create_value_audio_location);
 
 		latitudeValue = (TextView) findViewById(R.id.story_create_value_latitude);
 		longitudeValue = (TextView) findViewById(R.id.story_create_value_longitude);
@@ -109,7 +109,7 @@ public class CreateGiftActivity extends GiftActivityBase {
 		buttonCancel = (Button) findViewById(R.id.story_create_button_cancel);
 		buttonCreate = (Button) findViewById(R.id.story_create_button_save);
 
-		storyDate = (DatePicker) findViewById(R.id.story_create_value_story_time_date_picker);
+		storyDate = (DatePicker) findViewById(R.id.gift_create_value_story_time_date_picker);
 		
 		//Set the login ID, if it's been set
 		loginIdTV.setText(String.valueOf(LoginActivity.getLoginId(this)));

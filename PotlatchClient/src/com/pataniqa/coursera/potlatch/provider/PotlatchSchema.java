@@ -28,7 +28,7 @@ public class PotlatchSchema {
 
 	// Define a static class that represents description of stored content
 	// entity.
-	public static class Story {
+	public static class Gift {
 		// define a URI paths to access entity
 		// BASE_URI/story - for list of story(s)
 		// BASE_URI/story/* - retrieve specific story by id
@@ -52,10 +52,10 @@ public class PotlatchSchema {
 
 		// the names and order of ALL columns, including internal use ones
 		public static final String[] ALL_COLUMN_NAMES = { Cols.ID,
-				Cols.LOGIN_ID, Cols.STORY_ID, Cols.TITLE, Cols.BODY,
+				Cols.LOGIN_ID, Cols.GIFT_ID, Cols.TITLE, Cols.BODY,
 				Cols.AUDIO_LINK, Cols.VIDEO_LINK, Cols.IMAGE_NAME,
 				Cols.IMAGE_LINK, Cols.TAGS, Cols.CREATION_TIME,
-				Cols.STORY_TIME, Cols.LATITUDE, Cols.LONGITUDE };
+				Cols.GIFT_TIME, Cols.LATITUDE, Cols.LONGITUDE };
 
 		// the names and order of ALL column types, including internal use ones (for use with SQLite)
 		public static final String[] ALL_COLUMN_TYPES = { "integer",
@@ -72,8 +72,8 @@ public class PotlatchSchema {
 			if (!setValues.containsKey(Cols.LOGIN_ID)) {
 				setValues.put(Cols.LOGIN_ID, 0);
 			}
-			if (!setValues.containsKey(Cols.STORY_ID)) {
-				setValues.put(Cols.STORY_ID, 0);
+			if (!setValues.containsKey(Cols.GIFT_ID)) {
+				setValues.put(Cols.GIFT_ID, 0);
 			}
 			if (!setValues.containsKey(Cols.TITLE)) {
 				setValues.put(Cols.TITLE, "");
@@ -99,8 +99,8 @@ public class PotlatchSchema {
 			if (!setValues.containsKey(Cols.CREATION_TIME)) {
 				setValues.put(Cols.CREATION_TIME, 0);
 			}
-			if (!setValues.containsKey(Cols.STORY_TIME)) {
-				setValues.put(Cols.STORY_TIME, 0);
+			if (!setValues.containsKey(Cols.GIFT_TIME)) {
+				setValues.put(Cols.GIFT_TIME, 0);
 			}
 			if (!setValues.containsKey(Cols.LATITUDE)) {
 				setValues.put(Cols.LATITUDE, 0);
@@ -116,7 +116,7 @@ public class PotlatchSchema {
 			public static final String ID = BaseColumns._ID; // convention
 			// The name and column index of each column in your database
 			public static final String LOGIN_ID = "LOGIN_ID";
-			public static final String STORY_ID = "STORY_ID";
+			public static final String GIFT_ID = "STORY_ID";
 			public static final String TITLE = "TITLE";
 			public static final String BODY = "BODY";
 			public static final String AUDIO_LINK = "AUDIO_LINK";
@@ -125,7 +125,7 @@ public class PotlatchSchema {
 			public static final String IMAGE_LINK = "IMAGE_LINK";
 			public static final String TAGS = "TAGS";
 			public static final String CREATION_TIME = "CREATION_TIME";
-			public static final String STORY_TIME = "STORY_TIME";
+			public static final String GIFT_TIME = "STORY_TIME";
 			public static final String LATITUDE = "LATITUDE";
 			public static final String LONGITUDE = "LONGITUDE";
 		}

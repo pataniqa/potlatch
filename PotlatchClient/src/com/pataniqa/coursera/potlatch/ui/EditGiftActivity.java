@@ -182,7 +182,7 @@ public class EditGiftActivity extends GiftActivityBase {
 
 		GiftData storyData;
 		try {
-			storyData = resolver.getStoryDataViaRowID(getUniqueKey());
+			storyData = resolver.getGiftDataViaRowID(getUniqueKey());
 		} catch (RemoteException e) {
 			Log.d(LOG_TAG, "" + e.getMessage());
 			e.printStackTrace();

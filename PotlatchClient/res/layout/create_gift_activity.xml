@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/StoryCreateRelativeLayout"
+    android:id="@+id/GiftCreateRelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/gray"
@@ -16,7 +16,7 @@
         android:layout_marginBottom="55dp" >
 
         <RelativeLayout
-            android:id="@+id/storyRelativeLayout"
+            android:id="@+id/giftRelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -24,251 +24,251 @@
             <!-- login_id label/value pair -->
 
             <TextView
-                android:id="@+id/story_create_label_login_id"
+                android:id="@+id/gift_create_label_login_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_create_value_login_id"
-                android:layout_alignBottom="@+id/story_create_value_login_id"
+                android:layout_alignBaseline="@+id/gift_create_value_login_id"
+                android:layout_alignBottom="@+id/gift_create_value_login_id"
                 android:layout_alignParentLeft="true"
-                android:text="@string/story_create_label_login_id" />
+                android:text="@string/gift_create_label_login_id" />
 
             <TextView
-                android:id="@+id/story_create_value_login_id"
+                android:id="@+id/gift_create_value_login_id"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:text="@string/story_create_login_id_default_value" />
+                android:text="@string/gift_create_login_id_default_value" />
 
-            <!-- story_id label/value pair -->
+            <!-- gift_id label/value pair -->
 
             <TextView
-                android:id="@+id/story_create_label_story_id"
+                android:id="@+id/gift_create_label_story_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_create_value_story_id"
-                android:layout_alignBottom="@+id/story_create_value_story_id"
+                android:layout_alignBaseline="@+id/gift_create_value_story_id"
+                android:layout_alignBottom="@+id/gift_create_value_story_id"
                 android:layout_alignParentLeft="true"
-                android:text="@string/story_create_label_story_id"
+                android:text="@string/gift_create_label_story_id"
                 android:visibility="gone" />
 
             <EditText
-                android:id="@+id/story_create_value_story_id"
+                android:id="@+id/gift_create_value_story_id"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_create_value_login_id"
+                android:layout_below="@+id/gift_create_value_login_id"
                 android:inputType="text"
-                android:text="@string/story_create_story_id_default_value"
+                android:text="@string/gift_create_story_id_default_value"
                 android:visibility="gone" />
 
             <!-- title label/value pair -->
 
             <TextView
-                android:id="@+id/story_create_label_title"
+                android:id="@+id/gift_create_label_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_create_value_title"
-                android:layout_alignBottom="@+id/story_create_value_title"
+                android:layout_alignBaseline="@+id/gift_create_value_title"
+                android:layout_alignBottom="@+id/gift_create_value_title"
                 android:layout_alignParentLeft="true"
-                android:text="@string/story_create_label_title" />
+                android:text="@string/gift_create_label_title" />
 
             <EditText
-                android:id="@+id/story_create_value_title"
+                android:id="@+id/gift_create_value_title"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_create_value_story_id"
+                android:layout_below="@+id/gift_create_value_story_id"
                 android:inputType="text"
-                android:text="@string/story_create_title_default_value" />
+                android:text="@string/gift_create_title_default_value" />
 
             <!-- body label/value pair -->
 
             <TextView
-                android:id="@+id/story_create_label_body"
+                android:id="@+id/gift_create_label_body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_create_value_body"
-                android:layout_alignBottom="@+id/story_create_value_body"
+                android:layout_alignBaseline="@+id/gift_create_value_body"
+                android:layout_alignBottom="@+id/gift_create_value_body"
                 android:layout_alignParentLeft="true"
-                android:text="@string/story_create_label_body" />
+                android:text="@string/gift_create_label_body" />
 
             <EditText
-                android:id="@+id/story_create_value_body"
+                android:id="@+id/gift_create_value_body"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_create_value_title"
+                android:layout_below="@+id/gift_create_value_title"
                 android:inputType="text"
-                android:text="@string/story_create_body_default_value" />
+                android:text="@string/gift_create_body_default_value" />
 
             <!-- audio_link label/value pair -->
 
             <TextView
-                android:id="@+id/story_create_label_audio_link"
+                android:id="@+id/gift_create_label_audio_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_create_value_audio_link"
-                android:layout_alignBottom="@+id/story_create_value_audio_link"
+                android:layout_alignBaseline="@+id/gift_create_value_audio_link"
+                android:layout_alignBottom="@+id/gift_create_value_audio_link"
                 android:layout_alignParentLeft="true"
-                android:text="@string/story_create_label_audio_link"
+                android:text="@string/gift_create_label_audio_link"
                 android:visibility="visible" />
 
             <Button
-                android:id="@+id/story_create_value_audio_link"
+                android:id="@+id/gift_create_value_audio_link"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_create_value_body"
+                android:layout_below="@+id/gift_create_value_body"
                 android:onClick="addAudioClicked"
-                android:text="@string/story_create_button_label_record"
+                android:text="@string/gift_create_button_label_record"
                 android:visibility="visible" />
 
             <TextView
-                android:id="@+id/story_create_value_audio_location"
+                android:id="@+id/gift_create_value_audio_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_create_value_audio_link"
+                android:layout_below="@+id/gift_create_value_audio_link"
                 android:text="" />
 
             <!-- video_link label/value pair -->
 
             <TextView
-                android:id="@+id/story_create_label_video_link"
+                android:id="@+id/gift_create_label_video_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_create_value_video_button"
-                android:layout_alignBottom="@+id/story_create_value_video_button"
+                android:layout_alignBaseline="@+id/gift_create_value_video_button"
+                android:layout_alignBottom="@+id/gift_create_value_video_button"
                 android:layout_alignParentLeft="true"
-                android:text="@string/story_create_label_video_link"
+                android:text="@string/gift_create_label_video_link"
                 android:visibility="gone" />
 
             <Button
-                android:id="@+id/story_create_value_video_button"
+                android:id="@+id/gift_create_value_video_button"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_create_value_audio_location"
+                android:layout_below="@+id/gift_create_value_audio_location"
                 android:text="@string/record_button_label"
                 android:visibility="gone" />
 
             <TextView
-                android:id="@+id/story_create_value_video_location"
+                android:id="@+id/gift_create_value_video_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_create_value_video_button"
+                android:layout_below="@+id/gift_create_value_video_button"
                 android:text="" />
 
             <!-- image_name label/value pair -->
 
             <TextView
-                android:id="@+id/story_create_label_image_name"
+                android:id="@+id/gift_create_label_image_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_create_value_image_name"
-                android:layout_alignBottom="@+id/story_create_value_image_name"
+                android:layout_alignBaseline="@+id/gift_create_value_image_name"
+                android:layout_alignBottom="@+id/gift_create_value_image_name"
                 android:layout_alignParentLeft="true"
-                android:text="@string/story_create_label_image_name" />
+                android:text="@string/gift_create_label_image_name" />
 
             <EditText
-                android:id="@+id/story_create_value_image_name"
+                android:id="@+id/gift_create_value_image_name"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_create_value_video_location"
+                android:layout_below="@+id/gift_create_value_video_location"
                 android:inputType="text"
-                android:text="@string/story_create_image_name_default_value" />
+                android:text="@string/gift_create_image_name_default_value" />
 
             <!-- image_meta_data label/value pair -->
 
             <TextView
-                android:id="@+id/story_create_label_image_meta_data"
+                android:id="@+id/gift_create_label_image_meta_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_create_value_image_button"
-                android:layout_alignBottom="@+id/story_create_value_image_button"
+                android:layout_alignBaseline="@+id/gift_create_value_image_button"
+                android:layout_alignBottom="@+id/gift_create_value_image_button"
                 android:layout_alignParentLeft="true"
-                android:text="@string/story_create_label_image_meta_data" />
+                android:text="@string/gift_create_label_image_meta_data" />
 
             <Button
-                android:id="@+id/story_create_value_image_button"
+                android:id="@+id/gift_create_value_image_button"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_create_value_image_name"
+                android:layout_below="@+id/gift_create_value_image_name"
                 android:onClick="addPhotoClicked"
                 android:text="Add Photo" />
 
             <TextView
-                android:id="@+id/story_create_value_image_location"
+                android:id="@+id/gift_create_value_image_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_create_value_image_button"
+                android:layout_below="@+id/gift_create_value_image_button"
                 android:text="" />
 
             <!-- tags label/value pair -->
 
             <TextView
-                android:id="@+id/story_create_label_tags"
+                android:id="@+id/gift_create_label_tags"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_create_value_tags"
-                android:layout_alignBottom="@+id/story_create_value_tags"
+                android:layout_alignBaseline="@+id/gift_create_value_tags"
+                android:layout_alignBottom="@+id/gift_create_value_tags"
                 android:layout_alignParentLeft="true"
-                android:text="@string/story_create_label_tags" />
+                android:text="@string/gift_create_label_tags" />
 
             <EditText
-                android:id="@+id/story_create_value_tags"
+                android:id="@+id/gift_create_value_tags"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_create_value_image_location"
+                android:layout_below="@+id/gift_create_value_image_location"
                 android:inputType="text"
-                android:text="@string/story_create_tags_default_value" />
+                android:text="@string/gift_create_tags_default_value" />
 
             <!-- creation_time label/value pair -->
 
             <TextView
-                android:id="@+id/story_create_label_creation_time"
+                android:id="@+id/gift_create_label_creation_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_create_value_creation_time"
-                android:layout_alignBottom="@+id/story_create_value_creation_time"
+                android:layout_alignBaseline="@+id/gift_create_value_creation_time"
+                android:layout_alignBottom="@+id/gift_create_value_creation_time"
                 android:layout_alignParentLeft="true"
-                android:text="@string/story_create_label_creation_time"
+                android:text="@string/gift_create_label_creation_time"
                 android:visibility="gone" />
 
             <EditText
-                android:id="@+id/story_create_value_creation_time"
+                android:id="@+id/gift_create_value_creation_time"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_create_value_tags"
+                android:layout_below="@+id/gift_create_value_tags"
                 android:inputType="text"
-                android:text="@string/story_create_creation_time_default_value"
+                android:text="@string/gift_create_creation_time_default_value"
                 android:visibility="gone" />
 
-            <!-- story_time label/value pair -->
+            <!-- _time label/value pair -->
 
             <TextView
-                android:id="@+id/story_create_label_story_time"
+                android:id="@+id/gift_create_label_story_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/story_create_value_story_time_date_picker"
-                android:layout_alignBottom="@+id/story_create_value_story_time_date_picker"
+                android:layout_alignBaseline="@+id/gift_create_value_story_time_date_picker"
+                android:layout_alignBottom="@+id/gift_create_value_story_time_date_picker"
                 android:layout_alignParentLeft="true"
-                android:text="@string/story_create_label_story_time" />
+                android:text="@string/gift_create_label_story_time" />
 
             <DatePicker
-                android:id="@+id/story_create_value_story_time_date_picker"
+                android:id="@+id/gift_create_value_story_time_date_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/story_create_value_creation_time"
+                android:layout_below="@+id/gift_create_value_creation_time"
                 android:layout_marginRight="20dp"
-                android:layout_toLeftOf="@+id/story_create_value_image_location" />
+                android:layout_toLeftOf="@+id/gift_create_value_image_location" />
             <!-- latitude label/value pair -->
 
             <TextView
@@ -285,7 +285,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/story_create_value_story_time_date_picker"
+                android:layout_below="@+id/gift_create_value_story_time_date_picker"
                 android:onClick="getLocationClicked"
                 android:text="Get Location" />
 
