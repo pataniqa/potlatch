@@ -1,15 +1,20 @@
 package com.pataniqa.coursera.potlatch.ui;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.text.Editable;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.SearchView;
 import android.widget.Toast;
+import android.widget.SearchView.OnQueryTextListener;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.storage.GiftData;
@@ -29,11 +34,10 @@ public class CreateGiftActivity extends GiftActivityBase {
 
     // The various UI elements we use
     private EditText titleET;
-    private EditText bodyET;
-    private TextView imageLocation;
+    private EditText descriptionET;
 
     // Making this static keeps it from getting GC'd when we take pictures
-    private static Uri imagePath; 
+    private static Uri imagePath;
     private Uri fileUri;
     private PotlatchResolver resolver;
     private Uri imagePathFinal = null;
@@ -43,21 +47,54 @@ public class CreateGiftActivity extends GiftActivityBase {
         super.onCreate(savedInstanceState);
 
         // Setup the UI
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        getActionBar().setDisplayShowTitleEnabled(false);
+        getActionBar().setDisplayShowHomeEnabled(false);
         setContentView(R.layout.create_gift_activity);
+        getActionBar().show();
 
         // Start a resolver to help us store/retrieve data from a database
         resolver = new PotlatchResolver(this);
 
         // Get references to all the UI elements
         titleET = (EditText) findViewById(R.id.gift_create_value_title);
-        bodyET = (EditText) findViewById(R.id.gift_create_value_body);
-        imageLocation = (TextView) findViewById(R.id.gift_create_value_image_location);
+        descriptionET = (EditText) findViewById(R.id.gift_create_value_description);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.list_gifts_activity_actions, menu);
+
+        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView search = (SearchView) menu.findItem(R.id.search).getActionView();
+        search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+        search.setOnQueryTextListener(new OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String query) {
+                // setGiftQuery(query);
+                // updateGifts();
+                // TODO - code duplication from ListGiftsActivity
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // setGiftQuery(query);
+                // updateGifts();
+                // TODO - code duplication from ListGiftsActivity
+                return true;
+            }
+
+        });
+
+        return true;
     }
 
     // Reset all the fields to their default values
     public void buttonClearClicked(View v) {
         titleET.setText("");
-        bodyET.setText("");
+        descriptionET.setText("");
     }
 
     // Close this activity if the cancel button is clicked
@@ -72,7 +109,7 @@ public class CreateGiftActivity extends GiftActivityBase {
 
         // local Editables
         Editable titleCreateable = titleET.getText();
-        Editable bodyCreateable = bodyET.getText();
+        Editable bodyCreateable = descriptionET.getText();
 
         long loginId = 0;
         long GiftId = 0;
@@ -123,8 +160,8 @@ public class CreateGiftActivity extends GiftActivityBase {
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 
         // Tell the capturing activity where to store the image
-        Uri uriPath = StorageUtilities.getOutputMediaFileUri(this, StorageUtilities.MEDIA_TYPE_IMAGE,
-                StorageUtilities.SECURITY_PUBLIC, null);
+        Uri uriPath = StorageUtilities.getOutputMediaFileUri(this,
+                StorageUtilities.MEDIA_TYPE_IMAGE, StorageUtilities.SECURITY_PUBLIC, null);
 
         if (uriPath == null)
             return;
@@ -145,20 +182,20 @@ public class CreateGiftActivity extends GiftActivityBase {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        Log.d(LOG_TAG, "CreateFragment onActivtyResult called. requestCode: " + requestCode + " resultCode:"
-                + resultCode + "data:" + data);
+        Log.d(LOG_TAG, "CreateFragment onActivtyResult called. requestCode: " + requestCode
+                + " resultCode:" + resultCode + "data:" + data);
 
         if (requestCode == CreateGiftActivity.CAMERA_PIC_REQUEST) {
             if (resultCode == CreateGiftActivity.RESULT_OK) {
                 // Image captured and saved to fileUri specified in the Intent
                 imagePathFinal = imagePath;
-                imageLocation.setText(imagePathFinal.toString());
             } else if (resultCode == CreateGiftActivity.RESULT_CANCELED) {
                 // User cancelled the image capture
             } else {
                 // Image capture failed, advise user
-                Toast.makeText(getApplicationContext(), "Image capture failed.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Image capture failed.", Toast.LENGTH_LONG)
+                        .show();
             }
-        } 
+        }
     }
 }

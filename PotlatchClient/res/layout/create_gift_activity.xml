@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/GiftCreateRelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/gray"
     android:orientation="horizontal" >
 
     <ScrollView
@@ -21,132 +19,89 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <!-- title label/value pair -->
-
-            <TextView
-                android:id="@+id/gift_create_label_title"
+            <LinearLayout
+                android:id="@+id/image_creator_buttons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/gift_create_value_title"
-                android:layout_alignBottom="@+id/gift_create_value_title"
-                android:layout_alignParentLeft="true"
-                android:text="@string/title" />
+                android:layout_centerHorizontal="true"
+                android:layout_margin="10dp"
+                android:orientation="horizontal" >
+
+                <ImageButton
+                    android:id="@+id/gift_create_select_image_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="selectPhotoClicked"
+                    android:src="@drawable/ic_fa_folder"
+                    android:text="@string/select_photo" />
+
+                <ImageButton
+                    android:id="@+id/gift_create_new_image_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="addPhotoClicked"
+                    android:src="@drawable/ic_action_camera"
+                    android:text="@string/add_photo" />
+
+                <ImageButton
+                    android:id="@+id/gift_create_new_video_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="addPhotoClicked"
+                    android:src="@drawable/ic_action_video"
+                    android:text="@string/add_video" />
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/gift_create_value_title"
-                android:layout_width="150dp"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_below="@+id/image_creator_buttons"
+                android:hint="@string/title"
                 android:inputType="text"
                 android:text="@string/empty_default_value" />
 
-            <!-- body label/value pair -->
-
-            <TextView
-                android:id="@+id/gift_create_label_body"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/gift_create_value_body"
-                android:layout_alignBottom="@+id/gift_create_value_body"
-                android:layout_alignParentLeft="true"
-                android:text="@string/description" />
-
             <EditText
-                android:id="@+id/gift_create_value_body"
-                android:layout_width="150dp"
+                android:id="@+id/gift_create_value_description"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/gift_create_value_title"
-                android:inputType="text"
+                android:gravity="top|left"
+                android:hint="@string/description"
+               android:inputType="textMultiLine"
+                android:lines="8"
+                android:maxLines="10"
+                android:minLines="6"
+                android:scrollbars="vertical"
                 android:text="@string/empty_default_value" />
-
-            <!-- video_link label/value pair -->
-
-            <TextView
-                android:id="@+id/gift_create_label_video_link"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/gift_create_value_video_button"
-                android:layout_alignBottom="@+id/gift_create_value_video_button"
-                android:layout_alignParentLeft="true"
-                android:text="@string/video_link"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/gift_create_value_video_button"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/gift_create_value_body"
-                android:text="@string/record_button_label"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/gift_create_value_video_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/gift_create_value_video_button"
-                android:text="" />
-
-            <!-- image_meta_data label/value pair -->
-
-            <TextView
-                android:id="@+id/gift_create_label_image_meta_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/gift_create_value_image_button"
-                android:layout_alignBottom="@+id/gift_create_value_image_button"
-                android:layout_alignParentLeft="true"
-                android:text="@string/image_meta_data" />
-
-            <Button
-                android:id="@+id/gift_create_value_image_button"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/gift_create_value_video_button"
-                android:onClick="addPhotoClicked"
-                android:text="@string/add_photo" />
-
-            <TextView
-                android:id="@+id/gift_create_value_image_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/gift_create_value_image_button"
-                android:text="" />
-
         </RelativeLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/gift_create_button_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="32dp"
-        android:onClick="buttonCreateClicked"
-        android:text="@string/create" />
-
-    <Button
-        android:id="@+id/gift_create_button_reset"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:onClick="buttonClearClicked"
-        android:text="@string/clear" />
+        android:layout_margin="10dp"
+        android:orientation="horizontal" >
 
-    <Button
-        android:id="@+id/gift_create_button_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="21dp"
-        android:onClick="buttonCancelClicked"
-        android:text="@string/cancel" />
+        <ImageButton
+            android:id="@+id/gift_create_button_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="buttonCreateClicked"
+            android:src="@drawable/ic_action_accept"
+            android:text="@string/create" />
+
+        <ImageButton
+            android:id="@+id/gift_create_button_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="buttonCancelClicked"
+            android:src="@drawable/ic_action_cancel"
+            android:text="@string/cancel" />
+    </LinearLayout>
 
 </RelativeLayout>

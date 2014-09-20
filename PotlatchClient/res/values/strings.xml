@@ -26,7 +26,6 @@
     <string name="image_meta_data">ImageData</string>
     <string name="gift_list_filter_hint">Search titles..</string>
     <string name="description">Description:</string>
-    <string name="clear">Clear</string>
     <string name="record">Record</string>
     <string name="gift_id">GiftId</string>
     <string name="empty_default_value"></string>
@@ -54,5 +53,8 @@
     <string name="reset">Reset</string>
     <string name="create">Create</string>
     <string name="loginID">LoginID</string>
+    <string name="content_description">Content Description</string>
+    <string name="select_photo">Select photo</string>
+    <string name="add_video">Create Video</string>
 
 </resources>

@@ -107,7 +107,7 @@
                 android:layout_height="160dp"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/gift_view_value_video_link"
-                android:contentDescription="Content desc."
+                android:contentDescription="@string/content_description"
                 android:src="@drawable/ic_launcher"
                 android:text="@string/image_meta_data"
                 android:textAppearance="?android:attr/textAppearanceMedium"

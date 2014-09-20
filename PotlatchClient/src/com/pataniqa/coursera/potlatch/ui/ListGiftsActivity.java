@@ -54,8 +54,8 @@ public class ListGiftsActivity extends GiftActivityBase implements SwipeRefreshL
         getActionBar().setDisplayShowTitleEnabled(false);
         getActionBar().setDisplayShowHomeEnabled(false);
         setContentView(R.layout.list_gifts_activity);
-
         getActionBar().show();
+        
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         swipeLayout.setOnRefreshListener(this);
         swipeLayout.setColorScheme(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
