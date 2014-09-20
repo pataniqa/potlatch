@@ -29,7 +29,7 @@
                 android:layout_alignBaseline="@+id/gift_edit_login_id"
                 android:layout_alignBottom="@+id/gift_edit_login_id"
                 android:layout_alignParentLeft="true"
-                android:text="@string/gift_edit_label_login_id"
+                android:text="@string/loginID"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:hint="@string/gift_edit_default_value_login_id" />
+                android:hint="@string/empty_default_value" />
 
             <!-- gift_id label/value pair -->
 
@@ -49,7 +49,7 @@
                 android:layout_alignBaseline="@+id/gift_edit_gift_id"
                 android:layout_alignBottom="@+id/gift_edit_gift_id"
                 android:layout_alignParentLeft="true"
-                android:text="@string/gift_edit_label_gift_id"
+                android:text="@string/gift_id"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:visibility="gone" />
 
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/gift_edit_login_id"
-                android:hint="@string/gift_edit_default_value_gift_id"
+                android:hint="@string/empty_default_value"
                 android:inputType="none"
                 android:visibility="gone" />
 
@@ -72,7 +72,7 @@
                 android:layout_alignBaseline="@+id/gift_edit_title"
                 android:layout_alignBottom="@+id/gift_edit_title"
                 android:layout_alignParentLeft="true"
-                android:text="@string/gift_edit_label_title"
+                android:text="@string/title"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/gift_edit_login_id"
-                android:hint="@string/gift_edit_default_value_title" />
+                android:hint="@string/empty_default_value" />
 
             <!-- body label/value pair -->
 
@@ -92,7 +92,7 @@
                 android:layout_alignBaseline="@+id/gift_edit_body"
                 android:layout_alignBottom="@+id/gift_edit_body"
                 android:layout_alignParentLeft="true"
-                android:text="@string/gift_edit_label_body"
+                android:text="@string/body"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
@@ -101,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/gift_edit_title"
-                android:hint="@string/gift_edit_default_value_body" />
+                android:hint="@string/empty_default_value" />
 
             <!-- video_link label/value pair -->
 
@@ -112,7 +112,7 @@
                 android:layout_alignBaseline="@+id/gift_edit_video_link"
                 android:layout_alignBottom="@+id/gift_edit_video_link"
                 android:layout_alignParentLeft="true"
-                android:text="@string/gift_edit_label_video_link"
+                android:text="@string/video_link"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:visibility="gone" />
 
@@ -122,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/gift_edit_title"
-                android:hint="@string/gift_edit_default_value_video_link"
+                android:hint="@string/empty_default_value"
                 android:visibility="gone" />
 
             <!-- image_name label/value pair -->
@@ -134,7 +134,7 @@
                 android:layout_alignBaseline="@+id/gift_edit_image_name"
                 android:layout_alignBottom="@+id/gift_edit_image_name"
                 android:layout_alignParentLeft="true"
-                android:text="@string/gift_edit_label_image_name"
+                android:text="@string/image_name"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
@@ -143,7 +143,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/gift_edit_video_link"
-                android:hint="@string/gift_edit_default_value_image_name" />
+                android:hint="@string/empty_default_value" />
 
             <!-- image_meta_data label/value pair -->
 
@@ -154,7 +154,7 @@
                 android:layout_alignBaseline="@+id/gift_edit_image_meta_data"
                 android:layout_alignBottom="@+id/gift_edit_image_meta_data"
                 android:layout_alignParentLeft="true"
-                android:text="@string/gift_edit_label_image_meta_data"
+                android:text="@string/image_meta_data"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:visibility="gone" />
 
@@ -164,7 +164,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/gift_edit_image_name"
-                android:hint="@string/gift_edit_default_value_image_meta_data"
+                android:hint="@string/empty_default_value"
                 android:visibility="gone" />
 
         </RelativeLayout>
@@ -179,7 +179,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="32dp"
         android:onClick="clickListener"
-        android:text="@string/gift_edit_button_message_save" />
+        android:text="@string/save" />
 
     <Button
         android:id="@+id/gift_edit_button_reset"
@@ -189,7 +189,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:onClick="clickListener"
-        android:text="@string/gift_edit_button_message_reset" />
+        android:text="@string/reset" />
 
     <Button
         android:id="@+id/gift_edit_button_cancel"
@@ -199,6 +199,6 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="21dp"
         android:onClick="clickListener"
-        android:text="@string/gift_edit_button_message_cancel" />
+        android:text="@string/cancel" />
 
 </RelativeLayout>

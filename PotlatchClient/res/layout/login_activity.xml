@@ -50,7 +50,7 @@
         android:layout_marginRight="10dip"
         android:background="#a0ffffff"
         android:padding="12dp"
-        android:hint="@string/login_activity_password"
+        android:hint="@string/password"
         android:inputType="textPassword" >
     </EditText>
 
@@ -63,7 +63,7 @@
         android:background="#a0ffffff"
         android:padding="12dp"
         android:onClick="loginClicked"
-        android:text="@string/login_activity_login" >
+        android:text="@string/login" >
     </Button>
 
 </RelativeLayout>

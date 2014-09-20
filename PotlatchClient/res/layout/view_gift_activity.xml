@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_gravity="left"
-                android:text="@string/gift_view_label_title"
+                android:text="@string/title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold" />
 
@@ -49,7 +49,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/gift_view_value_title"
                 android:layout_gravity="left"
-                android:text="@string/gift_view_label_body"
+                android:text="@string/body"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold" />
 
@@ -71,7 +71,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/gift_view_label_body"
                 android:layout_gravity="left"
-                android:text="@string/gift_view_label_video_link"
+                android:text="@string/video_link"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
                 android:visibility="gone" />
@@ -95,7 +95,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/gift_view_value_video_link"
                 android:layout_gravity="left"
-                android:text="@string/gift_view_label_image_name"
+                android:text="@string/image_name"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
                 android:visibility="gone" />
@@ -120,7 +120,7 @@
                 android:layout_alignBottom="@+id/gift_view_value_image_meta_data"
                 android:layout_alignParentLeft="true"
                 android:layout_gravity="left"
-                android:text="@string/gift_view_label_image_meta_data"
+                android:text="@string/image_meta_data"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
                 android:visibility="gone" />
@@ -149,7 +149,7 @@
         android:layout_marginTop="26dp"
         android:onClick="clickListener"
         android:padding="3dp"
-        android:text="@string/gift_view_button_label_edit"
+        android:text="@string/edit"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
@@ -161,7 +161,7 @@
         android:layout_alignParentRight="true"
         android:onClick="clickListener"
         android:padding="3dp"
-        android:text="@string/gift_view_button_label_delete"
+        android:text="@string/delete"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

@@ -16,157 +16,38 @@
 
 
     <!-- location View Activity Strings -->
-    <string name="gift_view_button_label_delete">Delete</string>
-    <string name="gift_view_button_label_edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
     <string name="gift_view_deletion_dialog_title">Closing Activity</string>
     <string name="gift_view_deletion_dialog_message">Are you sure you want to Delete this Entry?</string>
-    <string name="gift_view_deletion_dialog_yes">Yes</string>
-    <string name="gift_view_deletion_dialog_no">No</string>
-    <string name="gift_view_edittext_login_id_default_value">LoginId</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="gift_view_edittext_gift_id_default_value">GiftId</string>
     <string name="gift_view_edittext_title_default_value">Title</string>
     <string name="gift_view_edittext_body_default_value">Body</string>
-    <string name="gift_view_edittext_audio_link_default_value">AudioLink</string>
     <string name="gift_view_edittext_video_link_default_value">VideoLink</string>
     <string name="gift_view_edittext_image_name_default_value">ImageName</string>
     <string name="gift_view_edittext_image_meta_data_default_value">ImageData</string>
-    <string name="gift_view_edittext_tags_default_value">Tags</string>
-    <string name="gift_view_edittext_creation_time_default_value">CreationTime</string>
-    <string name="gift_view_edittext_gift_time_default_value">GiftTime</string>
-    <string name="gift_view_label_login_id">LoginId</string>
-    <string name="gift_view_label_gift_id">GiftId</string>
-    <string name="gift_view_label_title">Title</string>
-    <string name="gift_view_label_body">Body</string>
-    <string name="gift_view_label_audio_link">AudioLink</string>
-    <string name="gift_view_label_video_link">VideoLink</string>
-    <string name="gift_view_label_image_name">ImageName</string>
-    <string name="gift_view_label_image_meta_data">ImageData</string>
-
-    <!-- location View Activity Strings -->
-    <string name="tags_view_button_label_delete">Delete</string>
-    <string name="tags_view_button_label_edit">Edit</string>
-    <string name="tags_view_deletion_dialog_title">Closing Activity</string>
-    <string name="tags_view_deletion_dialog_message">Are you sure you want to Delete this Entry?</string>
-    <string name="tags_view_deletion_dialog_yes">Yes</string>
-    <string name="tags_view_deletion_dialog_no">No</string>
-    <string name="tags_view_edittext_login_id_default_value">LoginId</string>
-    <string name="tags_view_edittext_gift_id_default_value">GiftId</string>
-    <string name="tags_view_edittext_tag_default_value">Tag</string>
-    <string name="tags_view_label_login_id">LoginId</string>
-    <string name="tags_view_label_gift_id">GiftId</string>
-    <string name="tags_view_label_tag">Tag</string>
+    <string name="video_link">VideoLink</string>
+    <string name="image_name">ImageName</string>
+    <string name="image_meta_data">ImageData</string>
 
     <!-- **** Strings for List Activity for each Relation **** -->
 
+    <string name="gift_list_filter_hint">Search titles..</string>
 
-    <!-- Gift List Activity Strings -->
-    <string name="gift_list_button_label_add">ADD</string>
-    <string name="gift_list_button_label_refresh">REFRESH</string>
-    <string name="gift_list_filter_hint">Search titles...</string>
-
-    <!-- tags List Activity Strings -->
-    <string name="tags_list_button_label_add">ADD</string>
-    <string name="tags_list_button_label_refresh">REFRESH</string>
-
-    <!-- **** Strings for Create Activity for each Relation **** -->
-
-
-    <!-- Gift Create Activity Strings -->
-
-    <string name="gift_create_label_title">Title:</string>
-    <string name="gift_create_label_body">Description:</string>
-    <string name="gift_create_label_audio_link">audioLink:</string>
-    <string name="gift_create_label_video_link">videoLink:</string>
-    <string name="gift_create_label_image_name">imageName:</string>
-    <string name="gift_create_label_image_meta_data">imageMetaData:</string>
-    <string name="gift_create_label_tags">tags:</string>
-    <string name="gift_create_login_id_default_value">0</string>
-    <string name="gift_create_gift_id_default_value">0</string>
-    <string name="gift_create_title_default_value"></string>
-    <string name="gift_create_body_default_value"></string>
-    <string name="gift_create_video_link_default_value"></string>
-    <string name="gift_create_image_name_default_value"></string>
-    <string name="gift_create_image_meta_data_default_value"></string>
-    <string name="gift_create_tags_default_value"></string>
-    <string name="gift_create_creation_time_default_value">0</string>
-    <string name="gift_create_gift_time_default_value">0</string>
+    <string name="body">Description:</string>
     <string name="gift_create_button_label_clear">Clear</string>
-    <string name="gift_create_button_label_cancel">Cancel</string>
-    <string name="gift_create_button_label_create">Create</string>
     <string name="gift_create_button_label_record">Record</string>
-    <string name="gift_create_button_message_save">Save</string>
-    <string name="gift_create_button_message_reset">Reset</string>
-    <string name="gift_create_button_message_cancel">Cancel</string>
-    <!-- tags Create Activity Strings -->
 
-    <string name="tags_create_label_login_id">loginId:</string>
-    <string name="tags_create_label_gift_id">GiftId:</string>
-    <string name="tags_create_label_tag">tag:</string>
-    <string name="tags_create_login_id_default_value">0</string>
-    <string name="tags_create_gift_id_default_value">0</string>
-    <string name="tags_create_button_label_clear">Clear</string>
-    <string name="tags_create_button_label_cancel">Cancel</string>
-    <string name="tags_create_button_label_create">Create</string>
-    <string name="tags_create_button_message_save">Save</string>
-    <string name="tags_create_button_message_reset">Reset</string>
-    <string name="tags_create_button_message_cancel">Cancel</string>
+    <string name="gift_id">GiftId</string>
 
-    <!-- **** Strings for Edit Activity for each Relation **** -->
-
-
-    <!-- Gift Edit Activity Strings : Labels -->
-
-    <string name="gift_edit_label_login_id">LoginId</string>
-    <string name="gift_edit_label_gift_id">GiftId</string>
-    <string name="gift_edit_label_title">Title</string>
-    <string name="gift_edit_label_body">Body</string>
-    <string name="gift_edit_label_audio_link">AudioLink</string>
-    <string name="gift_edit_label_video_link">VideoLink</string>
-    <string name="gift_edit_label_image_name">ImageName</string>
-    <string name="gift_edit_label_image_meta_data">Image Name</string>
-
-    <!-- Gift View Activity Strings : Default Values -->
-
-    <string name="gift_edit_default_value_login_id"></string>
-    <string name="gift_edit_default_value_gift_id"></string>
-    <string name="gift_edit_default_value_title"></string>
-    <string name="gift_edit_default_value_body"></string>
-    <string name="gift_edit_default_value_audio_link"></string>
-    <string name="gift_edit_default_value_video_link"></string>
-    <string name="gift_edit_default_value_image_name"></string>
-    <string name="gift_edit_default_value_image_meta_data"></string>
-
-    <!-- Login Activity Strings -->
-    <string name="login_activity_login">Login</string>
-    <string name="login_activity_password">Password:</string>
+    <string name="empty_default_value"></string>
+    <string name="zero_default_value">0</string>
+    
     <string name="login_activity_email">Email:</string>
     <string name="login_background_description">Photo of Taiwan Sandcastle Competition</string>
 
-    <!-- Gift Edit Activity Strings : Buttons -->
-    <string name="gift_edit_button_message_save">Save</string>
-    <string name="gift_edit_button_message_reset">Reset</string>
-    <string name="gift_edit_button_message_cancel">Cancel</string>
-
-    <!-- tags Edit Fragment Strings : Labels -->
-
-    <string name="tags_edit_label_login_id">LoginId</string>
-    <string name="tags_edit_label_gift_id">GiftId</string>
-    <string name="tags_edit_label_tag">Tag</string>
-
-    <!-- tags View Fragment Strings : Default Values -->
-
-    <string name="tags_edit_default_value_login_id"></string>
-    <string name="tags_edit_default_value_gift_id"></string>
-    <string name="tags_edit_default_value_tag"></string>
-
-    <!-- tags Edit Fragment Strings : Buttons -->
-    <string name="tags_edit_button_message_save">Save</string>
-    <string name="tags_edit_button_message_reset">Reset</string>
-    <string name="tags_edit_button_message_cancel">Cancel</string>
-
-    <!-- ******** Sycn Adaptor Account Login Strings *********** -->
-    <string name="ACCOUNT_TYPE">edu.vanderbilt.SyncProviderDemo.account</string>
-    <string name="server">Server Address::</string>
     <string name="username">Username:</string>
     <string name="username_hint">username Hint!</string>
     <string name="password">Password:</string>
@@ -174,11 +55,24 @@
     <string name="login">Login</string>
     <string name="authenticating">Authenticating</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     <string name="record_button_label">Record</string>
-    <string name="title_activity_sound_record">SoundRecordActivity</string>
     <string name="action_search">Search</string>
     <string name="action_tip_gift_givers">Top gift givers</string>
     <string name="action_home">Home</string>
+    <string name="add_photo">Add photo</string>
+    
+    <string name="search">Search</string>
+    <string name="me">Me</string>
+    <string name="top_gift_givers">Top Gift Givers</string>
+    <string name="grid">Grid</string>
+    <string name="settings">Settings</string>
+    <string name="new_gift">New Gift</string>
+    <string name="key_id">Key ID</string>
+    <string name="title">Title</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="reset">Reset</string>
+    <string name="create">Create</string>
+    <string name="loginID">LoginID</string>
 
 </resources>

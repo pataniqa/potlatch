@@ -137,7 +137,7 @@ public class ViewGiftActivity extends GiftActivityBase {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle(R.string.gift_view_deletion_dialog_title)
                 .setMessage(message)
-                .setPositiveButton(R.string.gift_view_deletion_dialog_yes,
+                .setPositiveButton(R.string.yes,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -152,7 +152,7 @@ public class ViewGiftActivity extends GiftActivityBase {
 
                             }
 
-                        }).setNegativeButton(R.string.gift_view_deletion_dialog_no, null).show();
+                        }).setNegativeButton(R.string.no, null).show();
     }
 
     // Get the unique key associated with the GiftData we're displaying

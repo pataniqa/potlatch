@@ -49,17 +49,7 @@
         <!-- THIS IS THE EDIT ACTIVITY -->
         <activity android:name="com.pataniqa.coursera.potlatch.ui.EditGiftActivity" > 
         </activity>
-        
-        <!-- THIS IS THE SOUND RECORD ACTIVITY -->
-        <activity
-            android:name="com.pataniqa.coursera.potlatch.ui.SoundRecordActivity"
-            android:label="@string/title_activity_sound_record"
-            android:permission="android.permission.RECORD_AUDIO">
-            <intent-filter> 									
-                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
-            </intent-filter>
-        </activity>
-        
+                
     </application>
 
 </manifest>

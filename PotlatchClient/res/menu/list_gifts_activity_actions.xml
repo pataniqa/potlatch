@@ -6,31 +6,31 @@
         android:actionViewClass="android.widget.SearchView"
         android:icon="@drawable/ic_fa_search"
         android:showAsAction="always"
-        android:title="Search"/>
+        android:title="@string/search"/>
     <item
         android:id="@+id/action_me"
         android:icon="@drawable/ic_action_person"
         android:showAsAction="always"
-        android:title="Me"/>
+        android:title="@string/me"/>
     <item
         android:id="@+id/action_top_gift_givers"
         android:icon="@drawable/ic_fa_group"
         android:showAsAction="always"
-        android:title="Top gift givers"/>
+        android:title="@string/top_gift_givers"/>
     <item
         android:id="@+id/action_grid"
         android:icon="@drawable/ic_action_select_all"
         android:showAsAction="always"
-        android:title="Grid"/>
+        android:title="@string/grid"/>
     <item
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_action_settings"
         android:showAsAction="always"
-        android:title="Settings"/>
+        android:title="@string/settings"/>
     <item
         android:id="@+id/action_new"
         android:icon="@drawable/ic_action_new"
         android:showAsAction="always"
-        android:title="New"/>
+        android:title="@string/new_gift"/>
     
 </menu>

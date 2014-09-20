@@ -30,7 +30,7 @@
                 android:layout_alignBaseline="@+id/gift_create_value_title"
                 android:layout_alignBottom="@+id/gift_create_value_title"
                 android:layout_alignParentLeft="true"
-                android:text="@string/gift_create_label_title" />
+                android:text="@string/title" />
 
             <EditText
                 android:id="@+id/gift_create_value_title"
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:inputType="text"
-                android:text="@string/gift_create_title_default_value" />
+                android:text="@string/empty_default_value" />
 
             <!-- body label/value pair -->
 
@@ -49,7 +49,7 @@
                 android:layout_alignBaseline="@+id/gift_create_value_body"
                 android:layout_alignBottom="@+id/gift_create_value_body"
                 android:layout_alignParentLeft="true"
-                android:text="@string/gift_create_label_body" />
+                android:text="@string/body" />
 
             <EditText
                 android:id="@+id/gift_create_value_body"
@@ -58,7 +58,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/gift_create_value_title"
                 android:inputType="text"
-                android:text="@string/gift_create_body_default_value" />
+                android:text="@string/empty_default_value" />
 
             <!-- video_link label/value pair -->
 
@@ -69,7 +69,7 @@
                 android:layout_alignBaseline="@+id/gift_create_value_video_button"
                 android:layout_alignBottom="@+id/gift_create_value_video_button"
                 android:layout_alignParentLeft="true"
-                android:text="@string/gift_create_label_video_link"
+                android:text="@string/video_link"
                 android:visibility="gone" />
 
             <Button
@@ -98,7 +98,7 @@
                 android:layout_alignBaseline="@+id/gift_create_value_image_name"
                 android:layout_alignBottom="@+id/gift_create_value_image_name"
                 android:layout_alignParentLeft="true"
-                android:text="@string/gift_create_label_image_name" />
+                android:text="@string/image_name" />
 
             <EditText
                 android:id="@+id/gift_create_value_image_name"
@@ -107,7 +107,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/gift_create_value_video_location"
                 android:inputType="text"
-                android:text="@string/gift_create_image_name_default_value" />
+                android:text="@string/empty_default_value" />
 
             <!-- image_meta_data label/value pair -->
 
@@ -118,7 +118,7 @@
                 android:layout_alignBaseline="@+id/gift_create_value_image_button"
                 android:layout_alignBottom="@+id/gift_create_value_image_button"
                 android:layout_alignParentLeft="true"
-                android:text="@string/gift_create_label_image_meta_data" />
+                android:text="@string/image_meta_data" />
 
             <Button
                 android:id="@+id/gift_create_value_image_button"
@@ -127,7 +127,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/gift_create_value_image_name"
                 android:onClick="addPhotoClicked"
-                android:text="Add Photo" />
+                android:text="@string/add_photo" />
 
             <TextView
                 android:id="@+id/gift_create_value_image_location"
@@ -148,7 +148,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="32dp"
         android:onClick="buttonCreateClicked"
-        android:text="@string/gift_create_button_label_create" />
+        android:text="@string/create" />
 
     <Button
         android:id="@+id/gift_create_button_reset"
@@ -167,6 +167,6 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="21dp"
         android:onClick="buttonCancelClicked"
-        android:text="@string/gift_create_button_label_cancel" />
+        android:text="@string/cancel" />
 
 </RelativeLayout>
