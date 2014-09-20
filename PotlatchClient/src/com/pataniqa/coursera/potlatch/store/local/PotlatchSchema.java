@@ -50,7 +50,7 @@ public class PotlatchSchema {
 
         private static final String INTEGER = "integer";
         private static final String TEXT = "text";
-        
+
         public static Map<String, String> COLUMNS = new TreeMap<String, String>() {
             {
                 put(Cols.ID, INTEGER);
@@ -63,21 +63,11 @@ public class PotlatchSchema {
             }
         };
 
-        // the names and order of ALL columns, including internal use ones
-        public static final String[] ALL_COLUMN_NAMES = COLUMNS.keySet().toArray(
-                new String[COLUMNS.keySet().size()]);
-
-        // the names and order of ALL column types, including internal use ones
-        // (for use with SQLite)
-        public static final String[] ALL_COLUMN_TYPES = COLUMNS.values().toArray(
-                new String[COLUMNS.values().size()]);
-
         public static ContentValues initializeWithDefault(final ContentValues assignedValues) {
-            // final Long now = Long.valueOf(System.currentTimeMillis());
             final ContentValues setValues = (assignedValues == null) ? new ContentValues()
                     : assignedValues;
             for (Map.Entry<String, String> entry : COLUMNS.entrySet()) {
-                String key = entry.getKey(); 
+                String key = entry.getKey();
                 if (!key.equals(Cols.ID)) {
                     if (!setValues.containsKey(key)) {
                         if (entry.getValue().equals(INTEGER))
@@ -92,7 +82,7 @@ public class PotlatchSchema {
 
         // a static class to store columns in entity
         public static class Cols {
-            public static final String ID = BaseColumns._ID; 
+            public static final String ID = BaseColumns._ID;
             // The name and column index of each column in your database
             public static final String LOGIN_ID = "LOGIN_ID";
             public static final String GIFT_ID = "GIFT_ID";

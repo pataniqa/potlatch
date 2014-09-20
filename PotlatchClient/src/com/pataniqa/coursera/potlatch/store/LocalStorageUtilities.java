@@ -4,6 +4,8 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
 
 import android.content.Context;
 import android.net.Uri;
@@ -15,17 +17,25 @@ import android.widget.Toast;
  * This utility class provides several options for storing temporary and
  * permanent files on the file system with varying degrees of security.
  */
-public class StorageUtilities {
+public class LocalStorageUtilities {
 
-    private static final String LOG_TAG = StorageUtilities.class.getCanonicalName();
+    private final static String LOG_TAG = LocalStorageUtilities.class.getCanonicalName();
 
-    public static final int SECURITY_PUBLIC = 0;
-    public static final int SECURITY_PRIVATE = 1;
+    public final static int SECURITY_PUBLIC = 0;
+    public final static int SECURITY_PRIVATE = 1;
 
     // Constant that denotes what media type a file should be stored as.
-    public static final int MEDIA_TYPE_IMAGE = 1;
-    public static final int MEDIA_FILE_VIDEO = 2;
-    public static final int MEDIA_TYPE_TEXT = 3;
+    public final static int MEDIA_TYPE_IMAGE = 1;
+    public final static int MEDIA_TYPE_VIDEO = 2;
+    public final static int MEDIA_TYPE_TEXT = 3;
+
+    public final static Map<Integer, String> MEDIA_TYPES = new TreeMap<Integer, String>() {
+        {
+            put(MEDIA_TYPE_IMAGE, "IMG_");
+            put(MEDIA_TYPE_VIDEO, "VID_");
+            put(MEDIA_TYPE_TEXT, "TXT_");
+        }
+    };
 
     /**
      * Creates an output file to store some kind of media (images, audio, text).
@@ -55,12 +65,6 @@ public class StorageUtilities {
         // Get the current time stamp
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
 
-        // The directory where we'll store the file
-        File storageDir = null;
-
-        // The name of the file we'll return
-        File outputFile = null;
-
         // Make sure external storage is mounted.
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             Toast.makeText(context, "External storage not mounted. Can't write/read file.",
@@ -68,16 +72,16 @@ public class StorageUtilities {
             return null;
         }
 
-        // If security is private, store it in the app's private directory.
+        File storageDir = null;
         if (security == SECURITY_PRIVATE) {
             storageDir = context.getFilesDir();
-        }
-        // Otherwise, store the file in a public directory depending on its
-        // media type.
-        else {
+        } else {
             switch (type) {
             case MEDIA_TYPE_IMAGE:
                 storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                break;
+            case MEDIA_TYPE_VIDEO:
+                storageDir = context.getExternalFilesDir(Environment.DIRECTORY_MOVIES);
                 break;
             case MEDIA_TYPE_TEXT:
                 storageDir = context.getExternalFilesDir(null);
@@ -85,22 +89,14 @@ public class StorageUtilities {
             }
         }
 
-        // If a name was specified, use that filename.
-        if (name != null && storageDir != null) {
-            outputFile = new File(storageDir.getPath() + File.separator + name);
-        }
-        // Otherwise, determine filename based on media type.
-        else if (storageDir != null) {
-            String ext = "";
-            switch (type) {
-            case MEDIA_TYPE_IMAGE:
-                ext = "IMG_";
-                break;
-            case MEDIA_TYPE_TEXT:
-                ext = "TXT_";
-                break;
+        File outputFile = null;
+        if (storageDir != null) {
+            if (name != null) {
+                outputFile = new File(storageDir.getPath() + File.separator + name);
+            } else if (MEDIA_TYPES.containsKey(type)) {
+                outputFile = new File(storageDir.getPath() + File.separator + MEDIA_TYPES.get(type)
+                        + timeStamp);
             }
-            outputFile = new File(storageDir.getPath() + File.separator + ext + timeStamp);
         }
 
         return outputFile;
@@ -116,7 +112,7 @@ public class StorageUtilities {
      * @param security How securely we should store the temporary files. We can
      *            store it on the SD card or in private app memory.
      * @param name The name of the file to be created (optional)
-     * @return A Uri to a newly created temporary file
+     * @return A URI to a newly created temporary file
      */
     public static Uri getOutputMediaFileUri(Context context, int type, int security, String name) {
         File outFile = getOutputMediaFile(context, type, security, name);

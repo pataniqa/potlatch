@@ -26,7 +26,7 @@ import android.widget.Toast;
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GiftData;
 import com.pataniqa.coursera.potlatch.store.IPotlatchStore;
-import com.pataniqa.coursera.potlatch.store.StorageUtilities;
+import com.pataniqa.coursera.potlatch.store.LocalStorageUtilities;
 import com.pataniqa.coursera.potlatch.store.local.PotlatchResolver;
 
 /**
@@ -114,8 +114,8 @@ public class CreateGiftActivity extends GiftActivityBase {
     public void addPhotoClicked(View aView) {
         Log.v(LOG_TAG, "addPhotoClicked");
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        imagePath = StorageUtilities.getOutputMediaFileUri(this, StorageUtilities.MEDIA_TYPE_IMAGE,
-                StorageUtilities.SECURITY_PUBLIC, null);
+        imagePath = LocalStorageUtilities.getOutputMediaFileUri(this, LocalStorageUtilities.MEDIA_TYPE_IMAGE,
+                LocalStorageUtilities.SECURITY_PUBLIC, null);
         cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imagePath);
         startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
     }
@@ -123,8 +123,8 @@ public class CreateGiftActivity extends GiftActivityBase {
     public void addVideoClicked(View v) {
         Log.v(LOG_TAG, "addVideoClicked(View) called.");
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        videoPath = StorageUtilities.getOutputMediaFileUri(this, StorageUtilities.MEDIA_FILE_VIDEO,
-                StorageUtilities.SECURITY_PUBLIC, null);
+        videoPath = LocalStorageUtilities.getOutputMediaFileUri(this, LocalStorageUtilities.MEDIA_TYPE_VIDEO,
+                LocalStorageUtilities.SECURITY_PUBLIC, null);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, videoPath);
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
         startActivityForResult(intent, CAMERA_VIDEO_REQUEST);
