@@ -34,9 +34,6 @@
     <string name="action_home">Home</string>
     <string name="add_photo">Add photo</string>
     <string name="search">Search</string>
-    <string name="me">Me</string>
-    <string name="top_gift_givers">Top Gift Givers</string>
-    <string name="grid">Grid</string>
     <string name="settings">Settings</string>
     <string name="new_gift">New Gift</string>
     <string name="key_id">Key ID</string>
@@ -52,5 +49,9 @@
     <string name="like">Like</string>
     <string name="chain">Chain</string>
     <string name="flag">Flag</string>
+    <string name="query_order">Query Order</string>
+    <string name="query_order_direction">Query Order Direction</string>
+    <string name="query_type">Query Type</string>
+    <string name="view_mode">View Mode</string>
 
 </resources>

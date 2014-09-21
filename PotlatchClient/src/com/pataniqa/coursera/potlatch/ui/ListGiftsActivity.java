@@ -2,14 +2,20 @@ package com.pataniqa.coursera.potlatch.ui;
 
 import java.util.ArrayList;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -28,6 +34,11 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
     SwipeRefreshLayout swipeLayout;
     @InjectView(R.id.list_gifts_list_view)
     ListView listView;
+
+    private QueryType queryType = getQueryType();
+    private ResultOrder resultOrder = getResultOrder();
+    private ResultOrderDirection resultOrderDirection = getResultOrderDirection();
+    private ViewMode viewMode = getViewMode();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +91,105 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
     protected void onResume() {
         super.onResume();
         updateGifts();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(LOG_TAG, "onOptionsItemSelected");
+        switch (item.getItemId()) {
+        // action with ID action_refresh was selected
+        case R.id.action_new:
+            openCreateGiftActivity();
+            break;
+        case R.id.action_query_type:
+            if (queryType == QueryType.ALL) {
+                queryType = QueryType.USER;
+                item.setIcon(R.drawable.ic_action_person);
+            } else if (queryType == QueryType.USER) {
+                queryType = QueryType.TOP_GIFT_GIVERS;
+                item.setIcon(R.drawable.ic_fa_trophy);
+            } else {
+                queryType = QueryType.ALL;
+                item.setIcon(R.drawable.ic_fa_group);
+            }
+            updateGifts();
+            break;
+        case R.id.action_result_order:
+            if (resultOrder == ResultOrder.LIKES) {
+                resultOrder = ResultOrder.TIME;
+                item.setIcon(R.drawable.ic_fa_clock_o);
+            } else {
+                resultOrder = ResultOrder.LIKES;
+                item.setIcon(R.drawable.ic_fa_heart);
+            }
+            updateGifts();
+            break;
+        case R.id.action_result_order_direction:
+            if (resultOrderDirection == ResultOrderDirection.DESCENDING) {
+                resultOrderDirection = ResultOrderDirection.ASCENDING;
+                item.setIcon(R.drawable.ic_fa_sort_amount_asc);
+            } else {
+                resultOrderDirection = ResultOrderDirection.DESCENDING;
+                item.setIcon(R.drawable.ic_fa_sort_amount_desc);
+            }
+            updateGifts();
+            break;
+            
+            // Leave ViewMode until later 
+            
+//        case R.id.action_view_mode:
+//            if (viewMode == ViewMode.GRID_VIEW) {
+//                viewMode = ViewMode.LIST_VIEW;
+//                item.setIcon(R.drawable.ic_fa_list);
+//            } else {
+//                viewMode = ViewMode.GRID_VIEW;
+//                item.setIcon(R.drawable.ic_action_select_all);
+//            }
+//            updateGifts();
+//            break;
+            
+        case R.id.action_settings:
+            openPreferenceActivity();
+            break;
+        default:
+            break;
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.list_gifts_activity_actions, menu);
+
+        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView search = (SearchView) menu.findItem(R.id.search).getActionView();
+        search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+        search.setOnQueryTextListener(new OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String query) {
+                openListGiftActivity(query,
+                        getViewMode(),
+                        getResultOrder(),
+                        getResultOrderDirection(),
+                        getQueryType());
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                openListGiftActivity(query,
+                        getViewMode(),
+                        getResultOrder(),
+                        getResultOrderDirection(),
+                        getQueryType());
+                return true;
+            }
+
+        });
+
+        return true;
     }
 
     public void updateGifts() {

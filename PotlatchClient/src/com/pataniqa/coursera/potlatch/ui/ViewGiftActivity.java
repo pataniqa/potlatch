@@ -84,7 +84,7 @@ abstract class ViewGiftActivity extends GiftActivity {
     }
 
     public void createButtonClicked(View v) {
-        Log.d(LOG_TAG, "buttonCreateClicked");
+        Log.d(LOG_TAG, "createButtonClicked");
         try {
             GiftData gift = makeGiftDataFromUI(-1);
             Log.d(LOG_TAG, "newGiftData:" + gift);
@@ -96,7 +96,7 @@ abstract class ViewGiftActivity extends GiftActivity {
     }
 
     public void cancelButtonClicked(View v) {
-        Log.d(LOG_TAG, "buttonCancelClicked");
+        Log.d(LOG_TAG, "cancelButtonClicked");
         finish();
     }
 

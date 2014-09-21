@@ -28,20 +28,18 @@
         <activity
             android:name="com.pataniqa.coursera.potlatch.ui.ListGiftsActivity"
             android:label="@string/title_activity_main" />
-        
         <activity android:name="com.pataniqa.coursera.potlatch.ui.LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- THIS IS THE CREATION ACTIVITY -->
         <activity android:name="com.pataniqa.coursera.potlatch.ui.CreateGiftActivity" >
         </activity>
-
-        <!-- THIS IS THE EDIT ACTIVITY -->
         <activity android:name="com.pataniqa.coursera.potlatch.ui.EditGiftActivity" >
+        </activity>
+        <activity android:name="com.pataniqa.coursera.potlatch.ui.PreferencesActivity" >
         </activity>
     </application>
 

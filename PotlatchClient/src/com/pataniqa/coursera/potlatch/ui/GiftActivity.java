@@ -1,21 +1,13 @@
 package com.pataniqa.coursera.potlatch.ui;
 
-import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.store.IPotlatchStore;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.Window;
 import android.widget.EditText;
-import android.widget.SearchView;
-import android.widget.SearchView.OnQueryTextListener;
+
+import com.pataniqa.coursera.potlatch.store.IPotlatchStore;
 
 /**
  * Base class for all GiftData UI activities.
@@ -60,6 +52,12 @@ abstract class GiftActivity extends Activity {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
+    
+    public void openPreferenceActivity() {
+        Log.d(LOG_TAG, "openPreferencesActivity");
+        Intent intent = new Intent(this,PreferencesActivity.class);
+        startActivity(intent);
+    }
 
     public void openEditGiftActivity(final long index) {
         Log.d(LOG_TAG, "openEditGiftActivity(" + index + ")");
@@ -75,7 +73,7 @@ abstract class GiftActivity extends Activity {
         intent.setClass(this, CreateGiftActivity.class);
         startActivity(intent);
     }
-    
+
     public void openListGiftActivity() {
         Log.d(LOG_TAG, "openCreateGiftActivity");
         Intent intent = new Intent();
@@ -109,111 +107,28 @@ abstract class GiftActivity extends Activity {
     }
 
     protected ViewMode getViewMode() {
-        ViewMode viewMode = (ViewMode) getIntent().getSerializableExtra(VIEW_MODE_TAG);
-        return viewMode != null ? viewMode : ViewMode.LIST_VIEW;
+        ViewMode viewMode = getIntent() != null ? (ViewMode) getIntent()
+                .getSerializableExtra(VIEW_MODE_TAG) : null;
+        return viewMode != null ? viewMode : ViewMode.GRID_VIEW;
     }
 
     protected ResultOrder getResultOrder() {
-        ResultOrder resultOrder = (ResultOrder) getIntent().getSerializableExtra(RESULT_ORDER_TAG);
+        ResultOrder resultOrder = getIntent() != null ? (ResultOrder) getIntent()
+                .getSerializableExtra(RESULT_ORDER_TAG) : null;
         return resultOrder != null ? resultOrder : ResultOrder.TIME;
     }
 
     protected ResultOrderDirection getResultOrderDirection() {
-        ResultOrderDirection resultOrderDirection = (ResultOrderDirection) getIntent()
-                .getSerializableExtra(RESULT_ORDER_DIRECTION_TAG);
+        ResultOrderDirection resultOrderDirection = getIntent() != null ? (ResultOrderDirection) getIntent()
+                .getSerializableExtra(RESULT_ORDER_DIRECTION_TAG) : null;
         return resultOrderDirection != null ? resultOrderDirection
                 : ResultOrderDirection.DESCENDING;
     }
 
     protected QueryType getQueryType() {
-        QueryType queryType = (QueryType) getIntent().getSerializableExtra(QUERY_TYPE_TAG);
+        QueryType queryType = getIntent() != null ? (QueryType) getIntent()
+                .getSerializableExtra(QUERY_TYPE_TAG) : null;
         return queryType != null ? queryType : QueryType.ALL;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(LOG_TAG, "onOptionsItemSelected");
-        switch (item.getItemId()) {
-        // action with ID action_refresh was selected
-        case R.id.action_new:
-            openCreateGiftActivity();
-            break;
-        case R.id.action_me:
-            openListGiftActivity(getTitleQuery(),
-                    getViewMode(),
-                    getResultOrder(),
-                    getResultOrderDirection(),
-                    QueryType.USER);
-            // TODO - need to give context
-            break;
-        case R.id.action_top_gift_givers:
-            openListGiftActivity(getTitleQuery(),
-                    getViewMode(),
-                    getResultOrder(),
-                    getResultOrderDirection(),
-                    QueryType.TOP_GIFT_GIVERS);
-            // TODO - need to give context
-            // TODO - this is broken because there is no way to go back to QueryType.ALL
-            // TODO - no way to select ASCENDING or DESCENDING
-            break;
-        case R.id.action_settings:
-            // TODO
-            break;
-        case R.id.action_grid:
-            ViewMode viewMode = getViewMode() == ViewMode.GRID_VIEW ? ViewMode.LIST_VIEW : ViewMode.GRID_VIEW;
-            openListGiftActivity(getTitleQuery(),
-                    viewMode,
-                    getResultOrder(),
-                    getResultOrderDirection(),
-                    getQueryType());
-            // TODO - need to give context
-            break;
-        default:
-            break;
-        }
-
-        return true;
-    }
-
-    protected void createActionBar() {
-        Log.d(LOG_TAG, "createActionBar");
-        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-        getActionBar().setDisplayShowTitleEnabled(false);
-        getActionBar().setDisplayShowHomeEnabled(false);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.list_gifts_activity_actions, menu);
-
-        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView search = (SearchView) menu.findItem(R.id.search).getActionView();
-        search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
-        search.setOnQueryTextListener(new OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextChange(String query) {
-                openListGiftActivity(query,
-                        getViewMode(),
-                        getResultOrder(),
-                        getResultOrderDirection(),
-                        getQueryType());
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                openListGiftActivity(query,
-                        getViewMode(),
-                        getResultOrder(),
-                        getResultOrderDirection(),
-                        getQueryType());
-                return true;
-            }
-
-        });
-
-        return true;
     }
 
     // Utility methods

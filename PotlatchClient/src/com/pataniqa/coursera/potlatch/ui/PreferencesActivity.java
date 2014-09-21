@@ -2,18 +2,15 @@ package com.pataniqa.coursera.potlatch.ui;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
-import butterknife.ButterKnife;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.store.local.PotlatchResolver;
 
-/**
- * The activity that allows a user to create and save a Gift.
- */
-public class CreateGiftActivity extends ViewGiftActivity {
+public class PreferencesActivity extends GiftActivity {
 
-    private final static String LOG_TAG = CreateGiftActivity.class.getCanonicalName();
+    private final static String LOG_TAG = PreferencesActivity.class.getCanonicalName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,9 +20,19 @@ public class CreateGiftActivity extends ViewGiftActivity {
         // Setup the UI
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getActionBar().hide();
-        setContentView(R.layout.create_gift_activity);
-        ButterKnife.inject(this);
+        setContentView(R.layout.preferences_activity);
 
         resolver = new PotlatchResolver(this);
     }
+
+    public void acceptButtonClicked(View v) {
+        Log.d(LOG_TAG, "acceptButtonClicked");
+        finish();
+    }
+
+    public void cancelButtonClicked(View v) {
+        Log.d(LOG_TAG, "cancelButtonClicked");
+        finish();
+    }
+
 }

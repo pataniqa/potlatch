@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView.ScaleType;
 import butterknife.ButterKnife;
 
@@ -22,9 +23,9 @@ public class EditGiftActivity extends ViewGiftActivity {
         super.onCreate(savedInstanceState);
 
         // Setup the UI
-        createActionBar();
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        getActionBar().hide();
         setContentView(R.layout.edit_gift_activity);
-        getActionBar().show();
         ButterKnife.inject(this);
 
         resolver = new PotlatchResolver(this);
@@ -48,7 +49,7 @@ public class EditGiftActivity extends ViewGiftActivity {
                 // TODO need a thumbnail for videos
                 // TODO clicking the image should display a higher resolution version
                 // TODO or in the case of a video play the video
-                
+
                 imagePathFinal = stringToUri(gift.imageUri);
                 videoPathFinal = stringToUri(gift.videoUri);
                 return true;

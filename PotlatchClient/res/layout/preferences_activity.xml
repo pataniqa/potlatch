@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gift_create_relative_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/preferences_accept_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="acceptButtonClicked"
+            android:src="@drawable/ic_action_accept"
+            android:contentDescription="@string/create" />
+
+        <ImageButton
+            android:id="@+id/preference_cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="cancelButtonClicked"
+            android:src="@drawable/ic_action_cancel"
+            android:contentDescription="@string/cancel" />
+    </LinearLayout>
+
+</RelativeLayout>

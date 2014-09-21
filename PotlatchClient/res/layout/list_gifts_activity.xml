@@ -3,6 +3,7 @@
     android:id="@+id/giftListViewLayout"
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
+    android:padding="5dp"
     android:orientation="vertical" >
 
     <android.support.v4.widget.SwipeRefreshLayout

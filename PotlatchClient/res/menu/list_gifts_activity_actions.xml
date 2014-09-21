@@ -8,20 +8,29 @@
         android:showAsAction="always"
         android:title="@string/search"/>
     <item
-        android:id="@+id/action_me"
-        android:icon="@drawable/ic_action_person"
+        android:id="@+id/action_result_order"
+        android:icon="@drawable/ic_fa_clock_o"
         android:showAsAction="always"
-        android:title="@string/me"/>
+        android:title="@string/query_order"/>
     <item
-        android:id="@+id/action_top_gift_givers"
+        android:id="@+id/action_result_order_direction"
+        android:icon="@drawable/ic_fa_sort_amount_desc"
+        android:showAsAction="always"
+        android:title="@string/query_order_direction"/>
+    <item
+        android:id="@+id/action_query_type"
         android:icon="@drawable/ic_fa_group"
         android:showAsAction="always"
-        android:title="@string/top_gift_givers"/>
+        android:title="@string/query_type"/>
+    
+    <!--  Leave this until later
     <item
-        android:id="@+id/action_grid"
+        android:id="@+id/action_view_mode"
         android:icon="@drawable/ic_action_select_all"
         android:showAsAction="always"
-        android:title="@string/grid"/>
+        android:title="@string/view_mode"/>
+        -->
+        
     <item
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_action_settings"
@@ -32,5 +41,5 @@
         android:icon="@drawable/ic_action_new"
         android:showAsAction="always"
         android:title="@string/new_gift"/>
-    
+
 </menu>
