@@ -2,35 +2,32 @@ package com.pataniqa.coursera.potlatch.ui;
 
 import java.util.ArrayList;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.SearchView.OnQueryTextListener;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GiftData;
 import com.pataniqa.coursera.potlatch.store.local.PotlatchResolver;
 
-public class ListGiftsActivity extends GiftActivity implements
-        SwipeRefreshLayout.OnRefreshListener {
+public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final String LOG_TAG = ListGiftsActivity.class.getCanonicalName();
 
     private ArrayList<GiftData> giftData;
-    private GiftDataArrayAdaptor arrayAdapter;
+    private GiftDataArrayAdapter arrayAdapter;
 
-    private SwipeRefreshLayout swipeLayout;
-    
-    private String giftQuery = "";
+    @InjectView(R.id.list_gifts_swipe_container)
+    SwipeRefreshLayout swipeLayout;
+    @InjectView(R.id.list_gifts_list_view)
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +41,9 @@ public class ListGiftsActivity extends GiftActivity implements
         setContentView(R.layout.list_gifts_activity);
         getActionBar().show();
 
-        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        //swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+
+        ButterKnife.inject(this);
         swipeLayout.setOnRefreshListener(this);
         swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light, android.R.color.holo_orange_light,
@@ -55,12 +54,11 @@ public class ListGiftsActivity extends GiftActivity implements
         giftData = new ArrayList<GiftData>();
 
         // Instantiate the adapter using our local GiftData ArrayList.
-        arrayAdapter = new GiftDataArrayAdaptor(this, R.layout.gift_listview_custom_row, giftData);
+        arrayAdapter = new GiftDataArrayAdapter(this, R.layout.gift_listview_custom_row, giftData);
 
         updateGifts();
 
         // Tell the ListView which adapter to use to display the data.
-        ListView listView = (ListView) findViewById(android.R.id.list);
         listView.setAdapter(arrayAdapter);
 
         // Set the click listener for the list view
@@ -77,41 +75,9 @@ public class ListGiftsActivity extends GiftActivity implements
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.list_gifts_activity_actions, menu);
-
-        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView search = (SearchView) menu.findItem(R.id.search).getActionView();
-        search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
-        search.setOnQueryTextListener(new OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextChange(String query) {
-                setGiftQuery(query);
-                updateGifts();
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                setGiftQuery(query);
-                updateGifts();
-                return true;
-            }
-
-        });
-
-        return true;
-    }
-    
-    @Override
-    protected void onResume () {
+    protected void onResume() {
         super.onResume();
         updateGifts();
-    }
-
-    private void setGiftQuery(String query) {
-        this.giftQuery = query;
     }
 
     public void updateGifts() {
@@ -121,7 +87,7 @@ public class ListGiftsActivity extends GiftActivity implements
             giftData.clear();
 
             // Add all of them to our local ArrayList
-            giftData.addAll(resolver.getGiftsThatMatchTitle(giftQuery));
+            giftData.addAll(resolver.getGiftsThatMatchTitle(getTitleQuery()));
 
             // Let the ArrayAdaptor know that we changed the data in its array.
             arrayAdapter.notifyDataSetChanged();
@@ -139,6 +105,9 @@ public class ListGiftsActivity extends GiftActivity implements
                 updateGifts();
             }
         });
+    }
 
+    private String getTitleQuery() {
+        return getIntent().getStringExtra(TITLE_QUERY_TAG);
     }
 }

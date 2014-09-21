@@ -11,7 +11,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
 /**
  * This utility class provides several options for storing temporary and
@@ -64,8 +63,7 @@ public class LocalStorageUtilities {
 
         // Make sure external storage is mounted.
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            Toast.makeText(context, "External storage not mounted. Can't write/read file.",
-                    Toast.LENGTH_LONG).show();
+            Log.e(LOG_TAG, "External storage not mounted. Can't write/read file.");
             return null;
         }
 

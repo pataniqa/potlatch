@@ -29,3 +29,5 @@ uml/
 *.pdf
 *.html
 *.md
+.apt_generated/
+.factorypath

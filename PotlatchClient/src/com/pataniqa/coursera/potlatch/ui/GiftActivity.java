@@ -5,12 +5,17 @@ import com.pataniqa.coursera.potlatch.store.IPotlatchStore;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 
 /**
  * Base class for all GiftData UI activities.
@@ -21,6 +26,10 @@ import android.widget.EditText;
  */
 @SuppressLint("Registered")
 abstract class GiftActivity extends Activity {
+    
+    public final static String ROW_IDENTIFIER_TAG = "row_index";
+    public final static String TITLE_QUERY_TAG = "title_query";
+    public final static String DEFAULT_TITLE_QUERY = "";
     
     protected IPotlatchStore resolver;
 
@@ -36,7 +45,7 @@ abstract class GiftActivity extends Activity {
         Log.d(LOG_TAG, "openEditGiftActivity(" + index + ")");
         Intent intent = new Intent();
         intent.setClass(this, EditGiftActivity.class);
-        intent.putExtra(EditGiftActivity.rowIdentifyerTAG, index);
+        intent.putExtra(ROW_IDENTIFIER_TAG, index);
         startActivity(intent);
     }
 
@@ -47,10 +56,11 @@ abstract class GiftActivity extends Activity {
         startActivity(intent);
     }
 
-    public void openListGiftActivity() {
+    public void openListGiftActivity(String titleQuery) {
         Log.d(LOG_TAG, "openCreateGiftActivity");
         Intent intent = new Intent();
         intent.setClass(this, ListGiftsActivity.class);
+        intent.putExtra(TITLE_QUERY_TAG, titleQuery);
         startActivity(intent);
     }
     
@@ -68,6 +78,7 @@ abstract class GiftActivity extends Activity {
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(LOG_TAG, "onOptionsItemSelected");
         switch (item.getItemId()) {
         // action with ID action_refresh was selected
         case R.id.action_new:
@@ -93,8 +104,35 @@ abstract class GiftActivity extends Activity {
     }
     
     protected void createActionBar() {
+        Log.d(LOG_TAG, "createActionBar");
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getActionBar().setDisplayShowTitleEnabled(false);
         getActionBar().setDisplayShowHomeEnabled(false);
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.list_gifts_activity_actions, menu);
+
+        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView search = (SearchView) menu.findItem(R.id.search).getActionView();
+        search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+        search.setOnQueryTextListener(new OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String query) {
+                openListGiftActivity(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                openListGiftActivity(query);
+                return true;
+            }
+
+        });
+
+        return true;
     }
 }

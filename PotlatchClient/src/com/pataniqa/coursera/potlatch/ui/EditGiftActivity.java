@@ -5,9 +5,8 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import butterknife.ButterKnife;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GiftData;
@@ -17,22 +16,16 @@ public class EditGiftActivity extends ViewGiftActivity {
 
     private final static String LOG_TAG = EditGiftActivity.class.getCanonicalName();
 
-    // variable for passing around row index
-    public final static String rowIdentifyerTAG = "index";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "onCreate");
         super.onCreate(savedInstanceState);
 
         // Setup the UI
         createActionBar();
         setContentView(R.layout.edit_gift_activity);
         getActionBar().show();
-        
-        // Get references to all the UI elements
-        imageView = (ImageView) findViewById(R.id.gift_create_img);
-        titleInput = (EditText) findViewById(R.id.gift_create_title);
-        descriptionInput = (EditText) findViewById(R.id.gift_create_description);
+        ButterKnife.inject(this);
 
         resolver = new PotlatchResolver(this);
 
@@ -41,6 +34,7 @@ public class EditGiftActivity extends ViewGiftActivity {
     }
     
     private boolean setValuesToDefault() {
+        Log.d(LOG_TAG, "setValuesToDefault");
         try {
             GiftData gift = resolver.getGiftDataViaRowID(getUniqueKey());
             Log.d(LOG_TAG, "setValuesToDefualt :" + gift);
@@ -56,14 +50,15 @@ public class EditGiftActivity extends ViewGiftActivity {
                 return true;
             }
         } catch (RemoteException e) {
-            Log.e(LOG_TAG, "" + e.getMessage(), e);
+            Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }
         return false;
     }
 
     public void saveButtonClicked(View v) {
+        Log.d(LOG_TAG, "saveButtonClicked");
         try {
-            GiftData gift = makeGiftDataFromUI();
+            GiftData gift = makeGiftDataFromUI(getUniqueKey());
             Log.d(LOG_TAG, "newGiftData:" + gift);
             resolver.updateGiftWithID(gift);
         } catch (RemoteException e) {
@@ -73,15 +68,16 @@ public class EditGiftActivity extends ViewGiftActivity {
     }
 
     public void deleteButtonClicked(View v) {
+        Log.d(LOG_TAG, "deleteButtonClicked");
         try {
             resolver.deleteAllGiftWithRowID(getUniqueKey());
         } catch (RemoteException e) {
-            Log.e(LOG_TAG, "" + e.getMessage(), e);
+            Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }
         finish();
     }
 
-    protected long getUniqueKey() {
-        return getIntent().getLongExtra(rowIdentifyerTAG, 0);
+    private long getUniqueKey() {
+        return getIntent().getLongExtra(ROW_IDENTIFIER_TAG, 0);
     }
 }

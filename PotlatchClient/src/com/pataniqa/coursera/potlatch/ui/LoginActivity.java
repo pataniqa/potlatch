@@ -1,6 +1,7 @@
 package com.pataniqa.coursera.potlatch.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -20,6 +21,7 @@ public class LoginActivity extends GiftActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "onCreate");
         super.onCreate(savedInstanceState);
 
         // Setup the UI
@@ -33,6 +35,7 @@ public class LoginActivity extends GiftActivity {
     }
 
     public void loginClicked(View v) {
-        openListGiftActivity();
+        Log.d(LOG_TAG, "loginClicked");
+        openListGiftActivity(DEFAULT_TITLE_QUERY);
     }
 }

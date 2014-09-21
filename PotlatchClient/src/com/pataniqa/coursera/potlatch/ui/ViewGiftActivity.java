@@ -2,8 +2,6 @@ package com.pataniqa.coursera.potlatch.ui;
 
 import java.io.File;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -13,14 +11,11 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-import android.widget.SearchView;
-import android.widget.SearchView.OnQueryTextListener;
-import android.widget.Toast;
+import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GiftData;
@@ -32,7 +27,7 @@ import com.pataniqa.coursera.potlatch.store.LocalStorageUtilities;
  */
 abstract class ViewGiftActivity extends GiftActivity {
 
-    private final static String LOG_TAG = CreateGiftActivity.class.getCanonicalName();
+    private final static String LOG_TAG = ViewGiftActivity.class.getCanonicalName();
 
     // Used as the request codes in startActivityForResult().
     enum Request {
@@ -40,9 +35,9 @@ abstract class ViewGiftActivity extends GiftActivity {
     };
 
     // The various UI elements we use
-    protected EditText titleInput;
-    protected EditText descriptionInput;
-    protected ImageView imageView;
+    @InjectView(R.id.gift_create_title) protected EditText titleInput;
+    @InjectView(R.id.gift_create_description) protected EditText descriptionInput;
+    @InjectView(R.id.gift_create_img) protected ImageView imageView;
 
     // Making this static keeps it from getting GC'd when we take pictures
     private static Uri imagePath = null;
@@ -53,36 +48,6 @@ abstract class ViewGiftActivity extends GiftActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.list_gifts_activity_actions, menu);
-
-        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView search = (SearchView) menu.findItem(R.id.search).getActionView();
-        search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
-        search.setOnQueryTextListener(new OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextChange(String query) {
-                // setGiftQuery(query);
-                // updateGifts();
-                // TODO - code duplication from ListGiftsActivity
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // setGiftQuery(query);
-                // updateGifts();
-                // TODO - code duplication from ListGiftsActivity
-                return true;
-            }
-
-        });
-
-        return true;
     }
 
     public void selectPhotoButtonClicked(View view) {
@@ -114,7 +79,7 @@ abstract class ViewGiftActivity extends GiftActivity {
     public void createButtonClicked(View v) {
         Log.d(LOG_TAG, "buttonCreateClicked");
         try {
-            GiftData gift = makeGiftDataFromUI();
+            GiftData gift = makeGiftDataFromUI(-1);
             Log.d(LOG_TAG, "newGiftData:" + gift);
             resolver.insert(gift);
         } catch (RemoteException e) {
@@ -146,8 +111,7 @@ abstract class ViewGiftActivity extends GiftActivity {
                     imageView.setImageBitmap(bmp);
                     imageView.setScaleType(ScaleType.FIT_CENTER);
                 } else if (resultCode != CreateGiftActivity.RESULT_CANCELED) {
-                    Toast.makeText(getApplicationContext(), "Image capture failed.",
-                            Toast.LENGTH_LONG).show();
+                    Log.e(LOG_TAG, "Image capture failed.");
                 }
             }
             break;
@@ -168,22 +132,17 @@ abstract class ViewGiftActivity extends GiftActivity {
             if (resultCode == CreateGiftActivity.RESULT_OK) {
                 videoPathFinal = videoPath;
             } else if (resultCode != CreateGiftActivity.RESULT_CANCELED) {
-                Toast.makeText(getApplicationContext(), "Video capture failed.", Toast.LENGTH_LONG)
-                        .show();
+                Log.e(LOG_TAG, "Video capture failed.");
             }
             break;
         }
     }
 
-    protected long getUniqueKey() {
-        return -1;
-    }
-
-    protected GiftData makeGiftDataFromUI() {
+    protected GiftData makeGiftDataFromUI(long key) {
         String title = editTextToString(titleInput);
         String description = editTextToString(descriptionInput);
         String videoUri = uriToString(videoPathFinal);
         String imageData = uriToString(imagePathFinal);
-        return new GiftData(getUniqueKey(), title, description, videoUri, imageData);
+        return new GiftData(key, title, description, videoUri, imageData);
     }
 }

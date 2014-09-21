@@ -1,8 +1,8 @@
 package com.pataniqa.coursera.potlatch.ui;
 
 import android.os.Bundle;
-import android.widget.EditText;
-import android.widget.ImageView;
+import android.util.Log;
+import butterknife.ButterKnife;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.store.local.PotlatchResolver;
@@ -12,19 +12,18 @@ import com.pataniqa.coursera.potlatch.store.local.PotlatchResolver;
  */
 public class CreateGiftActivity extends ViewGiftActivity {
 
+    private final static String LOG_TAG = CreateGiftActivity.class.getCanonicalName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "onCreate");
         super.onCreate(savedInstanceState);
 
         // Setup the UI
         createActionBar();
         setContentView(R.layout.create_gift_activity);
         getActionBar().show();
-
-        // Get references to all the UI elements
-        imageView = (ImageView) findViewById(R.id.gift_create_img);
-        titleInput = (EditText) findViewById(R.id.gift_create_title);
-        descriptionInput = (EditText) findViewById(R.id.gift_create_description);
+        ButterKnife.inject(this);
 
         resolver = new PotlatchResolver(this);
     }
