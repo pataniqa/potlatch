@@ -62,7 +62,7 @@
             android:layout_marginRight="40dp"
             android:contentDescription="@string/flag"
             android:focusable="false"
-            android:src="@drawable/ic_action_warning" />
+            android:src="@drawable/ic_fa_flag_o" />
 
         <ImageButton
             android:id="@+id/gift_listview_custom_row_link"

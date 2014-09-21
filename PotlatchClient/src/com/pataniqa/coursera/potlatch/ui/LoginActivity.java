@@ -36,6 +36,6 @@ public class LoginActivity extends GiftActivity {
 
     public void loginClicked(View v) {
         Log.d(LOG_TAG, "loginClicked");
-        openListGiftActivity(DEFAULT_TITLE_QUERY);
+        openListGiftActivity();
     }
 }

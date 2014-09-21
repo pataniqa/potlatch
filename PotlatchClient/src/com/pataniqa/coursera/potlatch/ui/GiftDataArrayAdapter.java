@@ -81,40 +81,43 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftData> {
         ImageButton giftChainButton;
 
         boolean like = false;
+        boolean flagged = false;
 
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);
         }
 
         public void setGiftData(GiftData gift) {
-            image.setImageURI(Uri.parse(gift.imageUri));
+            image.setImageURI(Uri.parse(gift.imageUri)); 
             image.setVisibility(View.VISIBLE);
             image.setScaleType(ScaleType.FIT_CENTER);
+            // TODO need a thumbnail for a video
+
             title.setText("" + gift.title);
             description.setText("" + gift.description);
 
             likeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ImageButton button = (ImageButton) v;
-                    button.setImageResource(like ? R.drawable.ic_fa_heart_o
-                            : R.drawable.ic_fa_heart);
+                    // TODO need to react this button
                     like = !like;
-                    // TODO
+                    likeButton.setImageResource(like ? R.drawable.ic_fa_heart : R.drawable.ic_fa_heart_o);
                 }
             });
 
             flagButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO
+                    // TODO need to react to this button
+                    flagged = !flagged;
+                    flagButton.setImageResource(flagged ? R.drawable.ic_fa_flag : R.drawable.ic_fa_flag_o);
                 }
             });
 
             giftChainButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO
+                    // TODO need to react this button
                 }
             });
         }

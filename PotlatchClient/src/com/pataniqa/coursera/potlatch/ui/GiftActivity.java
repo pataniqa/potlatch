@@ -75,6 +75,13 @@ abstract class GiftActivity extends Activity {
         intent.setClass(this, CreateGiftActivity.class);
         startActivity(intent);
     }
+    
+    public void openListGiftActivity() {
+        Log.d(LOG_TAG, "openCreateGiftActivity");
+        Intent intent = new Intent();
+        intent.setClass(this, ListGiftsActivity.class);
+        startActivity(intent);
+    }
 
     public void openListGiftActivity(String titleQuery,
             final ViewMode viewMode,

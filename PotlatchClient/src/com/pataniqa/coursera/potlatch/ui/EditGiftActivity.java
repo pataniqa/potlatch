@@ -45,6 +45,10 @@ public class EditGiftActivity extends ViewGiftActivity {
                 imageView.setImageURI(Uri.parse(gift.imageUri));
                 imageView.setVisibility(View.VISIBLE);
                 imageView.setScaleType(ScaleType.FIT_CENTER);
+                // TODO need a thumbnail for videos
+                // TODO clicking the image should display a higher resolution version
+                // TODO or in the case of a video play the video
+                
                 imagePathFinal = stringToUri(gift.imageUri);
                 videoPathFinal = stringToUri(gift.videoUri);
                 return true;
@@ -70,7 +74,9 @@ public class EditGiftActivity extends ViewGiftActivity {
     public void deleteButtonClicked(View v) {
         Log.d(LOG_TAG, "deleteButtonClicked");
         try {
-            resolver.deleteAllGiftWithRowID(getRowIdentifier());
+            long identifier = getRowIdentifier();
+            Log.d(LOG_TAG, "Deleting gift with " + identifier);
+            resolver.deleteAllGiftWithRowID(identifier);
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }

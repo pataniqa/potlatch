@@ -3,10 +3,6 @@ package com.pataniqa.coursera.potlatch.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Stores information about gifts.
- * 
- */
 public class GiftData implements Parcelable {
 
     public final long KEY_ID;
@@ -34,19 +30,6 @@ public class GiftData implements Parcelable {
     }
 
     /**
-     * Constructor WITHOUT _id, this creates a new object for insertion into the
-     * ContentProvider
-     * 
-     * @param title
-     * @param description
-     * @param videoUri
-     * @param imageUri
-     */
-    public GiftData(String title, String description, String videoUri, String imageUri) {
-        this(-1, title, description, videoUri, imageUri);
-    }
-
-    /**
      * Override of the toString() method, for testing/logging
      */
     @Override
@@ -59,8 +42,10 @@ public class GiftData implements Parcelable {
      * Clone this object into a new GiftData
      */
     public GiftData clone() {
-        return new GiftData(title, description, videoUri, imageUri);
+        return new GiftData(-1, title, description, videoUri, imageUri);
     }
+    
+    // Parcelable interface
 
     /**
      * Used for writing a copy of this object to a Parcel, do not manually call.
