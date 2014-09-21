@@ -39,7 +39,7 @@
         </activity>
         <activity android:name="com.pataniqa.coursera.potlatch.ui.EditGiftActivity" >
         </activity>
-        <activity android:name="com.pataniqa.coursera.potlatch.ui.PreferencesActivity" >
+        <activity android:name="com.pataniqa.coursera.potlatch.ui.SettingsActivity" >
         </activity>
     </application>
 

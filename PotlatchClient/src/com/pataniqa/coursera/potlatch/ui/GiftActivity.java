@@ -55,7 +55,7 @@ abstract class GiftActivity extends Activity {
     
     public void openPreferenceActivity() {
         Log.d(LOG_TAG, "openPreferencesActivity");
-        Intent intent = new Intent(this,PreferencesActivity.class);
+        Intent intent = new Intent(this,SettingsActivity.class);
         startActivity(intent);
     }
 
@@ -102,7 +102,7 @@ abstract class GiftActivity extends Activity {
     }
 
     protected String getTitleQuery() {
-        String title = getIntent().getStringExtra(TITLE_QUERY_TAG);
+        String title = getIntent() != null ? getIntent().getStringExtra(TITLE_QUERY_TAG) : null;
         return title != null ? title : "";
     }
 

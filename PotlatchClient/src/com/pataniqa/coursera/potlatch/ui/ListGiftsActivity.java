@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -35,10 +36,13 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
     @InjectView(R.id.list_gifts_list_view)
     ListView listView;
 
+    private String titleQuery = getTitleQuery();
     private QueryType queryType = getQueryType();
     private ResultOrder resultOrder = getResultOrder();
     private ResultOrderDirection resultOrderDirection = getResultOrderDirection();
     private ViewMode viewMode = getViewMode();
+
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +73,7 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
         // Instantiate the adapter using our local GiftData ArrayList.
         arrayAdapter = new GiftDataArrayAdapter(this, R.layout.gift_listview_custom_row, giftData);
 
+        loadPreferences();
         updateGifts();
 
         // Tell the ListView which adapter to use to display the data.
@@ -87,10 +92,53 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
         });
     }
 
+    private void loadPreferences() {
+        Log.d(LOG_TAG, "loadPreferences");
+        prefs = this.getPreferences(MODE_PRIVATE);
+        if (prefs.contains(TITLE_QUERY_TAG))
+            titleQuery = prefs.getString(TITLE_QUERY_TAG, titleQuery);
+        if (prefs.contains(VIEW_MODE_TAG))
+            viewMode = ViewMode.values()[prefs.getInt(VIEW_MODE_TAG, viewMode.ordinal())];
+        if (prefs.contains(RESULT_ORDER_TAG))
+            resultOrder = ResultOrder.values()[prefs
+                    .getInt(RESULT_ORDER_TAG, resultOrder.ordinal())];
+        if (prefs.contains(RESULT_ORDER_DIRECTION_TAG))
+            resultOrderDirection = ResultOrderDirection.values()[prefs
+                    .getInt(RESULT_ORDER_DIRECTION_TAG, resultOrderDirection.ordinal())];
+        if (prefs.contains(QUERY_TYPE_TAG))
+            queryType = QueryType.values()[prefs.getInt(QUERY_TYPE_TAG, queryType.ordinal())];
+    }
+
+    private void savePreferences() {
+        Log.d(LOG_TAG, "savePreferences");
+        SharedPreferences.Editor ed = prefs.edit();
+        ed.putString(TITLE_QUERY_TAG, titleQuery);
+        ed.putInt(VIEW_MODE_TAG, viewMode.ordinal());
+        ed.putInt(RESULT_ORDER_TAG, resultOrder.ordinal());
+        ed.putInt(RESULT_ORDER_DIRECTION_TAG, resultOrderDirection.ordinal());
+        ed.putInt(QUERY_TYPE_TAG, queryType.ordinal());
+        ed.commit();
+    }
+
     @Override
     protected void onResume() {
+        Log.d(LOG_TAG, "onResume");
         super.onResume();
         updateGifts();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d(LOG_TAG, "onPause");
+        super.onPause();
+        savePreferences();
+    }
+    
+    @Override
+    protected void onStop() {
+        Log.d(LOG_TAG, "onStop");
+        super.onStop();
+        savePreferences();
     }
 
     @Override
@@ -134,20 +182,20 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
             }
             updateGifts();
             break;
-            
-            // Leave ViewMode until later 
-            
-//        case R.id.action_view_mode:
-//            if (viewMode == ViewMode.GRID_VIEW) {
-//                viewMode = ViewMode.LIST_VIEW;
-//                item.setIcon(R.drawable.ic_fa_list);
-//            } else {
-//                viewMode = ViewMode.GRID_VIEW;
-//                item.setIcon(R.drawable.ic_action_select_all);
-//            }
-//            updateGifts();
-//            break;
-            
+
+        // Leave ViewMode until later
+
+        // case R.id.action_view_mode:
+        // if (viewMode == ViewMode.GRID_VIEW) {
+        // viewMode = ViewMode.LIST_VIEW;
+        // item.setIcon(R.drawable.ic_fa_list);
+        // } else {
+        // viewMode = ViewMode.GRID_VIEW;
+        // item.setIcon(R.drawable.ic_action_select_all);
+        // }
+        // updateGifts();
+        // break;
+
         case R.id.action_settings:
             openPreferenceActivity();
             break;
@@ -160,6 +208,7 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(LOG_TAG, "onCreateOptionsMenu");
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.list_gifts_activity_actions, menu);
 
@@ -169,21 +218,13 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
         search.setOnQueryTextListener(new OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String query) {
-                openListGiftActivity(query,
-                        getViewMode(),
-                        getResultOrder(),
-                        getResultOrderDirection(),
-                        getQueryType());
+                updateGifts();
                 return true;
             }
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                openListGiftActivity(query,
-                        getViewMode(),
-                        getResultOrder(),
-                        getResultOrderDirection(),
-                        getQueryType());
+                updateGifts();
                 return true;
             }
 
@@ -199,7 +240,7 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
             giftData.clear();
 
             // Add all of them to our local ArrayList
-            giftData.addAll(resolver.getGiftsThatMatchTitle(getTitleQuery()));
+            giftData.addAll(resolver.getGiftsThatMatchTitle(titleQuery));
 
             // Let the ArrayAdaptor know that we changed the data in its array.
             arrayAdapter.notifyDataSetChanged();
@@ -210,6 +251,7 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
 
     @Override
     public void onRefresh() {
+        Log.d(LOG_TAG, "onRefresh");
         new Handler().post(new Runnable() {
             @Override
             public void run() {
