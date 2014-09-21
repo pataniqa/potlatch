@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
@@ -36,8 +37,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftData> {
     }
 
     /**
-     * Called by components that need to get a View that represents an ArrayList
-     * of GiftData.
+     * Returns a View that represents an ArrayList of GiftData.
      * 
      * @param position The position of the item in the ArrayList.
      * @param view Used to recycle views.
@@ -47,7 +47,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftData> {
     public View getView(int position, View convertView, ViewGroup parent) {
         Log.d(LOG_TAG, "getView");
         ViewHolder holder;
-        
+
         try {
             if (convertView != null) {
                 holder = (ViewHolder) convertView.getTag();
@@ -56,14 +56,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftData> {
                 holder = new ViewHolder(convertView);
                 convertView.setTag(holder);
             }
-
-            GiftData item = getItem(position);
-            holder.image.setImageURI(Uri.parse(item.imageUri));
-            holder.image.setVisibility(View.VISIBLE);
-            holder.image.setScaleType(ScaleType.FIT_CENTER);
-            holder.title.setText("" + item.title);
-            holder.description.setText("" + item.description);
-
+            holder.setGiftData(getItem(position));
         } catch (Exception e) {
             Log.e(LOG_TAG, e.getMessage(), e);
         }
@@ -78,10 +71,54 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftData> {
         TextView title;
         @InjectView(R.id.gift_listview_custom_row_description_textView)
         TextView description;
+        @InjectView(R.id.gift_listview_custom_row_like)
+        ImageButton likeButton;
+        @InjectView(R.id.gift_listview_custom_row_num_Likes_textView)
+        TextView likes;
+        @InjectView(R.id.gift_listview_custom_row_warning)
+        ImageButton flagButton;
+        @InjectView(R.id.gift_listview_custom_row_link)
+        ImageButton giftChainButton;
+
+        boolean like = false;
 
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);
         }
+
+        public void setGiftData(GiftData gift) {
+            image.setImageURI(Uri.parse(gift.imageUri));
+            image.setVisibility(View.VISIBLE);
+            image.setScaleType(ScaleType.FIT_CENTER);
+            title.setText("" + gift.title);
+            description.setText("" + gift.description);
+            
+            likeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ImageButton button = (ImageButton) v;
+                    button.setImageResource(like ? R.drawable.ic_fa_heart_o
+                            : R.drawable.ic_fa_heart);
+                    like = !like;
+                    // TODO
+                }
+            });
+            
+            flagButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO
+                }
+            });
+            
+            giftChainButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO
+                }
+            });
+        }
+
     }
 
 }
