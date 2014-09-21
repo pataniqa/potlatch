@@ -39,7 +39,7 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
     private String titleQuery = getTitleQuery();
     private QueryType queryType = getQueryType();
     private ResultOrder resultOrder = getResultOrder();
-    private ResultOrderDirection resultOrderDirection = getResultOrderDirection();
+    private ResultOrderDirection resultDirection = getResultOrderDirection();
     private ViewMode viewMode = getViewMode();
 
     private SharedPreferences prefs;
@@ -103,8 +103,8 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
             resultOrder = ResultOrder.values()[prefs
                     .getInt(RESULT_ORDER_TAG, resultOrder.ordinal())];
         if (prefs.contains(RESULT_ORDER_DIRECTION_TAG))
-            resultOrderDirection = ResultOrderDirection.values()[prefs
-                    .getInt(RESULT_ORDER_DIRECTION_TAG, resultOrderDirection.ordinal())];
+            resultDirection = ResultOrderDirection.values()[prefs
+                    .getInt(RESULT_ORDER_DIRECTION_TAG, resultDirection.ordinal())];
         if (prefs.contains(QUERY_TYPE_TAG))
             queryType = QueryType.values()[prefs.getInt(QUERY_TYPE_TAG, queryType.ordinal())];
     }
@@ -115,7 +115,7 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
         ed.putString(TITLE_QUERY_TAG, titleQuery);
         ed.putInt(VIEW_MODE_TAG, viewMode.ordinal());
         ed.putInt(RESULT_ORDER_TAG, resultOrder.ordinal());
-        ed.putInt(RESULT_ORDER_DIRECTION_TAG, resultOrderDirection.ordinal());
+        ed.putInt(RESULT_ORDER_DIRECTION_TAG, resultDirection.ordinal());
         ed.putInt(QUERY_TYPE_TAG, queryType.ordinal());
         ed.commit();
     }
@@ -133,7 +133,7 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
         super.onPause();
         savePreferences();
     }
-    
+
     @Override
     protected void onStop() {
         Log.d(LOG_TAG, "onStop");
@@ -150,36 +150,19 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
             openCreateGiftActivity();
             break;
         case R.id.action_query_type:
-            if (queryType == QueryType.ALL) {
-                queryType = QueryType.USER;
-                item.setIcon(R.drawable.ic_action_person);
-            } else if (queryType == QueryType.USER) {
-                queryType = QueryType.TOP_GIFT_GIVERS;
-                item.setIcon(R.drawable.ic_fa_trophy);
-            } else {
-                queryType = QueryType.ALL;
-                item.setIcon(R.drawable.ic_fa_group);
-            }
+            queryType = QueryType.values()[(queryType.ordinal() + 1) % QueryType.values().length];
+            updateQueryType(item);
             updateGifts();
             break;
         case R.id.action_result_order:
-            if (resultOrder == ResultOrder.LIKES) {
-                resultOrder = ResultOrder.TIME;
-                item.setIcon(R.drawable.ic_fa_clock_o);
-            } else {
-                resultOrder = ResultOrder.LIKES;
-                item.setIcon(R.drawable.ic_fa_heart);
-            }
+            resultOrder = resultOrder == ResultOrder.LIKES ? ResultOrder.TIME : ResultOrder.LIKES;
+            updateResultOrder(item);
             updateGifts();
             break;
         case R.id.action_result_order_direction:
-            if (resultOrderDirection == ResultOrderDirection.DESCENDING) {
-                resultOrderDirection = ResultOrderDirection.ASCENDING;
-                item.setIcon(R.drawable.ic_fa_sort_amount_asc);
-            } else {
-                resultOrderDirection = ResultOrderDirection.DESCENDING;
-                item.setIcon(R.drawable.ic_fa_sort_amount_desc);
-            }
+            resultDirection = resultDirection == ResultOrderDirection.DESCENDING ? ResultOrderDirection.ASCENDING
+                    : ResultOrderDirection.DESCENDING;
+            updateResultOrderDirection(item);
             updateGifts();
             break;
 
@@ -206,14 +189,41 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
         return true;
     }
 
+    private void updateQueryType(MenuItem item) {
+        if (queryType == QueryType.USER)
+            item.setIcon(R.drawable.ic_action_person);
+        else if (queryType == QueryType.TOP_GIFT_GIVERS)
+            item.setIcon(R.drawable.ic_fa_trophy);
+        else
+            item.setIcon(R.drawable.ic_fa_group);
+    }
+
+    private void updateResultOrder(MenuItem item) {
+        if (resultOrder == ResultOrder.LIKES)
+            item.setIcon(R.drawable.ic_fa_heart);
+        else
+            item.setIcon(R.drawable.ic_fa_clock_o);
+    }
+
+    private void updateResultOrderDirection(MenuItem item) {
+        if (resultDirection == ResultOrderDirection.DESCENDING)
+            item.setIcon(R.drawable.ic_fa_sort_amount_desc);
+        else
+            item.setIcon(R.drawable.ic_fa_sort_amount_asc);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(LOG_TAG, "onCreateOptionsMenu");
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.list_gifts_activity_actions, menu);
 
+        updateQueryType(menu.findItem(R.id.action_query_type));
+        updateResultOrder(menu.findItem(R.id.action_result_order));
+        updateResultOrderDirection(menu.findItem(R.id.action_result_order_direction));
+
         SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView search = (SearchView) menu.findItem(R.id.search).getActionView();
+        SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
         search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
         search.setOnQueryTextListener(new OnQueryTextListener() {
             @Override
