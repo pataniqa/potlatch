@@ -41,12 +41,14 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
         setContentView(R.layout.list_gifts_activity);
         getActionBar().show();
 
-        //swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        // swipeLayout = (SwipeRefreshLayout)
+        // findViewById(R.id.swipe_container);
 
         ButterKnife.inject(this);
         swipeLayout.setOnRefreshListener(this);
         swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light, android.R.color.holo_orange_light,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
         // Instantiate the resolver and the ArrayList
@@ -105,9 +107,5 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
                 updateGifts();
             }
         });
-    }
-
-    private String getTitleQuery() {
-        return getIntent().getStringExtra(TITLE_QUERY_TAG);
     }
 }

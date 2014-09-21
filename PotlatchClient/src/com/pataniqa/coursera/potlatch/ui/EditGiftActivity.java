@@ -32,11 +32,11 @@ public class EditGiftActivity extends ViewGiftActivity {
         // set the EditTexts to this Gift's Values
         setValuesToDefault();
     }
-    
+
     private boolean setValuesToDefault() {
         Log.d(LOG_TAG, "setValuesToDefault");
         try {
-            GiftData gift = resolver.getGiftDataViaRowID(getUniqueKey());
+            GiftData gift = resolver.getGiftDataViaRowID(getRowIdentifier());
             Log.d(LOG_TAG, "setValuesToDefualt :" + gift);
             if (gift != null) {
                 // set the EditTexts to the current values
@@ -58,7 +58,7 @@ public class EditGiftActivity extends ViewGiftActivity {
     public void saveButtonClicked(View v) {
         Log.d(LOG_TAG, "saveButtonClicked");
         try {
-            GiftData gift = makeGiftDataFromUI(getUniqueKey());
+            GiftData gift = makeGiftDataFromUI(getRowIdentifier());
             Log.d(LOG_TAG, "newGiftData:" + gift);
             resolver.updateGiftWithID(gift);
         } catch (RemoteException e) {
@@ -70,14 +70,10 @@ public class EditGiftActivity extends ViewGiftActivity {
     public void deleteButtonClicked(View v) {
         Log.d(LOG_TAG, "deleteButtonClicked");
         try {
-            resolver.deleteAllGiftWithRowID(getUniqueKey());
+            resolver.deleteAllGiftWithRowID(getRowIdentifier());
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }
         finish();
-    }
-
-    private long getUniqueKey() {
-        return getIntent().getLongExtra(ROW_IDENTIFIER_TAG, 0);
     }
 }

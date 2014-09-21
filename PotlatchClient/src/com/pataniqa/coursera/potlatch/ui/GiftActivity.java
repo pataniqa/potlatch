@@ -26,11 +26,31 @@ import android.widget.SearchView.OnQueryTextListener;
  */
 @SuppressLint("Registered")
 abstract class GiftActivity extends Activity {
-    
+
     public final static String ROW_IDENTIFIER_TAG = "row_index";
     public final static String TITLE_QUERY_TAG = "title_query";
+    public final static String VIEW_MODE_TAG = "view_mode";
+    public final static String RESULT_ORDER_TAG = "result_order_tag";
+    public final static String RESULT_ORDER_DIRECTION_TAG = "result_order_direction";
+    public final static String QUERY_TYPE_TAG = "query_type";
     public final static String DEFAULT_TITLE_QUERY = "";
-    
+
+    enum ViewMode {
+        LIST_VIEW, GRID_VIEW
+    };
+
+    enum ResultOrder {
+        TIME, LIKES
+    };
+
+    enum ResultOrderDirection {
+        ASCENDING, DESCENDING
+    };
+
+    enum QueryType {
+        USER, TOP_GIFT_GIVERS, ALL
+    };
+
     protected IPotlatchStore resolver;
 
     private static final String LOG_TAG = GiftActivity.class.getCanonicalName();
@@ -56,26 +76,53 @@ abstract class GiftActivity extends Activity {
         startActivity(intent);
     }
 
-    public void openListGiftActivity(String titleQuery) {
+    public void openListGiftActivity(String titleQuery,
+            final ViewMode viewMode,
+            final ResultOrder resultOrder,
+            final ResultOrderDirection resultOrderDirection,
+            final QueryType queryType) {
         Log.d(LOG_TAG, "openCreateGiftActivity");
         Intent intent = new Intent();
         intent.setClass(this, ListGiftsActivity.class);
         intent.putExtra(TITLE_QUERY_TAG, titleQuery);
+        intent.putExtra(VIEW_MODE_TAG, viewMode);
+        intent.putExtra(RESULT_ORDER_TAG, resultOrder);
+        intent.putExtra(RESULT_ORDER_DIRECTION_TAG, resultOrderDirection);
+        intent.putExtra(QUERY_TYPE_TAG, queryType);
         startActivity(intent);
     }
-    
-    public static String editTextToString(EditText et) {
-        return String.valueOf(et.getText().toString());
+
+    protected long getRowIdentifier() {
+        return getIntent().getLongExtra(ROW_IDENTIFIER_TAG, 0);
     }
-    
-    public static String uriToString(Uri u) {
-        return u != null ? u.toString() : "";
+
+    protected String getTitleQuery() {
+        String title = getIntent().getStringExtra(TITLE_QUERY_TAG);
+        return title != null ? title : "";
     }
-    
-    public static Uri stringToUri(String s) {
-        return !s.isEmpty() ? Uri.parse(s) : null;
+
+    protected ViewMode getViewMode() {
+        ViewMode viewMode = (ViewMode) getIntent().getSerializableExtra(VIEW_MODE_TAG);
+        return viewMode != null ? viewMode : ViewMode.LIST_VIEW;
     }
-    
+
+    protected ResultOrder getResultOrder() {
+        ResultOrder resultOrder = (ResultOrder) getIntent().getSerializableExtra(RESULT_ORDER_TAG);
+        return resultOrder != null ? resultOrder : ResultOrder.TIME;
+    }
+
+    protected ResultOrderDirection getResultOrderDirection() {
+        ResultOrderDirection resultOrderDirection = (ResultOrderDirection) getIntent()
+                .getSerializableExtra(RESULT_ORDER_DIRECTION_TAG);
+        return resultOrderDirection != null ? resultOrderDirection
+                : ResultOrderDirection.DESCENDING;
+    }
+
+    protected QueryType getQueryType() {
+        QueryType queryType = (QueryType) getIntent().getSerializableExtra(QUERY_TYPE_TAG);
+        return queryType != null ? queryType : QueryType.ALL;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(LOG_TAG, "onOptionsItemSelected");
@@ -85,16 +132,34 @@ abstract class GiftActivity extends Activity {
             openCreateGiftActivity();
             break;
         case R.id.action_me:
-            // TODO
+            openListGiftActivity(getTitleQuery(),
+                    getViewMode(),
+                    getResultOrder(),
+                    getResultOrderDirection(),
+                    QueryType.USER);
+            // TODO - need to give context
             break;
         case R.id.action_top_gift_givers:
-            // TODO
+            openListGiftActivity(getTitleQuery(),
+                    getViewMode(),
+                    getResultOrder(),
+                    getResultOrderDirection(),
+                    QueryType.TOP_GIFT_GIVERS);
+            // TODO - need to give context
+            // TODO - this is broken because there is no way to go back to QueryType.ALL
+            // TODO - no way to select ASCENDING or DESCENDING
             break;
         case R.id.action_settings:
             // TODO
             break;
         case R.id.action_grid:
-            // TODO
+            ViewMode viewMode = getViewMode() == ViewMode.GRID_VIEW ? ViewMode.LIST_VIEW : ViewMode.GRID_VIEW;
+            openListGiftActivity(getTitleQuery(),
+                    viewMode,
+                    getResultOrder(),
+                    getResultOrderDirection(),
+                    getQueryType());
+            // TODO - need to give context
             break;
         default:
             break;
@@ -102,14 +167,14 @@ abstract class GiftActivity extends Activity {
 
         return true;
     }
-    
+
     protected void createActionBar() {
         Log.d(LOG_TAG, "createActionBar");
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getActionBar().setDisplayShowTitleEnabled(false);
         getActionBar().setDisplayShowHomeEnabled(false);
     }
-    
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -121,18 +186,40 @@ abstract class GiftActivity extends Activity {
         search.setOnQueryTextListener(new OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String query) {
-                openListGiftActivity(query);
+                openListGiftActivity(query,
+                        getViewMode(),
+                        getResultOrder(),
+                        getResultOrderDirection(),
+                        getQueryType());
                 return true;
             }
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                openListGiftActivity(query);
+                openListGiftActivity(query,
+                        getViewMode(),
+                        getResultOrder(),
+                        getResultOrderDirection(),
+                        getQueryType());
                 return true;
             }
 
         });
 
         return true;
+    }
+
+    // Utility methods
+
+    public static String editTextToString(EditText et) {
+        return String.valueOf(et.getText().toString());
+    }
+
+    public static String uriToString(Uri u) {
+        return u != null ? u.toString() : "";
+    }
+
+    public static Uri stringToUri(String s) {
+        return !s.isEmpty() ? Uri.parse(s) : null;
     }
 }

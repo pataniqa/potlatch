@@ -35,7 +35,7 @@ public interface IPotlatchStore {
      * @throws RemoteException
      */
     GiftData getGiftDataViaRowID(final long rowID) throws RemoteException;
-    
+
     /**
      * Updates all GiftData stored with the provided GiftData's 'KEY_ID' (should
      * only be 1 row of data in the content provider, but content provider
@@ -46,7 +46,7 @@ public interface IPotlatchStore {
      * @throws RemoteException
      */
     int updateGiftWithID(GiftData data) throws RemoteException;
-    
+
     /**
      * Query the database for GiftData conforming to certain specifications.
      * 
@@ -57,9 +57,10 @@ public interface IPotlatchStore {
      * @return an ArrayList of GiftData objects
      * @throws RemoteException
      */
-    ArrayList<GiftData> queryGiftData(final String[] projection, final String selection,
-            final String[] selectionArgs, final String sortOrder) throws RemoteException;
-    
-    
+    ArrayList<GiftData> queryGiftData(final String[] projection,
+            final String selection,
+            final String[] selectionArgs,
+            final String sortOrder) throws RemoteException;
+
     ArrayList<GiftData> getGiftsThatMatchTitle(String title) throws RemoteException;
 }

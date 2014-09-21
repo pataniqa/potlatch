@@ -58,7 +58,8 @@ public class GiftCreator {
     public static GiftData getGiftDataFromCursor(Cursor cursor) {
         long rowID = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.ID));
         String title = cursor.getString(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.TITLE));
-        String description = cursor.getString(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.DESCRIPTION));
+        String description = cursor.getString(cursor
+                .getColumnIndex(PotlatchSchema.Gift.Cols.DESCRIPTION));
         String videoUri = cursor.getString(cursor
                 .getColumnIndex(PotlatchSchema.Gift.Cols.VIDEO_URI));
         String imageUri = cursor.getString(cursor

@@ -35,9 +35,12 @@ abstract class ViewGiftActivity extends GiftActivity {
     };
 
     // The various UI elements we use
-    @InjectView(R.id.gift_create_title) protected EditText titleInput;
-    @InjectView(R.id.gift_create_description) protected EditText descriptionInput;
-    @InjectView(R.id.gift_create_img) protected ImageView imageView;
+    @InjectView(R.id.gift_create_title)
+    protected EditText titleInput;
+    @InjectView(R.id.gift_create_description)
+    protected EditText descriptionInput;
+    @InjectView(R.id.gift_create_img)
+    protected ImageView imageView;
 
     // Making this static keeps it from getting GC'd when we take pictures
     private static Uri imagePath = null;
@@ -61,7 +64,9 @@ abstract class ViewGiftActivity extends GiftActivity {
         Log.v(LOG_TAG, "addPhotoClicked");
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         imagePath = LocalStorageUtilities.getOutputMediaFileUri(this,
-                LocalStorageUtilities.MediaType.IMAGE, LocalStorageUtilities.Security.PUBLIC, null);
+                LocalStorageUtilities.MediaType.IMAGE,
+                LocalStorageUtilities.Security.PUBLIC,
+                null);
         cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imagePath);
         startActivityForResult(cameraIntent, Request.CAMERA_PIC_REQUEST.ordinal());
     }
@@ -70,7 +75,9 @@ abstract class ViewGiftActivity extends GiftActivity {
         Log.v(LOG_TAG, "addVideoClicked(View) called.");
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         videoPath = LocalStorageUtilities.getOutputMediaFileUri(this,
-                LocalStorageUtilities.MediaType.VIDEO, LocalStorageUtilities.Security.PUBLIC, null);
+                LocalStorageUtilities.MediaType.VIDEO,
+                LocalStorageUtilities.Security.PUBLIC,
+                null);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, videoPath);
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
         startActivityForResult(intent, Request.CAMERA_VIDEO_REQUEST.ordinal());

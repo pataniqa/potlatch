@@ -26,7 +26,7 @@ import com.pataniqa.coursera.potlatch.store.IPotlatchStore;
  * 
  */
 public class PotlatchResolver implements IPotlatchStore {
-    
+
     private static final String LOG_TAG = PotlatchSchema.class.getCanonicalName();
 
     private static final String tableName = "PotlatchTable";
@@ -106,7 +106,7 @@ public class PotlatchResolver implements IPotlatchStore {
 
     @Override
     public long insert(final GiftData gift) throws RemoteException {
-        ContentValues tempCV = GiftCreator.getCVfromGift(gift); 
+        ContentValues tempCV = GiftCreator.getCVfromGift(gift);
         tempCV.remove(PotlatchSchema.Gift.Cols.ID);
         SQLiteDatabase db = helper.getWritableDatabase();
         long res = db.insert(tableName, null, tempCV);
@@ -115,10 +115,17 @@ public class PotlatchResolver implements IPotlatchStore {
     }
 
     @Override
-    public ArrayList<GiftData> queryGiftData(final String[] projection, final String selection,
-            final String[] selectionArgs, final String sortOrder) throws RemoteException {
+    public ArrayList<GiftData> queryGiftData(final String[] projection,
+            final String selection,
+            final String[] selectionArgs,
+            final String sortOrder) throws RemoteException {
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor result = db.query(tableName, projection, selection, selectionArgs, null, null,
+        Cursor result = db.query(tableName,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
                 sortOrder);
         ArrayList<GiftData> rValue = new ArrayList<GiftData>();
         rValue.addAll(GiftCreator.getGiftDataArrayListFromCursor(result));
@@ -136,7 +143,8 @@ public class PotlatchResolver implements IPotlatchStore {
      * @return number of rows changed
      * @throws RemoteException
      */
-    private int updateGiftData(final GiftData values, final String selection,
+    private int updateGiftData(final GiftData values,
+            final String selection,
             final String[] selectionArgs) throws RemoteException {
 
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -163,8 +171,10 @@ public class PotlatchResolver implements IPotlatchStore {
     @Override
     public GiftData getGiftDataViaRowID(final long rowID) throws RemoteException {
         String[] selectionArgs = { String.valueOf(rowID) };
-        ArrayList<GiftData> results = queryGiftData(null, PotlatchSchema.Gift.Cols.ID + "= ?",
-                selectionArgs, null);
+        ArrayList<GiftData> results = queryGiftData(null,
+                PotlatchSchema.Gift.Cols.ID + "= ?",
+                selectionArgs,
+                null);
         return results.size() > 0 ? results.get(0) : null;
     }
 
@@ -186,12 +196,14 @@ public class PotlatchResolver implements IPotlatchStore {
         // create String that will match with 'like' in query
         if (title == null || title.isEmpty())
             return getAllGiftData();
-        
+
         String filterWord = "%" + title + "%";
 
         // Get all the GiftData in the database
-        return queryGiftData(null, PotlatchSchema.Gift.Cols.TITLE
-                + " LIKE ? ", new String[] { filterWord }, null);
+        return queryGiftData(null,
+                PotlatchSchema.Gift.Cols.TITLE + " LIKE ? ",
+                new String[] { filterWord },
+                null);
     }
 
 }

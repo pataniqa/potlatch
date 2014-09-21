@@ -92,7 +92,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftData> {
             image.setScaleType(ScaleType.FIT_CENTER);
             title.setText("" + gift.title);
             description.setText("" + gift.description);
-            
+
             likeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -103,14 +103,14 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftData> {
                     // TODO
                 }
             });
-            
+
             flagButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // TODO
                 }
             });
-            
+
             giftChainButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
