@@ -21,19 +21,16 @@ public class LocalStorageUtilities {
 
     private final static String LOG_TAG = LocalStorageUtilities.class.getCanonicalName();
 
-    public final static int SECURITY_PUBLIC = 0;
-    public final static int SECURITY_PRIVATE = 1;
-
+    public enum Security {PUBLIC, PRIVATE};
+    
     // Constant that denotes what media type a file should be stored as.
-    public final static int MEDIA_TYPE_IMAGE = 1;
-    public final static int MEDIA_TYPE_VIDEO = 2;
-    public final static int MEDIA_TYPE_TEXT = 3;
+    public enum MediaType {IMAGE, VIDEO, TEXT};
 
     public final static Map<Integer, String> MEDIA_TYPES = new TreeMap<Integer, String>() {
         {
-            put(MEDIA_TYPE_IMAGE, "IMG_");
-            put(MEDIA_TYPE_VIDEO, "VID_");
-            put(MEDIA_TYPE_TEXT, "TXT_");
+            put(MediaType.IMAGE.ordinal(), "IMG_");
+            put(MediaType.VIDEO.ordinal(), "VID_");
+            put(MediaType.TEXT.ordinal(), "TXT_");
         }
     };
 
@@ -59,7 +56,7 @@ public class LocalStorageUtilities {
      *            name based on the current time and media type.
      * @return A File reference to a newly created temporary file
      */
-    public static File getOutputMediaFile(Context context, int type, int security, String name) {
+    public static File getOutputMediaFile(Context context, MediaType type, Security security, String name) {
         Log.d(LOG_TAG, "getOutputMediaFile() type:" + type);
 
         // Get the current time stamp
@@ -73,17 +70,17 @@ public class LocalStorageUtilities {
         }
 
         File storageDir = null;
-        if (security == SECURITY_PRIVATE) {
+        if (security == Security.PRIVATE) {
             storageDir = context.getFilesDir();
         } else {
             switch (type) {
-            case MEDIA_TYPE_IMAGE:
+            case IMAGE:
                 storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
                 break;
-            case MEDIA_TYPE_VIDEO:
+            case VIDEO:
                 storageDir = context.getExternalFilesDir(Environment.DIRECTORY_MOVIES);
                 break;
-            case MEDIA_TYPE_TEXT:
+            case TEXT:
                 storageDir = context.getExternalFilesDir(null);
                 break;
             }
@@ -114,7 +111,7 @@ public class LocalStorageUtilities {
      * @param name The name of the file to be created (optional)
      * @return A URI to a newly created temporary file
      */
-    public static Uri getOutputMediaFileUri(Context context, int type, int security, String name) {
+    public static Uri getOutputMediaFileUri(Context context, MediaType type, Security security, String name) {
         File outFile = getOutputMediaFile(context, type, security, name);
         return outFile != null ? Uri.fromFile(outFile) : null;
     }

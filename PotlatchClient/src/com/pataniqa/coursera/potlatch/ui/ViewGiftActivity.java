@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GiftData;
-import com.pataniqa.coursera.potlatch.store.IPotlatchStore;
 import com.pataniqa.coursera.potlatch.store.LocalStorageUtilities;
 
 /**
@@ -36,9 +35,9 @@ abstract class ViewGiftActivity extends GiftActivity {
     private final static String LOG_TAG = CreateGiftActivity.class.getCanonicalName();
 
     // Used as the request codes in startActivityForResult().
-    private static final int CAMERA_PIC_REQUEST = 1;
-    private static final int GALLERY_PIC_REQUEST = 2;
-    private static final int CAMERA_VIDEO_REQUEST = 3;
+    enum Request {
+        CAMERA_PIC_REQUEST, GALLERY_PIC_REQUEST, CAMERA_VIDEO_REQUEST
+    };
 
     // The various UI elements we use
     protected EditText titleInput;
@@ -50,8 +49,6 @@ abstract class ViewGiftActivity extends GiftActivity {
     private static Uri videoPath = null;
     protected Uri imagePathFinal = null;
     protected Uri videoPathFinal = null;
-
-    protected IPotlatchStore resolver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,28 +89,26 @@ abstract class ViewGiftActivity extends GiftActivity {
         Log.v(LOG_TAG, "selectPhotoClicked");
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent, GALLERY_PIC_REQUEST);
+        startActivityForResult(galleryIntent, Request.GALLERY_PIC_REQUEST.ordinal());
     }
 
     public void addPhotoButtonClicked(View aView) {
         Log.v(LOG_TAG, "addPhotoClicked");
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        imagePath = LocalStorageUtilities
-                .getOutputMediaFileUri(this, LocalStorageUtilities.MEDIA_TYPE_IMAGE,
-                        LocalStorageUtilities.SECURITY_PUBLIC, null);
+        imagePath = LocalStorageUtilities.getOutputMediaFileUri(this,
+                LocalStorageUtilities.MediaType.IMAGE, LocalStorageUtilities.Security.PUBLIC, null);
         cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imagePath);
-        startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+        startActivityForResult(cameraIntent, Request.CAMERA_PIC_REQUEST.ordinal());
     }
 
     public void addVideoButtonClicked(View v) {
         Log.v(LOG_TAG, "addVideoClicked(View) called.");
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        videoPath = LocalStorageUtilities
-                .getOutputMediaFileUri(this, LocalStorageUtilities.MEDIA_TYPE_VIDEO,
-                        LocalStorageUtilities.SECURITY_PUBLIC, null);
+        videoPath = LocalStorageUtilities.getOutputMediaFileUri(this,
+                LocalStorageUtilities.MediaType.VIDEO, LocalStorageUtilities.Security.PUBLIC, null);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, videoPath);
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-        startActivityForResult(intent, CAMERA_VIDEO_REQUEST);
+        startActivityForResult(intent, Request.CAMERA_VIDEO_REQUEST.ordinal());
     }
 
     public void createButtonClicked(View v) {
@@ -138,7 +133,7 @@ abstract class ViewGiftActivity extends GiftActivity {
         Log.d(LOG_TAG, "onActivityResult requestCode: " + requestCode + " resultCode:" + resultCode
                 + "data:" + data);
 
-        switch (requestCode) {
+        switch (Request.values()[requestCode]) {
         case CAMERA_PIC_REQUEST:
             if (resultCode == CreateGiftActivity.RESULT_OK) {
                 imagePathFinal = imagePath;

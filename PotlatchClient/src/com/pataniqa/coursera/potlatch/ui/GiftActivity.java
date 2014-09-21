@@ -1,6 +1,7 @@
 package com.pataniqa.coursera.potlatch.ui;
 
 import com.pataniqa.coursera.potlatch.R;
+import com.pataniqa.coursera.potlatch.store.IPotlatchStore;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -20,6 +21,8 @@ import android.widget.EditText;
  */
 @SuppressLint("Registered")
 abstract class GiftActivity extends Activity {
+    
+    protected IPotlatchStore resolver;
 
     private static final String LOG_TAG = GiftActivity.class.getCanonicalName();
 

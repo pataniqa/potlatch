@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -19,7 +18,6 @@ import android.widget.SearchView.OnQueryTextListener;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GiftData;
-import com.pataniqa.coursera.potlatch.store.IPotlatchStore;
 import com.pataniqa.coursera.potlatch.store.local.PotlatchResolver;
 
 public class ListGiftsActivity extends GiftActivity implements
@@ -27,7 +25,6 @@ public class ListGiftsActivity extends GiftActivity implements
 
     private static final String LOG_TAG = ListGiftsActivity.class.getCanonicalName();
 
-    private IPotlatchStore resolver;
     private ArrayList<GiftData> giftData;
     private GiftDataArrayAdaptor arrayAdapter;
 
