@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -26,12 +25,10 @@ public class EditGiftActivity extends ViewGiftActivity {
         super.onCreate(savedInstanceState);
 
         // Setup the UI
-        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-        getActionBar().setDisplayShowTitleEnabled(false);
-        getActionBar().setDisplayShowHomeEnabled(false);
+        createActionBar();
         setContentView(R.layout.edit_gift_activity);
         getActionBar().show();
-
+        
         // Get references to all the UI elements
         imageView = (ImageView) findViewById(R.id.gift_create_img);
         titleInput = (EditText) findViewById(R.id.gift_create_title);
@@ -45,38 +42,33 @@ public class EditGiftActivity extends ViewGiftActivity {
     
     private boolean setValuesToDefault() {
         try {
-            GiftData giftData = resolver.getGiftDataViaRowID(getUniqueKey());
-            if (giftData != null) {
-                Log.d(LOG_TAG, "setValuesToDefualt :" + giftData.toString());
-
+            GiftData gift = resolver.getGiftDataViaRowID(getUniqueKey());
+            Log.d(LOG_TAG, "setValuesToDefualt :" + gift);
+            if (gift != null) {
                 // set the EditTexts to the current values
-                titleInput.setText(giftData.title);
-                descriptionInput.setText(giftData.description);
-                imageView.setImageURI(Uri.parse(giftData.imageUri));
+                titleInput.setText(gift.title);
+                descriptionInput.setText(gift.description);
+                imageView.setImageURI(Uri.parse(gift.imageUri));
                 imageView.setVisibility(View.VISIBLE);
                 imageView.setScaleType(ScaleType.FIT_CENTER);
-                imagePathFinal = stringToUri(giftData.imageUri);
-                videoPathFinal = stringToUri(giftData.videoUri);
+                imagePathFinal = stringToUri(gift.imageUri);
+                videoPathFinal = stringToUri(gift.videoUri);
                 return true;
             }
-            return false;
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "" + e.getMessage(), e);
-            return false;
         }
+        return false;
     }
 
     public void saveButtonClicked(View v) {
-        // Make the Gift data from the UI
-        GiftData gift = makeGiftDataFromUI();
-        if (gift != null) {
-            try {
-                resolver.updateGiftWithID(gift);
-            } catch (RemoteException e) {
-                Log.e(LOG_TAG, "" + e.getMessage(), e);
-            }
+        try {
+            GiftData gift = makeGiftDataFromUI();
+            Log.d(LOG_TAG, "newGiftData:" + gift);
+            resolver.updateGiftWithID(gift);
+        } catch (RemoteException e) {
+            Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }
-
         finish();
     }
 

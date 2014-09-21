@@ -118,15 +118,13 @@ abstract class ViewGiftActivity extends GiftActivity {
 
     public void createButtonClicked(View v) {
         Log.d(LOG_TAG, "buttonCreateClicked");
-        GiftData newData = makeGiftDataFromUI();
-        Log.d(LOG_TAG, "newGiftData:" + newData);
-
         try {
-            resolver.insert(newData);
+            GiftData gift = makeGiftDataFromUI();
+            Log.d(LOG_TAG, "newGiftData:" + gift);
+            resolver.insert(gift);
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }
-
         finish();
     }
 

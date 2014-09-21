@@ -1,7 +1,6 @@
 package com.pataniqa.coursera.potlatch.ui;
 
 import android.os.Bundle;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -18,9 +17,7 @@ public class CreateGiftActivity extends ViewGiftActivity {
         super.onCreate(savedInstanceState);
 
         // Setup the UI
-        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-        getActionBar().setDisplayShowTitleEnabled(false);
-        getActionBar().setDisplayShowHomeEnabled(false);
+        createActionBar();
         setContentView(R.layout.create_gift_activity);
         getActionBar().show();
 

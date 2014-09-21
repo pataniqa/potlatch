@@ -31,9 +31,9 @@ public class ListGiftsActivity extends GiftActivity implements
     private ArrayList<GiftData> giftData;
     private GiftDataArrayAdaptor arrayAdapter;
 
-    private String giftQuery = "";
-
     private SwipeRefreshLayout swipeLayout;
+    
+    private String giftQuery = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,32 +115,6 @@ public class ListGiftsActivity extends GiftActivity implements
 
     private void setGiftQuery(String query) {
         this.giftQuery = query;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        // action with ID action_refresh was selected
-        case R.id.action_new:
-            openCreateGiftActivity();
-            break;
-        case R.id.action_me:
-            // TODO
-            break;
-        case R.id.action_top_gift_givers:
-            // TODO
-            break;
-        case R.id.action_settings:
-            // TODO
-            break;
-        case R.id.action_grid:
-            // TODO
-            break;
-        default:
-            break;
-        }
-
-        return true;
     }
 
     public void updateGifts() {
