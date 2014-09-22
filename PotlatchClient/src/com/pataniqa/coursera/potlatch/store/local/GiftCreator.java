@@ -1,11 +1,10 @@
 package com.pataniqa.coursera.potlatch.store.local;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.text.format.DateFormat;
+import android.text.format.Time;
 
 import com.pataniqa.coursera.potlatch.model.GiftData;
 
@@ -64,16 +63,10 @@ public class GiftCreator {
                 .getColumnIndex(PotlatchSchema.Gift.Cols.VIDEO_URI));
         String imageUri = cursor.getString(cursor
                 .getColumnIndex(PotlatchSchema.Gift.Cols.IMAGE_URI));
-        return new GiftData(rowID, title, description, videoUri, imageUri);
-    }
-
-    /**
-     * Converting a millisecond time stamp into a String
-     * 
-     * @param timestamp
-     * @return The date in dd-MM-yyyy format
-     */
-    public static String getStringDate(long timestamp) {
-        return DateFormat.format("dd-MM-yyyy", new Date(timestamp)).toString();
+        Time created = new Time();
+        created.parse(cursor.getString(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.CREATED)));
+        long userID = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.USER_ID)); 
+        
+        return new GiftData(rowID, title, description, videoUri, imageUri, created, userID);
     }
 }

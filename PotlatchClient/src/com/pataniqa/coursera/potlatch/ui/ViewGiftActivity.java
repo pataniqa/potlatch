@@ -10,11 +10,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.provider.MediaStore;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import android.widget.MediaController;
+import android.widget.VideoView;
+import android.widget.ViewSwitcher;
 import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
@@ -41,6 +45,10 @@ abstract class ViewGiftActivity extends GiftActivity {
     protected EditText descriptionInput;
     @InjectView(R.id.gift_create_img)
     protected ImageView imageView;
+    @InjectView(R.id.view_gift_viewswitcher)
+    protected ViewSwitcher viewSwitcher;
+    @InjectView(R.id.gift_create_video)
+    protected VideoView videoView;
 
     // Making this static keeps it from getting GC'd when we take pictures
     private static Uri imagePath = null;
@@ -108,6 +116,8 @@ abstract class ViewGiftActivity extends GiftActivity {
         switch (Request.values()[requestCode]) {
         case CAMERA_PIC_REQUEST:
             if (resultCode == CreateGiftActivity.RESULT_OK) {
+                if (viewSwitcher.getCurrentView() != imageView) 
+                    viewSwitcher.showPrevious();
                 imagePathFinal = imagePath;
                 File image = new File(imagePathFinal.getPath());
 
@@ -123,6 +133,8 @@ abstract class ViewGiftActivity extends GiftActivity {
             }
             break;
         case GALLERY_PIC_REQUEST:
+            if (viewSwitcher.getCurrentView() != imageView) 
+                viewSwitcher.showPrevious();
             Uri selectedImage = data.getData();
             String[] filePath = { MediaStore.Images.Media.DATA };
             Cursor cursor = getContentResolver().query(selectedImage, filePath, null, null, null);
@@ -137,7 +149,13 @@ abstract class ViewGiftActivity extends GiftActivity {
             break;
         case CAMERA_VIDEO_REQUEST:
             if (resultCode == CreateGiftActivity.RESULT_OK) {
+                if (viewSwitcher.getCurrentView() != videoView) 
+                    viewSwitcher.showNext();
                 videoPathFinal = videoPath;
+                MediaController mediaController = new MediaController(this);
+                mediaController.setAnchorView(videoView);
+                videoView.setMediaController(mediaController);
+                videoView.setVideoURI(videoPathFinal);
             } else if (resultCode != CreateGiftActivity.RESULT_CANCELED) {
                 Log.e(LOG_TAG, "Video capture failed.");
             }
@@ -150,6 +168,9 @@ abstract class ViewGiftActivity extends GiftActivity {
         String description = editTextToString(descriptionInput);
         String videoUri = uriToString(videoPathFinal);
         String imageData = uriToString(imagePathFinal);
-        return new GiftData(key, title, description, videoUri, imageData);
+        Time created = new Time();
+        created.setToNow();
+        long userID = 0;
+        return new GiftData(key, title, description, videoUri, imageData, created, userID);
     }
 }

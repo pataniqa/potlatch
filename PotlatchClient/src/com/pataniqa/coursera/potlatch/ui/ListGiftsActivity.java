@@ -83,11 +83,11 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Log.d(LOG_TAG, "onListItemClick");
-                Log.d(LOG_TAG, "position: " + position + "id = " + (giftData.get(position)).KEY_ID);
+                Log.d(LOG_TAG, "position: " + position + "id = " + (giftData.get(position)).keyID);
 
                 // When an item is clicked, open the ViewGiftActivity so the
                 // user can view it in full screen
-                openEditGiftActivity((giftData.get(position)).KEY_ID);
+                openEditGiftActivity((giftData.get(position)).keyID);
             }
         });
     }

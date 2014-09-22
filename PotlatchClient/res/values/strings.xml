@@ -59,5 +59,6 @@
     <string name="pref_update_frequency_default">Update manually</string>
     <string name="pref_security">Security</string>
     <string name="pref_preferences">Preferences</string>
+    <string name="gift_video_description">Video Description</string>
 
 </resources>

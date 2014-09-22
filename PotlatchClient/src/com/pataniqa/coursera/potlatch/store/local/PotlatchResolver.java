@@ -187,7 +187,7 @@ public class PotlatchResolver implements IPotlatchStore {
     @Override
     public int updateGiftWithID(GiftData data) throws RemoteException {
         String selection = "_id = ?";
-        String[] selectionArgs = { String.valueOf(data.KEY_ID) };
+        String[] selectionArgs = { String.valueOf(data.keyID) };
         return updateGiftData(data, selection, selectionArgs);
     }
 

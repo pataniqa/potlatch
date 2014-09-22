@@ -4,15 +4,30 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <ImageView
-        android:id="@+id/gift_listview_custom_row_img"
-        android:layout_width="250dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="20dp"
-        android:contentDescription="@string/gift_image_description"
-        android:scaleType="center"
-        android:src="@drawable/ic_fa_image" />
+    <ViewSwitcher
+        android:id="@+id/gift_listview_custom_row_viewswitcher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/gift_listview_custom_row_img"
+            android:layout_width="250dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="20dp"
+            android:contentDescription="@string/gift_image_description"
+            android:scaleType="center"
+            android:src="@drawable/ic_fa_image" />
+
+        <VideoView
+            android:id="@+id/gift_listview_custom_row_video"
+            android:layout_width="250dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="20dp"
+            android:contentDescription="@string/gift_video_description"
+            android:scaleType="center" />
+    </ViewSwitcher>
 
     <TextView
         android:id="@+id/gift_listview_custom_row_title_textView"

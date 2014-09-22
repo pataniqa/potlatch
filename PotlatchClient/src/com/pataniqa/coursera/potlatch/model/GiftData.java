@@ -2,31 +2,44 @@ package com.pataniqa.coursera.potlatch.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.format.Time;
 
 public class GiftData implements Parcelable {
 
-    public final long KEY_ID;
+    public final long keyID;
     public String title;
     public String description;
     public String videoUri;
     public String imageUri;
+    public Time created = new Time();
+    public long userID;
 
     /**
      * Constructor WITH _id, this creates a new object for use when pulling
      * already existing object's information from the ContentProvider
      * 
-     * @param KEY_ID
+     * @param keyID
      * @param title
      * @param description
      * @param videoUri
      * @param imageUri
+     * @param created
+     * @param userID
      */
-    public GiftData(long KEY_ID, String title, String description, String videoUri, String imageUri) {
-        this.KEY_ID = KEY_ID;
+    public GiftData(long keyID,
+            String title,
+            String description,
+            String videoUri,
+            String imageUri,
+            Time created,
+            long userID) {
+        this.keyID = keyID;
         this.title = title;
         this.description = description;
         this.videoUri = videoUri;
         this.imageUri = imageUri;
+        this.created = created;
+        this.userID = userID;
     }
 
     /**
@@ -35,16 +48,17 @@ public class GiftData implements Parcelable {
     @Override
     public String toString() {
         return " title: " + title + " description: " + description + " videoUri: " + videoUri
-                + " imageUri: " + imageUri;
+                + " imageUri: " + imageUri + " created: " + created.format2445() + " userID: "
+                + userID;
     }
 
     /**
      * Clone this object into a new GiftData
      */
     public GiftData clone() {
-        return new GiftData(-1, title, description, videoUri, imageUri);
+        return new GiftData(-1, title, description, videoUri, imageUri, created, userID);
     }
-    
+
     // Parcelable interface
 
     /**
@@ -60,11 +74,13 @@ public class GiftData implements Parcelable {
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(KEY_ID);
+        dest.writeLong(keyID);
         dest.writeString(title);
         dest.writeString(description);
         dest.writeString(videoUri);
         dest.writeString(imageUri);
+        dest.writeString(created.format2445());
+        dest.writeLong(userID);
     }
 
     /**
@@ -84,11 +100,13 @@ public class GiftData implements Parcelable {
      * Used for writing a copy of this object to a Parcel, do not manually call.
      */
     private GiftData(Parcel in) {
-        KEY_ID = in.readLong();
+        keyID = in.readLong();
         title = in.readString();
         description = in.readString();
         videoUri = in.readString();
         imageUri = in.readString();
+        created.parse(in.readString());
+        userID = in.readLong();
     }
 
 }

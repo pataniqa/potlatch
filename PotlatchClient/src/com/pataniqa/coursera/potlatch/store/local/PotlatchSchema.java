@@ -54,11 +54,12 @@ public class PotlatchSchema {
         public static Map<String, String> COLUMNS = new TreeMap<String, String>() {
             {
                 put(Cols.ID, INTEGER);
-                put(Cols.LOGIN_ID, INTEGER);
                 put(Cols.TITLE, TEXT);
                 put(Cols.DESCRIPTION, TEXT);
                 put(Cols.VIDEO_URI, TEXT);
                 put(Cols.IMAGE_URI, TEXT);
+                put(Cols.CREATED, TEXT);
+                put(Cols.USER_ID, INTEGER);
             }
         };
 
@@ -83,11 +84,12 @@ public class PotlatchSchema {
         public static class Cols {
             public static final String ID = BaseColumns._ID;
             // The name and column index of each column in your database
-            public static final String LOGIN_ID = "LOGIN_ID";
             public static final String TITLE = "TITLE";
             public static final String DESCRIPTION = "DESCRIPTION";
             public static final String VIDEO_URI = "VIDEO_URI";
             public static final String IMAGE_URI = "IMAGE_URI";
+            public static final String CREATED = "CREATED";
+            public static final String USER_ID = "USER_ID";
         }
     }
 
