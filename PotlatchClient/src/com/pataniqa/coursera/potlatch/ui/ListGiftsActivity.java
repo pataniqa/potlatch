@@ -174,6 +174,11 @@ public class ListGiftsActivity extends GiftActivity implements
     }
 
     void updateQueryType(MenuItem item) {
+        
+        // TODO because there are four options
+        // this would be better as a spinner
+        // http://developer.android.com/guide/topics/ui/actionbar.html#Dropdown
+        
         if (queryType == QueryType.USER)
             item.setIcon(R.drawable.ic_action_person);
         else if (queryType == QueryType.TOP_GIFT_GIVERS)

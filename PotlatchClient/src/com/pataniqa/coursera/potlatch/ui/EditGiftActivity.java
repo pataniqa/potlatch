@@ -6,6 +6,7 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.MediaController;
 import android.widget.ImageView.ScaleType;
 import butterknife.ButterKnife;
 
@@ -29,6 +30,8 @@ public class EditGiftActivity extends ViewGiftActivity {
         ButterKnife.inject(this);
 
         resolver = new LocalGiftStore(this);
+        
+        initializeSpinner();
 
         // set the EditTexts to this Gift's Values
         setValuesToDefault();
@@ -43,11 +46,27 @@ public class EditGiftActivity extends ViewGiftActivity {
                 // set the EditTexts to the current values
                 titleInput.setText(gift.title);
                 descriptionInput.setText(gift.description);
-                image.setImageURI(Uri.parse(gift.imageUri));
-                image.setVisibility(View.VISIBLE);
-                image.setScaleType(ScaleType.FIT_CENTER);
-                // TODO need a thumbnail for videos
+                
+                if (gift.videoUri != null && !gift.videoUri.isEmpty()) {
+                    if (viewSwitcher.getCurrentView() != video)
+                        viewSwitcher.showNext();
+                    MediaController mediaController = new MediaController(this);
+                    mediaController.setAnchorView(video);
+                    video.setMediaController(mediaController);
+                    video.setVideoURI(Uri.parse(gift.videoUri));
+                } else {
+                    if (viewSwitcher.getCurrentView() != image)
+                        viewSwitcher.showPrevious();
+                    image.setImageURI(Uri.parse(gift.imageUri));
+                    image.setVisibility(View.VISIBLE);
+                    image.setScaleType(ScaleType.FIT_CENTER);
+                }
+                
+                if (gift.giftChainName != null && !gift.giftChainName.isEmpty()) 
+                    giftChain.setText(gift.giftChainName);
+                
                 // TODO clicking the image should display a higher resolution version
+
                 // TODO or in the case of a video play the video
 
                 imagePathFinal = stringToUri(gift.imageUri);

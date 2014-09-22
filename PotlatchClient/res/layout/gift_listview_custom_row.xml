@@ -79,13 +79,12 @@
             android:focusable="false"
             android:src="@drawable/ic_fa_flag_o" />
 
-        <ImageButton
+        <Button
             android:id="@+id/gift_listview_custom_row_link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/chain"
-            android:focusable="false"
-            android:src="@drawable/ic_fa_link" />
+            android:focusable="false" />
     </LinearLayout>
 
 </LinearLayout>

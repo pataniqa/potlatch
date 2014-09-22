@@ -71,15 +71,17 @@ public class ClientGift extends Gift implements Parcelable, HasID {
             String videoUri,
             String imageUri,
             Time created,
-            long userID) {
+            long userID,
+            String giftChainName) {
         super(title, description, videoUri, imageUri, created, userID);
         this.keyID = keyID;
+        this.giftChainName = giftChainName;
+        // TODO need to look up giftChainID
+        this.giftChainID = -1;        
         this.like = false;
         this.flag = false;
         this.likes = 0;
         this.flagged = false;
-        this.giftChainID = -1;
-        this.giftChainName = null;
     }
 
     @Override

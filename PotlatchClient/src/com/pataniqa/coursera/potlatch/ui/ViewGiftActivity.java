@@ -1,6 +1,8 @@
 package com.pataniqa.coursera.potlatch.ui;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,6 +15,8 @@ import android.provider.MediaStore;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -40,21 +44,23 @@ abstract class ViewGiftActivity extends GiftActivity {
 
     // The various UI elements we use
     @InjectView(R.id.gift_create_title)
-    protected EditText titleInput;
+    EditText titleInput;
     @InjectView(R.id.gift_create_description)
-    protected EditText descriptionInput;
+    EditText descriptionInput;
     @InjectView(R.id.gift_create_img)
-    protected ImageView image;
+    ImageView image;
     @InjectView(R.id.view_gift_viewswitcher)
-    protected ViewSwitcher viewSwitcher;
+    ViewSwitcher viewSwitcher;
     @InjectView(R.id.gift_create_video)
-    protected VideoView video;
+    VideoView video;
+    @InjectView(R.id.gift_create_gift_chain)
+    AutoCompleteTextView giftChain;
 
     // Making this static keeps it from getting GC'd when we take pictures
     private static Uri imagePath = null;
     private static Uri videoPath = null;
-    protected Uri imagePathFinal = null;
-    protected Uri videoPathFinal = null;
+    Uri imagePathFinal = null;
+    Uri videoPathFinal = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +122,7 @@ abstract class ViewGiftActivity extends GiftActivity {
         switch (Request.values()[requestCode]) {
         case CAMERA_PIC_REQUEST:
             if (resultCode == CreateGiftActivity.RESULT_OK) {
-                if (viewSwitcher.getCurrentView() != image) 
+                if (viewSwitcher.getCurrentView() != image)
                     viewSwitcher.showPrevious();
                 imagePathFinal = imagePath;
                 File imageFile = new File(imagePathFinal.getPath());
@@ -132,7 +138,7 @@ abstract class ViewGiftActivity extends GiftActivity {
             }
             break;
         case GALLERY_PIC_REQUEST:
-            if (viewSwitcher.getCurrentView() != image) 
+            if (viewSwitcher.getCurrentView() != image)
                 viewSwitcher.showPrevious();
             Uri selectedImage = data.getData();
             String[] filePath = { MediaStore.Images.Media.DATA };
@@ -148,7 +154,7 @@ abstract class ViewGiftActivity extends GiftActivity {
             break;
         case CAMERA_VIDEO_REQUEST:
             if (resultCode == CreateGiftActivity.RESULT_OK) {
-                if (viewSwitcher.getCurrentView() != video) 
+                if (viewSwitcher.getCurrentView() != video)
                     viewSwitcher.showNext();
                 videoPathFinal = videoPath;
                 MediaController mediaController = new MediaController(this);
@@ -162,17 +168,27 @@ abstract class ViewGiftActivity extends GiftActivity {
         }
     }
 
-    protected ClientGift makeGiftDataFromUI(long key) {
+    ClientGift makeGiftDataFromUI(long key) {
         String title = editTextToString(titleInput);
         String description = editTextToString(descriptionInput);
         String videoUri = uriToString(videoPathFinal);
         String imageData = uriToString(imagePathFinal);
+        String giftChainName = editTextToString(giftChain);
         Time created = new Time();
         created.setToNow();
-        
+
         // TODO need to handle userID properly
-        
+
         long userID = 0;
-        return new ClientGift(key, title, description, videoUri, imageData, created, userID);
+        return new ClientGift(key, title, description, videoUri, imageData, created, userID, giftChainName);
+    }
+
+    void initializeSpinner() {
+        String[] s = { "Cars", "Tractors" };
+        ArrayList<String> spinnerArray = new ArrayList<String>(Arrays.asList(s));
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, spinnerArray);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        giftChain.setAdapter(spinnerArrayAdapter);
     }
 }

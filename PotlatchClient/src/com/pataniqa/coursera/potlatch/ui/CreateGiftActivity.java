@@ -25,7 +25,9 @@ public class CreateGiftActivity extends ViewGiftActivity {
         getActionBar().hide();
         setContentView(R.layout.create_gift_activity);
         ButterKnife.inject(this);
-
+        
         resolver = new LocalGiftStore(this);
+        
+        initializeSpinner();
     }
 }

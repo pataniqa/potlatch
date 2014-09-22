@@ -64,12 +64,19 @@
             android:src="@drawable/ic_action_video" />
     </LinearLayout>
 
+    <AutoCompleteTextView
+        android:id="@+id/gift_create_gift_chain"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gift_create_linear_layout"
+        android:hint="@string/gift_chain_name_hint" />
+
     <EditText
         android:id="@+id/gift_create_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/gift_create_linear_layout"
+        android:layout_below="@+id/gift_create_gift_chain"
         android:hint="@string/title"
         android:inputType="text"
         android:text="@string/empty_default_value" />
@@ -83,9 +90,9 @@
         android:gravity="top|left"
         android:hint="@string/description"
         android:inputType="textMultiLine"
-        android:lines="8"
+        android:lines="2"
         android:maxLines="10"
-        android:minLines="6"
+        android:minLines="1"
         android:scrollbars="vertical"
         android:text="@string/empty_default_value" />
 

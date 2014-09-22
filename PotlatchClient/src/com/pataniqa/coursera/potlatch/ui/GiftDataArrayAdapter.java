@@ -4,11 +4,13 @@ import java.util.List;
 
 import android.content.Context;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -86,7 +88,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
         @InjectView(R.id.gift_listview_custom_row_warning)
         ImageButton flagButton;
         @InjectView(R.id.gift_listview_custom_row_link)
-        ImageButton giftChainButton;
+        Button giftChainButton;
         @InjectView(R.id.gift_listview_custom_row_viewswitcher)
         ViewSwitcher viewSwitcher;
         @InjectView(R.id.gift_listview_custom_row_video)
@@ -117,9 +119,15 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
                 image.setVisibility(View.VISIBLE);
                 image.setScaleType(ScaleType.FIT_CENTER);
             }
+            
+            if (gift.giftChainName != null && !gift.giftChainName.isEmpty()) {
+                giftChainButton.setText(gift.giftChainName);
+            } else {
+                giftChainButton.setVisibility(Button.INVISIBLE);
+            }
 
-            title.setText("" + gift.title);
-            description.setText("" + gift.description);
+            title.setText(gift.title);
+            description.setText(gift.description);
             likes.setText("" + gift.likes);
 
             likeButton.setOnClickListener(new View.OnClickListener() {

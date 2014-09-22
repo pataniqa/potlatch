@@ -60,5 +60,6 @@
     <string name="pref_security">Security</string>
     <string name="pref_preferences">Preferences</string>
     <string name="gift_video_description">Video Description</string>
+    <string name="gift_chain_name_hint">Gift Chain Name ...</string>
 
 </resources>
