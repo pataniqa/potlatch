@@ -226,34 +226,37 @@ public class ListGiftsActivity extends GiftActivity implements
     }
 
     void updateGifts() {
-        Log.d(LOG_TAG, "updateGiftData");
+        Log.d(LOG_TAG, "updateGifts");
         try {
             giftData.clear();
 
             ArrayList<ClientGift> results = null;
-            if (queryType == QueryType.ALL)
-                results = resolver.queryByTitle(titleQuery, resultOrder, resultDirection);
-            else if (queryType == QueryType.USER)
+            if (queryType == QueryType.USER)
                 results = resolver.queryByUser(userID, resultOrder, resultDirection);
             else if (queryType == QueryType.TOP_GIFT_GIVERS)
                 results = resolver.queryByTopGiftGivers(resultOrder, resultDirection);
             else if (queryType == QueryType.CHAIN)
                 results = resolver.queryByGiftChain(giftChainID, resultOrder, resultDirection);
+            else
+                results = resolver.queryByTitle(titleQuery, resultOrder, resultDirection);
 
-            if (prefs.getBoolean("pref_hide_flagged_content", false)) {
-                Log.d(LOG_TAG, "filtering flagged content");
-                for (ClientGift gift : results) {
-                    if (!gift.flagged)
-                        giftData.add(gift);
+            if (results != null) {
+                if (prefs.getBoolean("pref_hide_flagged_content", false)) {
+                    Log.d(LOG_TAG, "filtering flagged content");
+                    for (ClientGift gift : results) {
+                        if (!gift.flagged)
+                            giftData.add(gift);
+                    }
+                } else {
+                    Log.d(LOG_TAG, "not filtering flagged content");
+                    giftData.addAll(results);
                 }
-            } else {
-                Log.d(LOG_TAG, "not filtering flagged content");
-                giftData.addAll(results);
             }
             // Let the ArrayAdaptor know that we changed the data in its array.
             arrayAdapter.notifyDataSetChanged();
         } catch (Exception e) {
             Log.e(LOG_TAG, "Error connecting to Content Provider" + e.getMessage(), e);
+            e.printStackTrace();
         }
     }
 
