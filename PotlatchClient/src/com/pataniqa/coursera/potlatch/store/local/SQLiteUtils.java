@@ -2,6 +2,9 @@ package com.pataniqa.coursera.potlatch.store.local;
 
 import java.util.Map;
 
+import com.pataniqa.coursera.potlatch.store.local.PotlatchSchema.GiftMetadata.Cols;
+
+import android.content.ContentValues;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -30,6 +33,24 @@ public class SQLiteUtils {
         } catch (SQLException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
         }
+    }
+
+    public static ContentValues initializeWithDefault(Map<String, String> columns,
+            final ContentValues assignedValues) {
+        final ContentValues setValues = (assignedValues == null) ? new ContentValues()
+                : assignedValues;
+        for (Map.Entry<String, String> entry : columns.entrySet()) {
+            String key = entry.getKey();
+            if (!key.equals(Cols.ID)) {
+                if (!setValues.containsKey(key)) {
+                    if (entry.getValue().equals(PotlatchSchema.INTEGER))
+                        setValues.put(key, 0);
+                    else
+                        setValues.put(key, "");
+                }
+            }
+        }
+        return setValues;
     }
 
 }
