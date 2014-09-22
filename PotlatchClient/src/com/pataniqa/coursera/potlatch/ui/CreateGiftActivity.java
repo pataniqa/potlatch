@@ -6,7 +6,7 @@ import android.view.Window;
 import butterknife.ButterKnife;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.store.local.PotlatchResolver;
+import com.pataniqa.coursera.potlatch.store.local.LocalGiftStore;
 
 /**
  * The activity that allows a user to create and save a Gift.
@@ -26,6 +26,6 @@ public class CreateGiftActivity extends ViewGiftActivity {
         setContentView(R.layout.create_gift_activity);
         ButterKnife.inject(this);
 
-        resolver = new PotlatchResolver(this);
+        resolver = new LocalGiftStore(this);
     }
 }

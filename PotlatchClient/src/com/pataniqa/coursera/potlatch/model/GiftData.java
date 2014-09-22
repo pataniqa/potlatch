@@ -42,14 +42,11 @@ public class GiftData implements Parcelable {
         this.userID = userID;
     }
 
-    /**
-     * Override of the toString() method, for testing/logging
-     */
     @Override
     public String toString() {
-        return " title: " + title + " description: " + description + " videoUri: " + videoUri
-                + " imageUri: " + imageUri + " created: " + created.format2445() + " userID: "
-                + userID;
+        return "GiftData [keyID=" + keyID + ", title=" + title + ", description=" + description
+                + ", videoUri=" + videoUri + ", imageUri=" + imageUri + ", created=" + created
+                + ", userID=" + userID + "]";
     }
 
     /**

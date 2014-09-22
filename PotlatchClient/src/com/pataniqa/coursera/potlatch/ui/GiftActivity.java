@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.EditText;
 
-import com.pataniqa.coursera.potlatch.store.IPotlatchStore;
+import com.pataniqa.coursera.potlatch.store.GiftStore;
 
 /**
  * Base class for all GiftData UI activities.
@@ -39,7 +39,7 @@ abstract class GiftActivity extends Activity {
         USER, TOP_GIFT_GIVERS, ALL
     };
 
-    protected IPotlatchStore resolver;
+    protected GiftStore resolver;
 
     private static final String LOG_TAG = GiftActivity.class.getCanonicalName();
 

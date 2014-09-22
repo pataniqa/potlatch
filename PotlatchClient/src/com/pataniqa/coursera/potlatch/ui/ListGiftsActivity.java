@@ -22,7 +22,7 @@ import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GiftData;
-import com.pataniqa.coursera.potlatch.store.local.PotlatchResolver;
+import com.pataniqa.coursera.potlatch.store.local.LocalGiftStore;
 
 public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -66,7 +66,7 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
                 android.R.color.holo_red_light);
 
         // Instantiate the resolver and the ArrayList
-        resolver = new PotlatchResolver(this);
+        resolver = new LocalGiftStore(this);
         giftData = new ArrayList<GiftData>();
 
         // Instantiate the adapter using our local GiftData ArrayList.
@@ -232,7 +232,7 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
             giftData.clear();
 
             // Add all of them to our local ArrayList
-            giftData.addAll(resolver.getGiftsThatMatchTitle(titleQuery));
+            giftData.addAll(resolver.queryByTitle(titleQuery));
 
             // Let the ArrayAdaptor know that we changed the data in its array.
             arrayAdapter.notifyDataSetChanged();

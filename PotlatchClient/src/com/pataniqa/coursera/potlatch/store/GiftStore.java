@@ -6,9 +6,9 @@ import android.os.RemoteException;
 
 import com.pataniqa.coursera.potlatch.model.GiftData;
 
-public interface IPotlatchStore {
+public interface GiftStore {
     /**
-     * Insert a new GiftData object into the database
+     * Insert a new GiftData object.
      * 
      * @param gift object to be inserted
      * @return row ID of inserted GiftData in the ContentProvider
@@ -17,38 +17,34 @@ public interface IPotlatchStore {
     long insert(final GiftData gift) throws RemoteException;
 
     /**
-     * Delete All rows, from AllGift table, that have the given rowID. (Should
-     * only be 1 row, but Content Providers/SQLite3 deletes all rows with
-     * provided rowID)
+     * Delete a GiftData object.
      * 
      * @param rowID
      * @return number of rows deleted
      * @throws RemoteException
      */
-    int deleteAllGiftWithRowID(long rowID) throws RemoteException;
+    int delete(long rowID) throws RemoteException;
 
     /**
-     * Get a GiftData from the data stored at the given rowID
+     * Retrieve a GiftData object with a specific rowID.
      * 
      * @param rowID
      * @return GiftData at the given rowID
      * @throws RemoteException
      */
-    GiftData getGiftDataViaRowID(final long rowID) throws RemoteException;
+    GiftData get(final long rowID) throws RemoteException;
 
     /**
-     * Updates all GiftData stored with the provided GiftData's 'KEY_ID' (should
-     * only be 1 row of data in the content provider, but content provider
-     * implementation will update EVERY row that matches.)
+     * Update a GiftData object with a specific rowID.
      * 
      * @param data
      * @return number of rows altered
      * @throws RemoteException
      */
-    int updateGiftWithID(GiftData data) throws RemoteException;
+    int update(GiftData data) throws RemoteException;
 
     /**
-     * Query the database for GiftData conforming to certain specifications.
+     * Query gift data.
      * 
      * @param projection
      * @param selection
@@ -57,10 +53,17 @@ public interface IPotlatchStore {
      * @return an ArrayList of GiftData objects
      * @throws RemoteException
      */
-    ArrayList<GiftData> queryGiftData(final String[] projection,
+    ArrayList<GiftData> query(final String[] projection,
             final String selection,
             final String[] selectionArgs,
             final String sortOrder) throws RemoteException;
 
-    ArrayList<GiftData> getGiftsThatMatchTitle(String title) throws RemoteException;
+    /**
+     * Query gift data by title.
+     * 
+     * @param title The title.
+     * @return an ArrayList of GiftData objects
+     * @throws RemoteException
+     */
+    ArrayList<GiftData> queryByTitle(String title) throws RemoteException;
 }

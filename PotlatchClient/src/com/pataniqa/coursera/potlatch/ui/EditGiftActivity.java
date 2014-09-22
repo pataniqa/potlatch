@@ -11,7 +11,7 @@ import butterknife.ButterKnife;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GiftData;
-import com.pataniqa.coursera.potlatch.store.local.PotlatchResolver;
+import com.pataniqa.coursera.potlatch.store.local.LocalGiftStore;
 
 public class EditGiftActivity extends ViewGiftActivity {
 
@@ -28,7 +28,7 @@ public class EditGiftActivity extends ViewGiftActivity {
         setContentView(R.layout.edit_gift_activity);
         ButterKnife.inject(this);
 
-        resolver = new PotlatchResolver(this);
+        resolver = new LocalGiftStore(this);
 
         // set the EditTexts to this Gift's Values
         setValuesToDefault();
@@ -37,7 +37,7 @@ public class EditGiftActivity extends ViewGiftActivity {
     private boolean setValuesToDefault() {
         Log.d(LOG_TAG, "setValuesToDefault");
         try {
-            GiftData gift = resolver.getGiftDataViaRowID(getRowIdentifier());
+            GiftData gift = resolver.get(getRowIdentifier());
             Log.d(LOG_TAG, "setValuesToDefualt :" + gift);
             if (gift != null) {
                 // set the EditTexts to the current values
@@ -65,7 +65,7 @@ public class EditGiftActivity extends ViewGiftActivity {
         try {
             GiftData gift = makeGiftDataFromUI(getRowIdentifier());
             Log.d(LOG_TAG, "newGiftData:" + gift);
-            resolver.updateGiftWithID(gift);
+            resolver.update(gift);
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }
@@ -77,7 +77,7 @@ public class EditGiftActivity extends ViewGiftActivity {
         try {
             long identifier = getRowIdentifier();
             Log.d(LOG_TAG, "Deleting gift with " + identifier);
-            resolver.deleteAllGiftWithRowID(identifier);
+            resolver.delete(identifier);
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }

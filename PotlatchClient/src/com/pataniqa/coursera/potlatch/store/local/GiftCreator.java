@@ -1,7 +1,5 @@
 package com.pataniqa.coursera.potlatch.store.local;
 
-import java.util.ArrayList;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.text.format.Time;
@@ -13,15 +11,10 @@ import com.pataniqa.coursera.potlatch.model.GiftData;
  * between the Custom ORM objects (such as GiftData), ContentValues, and
  * Cursors.
  */
-public class GiftCreator {
+public class GiftCreator extends BaseCreator<GiftData> implements Creator<GiftData> {
 
-    /**
-     * Create a ContentValues from a provided GiftData.
-     * 
-     * @param data GiftData to be converted.
-     * @return ContentValues that is created from the GiftData object
-     */
-    public static ContentValues getCVfromGift(final GiftData data) {
+    @Override
+    public ContentValues getCV(GiftData data) {
         ContentValues rValue = new ContentValues();
         rValue.put(PotlatchSchema.Gift.Cols.TITLE, data.title);
         rValue.put(PotlatchSchema.Gift.Cols.DESCRIPTION, data.description);
@@ -32,31 +25,8 @@ public class GiftCreator {
         return rValue;
     }
 
-    /**
-     * Get all of the GiftData from the passed in cursor.
-     * 
-     * @param cursor passed in cursor to get GiftData(s) of.
-     * @return ArrayList<GiftData\> The set of GiftData
-     */
-    public static ArrayList<GiftData> getGiftDataArrayListFromCursor(Cursor cursor) {
-        ArrayList<GiftData> rValue = new ArrayList<GiftData>();
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    rValue.add(getGiftDataFromCursor(cursor));
-                } while (cursor.moveToNext() == true);
-            }
-        }
-        return rValue;
-    }
-
-    /**
-     * Get the first GiftData from the passed in cursor.
-     * 
-     * @param cursor passed in cursor
-     * @return GiftData object
-     */
-    public static GiftData getGiftDataFromCursor(Cursor cursor) {
+    @Override
+    public GiftData getFromCursor(Cursor cursor) {
         long rowID = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.ID));
         String title = cursor.getString(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.TITLE));
         String description = cursor.getString(cursor
@@ -67,8 +37,8 @@ public class GiftCreator {
                 .getColumnIndex(PotlatchSchema.Gift.Cols.IMAGE_URI));
         Time created = new Time();
         created.parse(cursor.getString(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.CREATED)));
-        long userID = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.USER_ID)); 
-        
+        long userID = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.USER_ID));
+
         return new GiftData(rowID, title, description, videoUri, imageUri, created, userID);
     }
 }
