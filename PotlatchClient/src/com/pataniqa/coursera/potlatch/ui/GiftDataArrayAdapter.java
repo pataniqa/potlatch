@@ -12,7 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.VideoView;
+import android.widget.ViewSwitcher;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -79,38 +82,55 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
         ImageButton flagButton;
         @InjectView(R.id.gift_listview_custom_row_link)
         ImageButton giftChainButton;
+        @InjectView(R.id.gift_listview_custom_row_viewswitcher)
+        ViewSwitcher viewSwitcher;
+        @InjectView(R.id.gift_listview_custom_row_video)
+        VideoView videoView;
 
-        boolean like = false;
-        boolean flagged = false;
+        View view;
 
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);
+            this.view = view;
         }
 
-        public void setGiftData(ClientGift gift) {
-            image.setImageURI(Uri.parse(gift.imageUri)); 
-            image.setVisibility(View.VISIBLE);
-            image.setScaleType(ScaleType.FIT_CENTER);
-            // TODO need a thumbnail for a video
+        public void setGiftData(final ClientGift gift) {
+
+            // TODO need to filter flagged items
+            if (gift.videoUri != null) {
+                if (viewSwitcher.getCurrentView() != videoView)
+                    viewSwitcher.showNext();
+                MediaController mediaController = new MediaController(view.getContext());
+                mediaController.setAnchorView(videoView);
+                videoView.setMediaController(mediaController);
+                videoView.setVideoURI(Uri.parse(gift.videoUri));
+            } else {
+                if (viewSwitcher.getCurrentView() != image)
+                    viewSwitcher.showPrevious();
+                image.setImageURI(Uri.parse(gift.imageUri));
+                image.setVisibility(View.VISIBLE);
+                image.setScaleType(ScaleType.FIT_CENTER);
+            }
 
             title.setText("" + gift.title);
             description.setText("" + gift.description);
+            likes.setText("" + gift.likes);
 
             likeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO need to react this button
-                    like = !like;
-                    likeButton.setImageResource(like ? R.drawable.ic_fa_heart : R.drawable.ic_fa_heart_o);
+                    gift.like = !gift.like;
+                    likeButton.setImageResource(gift.like ? R.drawable.ic_fa_heart
+                            : R.drawable.ic_fa_heart_o);
                 }
             });
 
             flagButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO need to react to this button
-                    flagged = !flagged;
-                    flagButton.setImageResource(flagged ? R.drawable.ic_fa_flag : R.drawable.ic_fa_flag_o);
+                    gift.flag = !gift.flag;
+                    flagButton.setImageResource(gift.flag ? R.drawable.ic_fa_flag
+                            : R.drawable.ic_fa_flag_o);
                 }
             });
 

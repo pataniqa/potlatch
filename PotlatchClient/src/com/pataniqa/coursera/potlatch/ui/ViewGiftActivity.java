@@ -44,11 +44,11 @@ abstract class ViewGiftActivity extends GiftActivity {
     @InjectView(R.id.gift_create_description)
     protected EditText descriptionInput;
     @InjectView(R.id.gift_create_img)
-    protected ImageView imageView;
+    protected ImageView image;
     @InjectView(R.id.view_gift_viewswitcher)
     protected ViewSwitcher viewSwitcher;
     @InjectView(R.id.gift_create_video)
-    protected VideoView videoView;
+    protected VideoView video;
 
     // Making this static keeps it from getting GC'd when we take pictures
     private static Uri imagePath = null;
@@ -116,24 +116,23 @@ abstract class ViewGiftActivity extends GiftActivity {
         switch (Request.values()[requestCode]) {
         case CAMERA_PIC_REQUEST:
             if (resultCode == CreateGiftActivity.RESULT_OK) {
-                if (viewSwitcher.getCurrentView() != imageView) 
+                if (viewSwitcher.getCurrentView() != image) 
                     viewSwitcher.showPrevious();
                 imagePathFinal = imagePath;
-                File image = new File(imagePathFinal.getPath());
-
-                if (image != null && image.exists()) {
+                File imageFile = new File(imagePathFinal.getPath());
+                if (imageFile != null && imageFile.exists()) {
                     Log.d(LOG_TAG, "image URI is valid");
-                    Bitmap bmp = BitmapFactory.decodeFile(image.getAbsolutePath());
-                    imageView.setVisibility(View.VISIBLE);
-                    imageView.setImageBitmap(bmp);
-                    imageView.setScaleType(ScaleType.FIT_CENTER);
+                    Bitmap bmp = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+                    image.setVisibility(View.VISIBLE);
+                    image.setImageBitmap(bmp);
+                    image.setScaleType(ScaleType.FIT_CENTER);
                 } else if (resultCode != CreateGiftActivity.RESULT_CANCELED) {
                     Log.e(LOG_TAG, "Image capture failed.");
                 }
             }
             break;
         case GALLERY_PIC_REQUEST:
-            if (viewSwitcher.getCurrentView() != imageView) 
+            if (viewSwitcher.getCurrentView() != image) 
                 viewSwitcher.showPrevious();
             Uri selectedImage = data.getData();
             String[] filePath = { MediaStore.Images.Media.DATA };
@@ -143,19 +142,19 @@ abstract class ViewGiftActivity extends GiftActivity {
             cursor.close();
             imagePathFinal = Uri.fromFile(new File(picturePath));
             Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-            imageView.setVisibility(View.VISIBLE);
-            imageView.setImageBitmap(thumbnail);
-            imageView.setScaleType(ScaleType.FIT_CENTER);
+            image.setVisibility(View.VISIBLE);
+            image.setImageBitmap(thumbnail);
+            image.setScaleType(ScaleType.FIT_CENTER);
             break;
         case CAMERA_VIDEO_REQUEST:
             if (resultCode == CreateGiftActivity.RESULT_OK) {
-                if (viewSwitcher.getCurrentView() != videoView) 
+                if (viewSwitcher.getCurrentView() != video) 
                     viewSwitcher.showNext();
                 videoPathFinal = videoPath;
                 MediaController mediaController = new MediaController(this);
-                mediaController.setAnchorView(videoView);
-                videoView.setMediaController(mediaController);
-                videoView.setVideoURI(videoPathFinal);
+                mediaController.setAnchorView(video);
+                video.setMediaController(mediaController);
+                video.setVideoURI(videoPathFinal);
             } else if (resultCode != CreateGiftActivity.RESULT_CANCELED) {
                 Log.e(LOG_TAG, "Video capture failed.");
             }
@@ -170,6 +169,9 @@ abstract class ViewGiftActivity extends GiftActivity {
         String imageData = uriToString(imagePathFinal);
         Time created = new Time();
         created.setToNow();
+        
+        // TODO need to handle userID properly
+        
         long userID = 0;
         return new ClientGift(key, title, description, videoUri, imageData, created, userID);
     }

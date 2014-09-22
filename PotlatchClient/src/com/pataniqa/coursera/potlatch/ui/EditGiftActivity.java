@@ -43,9 +43,9 @@ public class EditGiftActivity extends ViewGiftActivity {
                 // set the EditTexts to the current values
                 titleInput.setText(gift.title);
                 descriptionInput.setText(gift.description);
-                imageView.setImageURI(Uri.parse(gift.imageUri));
-                imageView.setVisibility(View.VISIBLE);
-                imageView.setScaleType(ScaleType.FIT_CENTER);
+                image.setImageURI(Uri.parse(gift.imageUri));
+                image.setVisibility(View.VISIBLE);
+                image.setScaleType(ScaleType.FIT_CENTER);
                 // TODO need a thumbnail for videos
                 // TODO clicking the image should display a higher resolution version
                 // TODO or in the case of a video play the video
