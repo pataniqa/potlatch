@@ -20,7 +20,7 @@ public class LocalGiftStore extends BaseStore<GiftData> implements GiftStore {
         creator = new GiftCreator();
         id = PotlatchSchema.Gift.Cols.ID;
         tableName = PotlatchSchema.Gift.TABLE_NAME;
-        helper = new SQLiteOpenHelper(context, "PotlatchSecurityDatabase", null, 1) {
+        helper = new SQLiteOpenHelper(context, PotlatchSchema.PARENT_DATABASE, null, 1) {
 
             @Override
             public void onCreate(SQLiteDatabase db) {
@@ -42,17 +42,15 @@ public class LocalGiftStore extends BaseStore<GiftData> implements GiftStore {
 
     @Override
     public ArrayList<GiftData> queryByTitle(String title) throws RemoteException {
-        // create String that will match with 'like' in query
         if (title == null || title.isEmpty())
             return query(null, null, null, null);
-
-        String filterWord = "%" + title + "%";
-
-        // Get all the GiftData in the database
-        return query(null,
-                PotlatchSchema.Gift.Cols.TITLE + " LIKE ? ",
-                new String[] { filterWord },
-                null);
+        else {
+            String filterWord = "%" + title + "%";
+            return query(null,
+                    PotlatchSchema.Gift.Cols.TITLE + " LIKE ? ",
+                    new String[] { filterWord },
+                    null);
+        }
     }
 
 }

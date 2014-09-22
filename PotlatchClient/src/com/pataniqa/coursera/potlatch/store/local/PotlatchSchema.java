@@ -12,6 +12,7 @@ public class PotlatchSchema {
     public static final String PROJECT_NAME = ORGANIZATIONAL_NAME + "potlatch";
     public static final String INTEGER = "integer";
     public static final String TEXT = "text";
+    public static final String PARENT_DATABASE = "PotlatchSecurityDatabase";
 
     public static class Gift {
         public static final String PATH = "gift";
