@@ -83,7 +83,6 @@ public class PotlatchSchema {
         // a static class to store columns in entity
         public static class Cols {
             public static final String ID = BaseColumns._ID;
-            // The name and column index of each column in your database
             public static final String TITLE = "TITLE";
             public static final String DESCRIPTION = "DESCRIPTION";
             public static final String VIDEO_URI = "VIDEO_URI";

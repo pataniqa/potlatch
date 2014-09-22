@@ -146,7 +146,6 @@ public class PotlatchResolver implements IPotlatchStore {
     private int updateGiftData(final GiftData values,
             final String selection,
             final String[] selectionArgs) throws RemoteException {
-
         SQLiteDatabase db = helper.getWritableDatabase();
         int res = db.update(tableName, GiftCreator.getCVfromGift(values), selection, selectionArgs);
         db.close();

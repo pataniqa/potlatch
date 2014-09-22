@@ -27,6 +27,8 @@ public class GiftCreator {
         rValue.put(PotlatchSchema.Gift.Cols.DESCRIPTION, data.description);
         rValue.put(PotlatchSchema.Gift.Cols.VIDEO_URI, data.videoUri);
         rValue.put(PotlatchSchema.Gift.Cols.IMAGE_URI, data.imageUri);
+        rValue.put(PotlatchSchema.Gift.Cols.CREATED, data.created.format2445());
+        rValue.put(PotlatchSchema.Gift.Cols.USER_ID, data.userID);
         return rValue;
     }
 
