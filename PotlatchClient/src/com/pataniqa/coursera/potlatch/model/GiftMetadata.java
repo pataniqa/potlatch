@@ -3,7 +3,7 @@ package com.pataniqa.coursera.potlatch.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class GiftMetadata implements Parcelable {
+public class GiftMetadata implements Parcelable, HasID {
 
     public final long keyID;
     public final long giftID;
@@ -91,6 +91,11 @@ public class GiftMetadata implements Parcelable {
         flag = in.readByte() != 0;
         likes = in.readLong();
         flagged = in.readByte() != 0;
+    }
+
+    @Override
+    public long getID() {
+        return keyID;
     }
 
 }

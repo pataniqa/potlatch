@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import android.database.Cursor;
 
-abstract class BaseCreator<T> implements Creator<T> {
+import com.pataniqa.coursera.potlatch.model.HasID;
+
+abstract class BaseCreator<T extends HasID> implements Creator<T> {
     
     @Override
     public ArrayList<T> getListFromCursor(Cursor cursor) {

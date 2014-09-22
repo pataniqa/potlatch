@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-public interface Creator<T> {
+import com.pataniqa.coursera.potlatch.model.HasID;
+
+public interface Creator<T extends HasID> {
     /**
      * Create a ContentValues from a provided <T>
      * 

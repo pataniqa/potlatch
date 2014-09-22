@@ -47,6 +47,8 @@ public class PotlatchSchema {
                 + ORGANIZATIONAL_NAME + "." + MIME_TYPE_END;
         public static final String CONTENT_ITEM_TYPE = ORGANIZATIONAL_NAME + ".cursor.item/"
                 + ORGANIZATIONAL_NAME + "." + MIME_TYPE_END;
+        
+        public static final String TABLE_NAME = ORGANIZATIONAL_NAME + "." + PATH;
 
         public static Map<String, String> COLUMNS = new TreeMap<String, String>() {
             {
@@ -109,6 +111,8 @@ public class PotlatchSchema {
                 + ORGANIZATIONAL_NAME + "." + MIME_TYPE_END;
         public static final String CONTENT_ITEM_TYPE = ORGANIZATIONAL_NAME + ".cursor.item/"
                 + ORGANIZATIONAL_NAME + "." + MIME_TYPE_END;
+        
+        public static final String TABLE_NAME = ORGANIZATIONAL_NAME + "." + PATH;
 
         public static Map<String, String> COLUMNS = new TreeMap<String, String>() {
             {

@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.format.Time;
 
-public class GiftData implements Parcelable {
+public class GiftData implements Parcelable, HasID {
 
     public final long keyID;
     public String title;
@@ -104,6 +104,11 @@ public class GiftData implements Parcelable {
         imageUri = in.readString();
         created.parse(in.readString());
         userID = in.readLong();
+    }
+
+    @Override
+    public long getID() {
+        return keyID;
     }
 
 }
