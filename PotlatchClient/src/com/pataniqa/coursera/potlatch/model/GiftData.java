@@ -4,15 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.format.Time;
 
-public class GiftData implements Parcelable, HasID {
+public class GiftData extends Gift implements Parcelable, HasID {
 
     public final long keyID;
-    public String title;
-    public String description;
-    public String videoUri;
-    public String imageUri;
-    public Time created = new Time();
-    public long userID;
 
     /**
      * Constructor WITH _id, this creates a new object for use when pulling
@@ -33,13 +27,8 @@ public class GiftData implements Parcelable, HasID {
             String imageUri,
             Time created,
             long userID) {
+        super(title, description, videoUri, imageUri, created, userID);
         this.keyID = keyID;
-        this.title = title;
-        this.description = description;
-        this.videoUri = videoUri;
-        this.imageUri = imageUri;
-        this.created = created;
-        this.userID = userID;
     }
 
     @Override
@@ -71,13 +60,13 @@ public class GiftData implements Parcelable, HasID {
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(keyID);
         dest.writeString(title);
         dest.writeString(description);
         dest.writeString(videoUri);
         dest.writeString(imageUri);
         dest.writeString(created.format2445());
         dest.writeLong(userID);
+        dest.writeLong(keyID);
     }
 
     /**
@@ -97,13 +86,15 @@ public class GiftData implements Parcelable, HasID {
      * Used for writing a copy of this object to a Parcel, do not manually call.
      */
     private GiftData(Parcel in) {
+        super(in.readString(), in.readString(), in.readString(), in.readString(), readTime(in
+                .readString()), in.readLong());
         keyID = in.readLong();
-        title = in.readString();
-        description = in.readString();
-        videoUri = in.readString();
-        imageUri = in.readString();
-        created.parse(in.readString());
-        userID = in.readLong();
+    }
+
+    private static Time readTime(String s) {
+        Time time = new Time();
+        time.parse(s);
+        return time;
     }
 
     @Override

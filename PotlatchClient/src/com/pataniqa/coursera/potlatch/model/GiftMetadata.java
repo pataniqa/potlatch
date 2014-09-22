@@ -12,12 +12,20 @@ public class GiftMetadata implements Parcelable, HasID {
     public long likes;
     public boolean flagged;
     public long giftChainID;
+    public String giftChainName;
 
     /**
      * Constructor WITH _id, this creates a new object for use when pulling
      * already existing object's information from the ContentProvider
      * 
      * @param keyID
+     * @param giftID
+     * @param like
+     * @param flag
+     * @param likes
+     * @param flagged
+     * @param giftChainID
+     * @param giftChainName
      */
     public GiftMetadata(long keyID,
             long giftID,
@@ -25,7 +33,8 @@ public class GiftMetadata implements Parcelable, HasID {
             boolean flag,
             long likes,
             boolean flagged,
-            long giftChainID) {
+            long giftChainID,
+            String giftChainName) {
         this.keyID = keyID;
         this.giftID = giftID;
         this.like = like;
@@ -33,20 +42,21 @@ public class GiftMetadata implements Parcelable, HasID {
         this.likes = likes;
         this.flagged = flagged;
         this.giftChainID = giftChainID;
+        this.giftChainName = giftChainName;
     }
 
     @Override
     public String toString() {
         return "GiftMetadata [keyID=" + keyID + ", giftID=" + giftID + ", like=" + like + ", flag="
                 + flag + ", likes=" + likes + ", flagged=" + flagged + ", giftChainID="
-                + giftChainID + "]";
+                + giftChainID + ", giftChainName=" + giftChainName + "]";
     }
 
     /**
      * Clone this object into a new GiftData
      */
     public GiftMetadata clone() {
-        return new GiftMetadata(-1, giftID, like, flag, likes, flagged, giftChainID);
+        return new GiftMetadata(-1, giftID, like, flag, likes, flagged, giftChainID, giftChainName);
     }
 
     // Parcelable interface
@@ -71,6 +81,7 @@ public class GiftMetadata implements Parcelable, HasID {
         dest.writeLong(likes);
         dest.writeByte((byte) (flagged ? 1 : 0));
         dest.writeLong(giftChainID);
+        dest.writeString(giftChainName);
     }
 
     /**
@@ -97,6 +108,7 @@ public class GiftMetadata implements Parcelable, HasID {
         likes = in.readLong();
         flagged = in.readByte() != 0;
         giftChainID = in.readLong();
+        giftChainName = in.readString();
     }
 
     @Override

@@ -62,6 +62,7 @@ public class PotlatchSchema {
                 put(Cols.LIKES, INTEGER);
                 put(Cols.FLAGGED, INTEGER);
                 put(Cols.GIFT_CHAIN_ID, INTEGER);
+                put(Cols.GIFT_CHAIN_NAME, TEXT);
             }
         };
 
@@ -78,6 +79,7 @@ public class PotlatchSchema {
             public static final String LIKES = "LIKES";
             public static final String FLAGGED = "FLAGGED";
             public static final String GIFT_CHAIN_ID = "GIFT_CHAIN_ID";
+            public static final String GIFT_CHAIN_NAME = "GIFT_CHAIN_NAME";
         }
     }
 
