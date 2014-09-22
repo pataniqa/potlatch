@@ -85,7 +85,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/chain"
             android:focusable="false"
-            android:src="@drawable/ic_action_forward" />
+            android:src="@drawable/ic_fa_link" />
     </LinearLayout>
 
 </LinearLayout>

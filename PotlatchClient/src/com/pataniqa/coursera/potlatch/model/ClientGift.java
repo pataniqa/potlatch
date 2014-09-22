@@ -157,7 +157,7 @@ public class ClientGift extends Gift implements Parcelable, HasID {
         giftChainName = in.readString();
     }
 
-    private static Time readTime(String s) {
+    static Time readTime(String s) {
         Time time = new Time();
         time.parse(s);
         return time;

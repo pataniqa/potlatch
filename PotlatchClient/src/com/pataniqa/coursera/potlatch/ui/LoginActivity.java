@@ -30,8 +30,8 @@ public class LoginActivity extends GiftActivity {
         setContentView(R.layout.login_activity);
 
         // Find the edit texts
-        loginId = (EditText) findViewById(R.id.username);
-        password = (EditText) findViewById(R.id.password);
+        loginId = (EditText) findViewById(R.id.login_username);
+        password = (EditText) findViewById(R.id.login_password);
     }
 
     public void loginClicked(View v) {

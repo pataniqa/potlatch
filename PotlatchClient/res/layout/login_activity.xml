@@ -27,7 +27,7 @@
     </TextView>
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/login_username"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/login_title"
@@ -35,34 +35,34 @@
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:background="#a0ffffff"
-        android:padding="12dp"
         android:hint="@string/email"
-        android:inputType="text" >
+        android:inputType="text"
+        android:padding="12dp" >
     </EditText>
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/login_password"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/username"
+        android:layout_below="@id/login_username"
         android:layout_marginBottom="30dip"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:background="#a0ffffff"
-        android:padding="12dp"
         android:hint="@string/password"
-        android:inputType="textPassword" >
+        android:inputType="textPassword"
+        android:padding="12dp" >
     </EditText>
 
     <Button
-        android:id="@+id/login"
+        android:id="@+id/do_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/password"
+        android:layout_below="@id/login_password"
         android:layout_centerHorizontal="true"
         android:background="#a0ffffff"
-        android:padding="12dp"
         android:onClick="loginClicked"
+        android:padding="12dp"
         android:text="@string/login" >
     </Button>
 

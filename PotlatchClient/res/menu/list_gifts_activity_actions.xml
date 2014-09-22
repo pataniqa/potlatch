@@ -22,7 +22,6 @@
         android:icon="@drawable/ic_fa_group"
         android:showAsAction="always"
         android:title="@string/query_type"/>
-            
     <item
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_action_settings"

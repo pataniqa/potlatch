@@ -29,6 +29,7 @@ abstract class GiftActivity extends Activity {
     public final static String RESULT_ORDER_DIRECTION_TAG = "result_order_direction";
     public final static String QUERY_TYPE_TAG = "query_type";
     public final static String DEFAULT_TITLE_QUERY = "";
+    public final static String GIFT_CHAIN_ID_TAG = "gift_chain_id";
 
     private static final String LOG_TAG = GiftActivity.class.getCanonicalName();
 
@@ -71,7 +72,8 @@ abstract class GiftActivity extends Activity {
     public void openListGiftActivity(String titleQuery,
             final ResultOrder resultOrder,
             final ResultOrderDirection resultOrderDirection,
-            final QueryType queryType) {
+            final QueryType queryType,
+            final long giftChainID) {
         Log.d(LOG_TAG, "openCreateGiftActivity");
         Intent intent = new Intent();
         intent.setClass(this, ListGiftsActivity.class);
@@ -79,35 +81,12 @@ abstract class GiftActivity extends Activity {
         intent.putExtra(RESULT_ORDER_TAG, resultOrder);
         intent.putExtra(RESULT_ORDER_DIRECTION_TAG, resultOrderDirection);
         intent.putExtra(QUERY_TYPE_TAG, queryType);
+        intent.putExtra(GIFT_CHAIN_ID_TAG, giftChainID);
         startActivity(intent);
     }
 
     protected long getRowIdentifier() {
         return getIntent().getLongExtra(ROW_IDENTIFIER_TAG, 0);
-    }
-
-    protected String getTitleQuery() {
-        String title = getIntent() != null ? getIntent().getStringExtra(TITLE_QUERY_TAG) : null;
-        return title != null ? title : "";
-    }
-
-    protected ResultOrder getResultOrder() {
-        ResultOrder resultOrder = getIntent() != null ? (ResultOrder) getIntent()
-                .getSerializableExtra(RESULT_ORDER_TAG) : null;
-        return resultOrder != null ? resultOrder : ResultOrder.TIME;
-    }
-
-    protected ResultOrderDirection getResultOrderDirection() {
-        ResultOrderDirection resultOrderDirection = getIntent() != null ? (ResultOrderDirection) getIntent()
-                .getSerializableExtra(RESULT_ORDER_DIRECTION_TAG) : null;
-        return resultOrderDirection != null ? resultOrderDirection
-                : ResultOrderDirection.DESCENDING;
-    }
-
-    protected QueryType getQueryType() {
-        QueryType queryType = getIntent() != null ? (QueryType) getIntent()
-                .getSerializableExtra(QUERY_TYPE_TAG) : null;
-        return queryType != null ? queryType : QueryType.ALL;
     }
 
     // Utility methods

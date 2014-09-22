@@ -34,7 +34,7 @@ public class EditGiftActivity extends ViewGiftActivity {
         setValuesToDefault();
     }
 
-    private boolean setValuesToDefault() {
+    boolean setValuesToDefault() {
         Log.d(LOG_TAG, "setValuesToDefault");
         try {
             ClientGift gift = resolver.get(getRowIdentifier());

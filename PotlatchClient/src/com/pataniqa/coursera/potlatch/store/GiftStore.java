@@ -17,7 +17,7 @@ public interface GiftStore extends Store<ClientGift> {
     };
 
     enum QueryType {
-        USER, TOP_GIFT_GIVERS, ALL
+        USER, TOP_GIFT_GIVERS, ALL, CHAIN
     };
 
     /**

@@ -25,7 +25,8 @@ import com.pataniqa.coursera.potlatch.model.ClientGift;
 import com.pataniqa.coursera.potlatch.store.local.LocalGiftStore;
 import com.pataniqa.coursera.potlatch.store.GiftStore.*;
 
-public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class ListGiftsActivity extends GiftActivity implements
+        SwipeRefreshLayout.OnRefreshListener, ShowGiftChainCallback {
 
     private static final String LOG_TAG = ListGiftsActivity.class.getCanonicalName();
 
@@ -41,6 +42,8 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
     private QueryType queryType = getQueryType();
     private ResultOrder resultOrder = getResultOrder();
     private ResultOrderDirection resultDirection = getResultOrderDirection();
+    private long giftChainID = getGiftChainID();
+    private long userID = 0; // FIXME
 
     private SharedPreferences prefs;
 
@@ -68,7 +71,8 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
         giftData = new ArrayList<ClientGift>();
 
         // Instantiate the adapter using our local GiftData ArrayList.
-        arrayAdapter = new GiftDataArrayAdapter(this, R.layout.gift_listview_custom_row, giftData);
+        arrayAdapter = new GiftDataArrayAdapter(this, R.layout.gift_listview_custom_row, giftData,
+                this);
 
         loadPreferences();
         updateGifts();
@@ -89,7 +93,7 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
         });
     }
 
-    private void loadPreferences() {
+    void loadPreferences() {
         Log.d(LOG_TAG, "loadPreferences");
         prefs = this.getPreferences(MODE_PRIVATE);
         if (prefs.contains(TITLE_QUERY_TAG))
@@ -104,7 +108,7 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
             queryType = QueryType.values()[prefs.getInt(QUERY_TYPE_TAG, queryType.ordinal())];
     }
 
-    private void savePreferences() {
+    void savePreferences() {
         Log.d(LOG_TAG, "savePreferences");
         SharedPreferences.Editor ed = prefs.edit();
         ed.putString(TITLE_QUERY_TAG, titleQuery);
@@ -144,7 +148,7 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
             openCreateGiftActivity();
             break;
         case R.id.action_query_type:
-            queryType = QueryType.values()[(queryType.ordinal() + 1) % QueryType.values().length];
+            queryType = QueryType.values()[(queryType.ordinal() + 1) % 3];
             updateQueryType(item);
             updateGifts();
             break;
@@ -169,21 +173,23 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
         return true;
     }
 
-    private void updateQueryType(MenuItem item) {
+    void updateQueryType(MenuItem item) {
         if (queryType == QueryType.USER)
             item.setIcon(R.drawable.ic_action_person);
         else if (queryType == QueryType.TOP_GIFT_GIVERS)
             item.setIcon(R.drawable.ic_fa_trophy);
-        else
+        else if (queryType == QueryType.ALL)
             item.setIcon(R.drawable.ic_fa_group);
+        else
+            item.setIcon(R.drawable.ic_fa_link);
     }
 
-    private void updateResultOrder(MenuItem item) {
+    void updateResultOrder(MenuItem item) {
         item.setIcon(resultOrder == ResultOrder.LIKES ? R.drawable.ic_fa_heart
                 : R.drawable.ic_fa_clock_o);
     }
 
-    private void updateResultOrderDirection(MenuItem item) {
+    void updateResultOrderDirection(MenuItem item) {
         item.setIcon(resultDirection == ResultOrderDirection.DESCENDING ? R.drawable.ic_fa_sort_amount_desc
                 : R.drawable.ic_fa_sort_amount_asc);
     }
@@ -219,20 +225,43 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
         return true;
     }
 
-    public void updateGifts() {
+    void updateGifts() {
         Log.d(LOG_TAG, "updateGiftData");
         try {
-            // Clear our local cache of GiftData
             giftData.clear();
 
-            // Add all of them to our local ArrayList
-            giftData.addAll(resolver.queryByTitle(titleQuery, resultOrder, resultDirection));
+            ArrayList<ClientGift> results = null;
+            if (queryType == QueryType.ALL)
+                results = resolver.queryByTitle(titleQuery, resultOrder, resultDirection);
+            else if (queryType == QueryType.USER)
+                results = resolver.queryByUser(userID, resultOrder, resultDirection);
+            else if (queryType == QueryType.TOP_GIFT_GIVERS)
+                results = resolver.queryByTopGiftGivers(resultOrder, resultDirection);
+            else if (queryType == QueryType.CHAIN)
+                results = resolver.queryByGiftChain(giftChainID, resultOrder, resultDirection);
 
+            if (prefs.getBoolean("pref_hide_flagged_content", false)) {
+                Log.d(LOG_TAG, "filtering flagged content");
+                for (ClientGift gift : results) {
+                    if (!gift.flagged)
+                        giftData.add(gift);
+                }
+            } else {
+                Log.d(LOG_TAG, "not filtering flagged content");
+                giftData.addAll(results);
+            }
             // Let the ArrayAdaptor know that we changed the data in its array.
             arrayAdapter.notifyDataSetChanged();
         } catch (Exception e) {
             Log.e(LOG_TAG, "Error connecting to Content Provider" + e.getMessage(), e);
         }
+    }
+
+    @Override
+    public void showGiftChain(long giftChainID) {
+        queryType = QueryType.CHAIN;
+        this.giftChainID = giftChainID;
+        updateGifts();
     }
 
     @Override
@@ -245,5 +274,33 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
                 updateGifts();
             }
         });
+    }
+
+    String getTitleQuery() {
+        String title = getIntent() != null ? getIntent().getStringExtra(TITLE_QUERY_TAG) : null;
+        return title != null ? title : "";
+    }
+
+    ResultOrder getResultOrder() {
+        ResultOrder resultOrder = getIntent() != null ? (ResultOrder) getIntent()
+                .getSerializableExtra(RESULT_ORDER_TAG) : null;
+        return resultOrder != null ? resultOrder : ResultOrder.TIME;
+    }
+
+    ResultOrderDirection getResultOrderDirection() {
+        ResultOrderDirection resultOrderDirection = getIntent() != null ? (ResultOrderDirection) getIntent()
+                .getSerializableExtra(RESULT_ORDER_DIRECTION_TAG) : null;
+        return resultOrderDirection != null ? resultOrderDirection
+                : ResultOrderDirection.DESCENDING;
+    }
+
+    QueryType getQueryType() {
+        QueryType queryType = getIntent() != null ? (QueryType) getIntent()
+                .getSerializableExtra(QUERY_TYPE_TAG) : null;
+        return queryType != null ? queryType : QueryType.ALL;
+    }
+
+    long getGiftChainID() {
+        return getIntent() != null ? getIntent().getLongExtra(GIFT_CHAIN_ID_TAG, 0) : 0;
     }
 }
