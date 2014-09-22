@@ -55,9 +55,6 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
         setContentView(R.layout.list_gifts_activity);
         getActionBar().show();
 
-        // swipeLayout = (SwipeRefreshLayout)
-        // findViewById(R.id.swipe_container);
-
         ButterKnife.inject(this);
         swipeLayout.setOnRefreshListener(this);
         swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
@@ -181,17 +178,13 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
     }
 
     private void updateResultOrder(MenuItem item) {
-        if (resultOrder == ResultOrder.LIKES)
-            item.setIcon(R.drawable.ic_fa_heart);
-        else
-            item.setIcon(R.drawable.ic_fa_clock_o);
+        item.setIcon(resultOrder == ResultOrder.LIKES ? R.drawable.ic_fa_heart
+                : R.drawable.ic_fa_clock_o);
     }
 
     private void updateResultOrderDirection(MenuItem item) {
-        if (resultDirection == ResultOrderDirection.DESCENDING)
-            item.setIcon(R.drawable.ic_fa_sort_amount_desc);
-        else
-            item.setIcon(R.drawable.ic_fa_sort_amount_asc);
+        item.setIcon(resultDirection == ResultOrderDirection.DESCENDING ? R.drawable.ic_fa_sort_amount_desc
+                : R.drawable.ic_fa_sort_amount_asc);
     }
 
     @Override

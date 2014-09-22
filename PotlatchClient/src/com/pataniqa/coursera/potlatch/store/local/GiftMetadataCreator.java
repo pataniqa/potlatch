@@ -15,6 +15,7 @@ public class GiftMetadataCreator extends BaseCreator<GiftMetadata> implements Cr
         rValue.put(PotlatchSchema.GiftMetadata.Cols.FLAG, data.flag);
         rValue.put(PotlatchSchema.GiftMetadata.Cols.LIKES, data.likes);
         rValue.put(PotlatchSchema.GiftMetadata.Cols.FLAGGED, data.flagged);
+        rValue.put(PotlatchSchema.GiftMetadata.Cols.GIFT_CHAIN_ID, data.giftChainID);
         return rValue;
     }
 
@@ -26,6 +27,7 @@ public class GiftMetadataCreator extends BaseCreator<GiftMetadata> implements Cr
         boolean flag = cursor.getInt(cursor.getColumnIndex(PotlatchSchema.GiftMetadata.Cols.FLAG)) > 0;
         long likes = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.GiftMetadata.Cols.LIKES));
         boolean flagged = cursor.getInt(cursor.getColumnIndex(PotlatchSchema.GiftMetadata.Cols.FLAGGED)) > 0;
-        return new GiftMetadata(rowID, giftID, like, flag, likes, flagged);
+        long giftChainID = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.GiftMetadata.Cols.GIFT_CHAIN_ID));
+        return new GiftMetadata(rowID, giftID, like, flag, likes, flagged, giftChainID);
     }
 }

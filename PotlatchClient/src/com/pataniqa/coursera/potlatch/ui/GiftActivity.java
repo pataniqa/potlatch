@@ -26,6 +26,8 @@ abstract class GiftActivity extends Activity {
     public final static String RESULT_ORDER_DIRECTION_TAG = "result_order_direction";
     public final static String QUERY_TYPE_TAG = "query_type";
     public final static String DEFAULT_TITLE_QUERY = "";
+    
+    private static final String LOG_TAG = GiftActivity.class.getCanonicalName();
 
     enum ResultOrder {
         TIME, LIKES
@@ -40,8 +42,6 @@ abstract class GiftActivity extends Activity {
     };
 
     protected GiftStore resolver;
-
-    private static final String LOG_TAG = GiftActivity.class.getCanonicalName();
 
     public void openLoginActivity() {
         Log.d(LOG_TAG, "openLoginActivity");

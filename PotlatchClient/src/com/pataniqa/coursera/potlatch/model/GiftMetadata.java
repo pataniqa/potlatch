@@ -11,6 +11,7 @@ public class GiftMetadata implements Parcelable, HasID {
     public boolean flag;
     public long likes;
     public boolean flagged;
+    public long giftChainID;
 
     /**
      * Constructor WITH _id, this creates a new object for use when pulling
@@ -23,26 +24,29 @@ public class GiftMetadata implements Parcelable, HasID {
             boolean like,
             boolean flag,
             long likes,
-            boolean flagged) {
+            boolean flagged,
+            long giftChainID) {
         this.keyID = keyID;
         this.giftID = giftID;
         this.like = like;
         this.flag = flag;
         this.likes = likes;
         this.flagged = flagged;
+        this.giftChainID = giftChainID;
     }
 
     @Override
     public String toString() {
         return "GiftMetadata [keyID=" + keyID + ", giftID=" + giftID + ", like=" + like + ", flag="
-                + flag + ", likes=" + likes + ", flagged=" + flagged + "]";
+                + flag + ", likes=" + likes + ", flagged=" + flagged + ", giftChainID="
+                + giftChainID + "]";
     }
 
     /**
      * Clone this object into a new GiftData
      */
     public GiftMetadata clone() {
-        return new GiftMetadata(-1, giftID, like, flag, likes, flagged);
+        return new GiftMetadata(-1, giftID, like, flag, likes, flagged, giftChainID);
     }
 
     // Parcelable interface
@@ -66,6 +70,7 @@ public class GiftMetadata implements Parcelable, HasID {
         dest.writeByte((byte) (flag ? 1 : 0));
         dest.writeLong(likes);
         dest.writeByte((byte) (flagged ? 1 : 0));
+        dest.writeLong(giftChainID);
     }
 
     /**
@@ -91,6 +96,7 @@ public class GiftMetadata implements Parcelable, HasID {
         flag = in.readByte() != 0;
         likes = in.readLong();
         flagged = in.readByte() != 0;
+        giftChainID = in.readLong();
     }
 
     @Override
