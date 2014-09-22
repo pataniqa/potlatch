@@ -7,14 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.RemoteException;
 
-import com.pataniqa.coursera.potlatch.model.GiftData;
+import com.pataniqa.coursera.potlatch.model.ClientGift;
 import com.pataniqa.coursera.potlatch.store.GiftStore;
 
 /**
  * Stores GiftData in a local SQLite Database that is hosted by the device.
  * 
  */
-public class LocalGiftStore extends BaseStore<GiftData> implements GiftStore {
+public class LocalGiftStore extends BaseStore<ClientGift> implements GiftStore {
 
     public LocalGiftStore(Context context) {
         creator = new GiftCreator();
@@ -41,7 +41,7 @@ public class LocalGiftStore extends BaseStore<GiftData> implements GiftStore {
     }
 
     @Override
-    public ArrayList<GiftData> queryByTitle(String title) throws RemoteException {
+    public ArrayList<ClientGift> queryByTitle(String title) throws RemoteException {
         if (title == null || title.isEmpty())
             return query(null, null, null, null);
         else {

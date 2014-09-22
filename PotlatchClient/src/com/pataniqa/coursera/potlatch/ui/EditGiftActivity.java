@@ -10,7 +10,7 @@ import android.widget.ImageView.ScaleType;
 import butterknife.ButterKnife;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.model.GiftData;
+import com.pataniqa.coursera.potlatch.model.ClientGift;
 import com.pataniqa.coursera.potlatch.store.local.LocalGiftStore;
 
 public class EditGiftActivity extends ViewGiftActivity {
@@ -37,7 +37,7 @@ public class EditGiftActivity extends ViewGiftActivity {
     private boolean setValuesToDefault() {
         Log.d(LOG_TAG, "setValuesToDefault");
         try {
-            GiftData gift = resolver.get(getRowIdentifier());
+            ClientGift gift = resolver.get(getRowIdentifier());
             Log.d(LOG_TAG, "setValuesToDefualt :" + gift);
             if (gift != null) {
                 // set the EditTexts to the current values
@@ -63,7 +63,7 @@ public class EditGiftActivity extends ViewGiftActivity {
     public void saveButtonClicked(View v) {
         Log.d(LOG_TAG, "saveButtonClicked");
         try {
-            GiftData gift = makeGiftDataFromUI(getRowIdentifier());
+            ClientGift gift = makeGiftDataFromUI(getRowIdentifier());
             Log.d(LOG_TAG, "newGiftData:" + gift);
             resolver.update(gift);
         } catch (RemoteException e) {

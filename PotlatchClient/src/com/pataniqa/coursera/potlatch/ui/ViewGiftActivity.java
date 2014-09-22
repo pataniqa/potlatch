@@ -22,7 +22,7 @@ import android.widget.ViewSwitcher;
 import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.model.GiftData;
+import com.pataniqa.coursera.potlatch.model.ClientGift;
 import com.pataniqa.coursera.potlatch.store.LocalStorageUtilities;
 
 /**
@@ -94,7 +94,7 @@ abstract class ViewGiftActivity extends GiftActivity {
     public void createButtonClicked(View v) {
         Log.d(LOG_TAG, "createButtonClicked");
         try {
-            GiftData gift = makeGiftDataFromUI(-1);
+            ClientGift gift = makeGiftDataFromUI(-1);
             Log.d(LOG_TAG, "newGiftData:" + gift);
             resolver.insert(gift);
         } catch (RemoteException e) {
@@ -163,7 +163,7 @@ abstract class ViewGiftActivity extends GiftActivity {
         }
     }
 
-    protected GiftData makeGiftDataFromUI(long key) {
+    protected ClientGift makeGiftDataFromUI(long key) {
         String title = editTextToString(titleInput);
         String description = editTextToString(descriptionInput);
         String videoUri = uriToString(videoPathFinal);
@@ -171,6 +171,6 @@ abstract class ViewGiftActivity extends GiftActivity {
         Time created = new Time();
         created.setToNow();
         long userID = 0;
-        return new GiftData(key, title, description, videoUri, imageData, created, userID);
+        return new ClientGift(key, title, description, videoUri, imageData, created, userID);
     }
 }

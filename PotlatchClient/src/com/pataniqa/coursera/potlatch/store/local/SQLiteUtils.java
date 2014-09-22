@@ -2,11 +2,10 @@ package com.pataniqa.coursera.potlatch.store.local;
 
 import java.util.Map;
 
-import com.pataniqa.coursera.potlatch.store.local.PotlatchSchema.GiftMetadata.Cols;
-
 import android.content.ContentValues;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.BaseColumns;
 import android.util.Log;
 
 public class SQLiteUtils {
@@ -41,7 +40,7 @@ public class SQLiteUtils {
                 : assignedValues;
         for (Map.Entry<String, String> entry : columns.entrySet()) {
             String key = entry.getKey();
-            if (!key.equals(Cols.ID)) {
+            if (!key.equals(BaseColumns._ID)) {
                 if (!setValues.containsKey(key)) {
                     if (entry.getValue().equals(PotlatchSchema.INTEGER))
                         setValues.put(key, 0);

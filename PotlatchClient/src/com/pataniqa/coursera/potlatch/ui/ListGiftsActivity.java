@@ -21,14 +21,14 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.model.GiftData;
+import com.pataniqa.coursera.potlatch.model.ClientGift;
 import com.pataniqa.coursera.potlatch.store.local.LocalGiftStore;
 
 public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final String LOG_TAG = ListGiftsActivity.class.getCanonicalName();
 
-    private ArrayList<GiftData> giftData;
+    private ArrayList<ClientGift> giftData;
     private GiftDataArrayAdapter arrayAdapter;
 
     @InjectView(R.id.list_gifts_swipe_container)
@@ -64,7 +64,7 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
 
         // Instantiate the resolver and the ArrayList
         resolver = new LocalGiftStore(this);
-        giftData = new ArrayList<GiftData>();
+        giftData = new ArrayList<ClientGift>();
 
         // Instantiate the adapter using our local GiftData ArrayList.
         arrayAdapter = new GiftDataArrayAdapter(this, R.layout.gift_listview_custom_row, giftData);

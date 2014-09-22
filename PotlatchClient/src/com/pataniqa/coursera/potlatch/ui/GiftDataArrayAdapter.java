@@ -17,19 +17,19 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.model.GiftData;
+import com.pataniqa.coursera.potlatch.model.ClientGift;
 
 /**
  * This is an ArrayAdapter for an array of GiftData.
  */
-public class GiftDataArrayAdapter extends ArrayAdapter<GiftData> {
+public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
 
     private static final String LOG_TAG = GiftDataArrayAdapter.class.getCanonicalName();
 
     private int resource;
     private final LayoutInflater inflater;
 
-    public GiftDataArrayAdapter(Context context, int resource, List<GiftData> items) {
+    public GiftDataArrayAdapter(Context context, int resource, List<ClientGift> items) {
         super(context, resource, items);
         Log.v(LOG_TAG, "constructor");
         this.resource = resource;
@@ -87,7 +87,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftData> {
             ButterKnife.inject(this, view);
         }
 
-        public void setGiftData(GiftData gift) {
+        public void setGiftData(ClientGift gift) {
             image.setImageURI(Uri.parse(gift.imageUri)); 
             image.setVisibility(View.VISIBLE);
             image.setScaleType(ScaleType.FIT_CENTER);

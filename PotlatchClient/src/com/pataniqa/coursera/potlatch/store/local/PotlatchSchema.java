@@ -28,35 +28,6 @@ public class PotlatchSchema {
                 put(Cols.IMAGE_URI, TEXT);
                 put(Cols.CREATED, TEXT);
                 put(Cols.USER_ID, INTEGER);
-            }
-        };
-
-        public static ContentValues initializeWithDefault(final ContentValues assignedValues) {
-            return SQLiteUtils.initializeWithDefault(COLUMNS, assignedValues);
-        }
-
-        // a static class to store columns in entity
-        public static class Cols {
-            public static final String ID = BaseColumns._ID;
-            public static final String TITLE = "TITLE";
-            public static final String DESCRIPTION = "DESCRIPTION";
-            public static final String VIDEO_URI = "VIDEO_URI";
-            public static final String IMAGE_URI = "IMAGE_URI";
-            public static final String CREATED = "CREATED";
-            public static final String USER_ID = "USER_ID";
-        }
-    }
-
-    public static class GiftMetadata {
-
-        public static final String PATH = "giftmetadata";
-
-        public static final String TABLE_NAME = PROJECT_NAME + "." + PATH;
-
-        public static Map<String, String> COLUMNS = new TreeMap<String, String>() {
-            {
-                put(Cols.ID, INTEGER);
-                put(Cols.GIFT_ID, INTEGER);
                 put(Cols.LIKE, INTEGER);
                 put(Cols.FLAG, INTEGER);
                 put(Cols.LIKES, INTEGER);
@@ -73,7 +44,12 @@ public class PotlatchSchema {
         // a static class to store columns in entity
         public static class Cols {
             public static final String ID = BaseColumns._ID;
-            public static final String GIFT_ID = "GIFT_ID";
+            public static final String TITLE = "TITLE";
+            public static final String DESCRIPTION = "DESCRIPTION";
+            public static final String VIDEO_URI = "VIDEO_URI";
+            public static final String IMAGE_URI = "IMAGE_URI";
+            public static final String CREATED = "CREATED";
+            public static final String USER_ID = "USER_ID";
             public static final String LIKE = "LIKE";
             public static final String FLAG = "FLAG";
             public static final String LIKES = "LIKES";
@@ -82,5 +58,4 @@ public class PotlatchSchema {
             public static final String GIFT_CHAIN_NAME = "GIFT_CHAIN_NAME";
         }
     }
-
 }
