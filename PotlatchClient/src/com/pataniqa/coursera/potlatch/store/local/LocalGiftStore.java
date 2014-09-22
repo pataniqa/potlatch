@@ -41,7 +41,12 @@ public class LocalGiftStore extends BaseStore<ClientGift> implements GiftStore {
     }
 
     @Override
-    public ArrayList<ClientGift> queryByTitle(String title) throws RemoteException {
+    public ArrayList<ClientGift> queryByTitle(String title,
+            ResultOrder resultOrder,
+            ResultOrderDirection resultOrderDirection) throws RemoteException {
+        
+        // TODO need to use resultOrder / resultOrderDirection
+        
         if (title == null || title.isEmpty())
             return query(null, null, null, null);
         else {
@@ -51,6 +56,29 @@ public class LocalGiftStore extends BaseStore<ClientGift> implements GiftStore {
                     new String[] { filterWord },
                     null);
         }
+    }
+
+    @Override
+    public ArrayList<ClientGift> queryByUser(long userID,
+            ResultOrder resultOrder,
+            ResultOrderDirection resultOrderDirection) throws RemoteException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public ArrayList<ClientGift> queryByTopGiftGivers(ResultOrder resultOrder,
+            ResultOrderDirection resultOrderDirection) throws RemoteException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public ArrayList<ClientGift> queryByGiftChain(long giftChainID,
+            ResultOrder resultOrder,
+            ResultOrderDirection resultOrderDirection) throws RemoteException {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

@@ -8,6 +8,9 @@ import android.util.Log;
 import android.widget.EditText;
 
 import com.pataniqa.coursera.potlatch.store.GiftStore;
+import com.pataniqa.coursera.potlatch.store.GiftStore.QueryType;
+import com.pataniqa.coursera.potlatch.store.GiftStore.ResultOrder;
+import com.pataniqa.coursera.potlatch.store.GiftStore.ResultOrderDirection;
 
 /**
  * Base class for all GiftData UI activities.
@@ -26,20 +29,8 @@ abstract class GiftActivity extends Activity {
     public final static String RESULT_ORDER_DIRECTION_TAG = "result_order_direction";
     public final static String QUERY_TYPE_TAG = "query_type";
     public final static String DEFAULT_TITLE_QUERY = "";
-    
+
     private static final String LOG_TAG = GiftActivity.class.getCanonicalName();
-
-    enum ResultOrder {
-        TIME, LIKES
-    };
-
-    enum ResultOrderDirection {
-        ASCENDING, DESCENDING
-    };
-
-    enum QueryType {
-        USER, TOP_GIFT_GIVERS, ALL
-    };
 
     protected GiftStore resolver;
 
@@ -48,10 +39,10 @@ abstract class GiftActivity extends Activity {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
-    
+
     public void openPreferenceActivity() {
         Log.d(LOG_TAG, "openPreferencesActivity");
-        Intent intent = new Intent(this,SettingsActivity.class);
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 

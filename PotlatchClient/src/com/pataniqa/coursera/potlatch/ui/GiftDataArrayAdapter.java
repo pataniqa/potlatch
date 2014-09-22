@@ -96,9 +96,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
 
         public void setGiftData(final ClientGift gift) {
 
-            // TODO need to filter flagged items
             if (gift.videoUri != null && !gift.videoUri.isEmpty()) {
-                Log.d(LOG_TAG, "Displaying video");
                 if (viewSwitcher.getCurrentView() != video)
                     viewSwitcher.showNext();
                 MediaController mediaController = new MediaController(view.getContext());
@@ -106,7 +104,6 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
                 video.setMediaController(mediaController);
                 video.setVideoURI(Uri.parse(gift.videoUri));
             } else {
-                Log.d(LOG_TAG, "Displaying image");
                 if (viewSwitcher.getCurrentView() != image)
                     viewSwitcher.showPrevious();
                 image.setImageURI(Uri.parse(gift.imageUri));
