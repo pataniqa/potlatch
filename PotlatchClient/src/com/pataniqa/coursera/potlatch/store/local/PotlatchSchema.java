@@ -17,7 +17,7 @@ public class PotlatchSchema {
     public static class Gift {
         public static final String PATH = "gift";
 
-        public static final String TABLE_NAME = PROJECT_NAME + "." + PATH;
+        public static final String TABLE_NAME = "PotlatchDatabase";
 
         public static Map<String, String> COLUMNS = new TreeMap<String, String>() {
             {

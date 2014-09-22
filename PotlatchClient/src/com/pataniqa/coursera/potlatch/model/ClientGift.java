@@ -82,6 +82,15 @@ public class ClientGift extends Gift implements Parcelable, HasID {
         this.giftChainName = null;
     }
 
+    @Override
+    public String toString() {
+        return "ClientGift [keyID=" + keyID + ", like=" + like + ", flag=" + flag + ", likes="
+                + likes + ", flagged=" + flagged + ", giftChainID=" + giftChainID
+                + ", giftChainName=" + giftChainName + ", title=" + title + ", description="
+                + description + ", videoUri=" + videoUri + ", imageUri=" + imageUri + ", created="
+                + created + ", userID=" + userID + "]";
+    }
+
     /**
      * Clone this object into a new GiftData
      */

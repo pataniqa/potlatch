@@ -35,4 +35,10 @@ public class Gift {
         this.userID = userID;
     }
 
+    @Override
+    public String toString() {
+        return "Gift [title=" + title + ", description=" + description + ", videoUri=" + videoUri
+                + ", imageUri=" + imageUri + ", created=" + created + ", userID=" + userID + "]";
+    }
+
 }

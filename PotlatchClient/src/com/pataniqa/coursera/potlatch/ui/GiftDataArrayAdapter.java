@@ -85,7 +85,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
         @InjectView(R.id.gift_listview_custom_row_viewswitcher)
         ViewSwitcher viewSwitcher;
         @InjectView(R.id.gift_listview_custom_row_video)
-        VideoView videoView;
+        VideoView video;
 
         View view;
 
@@ -97,14 +97,16 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
         public void setGiftData(final ClientGift gift) {
 
             // TODO need to filter flagged items
-            if (gift.videoUri != null) {
-                if (viewSwitcher.getCurrentView() != videoView)
+            if (gift.videoUri != null && !gift.videoUri.isEmpty()) {
+                Log.d(LOG_TAG, "Displaying video");
+                if (viewSwitcher.getCurrentView() != video)
                     viewSwitcher.showNext();
                 MediaController mediaController = new MediaController(view.getContext());
-                mediaController.setAnchorView(videoView);
-                videoView.setMediaController(mediaController);
-                videoView.setVideoURI(Uri.parse(gift.videoUri));
+                mediaController.setAnchorView(video);
+                video.setMediaController(mediaController);
+                video.setVideoURI(Uri.parse(gift.videoUri));
             } else {
+                Log.d(LOG_TAG, "Displaying image");
                 if (viewSwitcher.getCurrentView() != image)
                     viewSwitcher.showPrevious();
                 image.setImageURI(Uri.parse(gift.imageUri));
