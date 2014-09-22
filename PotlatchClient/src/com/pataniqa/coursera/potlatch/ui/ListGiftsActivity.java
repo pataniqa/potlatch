@@ -40,7 +40,6 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
     private QueryType queryType = getQueryType();
     private ResultOrder resultOrder = getResultOrder();
     private ResultOrderDirection resultDirection = getResultOrderDirection();
-    private ViewMode viewMode = getViewMode();
 
     private SharedPreferences prefs;
 
@@ -97,8 +96,6 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
         prefs = this.getPreferences(MODE_PRIVATE);
         if (prefs.contains(TITLE_QUERY_TAG))
             titleQuery = prefs.getString(TITLE_QUERY_TAG, titleQuery);
-        if (prefs.contains(VIEW_MODE_TAG))
-            viewMode = ViewMode.values()[prefs.getInt(VIEW_MODE_TAG, viewMode.ordinal())];
         if (prefs.contains(RESULT_ORDER_TAG))
             resultOrder = ResultOrder.values()[prefs
                     .getInt(RESULT_ORDER_TAG, resultOrder.ordinal())];
@@ -113,7 +110,6 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
         Log.d(LOG_TAG, "savePreferences");
         SharedPreferences.Editor ed = prefs.edit();
         ed.putString(TITLE_QUERY_TAG, titleQuery);
-        ed.putInt(VIEW_MODE_TAG, viewMode.ordinal());
         ed.putInt(RESULT_ORDER_TAG, resultOrder.ordinal());
         ed.putInt(RESULT_ORDER_DIRECTION_TAG, resultDirection.ordinal());
         ed.putInt(QUERY_TYPE_TAG, queryType.ordinal());
@@ -165,20 +161,6 @@ public class ListGiftsActivity extends GiftActivity implements SwipeRefreshLayou
             updateResultOrderDirection(item);
             updateGifts();
             break;
-
-        // Leave ViewMode until later
-
-        // case R.id.action_view_mode:
-        // if (viewMode == ViewMode.GRID_VIEW) {
-        // viewMode = ViewMode.LIST_VIEW;
-        // item.setIcon(R.drawable.ic_fa_list);
-        // } else {
-        // viewMode = ViewMode.GRID_VIEW;
-        // item.setIcon(R.drawable.ic_action_select_all);
-        // }
-        // updateGifts();
-        // break;
-
         case R.id.action_settings:
             openPreferenceActivity();
             break;

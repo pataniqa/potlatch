@@ -27,10 +27,6 @@ abstract class GiftActivity extends Activity {
     public final static String QUERY_TYPE_TAG = "query_type";
     public final static String DEFAULT_TITLE_QUERY = "";
 
-    enum ViewMode {
-        LIST_VIEW, GRID_VIEW
-    };
-
     enum ResultOrder {
         TIME, LIKES
     };
@@ -82,7 +78,6 @@ abstract class GiftActivity extends Activity {
     }
 
     public void openListGiftActivity(String titleQuery,
-            final ViewMode viewMode,
             final ResultOrder resultOrder,
             final ResultOrderDirection resultOrderDirection,
             final QueryType queryType) {
@@ -90,7 +85,6 @@ abstract class GiftActivity extends Activity {
         Intent intent = new Intent();
         intent.setClass(this, ListGiftsActivity.class);
         intent.putExtra(TITLE_QUERY_TAG, titleQuery);
-        intent.putExtra(VIEW_MODE_TAG, viewMode);
         intent.putExtra(RESULT_ORDER_TAG, resultOrder);
         intent.putExtra(RESULT_ORDER_DIRECTION_TAG, resultOrderDirection);
         intent.putExtra(QUERY_TYPE_TAG, queryType);
@@ -104,12 +98,6 @@ abstract class GiftActivity extends Activity {
     protected String getTitleQuery() {
         String title = getIntent() != null ? getIntent().getStringExtra(TITLE_QUERY_TAG) : null;
         return title != null ? title : "";
-    }
-
-    protected ViewMode getViewMode() {
-        ViewMode viewMode = getIntent() != null ? (ViewMode) getIntent()
-                .getSerializableExtra(VIEW_MODE_TAG) : null;
-        return viewMode != null ? viewMode : ViewMode.GRID_VIEW;
     }
 
     protected ResultOrder getResultOrder() {

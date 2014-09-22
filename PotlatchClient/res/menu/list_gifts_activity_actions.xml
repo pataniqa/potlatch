@@ -22,15 +22,7 @@
         android:icon="@drawable/ic_fa_group"
         android:showAsAction="always"
         android:title="@string/query_type"/>
-    
-    <!--  Leave this until later
-    <item
-        android:id="@+id/action_view_mode"
-        android:icon="@drawable/ic_action_select_all"
-        android:showAsAction="always"
-        android:title="@string/view_mode"/>
-        -->
-        
+            
     <item
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_action_settings"
