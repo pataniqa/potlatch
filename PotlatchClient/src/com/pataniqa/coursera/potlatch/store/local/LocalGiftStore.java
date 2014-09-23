@@ -18,7 +18,7 @@ public class LocalGiftStore extends BaseStore<ClientGift> implements GiftStore {
 
     public LocalGiftStore(Context context) {
         creator = new GiftCreator();
-        id = PotlatchSchema.Gift.Cols.ID;
+        id = PotlatchSchema.Cols.ID;
         tableName = PotlatchSchema.Gift.TABLE_NAME;
         helper = new SQLiteOpenHelper(context, PotlatchSchema.PARENT_DATABASE, null, 1) {
 
@@ -29,7 +29,7 @@ public class LocalGiftStore extends BaseStore<ClientGift> implements GiftStore {
 
             @Override
             public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-                // TODO
+                // TODO need to add support to upgrade database when schema changes
             }
         };
     }
@@ -41,8 +41,8 @@ public class LocalGiftStore extends BaseStore<ClientGift> implements GiftStore {
     }
 
     String sortOrder(ResultOrder resultOrder, ResultOrderDirection resultOrderDirection) {
-        String sortCol = resultOrder == ResultOrder.LIKES ? PotlatchSchema.Gift.Cols.LIKES
-                : PotlatchSchema.Gift.Cols.CREATED;
+        String sortCol = resultOrder == ResultOrder.LIKES ? PotlatchSchema.Cols.LIKES
+                : PotlatchSchema.Cols.CREATED;
         String order = resultOrderDirection == ResultOrderDirection.ASCENDING ? "ASC" : "DESC";
         return sortCol + " " + order;
     }
@@ -58,7 +58,7 @@ public class LocalGiftStore extends BaseStore<ClientGift> implements GiftStore {
         else {
             String filterWord = "%" + title + "%";
             return query(null,
-                    PotlatchSchema.Gift.Cols.TITLE + " LIKE ? ",
+                    PotlatchSchema.Cols.TITLE + " LIKE ? ",
                     new String[] { filterWord },
                     sortOrder);
         }
@@ -70,13 +70,13 @@ public class LocalGiftStore extends BaseStore<ClientGift> implements GiftStore {
             ResultOrderDirection resultOrderDirection) throws RemoteException {
         String[] selectionArgs = { String.valueOf(userID) };
         String sortOrder = sortOrder(resultOrder, resultOrderDirection);
-        return query(null, PotlatchSchema.Gift.Cols.USER_ID + "= ?", selectionArgs, sortOrder);
+        return query(null, PotlatchSchema.Cols.USER_ID + "= ?", selectionArgs, sortOrder);
     }
 
     @Override
     public ArrayList<ClientGift> queryByTopGiftGivers(ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException {
-        // TODO Auto-generated method stub
+        // TODO need to add support to query by top gift givers
         return null;
     }
 
@@ -86,7 +86,7 @@ public class LocalGiftStore extends BaseStore<ClientGift> implements GiftStore {
             ResultOrderDirection resultOrderDirection) throws RemoteException {
         String[] selectionArgs = { String.valueOf(giftChainID) };
         String sortOrder = sortOrder(resultOrder, resultOrderDirection);
-        return query(null, PotlatchSchema.Gift.Cols.GIFT_CHAIN_ID + "= ?", selectionArgs, sortOrder);
+        return query(null, PotlatchSchema.Cols.GIFT_CHAIN_ID + "= ?", selectionArgs, sortOrder);
     }
 
 }

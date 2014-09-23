@@ -17,7 +17,7 @@ public class PotlatchSchema {
     public static class Gift {
         public static final String PATH = "gift";
 
-        public static final String TABLE_NAME = "PotlatchDatabase";
+        public static final String TABLE_NAME = "PotlatchGifts";
 
         public static Map<String, String> COLUMNS = new TreeMap<String, String>() {
             {
@@ -41,21 +41,40 @@ public class PotlatchSchema {
             return SQLiteUtils.initializeWithDefault(COLUMNS, assignedValues);
         }
 
-        // a static class to store columns in entity
-        public static class Cols {
-            public static final String ID = BaseColumns._ID;
-            public static final String TITLE = "TITLE";
-            public static final String DESCRIPTION = "DESCRIPTION";
-            public static final String VIDEO_URI = "VIDEO_URI";
-            public static final String IMAGE_URI = "IMAGE_URI";
-            public static final String CREATED = "CREATED";
-            public static final String USER_ID = "USER_ID";
-            public static final String LIKE = "LIKE";
-            public static final String FLAG = "FLAG";
-            public static final String LIKES = "LIKES";
-            public static final String FLAGGED = "FLAGGED";
-            public static final String GIFT_CHAIN_ID = "GIFT_CHAIN_ID";
-            public static final String GIFT_CHAIN_NAME = "GIFT_CHAIN_NAME";
+    }
+    
+    public static class GiftChain {
+        public static final String PATH = "giftchain";
+
+        public static final String TABLE_NAME = "PotlatchGiftChains";
+
+        public static Map<String, String> COLUMNS = new TreeMap<String, String>() {
+            {
+                put(Cols.ID, INTEGER);
+                put(Cols.GIFT_CHAIN_NAME, TEXT);
+            }
+        };
+
+        public static ContentValues initializeWithDefault(final ContentValues assignedValues) {
+            return SQLiteUtils.initializeWithDefault(COLUMNS, assignedValues);
         }
+
+    }
+    
+    // a static class to store columns in entity
+    public static class Cols {
+        public static final String ID = BaseColumns._ID;
+        public static final String TITLE = "TITLE";
+        public static final String DESCRIPTION = "DESCRIPTION";
+        public static final String VIDEO_URI = "VIDEO_URI";
+        public static final String IMAGE_URI = "IMAGE_URI";
+        public static final String CREATED = "CREATED";
+        public static final String USER_ID = "USER_ID";
+        public static final String LIKE = "LIKE";
+        public static final String FLAG = "FLAG";
+        public static final String LIKES = "LIKES";
+        public static final String FLAGGED = "FLAGGED";
+        public static final String GIFT_CHAIN_ID = "GIFT_CHAIN_ID";
+        public static final String GIFT_CHAIN_NAME = "GIFT_CHAIN_NAME";
     }
 }

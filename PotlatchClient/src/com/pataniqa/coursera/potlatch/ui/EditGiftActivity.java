@@ -6,13 +6,12 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.MediaController;
 import android.widget.ImageView.ScaleType;
+import android.widget.MediaController;
 import butterknife.ButterKnife;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.ClientGift;
-import com.pataniqa.coursera.potlatch.store.local.LocalGiftStore;
 
 public class EditGiftActivity extends ViewGiftActivity {
 
@@ -29,8 +28,6 @@ public class EditGiftActivity extends ViewGiftActivity {
         setContentView(R.layout.edit_gift_activity);
         ButterKnife.inject(this);
 
-        resolver = new LocalGiftStore(this);
-        
         initializeSpinner();
 
         // set the EditTexts to this Gift's Values
@@ -40,7 +37,7 @@ public class EditGiftActivity extends ViewGiftActivity {
     boolean setValuesToDefault() {
         Log.d(LOG_TAG, "setValuesToDefault");
         try {
-            ClientGift gift = resolver.get(getRowIdentifier());
+            ClientGift gift = giftStore.get(getRowIdentifier());
             Log.d(LOG_TAG, "setValuesToDefualt :" + gift);
             if (gift != null) {
                 // set the EditTexts to the current values
@@ -84,7 +81,7 @@ public class EditGiftActivity extends ViewGiftActivity {
         try {
             ClientGift gift = makeGiftDataFromUI(getRowIdentifier());
             Log.d(LOG_TAG, "newGiftData:" + gift);
-            resolver.update(gift);
+            giftStore.update(gift);
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }
@@ -96,7 +93,7 @@ public class EditGiftActivity extends ViewGiftActivity {
         try {
             long identifier = getRowIdentifier();
             Log.d(LOG_TAG, "Deleting gift with " + identifier);
-            resolver.delete(identifier);
+            giftStore.delete(identifier);
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }

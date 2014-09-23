@@ -42,6 +42,14 @@ public interface Store<T extends HasID> {
      * @throws RemoteException
      */
     int update(T data) throws RemoteException;
+    
+    /**
+     * Query <T>.
+     * 
+     * @return an ArrayList of GiftData objects
+     * @throws RemoteException
+     */
+    ArrayList<T> query() throws RemoteException;
 
     /**
      * Query <T>.

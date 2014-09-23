@@ -1,16 +1,26 @@
 package com.pataniqa.coursera.potlatch.ui;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
+import android.os.RemoteException;
 import android.util.Log;
 import android.widget.EditText;
 
+import com.pataniqa.coursera.potlatch.model.GiftChain;
+import com.pataniqa.coursera.potlatch.store.GiftChainStore;
 import com.pataniqa.coursera.potlatch.store.GiftStore;
 import com.pataniqa.coursera.potlatch.store.GiftStore.QueryType;
 import com.pataniqa.coursera.potlatch.store.GiftStore.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.GiftStore.ResultOrderDirection;
+import com.pataniqa.coursera.potlatch.store.local.LocalGiftChainStore;
+import com.pataniqa.coursera.potlatch.store.local.LocalGiftStore;
 
 /**
  * Base class for all GiftData UI activities.
@@ -34,21 +44,42 @@ abstract class GiftActivity extends Activity {
 
     private static final String LOG_TAG = GiftActivity.class.getCanonicalName();
 
-    protected GiftStore resolver;
+    GiftStore giftStore;
+    GiftChainStore giftChainStore;
+    Map<String, Long> giftChains = new HashMap<String, Long>();
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "onCreate");
+        super.onCreate(savedInstanceState);
+        giftStore = new LocalGiftStore(this);
+        giftChainStore = new LocalGiftChainStore(this);
+        updateGiftChains();
+    }
+    
+    void updateGiftChains() {
+        try {
+            List<GiftChain> results = giftChainStore.query();
+            for (GiftChain result : results)
+                giftChains.put(result.giftChainName, result.keyID);
+        } catch (RemoteException e) {
+            Log.e(LOG_TAG, "Error connecting to Content Provider" + e.getMessage(), e);
+        }
+    }
 
-    public void openLoginActivity() {
+    void openLoginActivity() {
         Log.d(LOG_TAG, "openLoginActivity");
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 
-    public void openPreferenceActivity() {
+    void openPreferenceActivity() {
         Log.d(LOG_TAG, "openPreferencesActivity");
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
-    public void openEditGiftActivity(final long index) {
+    void openEditGiftActivity(final long index) {
         Log.d(LOG_TAG, "openEditGiftActivity(" + index + ")");
         Intent intent = new Intent();
         intent.setClass(this, EditGiftActivity.class);
@@ -56,21 +87,21 @@ abstract class GiftActivity extends Activity {
         startActivity(intent);
     }
 
-    public void openCreateGiftActivity() {
+    void openCreateGiftActivity() {
         Log.d(LOG_TAG, "openCreateGiftActivity");
         Intent intent = new Intent();
         intent.setClass(this, CreateGiftActivity.class);
         startActivity(intent);
     }
 
-    public void openListGiftActivity() {
+    void openListGiftActivity() {
         Log.d(LOG_TAG, "openCreateGiftActivity");
         Intent intent = new Intent();
         intent.setClass(this, ListGiftsActivity.class);
         startActivity(intent);
     }
 
-    public void openListGiftActivity(String titleQuery,
+    void openListGiftActivity(String titleQuery,
             final ResultOrder resultOrder,
             final ResultOrderDirection resultOrderDirection,
             final QueryType queryType,
@@ -86,21 +117,21 @@ abstract class GiftActivity extends Activity {
         startActivity(intent);
     }
 
-    protected long getRowIdentifier() {
+    long getRowIdentifier() {
         return getIntent().getLongExtra(ROW_IDENTIFIER_TAG, 0);
     }
 
     // Utility methods
 
-    public static String editTextToString(EditText et) {
+    static String editTextToString(EditText et) {
         return String.valueOf(et.getText().toString());
     }
 
-    public static String uriToString(Uri u) {
+    static String uriToString(Uri u) {
         return u != null ? u.toString() : "";
     }
 
-    public static Uri stringToUri(String s) {
+    static Uri stringToUri(String s) {
         return !s.isEmpty() ? Uri.parse(s) : null;
     }
 }

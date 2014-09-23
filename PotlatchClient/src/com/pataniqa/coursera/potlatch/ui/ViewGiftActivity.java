@@ -2,7 +2,6 @@ package com.pataniqa.coursera.potlatch.ui;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,10 +27,8 @@ import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.ClientGift;
+import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.store.LocalStorageUtilities;
-import com.pataniqa.coursera.potlatch.store.GiftStore.QueryType;
-import com.pataniqa.coursera.potlatch.store.GiftStore.ResultOrder;
-import com.pataniqa.coursera.potlatch.store.GiftStore.ResultOrderDirection;
 
 /**
  * Abstract class that forms the basis of the CreateGiftActivity and
@@ -62,7 +59,7 @@ abstract class ViewGiftActivity extends GiftActivity {
 
     Uri imagePathFinal = null;
     Uri videoPathFinal = null;
-    
+
     // Making this static keeps it from getting GC'd when we take pictures
     private static Uri imagePath = null;
     private static Uri videoPath = null;
@@ -74,7 +71,7 @@ abstract class ViewGiftActivity extends GiftActivity {
         super.onCreate(savedInstanceState);
         loadPreferences();
     }
-    
+
     @Override
     protected void onPause() {
         Log.d(LOG_TAG, "onPause");
@@ -117,18 +114,6 @@ abstract class ViewGiftActivity extends GiftActivity {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, videoPath);
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
         startActivityForResult(intent, Request.CAMERA_VIDEO_REQUEST.ordinal());
-    }
-
-    public void createButtonClicked(View v) {
-        Log.d(LOG_TAG, "createButtonClicked");
-        try {
-            ClientGift gift = makeGiftDataFromUI(-1);
-            Log.d(LOG_TAG, "newGiftData:" + gift);
-            resolver.insert(gift);
-        } catch (RemoteException e) {
-            Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
-        }
-        finish();
     }
 
     public void cancelButtonClicked(View v) {
@@ -189,7 +174,7 @@ abstract class ViewGiftActivity extends GiftActivity {
             break;
         }
     }
-    
+
     void loadPreferences() {
         Log.d(LOG_TAG, "loadPreferences");
         prefs = this.getPreferences(MODE_PRIVATE);
@@ -204,7 +189,7 @@ abstract class ViewGiftActivity extends GiftActivity {
         ed.commit();
     }
 
-    ClientGift makeGiftDataFromUI(long key) {
+    ClientGift makeGiftDataFromUI(long key) throws RemoteException {
         String title = editTextToString(titleInput);
         String description = editTextToString(descriptionInput);
         String videoUri = uriToString(videoPathFinal);
@@ -212,15 +197,23 @@ abstract class ViewGiftActivity extends GiftActivity {
         String giftChainName = editTextToString(giftChain);
         Time created = new Time();
         created.setToNow();
-        return new ClientGift(key, title, description, videoUri, imageData, created, userID, giftChainName);
+        long giftChainID;
+        if (giftChains.containsKey(giftChainName)) {
+            giftChainID = giftChains.get(giftChainName);
+        } else {
+            GiftChain giftChain = new GiftChain(-1, giftChainName);
+            giftChainID = giftChainStore.insert(giftChain);
+            giftChains.put(giftChainName, giftChainID);
+        }
+        return new ClientGift(key, title, description, videoUri, imageData, created, userID,
+                giftChainName, giftChainID);
     }
 
     void initializeSpinner() {
-        // TODO need to get the list of gift chains from the database
-        String[] s = { "Cars", "Tractors" };
-        ArrayList<String> spinnerArray = new ArrayList<String>(Arrays.asList(s));
+        ArrayList<String> giftChainNames = new ArrayList<String>();
+        giftChainNames.addAll(giftChains.keySet());
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, spinnerArray);
+                android.R.layout.simple_dropdown_item_1line, giftChainNames);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         giftChain.setAdapter(spinnerArrayAdapter);
     }

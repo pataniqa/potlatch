@@ -20,7 +20,7 @@ public class SQLiteUtils {
         createTable.append("create table if not exists " + tableName + " (");
         createTable.append(idColumn + " integer primary key autoincrement ");
         for (Map.Entry<String, String> entry : columns.entrySet()) {
-            if (!entry.getKey().equals(PotlatchSchema.Gift.Cols.ID))
+            if (!entry.getKey().equals(PotlatchSchema.Cols.ID))
                 createTable.append(", " + entry.getKey() + " " + entry.getValue());
         }
         createTable.append(");");

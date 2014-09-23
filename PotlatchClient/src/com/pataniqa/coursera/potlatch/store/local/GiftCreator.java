@@ -16,42 +16,42 @@ public class GiftCreator extends BaseCreator<ClientGift> implements Creator<Clie
     @Override
     public ContentValues getCV(ClientGift data) {
         ContentValues rValue = new ContentValues();
-        rValue.put(PotlatchSchema.Gift.Cols.TITLE, data.title);
-        rValue.put(PotlatchSchema.Gift.Cols.DESCRIPTION, data.description);
-        rValue.put(PotlatchSchema.Gift.Cols.VIDEO_URI, data.videoUri);
-        rValue.put(PotlatchSchema.Gift.Cols.IMAGE_URI, data.imageUri);
-        rValue.put(PotlatchSchema.Gift.Cols.CREATED, data.created.format2445());
-        rValue.put(PotlatchSchema.Gift.Cols.USER_ID, data.userID);
-        rValue.put(PotlatchSchema.Gift.Cols.LIKE, data.like);
-        rValue.put(PotlatchSchema.Gift.Cols.FLAG, data.flag);
-        rValue.put(PotlatchSchema.Gift.Cols.LIKES, data.likes);
-        rValue.put(PotlatchSchema.Gift.Cols.FLAGGED, data.flagged);
-        rValue.put(PotlatchSchema.Gift.Cols.GIFT_CHAIN_ID, data.giftChainID);
-        rValue.put(PotlatchSchema.Gift.Cols.GIFT_CHAIN_NAME, data.giftChainName);
+        rValue.put(PotlatchSchema.Cols.TITLE, data.title);
+        rValue.put(PotlatchSchema.Cols.DESCRIPTION, data.description);
+        rValue.put(PotlatchSchema.Cols.VIDEO_URI, data.videoUri);
+        rValue.put(PotlatchSchema.Cols.IMAGE_URI, data.imageUri);
+        rValue.put(PotlatchSchema.Cols.CREATED, data.created.format2445());
+        rValue.put(PotlatchSchema.Cols.USER_ID, data.userID);
+        rValue.put(PotlatchSchema.Cols.LIKE, data.like);
+        rValue.put(PotlatchSchema.Cols.FLAG, data.flag);
+        rValue.put(PotlatchSchema.Cols.LIKES, data.likes);
+        rValue.put(PotlatchSchema.Cols.FLAGGED, data.flagged);
+        rValue.put(PotlatchSchema.Cols.GIFT_CHAIN_ID, data.giftChainID);
+        rValue.put(PotlatchSchema.Cols.GIFT_CHAIN_NAME, data.giftChainName);
         return rValue;
     }
 
     @Override
     public ClientGift getFromCursor(Cursor cursor) {
-        long rowID = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.ID));
-        String title = cursor.getString(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.TITLE));
+        long rowID = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Cols.ID));
+        String title = cursor.getString(cursor.getColumnIndex(PotlatchSchema.Cols.TITLE));
         String description = cursor.getString(cursor
-                .getColumnIndex(PotlatchSchema.Gift.Cols.DESCRIPTION));
+                .getColumnIndex(PotlatchSchema.Cols.DESCRIPTION));
         String videoUri = cursor.getString(cursor
-                .getColumnIndex(PotlatchSchema.Gift.Cols.VIDEO_URI));
+                .getColumnIndex(PotlatchSchema.Cols.VIDEO_URI));
         String imageUri = cursor.getString(cursor
-                .getColumnIndex(PotlatchSchema.Gift.Cols.IMAGE_URI));
+                .getColumnIndex(PotlatchSchema.Cols.IMAGE_URI));
         Time created = new Time();
-        created.parse(cursor.getString(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.CREATED)));
-        long userID = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.USER_ID));
-        boolean like = cursor.getInt(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.LIKE)) > 0;
-        boolean flag = cursor.getInt(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.FLAG)) > 0;
-        long likes = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.LIKES));
-        boolean flagged = cursor.getInt(cursor.getColumnIndex(PotlatchSchema.Gift.Cols.FLAGGED)) > 0;
+        created.parse(cursor.getString(cursor.getColumnIndex(PotlatchSchema.Cols.CREATED)));
+        long userID = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Cols.USER_ID));
+        boolean like = cursor.getInt(cursor.getColumnIndex(PotlatchSchema.Cols.LIKE)) > 0;
+        boolean flag = cursor.getInt(cursor.getColumnIndex(PotlatchSchema.Cols.FLAG)) > 0;
+        long likes = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Cols.LIKES));
+        boolean flagged = cursor.getInt(cursor.getColumnIndex(PotlatchSchema.Cols.FLAGGED)) > 0;
         long giftChainID = cursor.getLong(cursor
-                .getColumnIndex(PotlatchSchema.Gift.Cols.GIFT_CHAIN_ID));
+                .getColumnIndex(PotlatchSchema.Cols.GIFT_CHAIN_ID));
         String giftChainName = cursor.getString(cursor
-                .getColumnIndex(PotlatchSchema.Gift.Cols.GIFT_CHAIN_NAME));
+                .getColumnIndex(PotlatchSchema.Cols.GIFT_CHAIN_NAME));
 
         return new ClientGift(rowID, title, description, videoUri, imageUri, created, userID, like,
                 flag, likes, flagged, giftChainID, giftChainName);

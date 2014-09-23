@@ -75,4 +75,9 @@ public class BaseStore<T extends HasID> implements Store<T> {
         return rValue;
     }
 
+    @Override
+    public ArrayList<T> query() throws RemoteException {
+        return query(null, null, null, null);
+    }
+
 }

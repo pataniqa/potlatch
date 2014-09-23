@@ -72,12 +72,12 @@ public class ClientGift extends Gift implements Parcelable, HasID {
             String imageUri,
             Time created,
             long userID,
-            String giftChainName) {
+            String giftChainName,
+            long giftChainID) {
         super(title, description, videoUri, imageUri, created, userID);
         this.keyID = keyID;
         this.giftChainName = giftChainName;
-        // TODO need to look up giftChainID
-        this.giftChainID = -1;        
+        this.giftChainID = giftChainID;        
         this.like = false;
         this.flag = false;
         this.likes = 0;

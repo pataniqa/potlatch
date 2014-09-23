@@ -22,8 +22,9 @@ import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.ClientGift;
-import com.pataniqa.coursera.potlatch.store.local.LocalGiftStore;
-import com.pataniqa.coursera.potlatch.store.GiftStore.*;
+import com.pataniqa.coursera.potlatch.store.GiftStore.QueryType;
+import com.pataniqa.coursera.potlatch.store.GiftStore.ResultOrder;
+import com.pataniqa.coursera.potlatch.store.GiftStore.ResultOrderDirection;
 
 public class ListGiftsActivity extends GiftActivity implements
         SwipeRefreshLayout.OnRefreshListener, ShowGiftChainCallback {
@@ -67,7 +68,6 @@ public class ListGiftsActivity extends GiftActivity implements
                 android.R.color.holo_red_light);
 
         // Instantiate the resolver and the ArrayList
-        resolver = new LocalGiftStore(this);
         giftData = new ArrayList<ClientGift>();
 
         // Instantiate the adapter using our local GiftData ArrayList.
@@ -237,13 +237,13 @@ public class ListGiftsActivity extends GiftActivity implements
 
             ArrayList<ClientGift> results = null;
             if (queryType == QueryType.USER)
-                results = resolver.queryByUser(userID, resultOrder, resultDirection);
+                results = giftStore.queryByUser(userID, resultOrder, resultDirection);
             else if (queryType == QueryType.TOP_GIFT_GIVERS)
-                results = resolver.queryByTopGiftGivers(resultOrder, resultDirection);
+                results = giftStore.queryByTopGiftGivers(resultOrder, resultDirection);
             else if (queryType == QueryType.CHAIN)
-                results = resolver.queryByGiftChain(giftChainID, resultOrder, resultDirection);
+                results = giftStore.queryByGiftChain(giftChainID, resultOrder, resultDirection);
             else
-                results = resolver.queryByTitle(titleQuery, resultOrder, resultDirection);
+                results = giftStore.queryByTitle(titleQuery, resultOrder, resultDirection);
 
             if (results != null) {
                 if (prefs.getBoolean("pref_hide_flagged_content", false)) {
