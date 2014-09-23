@@ -2,6 +2,9 @@ package com.pataniqa.coursera.potlatch.ui;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -59,6 +62,7 @@ abstract class ViewGiftActivity extends GiftActivity {
 
     Uri imagePathFinal = null;
     Uri videoPathFinal = null;
+    Map<String, Long> giftChains = new HashMap<String, Long>();
 
     // Making this static keeps it from getting GC'd when we take pictures
     private static Uri imagePath = null;
@@ -197,6 +201,10 @@ abstract class ViewGiftActivity extends GiftActivity {
         String giftChainName = editTextToString(giftChain);
         Time created = new Time();
         created.setToNow();
+
+        // TODO we re-use the gift chain map here - so if someone adds a gift
+        // chain in the meantime it will not show up
+
         long giftChainID;
         if (giftChains.containsKey(giftChainName)) {
             giftChainID = giftChains.get(giftChainName);
@@ -205,13 +213,24 @@ abstract class ViewGiftActivity extends GiftActivity {
             giftChainID = service.giftChains().insert(giftChain);
             giftChains.put(giftChainName, giftChainID);
         }
-        return new Gift(key, title, description, videoUri, imageData, created.toMillis(false), userID,
-                giftChainName);
+        return new Gift(key, title, description, videoUri, imageData, created.toMillis(false),
+                userID, giftChainName);
     }
 
     void initializeSpinner() {
+
+        // TODO this will not scale with the number of gift chains!
+
         ArrayList<String> giftChainNames = new ArrayList<String>();
-        giftChainNames.addAll(giftChains.keySet());
+        try {
+            Collection<GiftChain> results = service.giftChains().query();
+            for (GiftChain result : results) {
+                giftChains.put(result.giftChainName, result.giftChainID);
+                giftChainNames.add(result.giftChainName);
+            }
+        } catch (RemoteException e) {
+            Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
+        }
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, giftChainNames);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

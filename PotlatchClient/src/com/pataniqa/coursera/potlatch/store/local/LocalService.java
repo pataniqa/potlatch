@@ -17,6 +17,7 @@ public class LocalService extends BaseService implements Service {
         LocalDatabase helper = new LocalDatabase(context);
         userGifts = new LocalGiftStore(helper);
         gifts = new LocalGiftQuery(helper);
+        giftChains = new LocalGiftChainStore(helper);
         giftMetadata = new LocalGiftMetadataStore(helper);
     }
 }

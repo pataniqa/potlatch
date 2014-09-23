@@ -23,7 +23,7 @@
     <string name="gift_id">GiftId</string>
     <string name="empty_default_value"></string>
     <string name="zero_default_value">0</string>
-    <string name="email">Email</string>
+    <string name="username">Username</string>
     <string name="login_background_description">Photo of Taiwan Sandcastle Competition</string>
     <string name="password">Password</string>
     <string name="password_repeat">Password (repeat)</string>

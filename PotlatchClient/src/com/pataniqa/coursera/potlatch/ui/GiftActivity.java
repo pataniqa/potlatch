@@ -1,19 +1,13 @@
 package com.pataniqa.coursera.potlatch.ui;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.util.Log;
 import android.widget.EditText;
 
-import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.store.GiftQuery.QueryType;
 import com.pataniqa.coursera.potlatch.store.GiftQuery.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.GiftQuery.ResultOrderDirection;
@@ -43,24 +37,12 @@ abstract class GiftActivity extends Activity {
     private static final String LOG_TAG = GiftActivity.class.getCanonicalName();
 
     Service service;
-    Map<String, Long> giftChains = new HashMap<String, Long>();
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOG_TAG, "onCreate");
         super.onCreate(savedInstanceState);
         service = new LocalService(this);
-        updateGiftChains();
-    }
-    
-    void updateGiftChains() {
-        try {
-            Collection<GiftChain> results = service.giftChains().query();
-            for (GiftChain result : results)
-                giftChains.put(result.giftChainName, result.giftChainID);
-        } catch (RemoteException e) {
-            Log.e(LOG_TAG, "Error connecting to Content Provider" + e.getMessage(), e);
-        }
     }
 
     void openLoginActivity() {
