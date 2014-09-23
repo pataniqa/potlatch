@@ -26,9 +26,9 @@ class GiftChainCreator extends BaseCreator<GiftChain> implements Creator<GiftCha
 
     @Override
     public GiftChain getFromCursor(Cursor cursor) {
-        long rowID = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.ID));
+        long giftChainID = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.ID));
         String giftChainName = cursor.getString(cursor
                 .getColumnIndex(LocalSchema.Cols.GIFT_CHAIN_NAME));
-        return new GiftChain(rowID, giftChainName);
+        return new GiftChain(giftChainID, giftChainName);
     }
 }

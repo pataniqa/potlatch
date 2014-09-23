@@ -4,18 +4,18 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class GiftChain implements Parcelable, HasID {
-    
-    public long keyID;
+
+    public long giftChainID;
     public String giftChainName;
-    
-    public GiftChain(long keyID, String giftChainName) {
-        this.keyID = keyID;
+
+    public GiftChain(long giftChainID, String giftChainName) {
+        this.giftChainID = giftChainID;
         this.giftChainName = giftChainName;
     }
-    
+
     @Override
     public String toString() {
-        return "GiftChain [keyID=" + keyID + ", giftChainName=" + giftChainName + "]";
+        return "GiftChain [keyID=" + giftChainID + ", giftChainName=" + giftChainName + "]";
     }
 
     /**
@@ -41,7 +41,7 @@ public class GiftChain implements Parcelable, HasID {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(giftChainName);
-        dest.writeLong(keyID);
+        dest.writeLong(giftChainID);
     }
 
     /**
@@ -62,12 +62,12 @@ public class GiftChain implements Parcelable, HasID {
      */
     private GiftChain(Parcel in) {
         giftChainName = in.readString();
-        keyID = in.readLong();
+        giftChainID = in.readLong();
     }
 
     @Override
     public long getID() {
-        return keyID;
+        return giftChainID;
     }
 
 }

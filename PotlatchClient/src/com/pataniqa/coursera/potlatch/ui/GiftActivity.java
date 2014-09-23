@@ -57,7 +57,7 @@ abstract class GiftActivity extends Activity {
         try {
             List<GiftChain> results = service.giftChains().query();
             for (GiftChain result : results)
-                giftChains.put(result.giftChainName, result.keyID);
+                giftChains.put(result.giftChainName, result.giftChainID);
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Error connecting to Content Provider" + e.getMessage(), e);
         }
