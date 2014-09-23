@@ -15,8 +15,7 @@ abstract class BaseQuery<T> implements Query<T> {
     String tableName;
     SQLiteOpenHelper helper;
 
-    @Override
-    public ArrayList<T> query(String[] projection,
+    ArrayList<T> query(String[] projection,
             String selection,
             String[] selectionArgs,
             String sortOrder) throws RemoteException {

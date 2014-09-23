@@ -22,15 +22,6 @@ class RemoteGiftQuery implements GiftQuery {
     }
 
     @Override
-    public ArrayList<ClientGift> query(String[] projection,
-            String selection,
-            String[] selectionArgs,
-            String sortOrder) throws RemoteException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public ArrayList<ClientGift> queryByTitle(String title,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException {

@@ -20,22 +20,20 @@ abstract class BaseStore<T extends HasID> extends BaseQuery<T> implements Store<
     }
 
     @Override
-    public int delete(long rowID) throws RemoteException {
+    public void delete(long rowID) throws RemoteException {
         String[] selectionArgs = { String.valueOf(rowID) };
         String selection = LocalSchema.Cols.ID + " = ? ";
         SQLiteDatabase db = helper.getWritableDatabase();
-        int res = db.delete(tableName, selection, selectionArgs);
+        db.delete(tableName, selection, selectionArgs);
         db.close();
-        return res;
     }
 
     @Override
-    public int update(T data) throws RemoteException {
+    public void update(T data) throws RemoteException {
         String selection = "_id = ?";
         String[] selectionArgs = { String.valueOf(data.getID()) };
         SQLiteDatabase db = helper.getWritableDatabase();
-        int res = db.update(tableName, creator.getCV(data), selection, selectionArgs);
+        db.update(tableName, creator.getCV(data), selection, selectionArgs);
         db.close();
-        return res;
     }
 }

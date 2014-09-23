@@ -22,18 +22,8 @@ public class RemoteGiftMetadataStore implements Update<GiftMetadata> {
     }
 
     @Override
-    public ArrayList<GiftMetadata> query(String[] projection,
-            String selection,
-            String[] selectionArgs,
-            String sortOrder) throws RemoteException {
+    public void update(GiftMetadata data) throws RemoteException {
         // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public int update(GiftMetadata data) throws RemoteException {
-        // TODO Auto-generated method stub
-        return 0;
     }
 
 }

@@ -9,3 +9,12 @@ compile 'com.jakewharton:butterknife:5.1.2'
 Note to use Butterknife you need to follow
 http://jakewharton.github.io/butterknife/ide-eclipse.html
 https://github.com/excilys/androidannotations/issues/1066#issuecomment-49600888
+
+<dependency>
+  <groupId>com.squareup.retrofit</groupId>
+  <artifactId>retrofit</artifactId>
+  <version>1.6.1</version>
+</dependency>
+GRADLE
+
+compile 'com.squareup.retrofit:retrofit:1.6.1'

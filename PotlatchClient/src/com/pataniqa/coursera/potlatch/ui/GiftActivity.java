@@ -1,7 +1,7 @@
 package com.pataniqa.coursera.potlatch.ui;
 
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
@@ -55,7 +55,7 @@ abstract class GiftActivity extends Activity {
     
     void updateGiftChains() {
         try {
-            List<GiftChain> results = service.giftChains().query();
+            Collection<GiftChain> results = service.giftChains().query();
             for (GiftChain result : results)
                 giftChains.put(result.giftChainName, result.giftChainID);
         } catch (RemoteException e) {

@@ -6,10 +6,10 @@ import com.pataniqa.coursera.potlatch.store.Service;
 public class RemoteService extends BaseService implements Service {
     
     public RemoteService() {
-        userGifts = new RemoteGiftStore();
-        gifts = new RemoteGiftQuery();
-        giftChains = new RemoteGiftChainStore();
-        giftMetadata = new RemoteGiftMetadataStore();
+//        userGifts = new RemoteGiftStore();
+//        gifts = new RemoteGiftQuery();
+//        giftChains = new RemoteGiftChainStore();
+//        giftMetadata = new RemoteGiftMetadataStore();
     }
 
 }

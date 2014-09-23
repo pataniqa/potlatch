@@ -21,16 +21,15 @@ public class LocalGiftMetadataStore extends BaseQuery<GiftMetadata> implements U
     }
 
     @Override
-    public int update(GiftMetadata data) throws RemoteException {
+    public void update(GiftMetadata data) throws RemoteException {
         long rowID = data.giftID;
         ClientGift gift = localGiftStore.get(rowID);
         
         String selection = "_id = ?";
         String[] selectionArgs = { String.valueOf(gift.getID()) };
         SQLiteDatabase db = helper.getWritableDatabase();
-        int res = db.update(tableName, localGiftStore.creator.getCV(gift), selection, selectionArgs);
+        db.update(tableName, localGiftStore.creator.getCV(gift), selection, selectionArgs);
         db.close();
-        return res;
     }
 }
 

@@ -1,51 +1,40 @@
 package com.pataniqa.coursera.potlatch.store.remote;
 
-import java.util.ArrayList;
+import java.util.Collection;
 
+import retrofit.http.Body;
+import retrofit.http.DELETE;
+import retrofit.http.GET;
+import retrofit.http.POST;
+import retrofit.http.PUT;
 import android.os.RemoteException;
 
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.store.Store;
 
-class RemoteGiftStore implements Store<Gift> {
+interface RemoteGiftStore extends Store<Gift> {
+
+    public static final String GIFT_SVC_PATH = "/gift";
 
     @Override
-    public int update(Gift data) throws RemoteException {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
+    @POST(GIFT_SVC_PATH)
+    long insert(@Body Gift data) throws RemoteException;
+    
     @Override
-    public Gift get(long rowID) throws RemoteException {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    @GET(GIFT_SVC_PATH + "/{id}")
+    Gift get(long id) throws RemoteException;
 
+    // TODO FIXME this will not work because ID is not an argument we are breaking REST
     @Override
-    public ArrayList<Gift> query() throws RemoteException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
+    @PUT(GIFT_SVC_PATH + "/{id}")
+    void update(@Body Gift data) throws RemoteException;
+    
     @Override
-    public ArrayList<Gift> query(String[] projection,
-            String selection,
-            String[] selectionArgs,
-            String sortOrder) throws RemoteException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
+    @DELETE(GIFT_SVC_PATH + "/{id}")
+    void delete(long id) throws RemoteException;
+    
     @Override
-    public long insert(Gift data) throws RemoteException {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public int delete(long rowID) throws RemoteException {
-        // TODO Auto-generated method stub
-        return 0;
-    }
+    @GET(GIFT_SVC_PATH)
+    Collection<Gift> query() throws RemoteException;
 
 }
