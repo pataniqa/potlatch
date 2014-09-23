@@ -32,6 +32,7 @@ public class PotlatchSchema {
                 put(Cols.FLAGGED, INTEGER);
                 put(Cols.GIFT_CHAIN_ID, INTEGER);
                 put(Cols.GIFT_CHAIN_NAME, TEXT);
+                put(Cols.USER_LIKES, INTEGER);
             }
         };
 

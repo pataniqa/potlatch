@@ -60,10 +60,11 @@ public class LocalGiftStore extends BaseStore<ClientGift> implements GiftStore {
     }
 
     @Override
-    public ArrayList<ClientGift> queryByTopGiftGivers(ResultOrder resultOrder,
-            ResultOrderDirection resultOrderDirection) throws RemoteException {
-        // TODO need to add support to query by top gift givers
-        return null;
+    public ArrayList<ClientGift> queryByTopGiftGivers(ResultOrderDirection resultOrderDirection)
+            throws RemoteException {
+        String order = resultOrderDirection == ResultOrderDirection.ASCENDING ? "ASC" : "DESC";
+        String sortOrder  = PotlatchSchema.Cols.USER_LIKES + " " + order;
+        return query(null, null, null, sortOrder);
     }
 
     @Override

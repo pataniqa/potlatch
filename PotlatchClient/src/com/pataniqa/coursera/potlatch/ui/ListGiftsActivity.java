@@ -247,7 +247,7 @@ public class ListGiftsActivity extends GiftActivity implements
             if (queryType == QueryType.USER)
                 results = giftStore.queryByUser(userID, resultOrder, resultDirection);
             else if (queryType == QueryType.TOP_GIFT_GIVERS)
-                results = giftStore.queryByTopGiftGivers(resultOrder, resultDirection);
+                results = giftStore.queryByTopGiftGivers(resultDirection);
             else if (queryType == QueryType.CHAIN)
                 results = giftStore.queryByGiftChain(giftChainID, resultOrder, resultDirection);
             else

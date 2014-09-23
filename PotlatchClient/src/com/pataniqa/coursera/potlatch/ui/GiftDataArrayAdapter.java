@@ -145,6 +145,11 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
                     likeButton.setImageResource(gift.like ? R.drawable.ic_fa_heart
                             : R.drawable.ic_fa_heart_o);
                     likes.setText("" + gift.likes);
+                    
+                    // TODO should not be able to do the update like this
+                    // the API needs to change so local and remote match
+                    // should only able to update Gift not ClientGift - other attributes must be a separate API call
+                    
                     giftChainCallback.updateGift(gift);
                 }
             });
@@ -155,6 +160,11 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
                     gift.flag = !gift.flag;
                     flagButton.setImageResource(gift.flag ? R.drawable.ic_fa_flag
                             : R.drawable.ic_fa_flag_o);
+                    
+                    // TODO should not be able to do the update like this
+                    // the API needs to change so local and remote match
+                    // should only able to update Gift not ClientGift - other attributes must be a separate API call
+                    
                     giftChainCallback.updateGift(gift);
                 }
             });

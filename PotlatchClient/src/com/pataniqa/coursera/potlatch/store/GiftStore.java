@@ -51,13 +51,12 @@ public interface GiftStore extends Store<ClientGift> {
      * Query gift data by top gift givers - corresponds to
      * QueryType.TOP_GIFT_GIVERS
      * 
-     * @param resultOrder
      * @param resultOrderDirection
      * @return
      * @throws RemoteException
      */
-    ArrayList<ClientGift> queryByTopGiftGivers(ResultOrder resultOrder,
-            ResultOrderDirection resultOrderDirection) throws RemoteException;
+    ArrayList<ClientGift> queryByTopGiftGivers(ResultOrderDirection resultOrderDirection)
+            throws RemoteException;
 
     /**
      * Query gift data by gift chain.
