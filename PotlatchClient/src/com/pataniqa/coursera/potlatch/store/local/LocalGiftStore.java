@@ -39,9 +39,8 @@ public class LocalGiftStore extends BaseStore<ClientGift> implements GiftStore {
         if (helper != null)
             helper.close();
     }
-    
-    String sortOrder(ResultOrder resultOrder,
-            ResultOrderDirection resultOrderDirection) {
+
+    String sortOrder(ResultOrder resultOrder, ResultOrderDirection resultOrderDirection) {
         String sortCol = resultOrder == ResultOrder.LIKES ? PotlatchSchema.Gift.Cols.LIKES
                 : PotlatchSchema.Gift.Cols.CREATED;
         String order = resultOrderDirection == ResultOrderDirection.ASCENDING ? "ASC" : "DESC";
@@ -53,14 +52,15 @@ public class LocalGiftStore extends BaseStore<ClientGift> implements GiftStore {
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException {
 
+        String sortOrder = sortOrder(resultOrder, resultOrderDirection);
         if (title == null || title.isEmpty())
-            return query(null, null, null, null);
+            return query(null, null, null, sortOrder);
         else {
             String filterWord = "%" + title + "%";
             return query(null,
                     PotlatchSchema.Gift.Cols.TITLE + " LIKE ? ",
                     new String[] { filterWord },
-                    sortOrder(resultOrder, resultOrderDirection));
+                    sortOrder);
         }
     }
 
@@ -68,8 +68,9 @@ public class LocalGiftStore extends BaseStore<ClientGift> implements GiftStore {
     public ArrayList<ClientGift> queryByUser(long userID,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException {
-        // TODO Auto-generated method stub
-        return null;
+        String[] selectionArgs = { String.valueOf(userID) };
+        String sortOrder = sortOrder(resultOrder, resultOrderDirection);
+        return query(null, PotlatchSchema.Gift.Cols.USER_ID + "= ?", selectionArgs, sortOrder);
     }
 
     @Override
@@ -83,8 +84,9 @@ public class LocalGiftStore extends BaseStore<ClientGift> implements GiftStore {
     public ArrayList<ClientGift> queryByGiftChain(long giftChainID,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException {
-        // TODO Auto-generated method stub
-        return null;
+        String[] selectionArgs = { String.valueOf(giftChainID) };
+        String sortOrder = sortOrder(resultOrder, resultOrderDirection);
+        return query(null, PotlatchSchema.Gift.Cols.GIFT_CHAIN_ID + "= ?", selectionArgs, sortOrder);
     }
 
 }
