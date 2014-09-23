@@ -9,7 +9,8 @@ import com.pataniqa.coursera.potlatch.store.Create;
 import com.pataniqa.coursera.potlatch.store.Delete;
 import com.pataniqa.coursera.potlatch.store.Update;
 
-abstract class BaseStore<T extends HasID> extends BaseQuery<T> implements Create<T>, Update<T>, Delete<T> {
+abstract class BaseCreateUpdateDelete<T extends HasID> extends BaseQuery<T> implements Create<T>,
+        Update<T>, Delete<T> {
 
     @Override
     public long insert(T data) throws RemoteException {
@@ -23,17 +24,17 @@ abstract class BaseStore<T extends HasID> extends BaseQuery<T> implements Create
 
     @Override
     public void update(T data) throws RemoteException {
-        String selection = "_id = ?";
+        String selection = LocalSchema.Cols.ID  + " = ?";
         String[] selectionArgs = { String.valueOf(data.getID()) };
         SQLiteDatabase db = helper.getWritableDatabase();
         db.update(tableName, creator.getCV(data), selection, selectionArgs);
         db.close();
     }
-    
+
     @Override
     public void delete(long rowID) throws RemoteException {
-        String[] selectionArgs = { String.valueOf(rowID) };
         String selection = LocalSchema.Cols.ID + " = ? ";
+        String[] selectionArgs = { String.valueOf(rowID) };
         SQLiteDatabase db = helper.getWritableDatabase();
         db.delete(tableName, selection, selectionArgs);
         db.close();

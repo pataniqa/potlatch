@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-public interface Creator<T> {
+interface Creator<T> {
     /**
      * Create a ContentValues from a provided <T>
      * 

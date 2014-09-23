@@ -10,7 +10,7 @@ import com.pataniqa.coursera.potlatch.store.GiftStore;
  * Stores GiftData in a local SQLite Database that is hosted by the device.
  * 
  */
-public class LocalGiftStore extends BaseStore<Gift> implements GiftStore {
+public class LocalGiftStore extends BaseCreateUpdateDelete<Gift> implements GiftStore {
 
     public LocalGiftStore(LocalDatabase helper) {
         creator = new GiftCreator();
