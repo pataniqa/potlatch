@@ -31,13 +31,13 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
     private static final String LOG_TAG = GiftDataArrayAdapter.class.getCanonicalName();
 
     private final LayoutInflater inflater;
-    private final ShowGiftChainCallback giftChainCallback;
+    private final ListGiftsCallback giftChainCallback;
     private int resource;
 
     public GiftDataArrayAdapter(Context context,
             int resource,
             List<ClientGift> items,
-            ShowGiftChainCallback giftChainCallback) {
+            ListGiftsCallback giftChainCallback) {
         super(context, resource, items);
         Log.v(LOG_TAG, "constructor");
         this.resource = resource;
@@ -94,9 +94,9 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
         VideoView video;
 
         View view;
-        private final ShowGiftChainCallback giftChainCallback;
+        private final ListGiftsCallback giftChainCallback;
 
-        public ViewHolder(View view, ShowGiftChainCallback giftChainCallback) {
+        public ViewHolder(View view, ListGiftsCallback giftChainCallback) {
             ButterKnife.inject(this, view);
             this.view = view;
             this.giftChainCallback = giftChainCallback;
@@ -124,6 +124,11 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
             } else {
                 giftChainButton.setVisibility(Button.INVISIBLE);
             }
+            
+            likeButton.setImageResource(gift.like ? R.drawable.ic_fa_heart
+                    : R.drawable.ic_fa_heart_o);
+            flagButton.setImageResource(gift.flag ? R.drawable.ic_fa_flag
+                    : R.drawable.ic_fa_flag_o);
 
             title.setText(gift.title);
             description.setText(gift.description);
@@ -140,6 +145,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
                     likeButton.setImageResource(gift.like ? R.drawable.ic_fa_heart
                             : R.drawable.ic_fa_heart_o);
                     likes.setText("" + gift.likes);
+                    giftChainCallback.updateGift(gift);
                 }
             });
 
@@ -149,6 +155,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
                     gift.flag = !gift.flag;
                     flagButton.setImageResource(gift.flag ? R.drawable.ic_fa_flag
                             : R.drawable.ic_fa_flag_o);
+                    giftChainCallback.updateGift(gift);
                 }
             });
 

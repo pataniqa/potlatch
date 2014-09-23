@@ -12,12 +12,10 @@ public class PotlatchSchema {
     public static final String PROJECT_NAME = ORGANIZATIONAL_NAME + "potlatch";
     public static final String INTEGER = "integer";
     public static final String TEXT = "text";
-    public static final String PARENT_DATABASE = "PotlatchSecurityDatabase";
+    public static final String PARENT_DATABASE = "PotlatchDatabase";
 
     public static class Gift {
-        public static final String PATH = "gift";
-
-        public static final String TABLE_NAME = "PotlatchGifts";
+        public static final String TABLE_NAME = "gifts";
 
         public static Map<String, String> COLUMNS = new TreeMap<String, String>() {
             {
@@ -44,9 +42,7 @@ public class PotlatchSchema {
     }
     
     public static class GiftChain {
-        public static final String PATH = "giftchain";
-
-        public static final String TABLE_NAME = "PotlatchGiftChains";
+        public static final String TABLE_NAME = "giftchains";
 
         public static Map<String, String> COLUMNS = new TreeMap<String, String>() {
             {

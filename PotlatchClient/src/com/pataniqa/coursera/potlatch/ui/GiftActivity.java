@@ -19,6 +19,7 @@ import com.pataniqa.coursera.potlatch.store.GiftStore;
 import com.pataniqa.coursera.potlatch.store.GiftStore.QueryType;
 import com.pataniqa.coursera.potlatch.store.GiftStore.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.GiftStore.ResultOrderDirection;
+import com.pataniqa.coursera.potlatch.store.local.DatabaseHelper;
 import com.pataniqa.coursera.potlatch.store.local.LocalGiftChainStore;
 import com.pataniqa.coursera.potlatch.store.local.LocalGiftStore;
 
@@ -52,8 +53,9 @@ abstract class GiftActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOG_TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        giftStore = new LocalGiftStore(this);
-        giftChainStore = new LocalGiftChainStore(this);
+        DatabaseHelper helper = new DatabaseHelper(this);
+        giftStore = new LocalGiftStore(helper);
+        giftChainStore = new LocalGiftChainStore(helper);
         updateGiftChains();
     }
     

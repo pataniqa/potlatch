@@ -2,9 +2,6 @@ package com.pataniqa.coursera.potlatch.store.local;
 
 import java.util.ArrayList;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.RemoteException;
 
 import com.pataniqa.coursera.potlatch.model.ClientGift;
@@ -16,22 +13,11 @@ import com.pataniqa.coursera.potlatch.store.GiftStore;
  */
 public class LocalGiftStore extends BaseStore<ClientGift> implements GiftStore {
 
-    public LocalGiftStore(Context context) {
+    public LocalGiftStore(DatabaseHelper helper) {
         creator = new GiftCreator();
         id = PotlatchSchema.Cols.ID;
         tableName = PotlatchSchema.Gift.TABLE_NAME;
-        helper = new SQLiteOpenHelper(context, PotlatchSchema.PARENT_DATABASE, null, 1) {
-
-            @Override
-            public void onCreate(SQLiteDatabase db) {
-                SQLiteUtils.createDatabase(db, tableName, id, PotlatchSchema.Gift.COLUMNS);
-            }
-
-            @Override
-            public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-                // TODO need to add support to upgrade database when schema changes
-            }
-        };
+        this.helper = helper;
     }
 
     @Override

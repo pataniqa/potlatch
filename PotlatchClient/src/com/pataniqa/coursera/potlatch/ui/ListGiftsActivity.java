@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.RemoteException;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Menu;
@@ -27,7 +28,7 @@ import com.pataniqa.coursera.potlatch.store.GiftStore.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.GiftStore.ResultOrderDirection;
 
 public class ListGiftsActivity extends GiftActivity implements
-        SwipeRefreshLayout.OnRefreshListener, ShowGiftChainCallback {
+        SwipeRefreshLayout.OnRefreshListener, ListGiftsCallback {
 
     private static final String LOG_TAG = ListGiftsActivity.class.getCanonicalName();
 
@@ -310,5 +311,14 @@ public class ListGiftsActivity extends GiftActivity implements
 
     long getGiftChainID() {
         return getIntent() != null ? getIntent().getLongExtra(GIFT_CHAIN_ID_TAG, 0) : 0;
+    }
+
+    @Override
+    public void updateGift(ClientGift gift) {
+        try {
+            giftStore.update(gift);
+        } catch (RemoteException e) {
+            Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
+        }
     }
 }
