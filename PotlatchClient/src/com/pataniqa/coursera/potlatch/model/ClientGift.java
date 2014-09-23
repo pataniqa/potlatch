@@ -6,13 +6,10 @@ import android.text.format.Time;
 
 public class ClientGift extends Gift implements Parcelable, HasID {
 
-    public final long keyID;
     public boolean like;
     public boolean flag;
     public long likes;
     public boolean flagged;
-    public long giftChainID;
-    public String giftChainName;
     public long userLikes;
 
     /**
@@ -47,48 +44,14 @@ public class ClientGift extends Gift implements Parcelable, HasID {
             long giftChainID,
             String giftChainName,
             long userLikes) {
-        super(title, description, videoUri, imageUri, created, userID);
-        this.keyID = keyID;
+        super(keyID, title, description, videoUri, imageUri, created, userID, giftChainID, giftChainName);
         this.like = like;
         this.flag = flag;
         this.likes = likes;
         this.flagged = flagged;
-        this.giftChainID = giftChainID;
-        this.giftChainName = giftChainName;
         this.userLikes = userLikes;
     }
     
-    /**
-     * Constructor
-     * 
-     * @param keyID
-     * @param title
-     * @param description
-     * @param videoUri
-     * @param imageUri
-     * @param created
-     * @param userID
-     */
-    public ClientGift(long keyID,
-            String title,
-            String description,
-            String videoUri,
-            String imageUri,
-            Time created,
-            long userID,
-            String giftChainName,
-            long giftChainID) {
-        super(title, description, videoUri, imageUri, created, userID);
-        this.keyID = keyID;
-        this.giftChainName = giftChainName;
-        this.giftChainID = giftChainID;        
-        this.like = false;
-        this.flag = false;
-        this.likes = 0;
-        this.flagged = false;
-        this.userLikes = 0;
-    }
-
     @Override
     public String toString() {
         return "ClientGift [keyID=" + keyID + ", like=" + like + ", flag=" + flag + ", likes="
@@ -119,19 +82,19 @@ public class ClientGift extends Gift implements Parcelable, HasID {
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(keyID);
         dest.writeString(title);
         dest.writeString(description);
         dest.writeString(videoUri);
         dest.writeString(imageUri);
         dest.writeString(created.format2445());
         dest.writeLong(userID);
-        dest.writeLong(keyID);
+        dest.writeLong(giftChainID);
+        dest.writeString(giftChainName);
         dest.writeByte((byte) (like ? 1 : 0));
         dest.writeByte((byte) (flag ? 1 : 0));
         dest.writeLong(likes);
         dest.writeByte((byte) (flagged ? 1 : 0));
-        dest.writeLong(giftChainID);
-        dest.writeString(giftChainName);
         dest.writeLong(userLikes);
     }
 
@@ -152,15 +115,12 @@ public class ClientGift extends Gift implements Parcelable, HasID {
      * Used for writing a copy of this object to a Parcel, do not manually call.
      */
     private ClientGift(Parcel in) {
-        super(in.readString(), in.readString(), in.readString(), in.readString(), readTime(in
-                .readString()), in.readLong());
-        keyID = in.readLong();
+        super(in.readLong(), in.readString(), in.readString(), in.readString(), in.readString(), readTime(in
+                .readString()), in.readLong(), in.readLong(), in.readString());
         like = in.readByte() != 0;
         flag = in.readByte() != 0;
         likes = in.readLong();
         flagged = in.readByte() != 0;
-        giftChainID = in.readLong();
-        giftChainName = in.readString();
         userLikes = in.readLong();
     }
 
@@ -169,10 +129,4 @@ public class ClientGift extends Gift implements Parcelable, HasID {
         time.parse(s);
         return time;
     }
-
-    @Override
-    public long getID() {
-        return keyID;
-    }
-
 }

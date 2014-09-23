@@ -12,6 +12,7 @@ import butterknife.ButterKnife;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.ClientGift;
+import com.pataniqa.coursera.potlatch.model.Gift;
 
 public class EditGiftActivity extends ViewGiftActivity {
 
@@ -37,7 +38,7 @@ public class EditGiftActivity extends ViewGiftActivity {
     boolean setValuesToDefault() {
         Log.d(LOG_TAG, "setValuesToDefault");
         try {
-            ClientGift gift = giftStore.get(getRowIdentifier());
+            ClientGift gift = giftQuery.get(getRowIdentifier());
             Log.d(LOG_TAG, "setValuesToDefualt :" + gift);
             if (gift != null) {
                 // set the EditTexts to the current values
@@ -79,7 +80,7 @@ public class EditGiftActivity extends ViewGiftActivity {
     public void saveButtonClicked(View v) {
         Log.d(LOG_TAG, "saveButtonClicked");
         try {
-            ClientGift gift = makeGiftDataFromUI(getRowIdentifier());
+            Gift gift = makeGiftDataFromUI(getRowIdentifier());
             Log.d(LOG_TAG, "newGiftData:" + gift);
             giftStore.update(gift);
         } catch (RemoteException e) {

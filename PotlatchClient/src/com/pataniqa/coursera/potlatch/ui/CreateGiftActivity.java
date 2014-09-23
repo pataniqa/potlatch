@@ -8,7 +8,7 @@ import android.view.Window;
 import butterknife.ButterKnife;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.model.ClientGift;
+import com.pataniqa.coursera.potlatch.model.Gift;
 
 /**
  * The activity that allows a user to create and save a Gift.
@@ -34,7 +34,7 @@ public class CreateGiftActivity extends ViewGiftActivity {
     public void createButtonClicked(View v) {
         Log.d(LOG_TAG, "createButtonClicked");
         try {
-            ClientGift gift = makeGiftDataFromUI(-1);
+            Gift gift = makeGiftDataFromUI(-1);
             Log.d(LOG_TAG, "newGiftData:" + gift);
             giftStore.insert(gift);
         } catch (RemoteException e) {

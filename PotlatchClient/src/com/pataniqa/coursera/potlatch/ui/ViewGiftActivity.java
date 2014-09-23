@@ -26,7 +26,7 @@ import android.widget.ViewSwitcher;
 import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.model.ClientGift;
+import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.store.LocalStorageUtilities;
 
@@ -189,7 +189,7 @@ abstract class ViewGiftActivity extends GiftActivity {
         ed.commit();
     }
 
-    ClientGift makeGiftDataFromUI(long key) throws RemoteException {
+    Gift makeGiftDataFromUI(long key) throws RemoteException {
         String title = editTextToString(titleInput);
         String description = editTextToString(descriptionInput);
         String videoUri = uriToString(videoPathFinal);
@@ -205,8 +205,8 @@ abstract class ViewGiftActivity extends GiftActivity {
             giftChainID = giftChainStore.insert(giftChain);
             giftChains.put(giftChainName, giftChainID);
         }
-        return new ClientGift(key, title, description, videoUri, imageData, created, userID,
-                giftChainName, giftChainID);
+        return new Gift(key, title, description, videoUri, imageData, created, userID,
+                giftChainID, giftChainName);
     }
 
     void initializeSpinner() {

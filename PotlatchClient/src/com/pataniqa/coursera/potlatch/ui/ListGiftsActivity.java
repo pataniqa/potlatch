@@ -23,9 +23,9 @@ import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.ClientGift;
-import com.pataniqa.coursera.potlatch.store.GiftStore.QueryType;
-import com.pataniqa.coursera.potlatch.store.GiftStore.ResultOrder;
-import com.pataniqa.coursera.potlatch.store.GiftStore.ResultOrderDirection;
+import com.pataniqa.coursera.potlatch.store.GiftQuery.QueryType;
+import com.pataniqa.coursera.potlatch.store.GiftQuery.ResultOrder;
+import com.pataniqa.coursera.potlatch.store.GiftQuery.ResultOrderDirection;
 
 public class ListGiftsActivity extends GiftActivity implements
         SwipeRefreshLayout.OnRefreshListener, ListGiftsCallback {
@@ -245,13 +245,13 @@ public class ListGiftsActivity extends GiftActivity implements
 
             ArrayList<ClientGift> results = null;
             if (queryType == QueryType.USER)
-                results = giftStore.queryByUser(userID, resultOrder, resultDirection);
+                results = giftQuery.queryByUser(userID, resultOrder, resultDirection);
             else if (queryType == QueryType.TOP_GIFT_GIVERS)
-                results = giftStore.queryByTopGiftGivers(resultDirection);
+                results = giftQuery.queryByTopGiftGivers(resultDirection);
             else if (queryType == QueryType.CHAIN)
-                results = giftStore.queryByGiftChain(giftChainID, resultOrder, resultDirection);
+                results = giftQuery.queryByGiftChain(giftChainID, resultOrder, resultDirection);
             else
-                results = giftStore.queryByTitle(titleQuery, resultOrder, resultDirection);
+                results = giftQuery.queryByTitle(titleQuery, resultOrder, resultDirection);
 
             if (results != null) {
                 if (prefs.getBoolean("pref_hide_flagged_content", false)) {
@@ -323,7 +323,7 @@ public class ListGiftsActivity extends GiftActivity implements
     @Override
     public void updateGift(ClientGift gift) {
         try {
-            giftStore.update(gift);
+            giftQuery.update(gift);
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }

@@ -13,14 +13,16 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.widget.EditText;
 
+import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
-import com.pataniqa.coursera.potlatch.store.GiftChainStore;
-import com.pataniqa.coursera.potlatch.store.GiftStore;
-import com.pataniqa.coursera.potlatch.store.GiftStore.QueryType;
-import com.pataniqa.coursera.potlatch.store.GiftStore.ResultOrder;
-import com.pataniqa.coursera.potlatch.store.GiftStore.ResultOrderDirection;
+import com.pataniqa.coursera.potlatch.store.GiftQuery;
+import com.pataniqa.coursera.potlatch.store.GiftQuery.QueryType;
+import com.pataniqa.coursera.potlatch.store.GiftQuery.ResultOrder;
+import com.pataniqa.coursera.potlatch.store.GiftQuery.ResultOrderDirection;
+import com.pataniqa.coursera.potlatch.store.Store;
 import com.pataniqa.coursera.potlatch.store.local.DatabaseHelper;
 import com.pataniqa.coursera.potlatch.store.local.LocalGiftChainStore;
+import com.pataniqa.coursera.potlatch.store.local.LocalGiftQuery;
 import com.pataniqa.coursera.potlatch.store.local.LocalGiftStore;
 
 /**
@@ -45,8 +47,9 @@ abstract class GiftActivity extends Activity {
 
     private static final String LOG_TAG = GiftActivity.class.getCanonicalName();
 
-    GiftStore giftStore;
-    GiftChainStore giftChainStore;
+    Store<Gift> giftStore;
+    GiftQuery giftQuery;
+    Store<GiftChain>giftChainStore;
     Map<String, Long> giftChains = new HashMap<String, Long>();
     
     @Override
@@ -55,6 +58,7 @@ abstract class GiftActivity extends Activity {
         super.onCreate(savedInstanceState);
         DatabaseHelper helper = new DatabaseHelper(this);
         giftStore = new LocalGiftStore(helper);
+        giftQuery = new LocalGiftQuery(helper);
         giftChainStore = new LocalGiftChainStore(helper);
         updateGiftChains();
     }
