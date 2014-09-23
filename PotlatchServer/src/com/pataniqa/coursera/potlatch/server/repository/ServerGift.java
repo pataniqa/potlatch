@@ -6,22 +6,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class ServerGift extends com.pataniqa.coursera.potlatch.shared.Gift {
+public class ServerGift {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	private long userId;
+    public String title;
+    public String description;
+    public String videoUri;
+    public String imageUri;
+    public long created; // TODO use better time representation
+    public long userID;
+    public long giftChainID;
 
 	public long getId() {
 		return id;
 	}
 
-	public long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
 }

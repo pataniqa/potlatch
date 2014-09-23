@@ -25,7 +25,10 @@ public class LocalGiftMetadataStore extends BaseQuery<GiftMetadata> implements M
         long rowID = data.giftID;
         ClientGift gift = localGiftStore.get(rowID);
         
-        String selection = "_id = ?";
+        // we make the simplifying assumption that the local database will only ever have one user
+        // and we don't have a separate table for metadata, instead we update the ClientGift table
+        
+        String selection = LocalSchema.Cols.ID + " = ? ";
         String[] selectionArgs = { String.valueOf(gift.getID()) };
         SQLiteDatabase db = helper.getWritableDatabase();
         db.update(tableName, localGiftStore.creator.getCV(gift), selection, selectionArgs);

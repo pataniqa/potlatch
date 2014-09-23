@@ -1,6 +1,5 @@
 package com.pataniqa.coursera.potlatch.server.repository;
 
-import com.pataniqa.coursera.potlatch.shared.TouchUpdatePreference;
 
 
 public class UserPreference {
