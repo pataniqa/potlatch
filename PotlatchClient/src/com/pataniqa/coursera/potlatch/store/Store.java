@@ -1,12 +1,10 @@
 package com.pataniqa.coursera.potlatch.store;
 
-import java.util.ArrayList;
-
 import android.os.RemoteException;
 
 import com.pataniqa.coursera.potlatch.model.HasID;
 
-public interface Store<T extends HasID> {
+public interface Store<T extends HasID> extends Query<T> {
     /**
      * Insert a new <T> object.
      * 
@@ -26,15 +24,6 @@ public interface Store<T extends HasID> {
     int delete(long rowID) throws RemoteException;
 
     /**
-     * Retrieve a <T> object with a specific rowID.
-     * 
-     * @param rowID
-     * @return GiftData at the given rowID
-     * @throws RemoteException
-     */
-    T get(final long rowID) throws RemoteException;
-
-    /**
      * Update a <T> object with a specific rowID.
      * 
      * @param data
@@ -42,27 +31,4 @@ public interface Store<T extends HasID> {
      * @throws RemoteException
      */
     int update(T data) throws RemoteException;
-    
-    /**
-     * Query <T>.
-     * 
-     * @return an ArrayList of GiftData objects
-     * @throws RemoteException
-     */
-    ArrayList<T> query() throws RemoteException;
-
-    /**
-     * Query <T>.
-     * 
-     * @param projection
-     * @param selection
-     * @param selectionArgs
-     * @param sortOrder
-     * @return an ArrayList of GiftData objects
-     * @throws RemoteException
-     */
-    ArrayList<T> query(final String[] projection,
-            final String selection,
-            final String[] selectionArgs,
-            final String sortOrder) throws RemoteException;
 }
