@@ -255,7 +255,7 @@ public class ListGiftsActivity extends GiftActivity implements
                 results = service.gifts().queryByTitle(titleQuery, resultOrder, resultDirection);
 
             if (results != null) {
-                if (prefs.getBoolean("pref_hide_flagged_content", false)) {
+                if (prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, false)) {
                     Log.d(LOG_TAG, "filtering flagged content");
                     for (ClientGift gift : results) {
                         if (!gift.flagged)

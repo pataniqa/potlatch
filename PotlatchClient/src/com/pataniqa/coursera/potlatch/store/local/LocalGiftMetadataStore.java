@@ -10,12 +10,12 @@ import com.pataniqa.coursera.potlatch.model.GiftMetadata;
 import com.pataniqa.coursera.potlatch.store.MetadataStore;
 
 public class LocalGiftMetadataStore extends BaseQuery<GiftMetadata> implements MetadataStore {
-    
+
     LocalGiftQuery localGiftStore;
 
     public LocalGiftMetadataStore(LocalDatabase helper) {
         creator = new GiftMetadataCreator();
-        tableName = LocalSchema.GiftChain.TABLE_NAME;
+        tableName = LocalSchema.Gift.TABLE_NAME;
         this.helper = helper;
         localGiftStore = new LocalGiftQuery(helper);
     }
@@ -24,10 +24,19 @@ public class LocalGiftMetadataStore extends BaseQuery<GiftMetadata> implements M
     public void update(GiftMetadata data) throws RemoteException {
         long rowID = data.giftID;
         ClientGift gift = localGiftStore.get(rowID);
-        
-        // we make the simplifying assumption that the local database will only ever have one user
-        // and we don't have a separate table for metadata, instead we update the ClientGift table
-        
+        gift.like = data.like;
+        gift.flag = data.flag;
+
+        // we make the simplifying assumption that the local database will only
+        // ever have one user
+
+        // so we will only every have one like
+
+        gift.likes = gift.like ? 1 : 0;
+
+        // and we don't have a separate table for metadata, instead we update
+        // the ClientGift table
+
         String selection = LocalSchema.Cols.ID + " = ? ";
         String[] selectionArgs = { String.valueOf(gift.getID()) };
         SQLiteDatabase db = helper.getWritableDatabase();

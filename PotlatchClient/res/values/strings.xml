@@ -8,7 +8,7 @@
     <string name="authority">org.pataniqa.potlatch.provider.Provider</string>
 
     <!-- View / Activity Strings -->
-    
+
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
     <string name="closing_activity">Closing Activity</string>
@@ -54,12 +54,12 @@
     <string name="query_order_direction">Query Order Direction</string>
     <string name="query_type">Query Type</string>
     <string name="view_mode">View Mode</string>
-    <string name="hide_flagged_content">Hide flagged content</string>
-    <string name="update_frequency">Update frequency</string>
     <string name="pref_update_frequency_default">Update manually</string>
     <string name="pref_security">Security</string>
     <string name="pref_preferences">Preferences</string>
     <string name="gift_video_description">Video Description</string>
     <string name="gift_chain_name_hint">Gift Chain Name ...</string>
+    <string name="pref_hide_flagged_content">Hide flagged content</string>
+    <string name="pref_update_frequency">Update frequency</string>
 
 </resources>

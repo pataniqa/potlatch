@@ -4,16 +4,16 @@
     <PreferenceCategory android:title="@string/pref_preferences" >
         <ListPreference
             android:defaultValue="@string/pref_update_frequency_default"
-            android:dialogTitle="@string/update_frequency"
+            android:dialogTitle="@string/pref_update_frequency"
             android:entries="@array/pref_update_frequency_entries"
             android:entryValues="@array/pref_update_frequency_values"
             android:key="pref_update_frequency"
-            android:title="@string/update_frequency" />
+            android:title="@string/pref_update_frequency" />
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="pref_hide_flagged_content"
-            android:title="@string/hide_flagged_content" />
+            android:title="@string/pref_hide_flagged_content" />
     </PreferenceCategory>
 
 </PreferenceScreen>

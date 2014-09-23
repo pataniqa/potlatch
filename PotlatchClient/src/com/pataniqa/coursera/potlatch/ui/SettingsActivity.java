@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import com.pataniqa.coursera.potlatch.R;
 
 public class SettingsActivity extends PreferenceActivity {
+    
+    public final static String HIDE_FLAGGED_CONTENT = "pref_hide_flagged_content";
 
     private final static String LOG_TAG = SettingsActivity.class.getCanonicalName();
 
