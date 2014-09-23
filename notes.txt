@@ -18,3 +18,10 @@ https://github.com/excilys/androidannotations/issues/1066#issuecomment-49600888
 GRADLE
 
 compile 'com.squareup.retrofit:retrofit:1.6.1'
+
+Image upload library
+
+https://github.com/alexbbb
+
+Image caching library
+http://square.github.io/picasso

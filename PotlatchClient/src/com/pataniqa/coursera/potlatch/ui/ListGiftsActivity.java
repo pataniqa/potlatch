@@ -212,7 +212,7 @@ public class ListGiftsActivity extends GiftActivity implements
         updateResultOrderDirection(menu.findItem(R.id.action_result_order_direction));
 
         SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        final SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
         search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
         search.setOnQueryTextListener(new OnQueryTextListener() {
             @Override
@@ -226,6 +226,7 @@ public class ListGiftsActivity extends GiftActivity implements
             public boolean onQueryTextSubmit(String query) {
                 Log.d(LOG_TAG, "onQueryTextSubmit: "+ query);
                 updateGifts(query);
+                search.clearFocus();
                 return false;
             }
 
@@ -254,6 +255,8 @@ public class ListGiftsActivity extends GiftActivity implements
             else
                 results = service.gifts().queryByTitle(titleQuery, resultOrder, resultDirection);
 
+            // TODO filtering the results does not work
+            
             if (results != null) {
                 if (prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, false)) {
                     Log.d(LOG_TAG, "filtering flagged content");
@@ -275,7 +278,7 @@ public class ListGiftsActivity extends GiftActivity implements
     }
 
     @Override
-    public void showGiftChain(String giftChainID) {
+    public void showGiftChain(String giftChainName) {
         queryType = QueryType.CHAIN;
         this.giftChainName = giftChainName;
         updateGifts();
