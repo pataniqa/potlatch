@@ -72,5 +72,6 @@ public class PotlatchSchema {
         public static final String FLAGGED = "FLAGGED";
         public static final String GIFT_CHAIN_ID = "GIFT_CHAIN_ID";
         public static final String GIFT_CHAIN_NAME = "GIFT_CHAIN_NAME";
+        public static final String USER_LIKES = "USER_LIKES";
     }
 }

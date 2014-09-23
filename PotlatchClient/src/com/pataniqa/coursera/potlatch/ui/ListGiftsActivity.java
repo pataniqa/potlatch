@@ -216,14 +216,16 @@ public class ListGiftsActivity extends GiftActivity implements
         search.setOnQueryTextListener(new OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String query) {
-                updateGifts();
+                Log.d(LOG_TAG, "onQueryTextChange: " + query);
+                updateGifts(query);
                 return true;
             }
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                updateGifts();
-                return true;
+                Log.d(LOG_TAG, "onQueryTextSubmit: "+ query);
+                updateGifts(query);
+                return false;
             }
 
         });
@@ -231,6 +233,11 @@ public class ListGiftsActivity extends GiftActivity implements
         return true;
     }
 
+    void updateGifts(String query) {
+        titleQuery = query;
+        updateGifts();
+    }
+    
     void updateGifts() {
         Log.d(LOG_TAG, "updateGifts");
         try {

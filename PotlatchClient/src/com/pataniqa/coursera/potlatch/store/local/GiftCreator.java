@@ -28,6 +28,7 @@ public class GiftCreator extends BaseCreator<ClientGift> implements Creator<Clie
         rValue.put(PotlatchSchema.Cols.FLAGGED, data.flagged);
         rValue.put(PotlatchSchema.Cols.GIFT_CHAIN_ID, data.giftChainID);
         rValue.put(PotlatchSchema.Cols.GIFT_CHAIN_NAME, data.giftChainName);
+        rValue.put(PotlatchSchema.Cols.USER_LIKES, data.userLikes);
         return rValue;
     }
 
@@ -52,8 +53,9 @@ public class GiftCreator extends BaseCreator<ClientGift> implements Creator<Clie
                 .getColumnIndex(PotlatchSchema.Cols.GIFT_CHAIN_ID));
         String giftChainName = cursor.getString(cursor
                 .getColumnIndex(PotlatchSchema.Cols.GIFT_CHAIN_NAME));
+        long userLikes = cursor.getLong(cursor.getColumnIndex(PotlatchSchema.Cols.USER_LIKES));
 
         return new ClientGift(rowID, title, description, videoUri, imageUri, created, userID, like,
-                flag, likes, flagged, giftChainID, giftChainName);
+                flag, likes, flagged, giftChainID, giftChainName, userLikes);
     }
 }

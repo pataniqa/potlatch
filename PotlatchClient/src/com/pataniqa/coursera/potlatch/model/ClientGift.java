@@ -13,6 +13,7 @@ public class ClientGift extends Gift implements Parcelable, HasID {
     public boolean flagged;
     public long giftChainID;
     public String giftChainName;
+    public long userLikes;
 
     /**
      * Constructor
@@ -30,6 +31,7 @@ public class ClientGift extends Gift implements Parcelable, HasID {
      * @param flagged
      * @param giftChainID
      * @param giftChainName
+     * @param userLikes;
      */
     public ClientGift(long keyID,
             String title,
@@ -43,7 +45,8 @@ public class ClientGift extends Gift implements Parcelable, HasID {
             long likes,
             boolean flagged,
             long giftChainID,
-            String giftChainName) {
+            String giftChainName,
+            long userLikes) {
         super(title, description, videoUri, imageUri, created, userID);
         this.keyID = keyID;
         this.like = like;
@@ -52,6 +55,7 @@ public class ClientGift extends Gift implements Parcelable, HasID {
         this.flagged = flagged;
         this.giftChainID = giftChainID;
         this.giftChainName = giftChainName;
+        this.userLikes = userLikes;
     }
     
     /**
@@ -82,15 +86,14 @@ public class ClientGift extends Gift implements Parcelable, HasID {
         this.flag = false;
         this.likes = 0;
         this.flagged = false;
+        this.userLikes = 0;
     }
 
     @Override
     public String toString() {
         return "ClientGift [keyID=" + keyID + ", like=" + like + ", flag=" + flag + ", likes="
                 + likes + ", flagged=" + flagged + ", giftChainID=" + giftChainID
-                + ", giftChainName=" + giftChainName + ", title=" + title + ", description="
-                + description + ", videoUri=" + videoUri + ", imageUri=" + imageUri + ", created="
-                + created + ", userID=" + userID + "]";
+                + ", giftChainName=" + giftChainName + ", userLikes=" + userLikes + "]";
     }
 
     /**
@@ -98,7 +101,7 @@ public class ClientGift extends Gift implements Parcelable, HasID {
      */
     public ClientGift clone() {
         return new ClientGift(-1, title, description, videoUri, imageUri, created, userID, like,
-                flag, likes, flagged, giftChainID, giftChainName);
+                flag, likes, flagged, giftChainID, giftChainName, userLikes);
     }
 
     // Parcelable interface
@@ -129,6 +132,7 @@ public class ClientGift extends Gift implements Parcelable, HasID {
         dest.writeByte((byte) (flagged ? 1 : 0));
         dest.writeLong(giftChainID);
         dest.writeString(giftChainName);
+        dest.writeLong(userLikes);
     }
 
     /**
@@ -157,6 +161,7 @@ public class ClientGift extends Gift implements Parcelable, HasID {
         flagged = in.readByte() != 0;
         giftChainID = in.readLong();
         giftChainName = in.readString();
+        userLikes = in.readLong();
     }
 
     static Time readTime(String s) {
