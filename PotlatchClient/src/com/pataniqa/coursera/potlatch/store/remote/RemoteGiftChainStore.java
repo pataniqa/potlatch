@@ -1,40 +1,31 @@
 package com.pataniqa.coursera.potlatch.store.remote;
 
-import java.util.ArrayList;
+import java.util.Collection;
 
+import retrofit.http.Body;
+import retrofit.http.DELETE;
+import retrofit.http.GET;
+import retrofit.http.POST;
 import android.os.RemoteException;
 
 import com.pataniqa.coursera.potlatch.model.GiftChain;
-import com.pataniqa.coursera.potlatch.store.Store;
+import com.pataniqa.coursera.potlatch.store.GiftChainStore;
 
-public class RemoteGiftChainStore implements Store<GiftChain> {
+interface RemoteGiftChainStore extends GiftChainStore {
+    
+    public static final String GIFT_CHAIN_SVC_PATH = "/giftchain";
+
+    // TODO not sure about returning a long here?
+    @Override
+    @POST(GIFT_CHAIN_SVC_PATH)
+    public long insert(@Body GiftChain data) throws RemoteException;
+            
+    @Override
+    @DELETE(GIFT_CHAIN_SVC_PATH + "/{id}")
+    public void delete(long id) throws RemoteException;
 
     @Override
-    public void update(GiftChain data) throws RemoteException {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public GiftChain get(long rowID) throws RemoteException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public ArrayList<GiftChain> query() throws RemoteException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public long insert(GiftChain data) throws RemoteException {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public void delete(long rowID) throws RemoteException {
-        // TODO Auto-generated method stub
-    }
+    @GET(GIFT_CHAIN_SVC_PATH)
+    public Collection<GiftChain> query() throws RemoteException;
 
 }

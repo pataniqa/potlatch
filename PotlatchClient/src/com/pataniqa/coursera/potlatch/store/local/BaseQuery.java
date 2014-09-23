@@ -8,8 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.RemoteException;
 
 import com.pataniqa.coursera.potlatch.store.Query;
+import com.pataniqa.coursera.potlatch.store.Retrieve;
 
-abstract class BaseQuery<T> implements Query<T> {
+abstract class BaseQuery<T> implements Query<T>, Retrieve<T> {
 
     Creator<T> creator;
     String tableName;

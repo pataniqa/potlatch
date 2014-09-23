@@ -1,29 +1,21 @@
 package com.pataniqa.coursera.potlatch.store.remote;
 
-import java.util.ArrayList;
-
+import retrofit.http.Body;
+import retrofit.http.GET;
+import retrofit.http.PUT;
 import android.os.RemoteException;
 
 import com.pataniqa.coursera.potlatch.model.GiftMetadata;
-import com.pataniqa.coursera.potlatch.store.Update;
+import com.pataniqa.coursera.potlatch.store.MetadataStore;
 
-public class RemoteGiftMetadataStore implements Update<GiftMetadata> {
-
-    @Override
-    public GiftMetadata get(long rowID) throws RemoteException {
-        // TODO Auto-generated method stub
-        return null;
-    }
+interface RemoteGiftMetadataStore extends MetadataStore {
 
     @Override
-    public ArrayList<GiftMetadata> query() throws RemoteException {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    @GET(RemoteGiftStore.GIFT_SVC_PATH + "/{id}/meta")
+    GiftMetadata get(long id) throws RemoteException;
 
     @Override
-    public void update(GiftMetadata data) throws RemoteException {
-        // TODO Auto-generated method stub
-    }
+    @PUT(RemoteGiftStore.GIFT_SVC_PATH + "/{id}/meta")
+    void update(@Body GiftMetadata data) throws RemoteException;
 
 }

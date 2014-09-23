@@ -4,9 +4,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.pataniqa.coursera.potlatch.model.GiftChain;
-import com.pataniqa.coursera.potlatch.store.Store;
+import com.pataniqa.coursera.potlatch.store.GiftChainStore;
 
-public class LocalGiftChainStore extends BaseStore<GiftChain> implements Store<GiftChain> {
+public class LocalGiftChainStore extends BaseStore<GiftChain> implements GiftChainStore {
     
     public LocalGiftChainStore(LocalDatabase helper) {
         creator = new GiftChainCreator();

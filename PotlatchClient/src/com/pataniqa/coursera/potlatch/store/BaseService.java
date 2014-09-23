@@ -1,18 +1,14 @@
 package com.pataniqa.coursera.potlatch.store;
 
-import com.pataniqa.coursera.potlatch.model.Gift;
-import com.pataniqa.coursera.potlatch.model.GiftChain;
-import com.pataniqa.coursera.potlatch.model.GiftMetadata;
-
 public abstract class BaseService implements Service {
 
-    protected Store<Gift> userGifts;
+    protected GiftStore userGifts;
     protected GiftQuery gifts;
-    protected Store<GiftChain> giftChains;
-    protected Update<GiftMetadata> giftMetadata;
+    protected GiftChainStore giftChains;
+    protected MetadataStore giftMetadata;
 
     @Override
-    public Store<Gift> userGifts() {
+    public GiftStore userGifts() {
         return userGifts;
     }
 
@@ -22,12 +18,12 @@ public abstract class BaseService implements Service {
     }
 
     @Override
-    public Store<GiftChain> giftChains() {
+    public GiftChainStore giftChains() {
         return giftChains;
     }
 
     @Override
-    public Update<GiftMetadata> giftMetadata() {
+    public MetadataStore giftMetadata() {
         return giftMetadata;
     }
 

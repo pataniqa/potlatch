@@ -2,7 +2,7 @@ package com.pataniqa.coursera.potlatch.store;
 
 import android.os.RemoteException;
 
-public interface Update<T> extends Query<T> {
+public interface Update<T> {
     /**
      * Update a <T> object with a specific rowID.
      * 

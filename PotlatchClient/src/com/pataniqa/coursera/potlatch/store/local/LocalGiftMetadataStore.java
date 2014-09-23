@@ -7,9 +7,9 @@ import android.os.RemoteException;
 
 import com.pataniqa.coursera.potlatch.model.ClientGift;
 import com.pataniqa.coursera.potlatch.model.GiftMetadata;
-import com.pataniqa.coursera.potlatch.store.Update;
+import com.pataniqa.coursera.potlatch.store.MetadataStore;
 
-public class LocalGiftMetadataStore extends BaseQuery<GiftMetadata> implements Update<GiftMetadata> {
+public class LocalGiftMetadataStore extends BaseQuery<GiftMetadata> implements MetadataStore {
     
     LocalGiftQuery localGiftStore;
 

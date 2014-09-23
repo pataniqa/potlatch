@@ -6,7 +6,7 @@ import android.os.RemoteException;
 
 import com.pataniqa.coursera.potlatch.model.ClientGift;
 
-public interface GiftQuery extends Query<ClientGift> {
+public interface GiftQuery extends Query<ClientGift>, Retrieve<ClientGift> {
 
     enum ResultOrder {
         TIME, LIKES

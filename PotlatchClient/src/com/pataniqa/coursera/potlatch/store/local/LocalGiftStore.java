@@ -4,13 +4,13 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.pataniqa.coursera.potlatch.model.Gift;
-import com.pataniqa.coursera.potlatch.store.Store;
+import com.pataniqa.coursera.potlatch.store.GiftStore;
 
 /**
  * Stores GiftData in a local SQLite Database that is hosted by the device.
  * 
  */
-public class LocalGiftStore extends BaseStore<Gift> implements Store<Gift> {
+public class LocalGiftStore extends BaseStore<Gift> implements GiftStore {
 
     public LocalGiftStore(LocalDatabase helper) {
         creator = new GiftCreator();
