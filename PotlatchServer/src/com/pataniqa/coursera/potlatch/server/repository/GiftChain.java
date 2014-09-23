@@ -6,12 +6,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class TouchingGift extends GiftResponse {
+public class GiftChain {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+    private long giftChainID;
 	
-	public long getId() {
-		return id;
-	}
+    public String giftChainName;
+
 }

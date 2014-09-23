@@ -60,7 +60,7 @@ public class GiftFileManager {
 	}
 
 	// Private helper method for resolving video file paths
-	private Path getGiftPath(ServerGift g) {
+	private Path getGiftPath(Gift g) {
 		assert (g != null);
 
 		return targetDir_.resolve("gift" + g.getId() + ".jpg");
@@ -73,7 +73,7 @@ public class GiftFileManager {
 	 * @param v
 	 * @return
 	 */
-	public boolean hasGiftData(ServerGift g) {
+	public boolean hasGiftData(Gift g) {
 		Path source = getGiftPath(g);
 		return Files.exists(source);
 	}
@@ -88,7 +88,7 @@ public class GiftFileManager {
 	 * @param out
 	 * @throws IOException
 	 */
-	public void copyGiftData(ServerGift g, OutputStream out) throws IOException {
+	public void copyGiftData(Gift g, OutputStream out) throws IOException {
 		Path source = getGiftPath(g);
 		if (!Files.exists(source)) {
 			throw new FileNotFoundException(
@@ -107,7 +107,7 @@ public class GiftFileManager {
 	 * @param videoData
 	 * @throws IOException
 	 */
-	public void saveGiftData(ServerGift g, InputStream videoData)
+	public void saveGiftData(Gift g, InputStream videoData)
 			throws IOException {
 		assert (videoData != null);
 
