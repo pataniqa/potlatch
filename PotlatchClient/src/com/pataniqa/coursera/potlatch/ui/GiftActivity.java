@@ -15,13 +15,16 @@ import android.widget.EditText;
 
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
+import com.pataniqa.coursera.potlatch.model.GiftMetadata;
 import com.pataniqa.coursera.potlatch.store.GiftQuery;
 import com.pataniqa.coursera.potlatch.store.GiftQuery.QueryType;
 import com.pataniqa.coursera.potlatch.store.GiftQuery.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.GiftQuery.ResultOrderDirection;
 import com.pataniqa.coursera.potlatch.store.Store;
-import com.pataniqa.coursera.potlatch.store.local.DatabaseHelper;
+import com.pataniqa.coursera.potlatch.store.Update;
+import com.pataniqa.coursera.potlatch.store.local.LocalDatabase;
 import com.pataniqa.coursera.potlatch.store.local.LocalGiftChainStore;
+import com.pataniqa.coursera.potlatch.store.local.LocalGiftMetadataStore;
 import com.pataniqa.coursera.potlatch.store.local.LocalGiftQuery;
 import com.pataniqa.coursera.potlatch.store.local.LocalGiftStore;
 
@@ -49,18 +52,28 @@ abstract class GiftActivity extends Activity {
 
     Store<Gift> giftStore;
     GiftQuery giftQuery;
-    Store<GiftChain>giftChainStore;
+    Store<GiftChain> giftChainStore;
+    Update<GiftMetadata> giftMetadataStore;
     Map<String, Long> giftChains = new HashMap<String, Long>();
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOG_TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        DatabaseHelper helper = new DatabaseHelper(this);
-        giftStore = new LocalGiftStore(helper);
-        giftQuery = new LocalGiftQuery(helper);
-        giftChainStore = new LocalGiftChainStore(helper);
+        createStores(true);
         updateGiftChains();
+    }
+    
+    void createStores(boolean local) {
+        if (local) {
+            LocalDatabase helper = new LocalDatabase(this);
+            giftStore = new LocalGiftStore(helper);
+            giftQuery = new LocalGiftQuery(helper);
+            giftChainStore = new LocalGiftChainStore(helper);
+            giftMetadataStore = new LocalGiftMetadataStore(helper);
+        } else {
+            
+        }
     }
     
     void updateGiftChains() {

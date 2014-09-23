@@ -4,7 +4,7 @@ import android.os.RemoteException;
 
 import com.pataniqa.coursera.potlatch.model.HasID;
 
-public interface Store<T extends HasID> extends Query<T> {
+public interface Store<T extends HasID> extends Update<T> {
     /**
      * Insert a new <T> object.
      * 
@@ -22,13 +22,4 @@ public interface Store<T extends HasID> extends Query<T> {
      * @throws RemoteException
      */
     int delete(long rowID) throws RemoteException;
-
-    /**
-     * Update a <T> object with a specific rowID.
-     * 
-     * @param data
-     * @return number of rows altered
-     * @throws RemoteException
-     */
-    int update(T data) throws RemoteException;
 }

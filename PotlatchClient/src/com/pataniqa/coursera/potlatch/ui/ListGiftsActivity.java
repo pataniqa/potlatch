@@ -23,6 +23,7 @@ import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.ClientGift;
+import com.pataniqa.coursera.potlatch.model.GiftMetadata;
 import com.pataniqa.coursera.potlatch.store.GiftQuery.QueryType;
 import com.pataniqa.coursera.potlatch.store.GiftQuery.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.GiftQuery.ResultOrderDirection;
@@ -323,7 +324,8 @@ public class ListGiftsActivity extends GiftActivity implements
     @Override
     public void updateGift(ClientGift gift) {
         try {
-            giftQuery.update(gift);
+            GiftMetadata giftMetadata = new GiftMetadata(gift.keyID, userID, gift.like, gift.flag);
+            giftMetadataStore.update(giftMetadata);
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }

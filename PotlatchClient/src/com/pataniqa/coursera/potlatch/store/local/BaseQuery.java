@@ -4,12 +4,16 @@ import java.util.ArrayList;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.RemoteException;
 
-import com.pataniqa.coursera.potlatch.model.HasID;
 import com.pataniqa.coursera.potlatch.store.Query;
 
-class BaseQuery<T extends HasID> extends Base<T> implements Query<T> {
+abstract class BaseQuery<T> implements Query<T> {
+
+    Creator<T> creator;
+    String tableName;
+    SQLiteOpenHelper helper;
 
     @Override
     public ArrayList<T> query(String[] projection,
@@ -39,7 +43,13 @@ class BaseQuery<T extends HasID> extends Base<T> implements Query<T> {
     @Override
     public T get(long rowID) throws RemoteException {
         String[] selectionArgs = { String.valueOf(rowID) };
-        ArrayList<T> results = query(null, id + "= ?", selectionArgs, null);
+        ArrayList<T> results = query(null, LocalSchema.Cols.ID + "= ?", selectionArgs, null);
         return results.size() > 0 ? results.get(0) : null;
+    }
+    
+    @Override
+    public void finalize() {
+        if (helper != null)
+            helper.close();
     }
 }

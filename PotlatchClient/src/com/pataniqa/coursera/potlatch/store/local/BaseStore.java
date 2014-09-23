@@ -7,12 +7,12 @@ import android.os.RemoteException;
 import com.pataniqa.coursera.potlatch.model.HasID;
 import com.pataniqa.coursera.potlatch.store.Store;
 
-public class BaseStore<T extends HasID> extends BaseQuery<T> implements Store<T> {
+abstract class BaseStore<T extends HasID> extends BaseQuery<T> implements Store<T> {
 
     @Override
     public long insert(T data) throws RemoteException {
         ContentValues tempCV = creator.getCV(data);
-        tempCV.remove(id);
+        tempCV.remove(LocalSchema.Cols.ID);
         SQLiteDatabase db = helper.getWritableDatabase();
         long res = db.insert(tableName, null, tempCV);
         db.close();
@@ -22,7 +22,7 @@ public class BaseStore<T extends HasID> extends BaseQuery<T> implements Store<T>
     @Override
     public int delete(long rowID) throws RemoteException {
         String[] selectionArgs = { String.valueOf(rowID) };
-        String selection = id + " = ? ";
+        String selection = LocalSchema.Cols.ID + " = ? ";
         SQLiteDatabase db = helper.getWritableDatabase();
         int res = db.delete(tableName, selection, selectionArgs);
         db.close();
