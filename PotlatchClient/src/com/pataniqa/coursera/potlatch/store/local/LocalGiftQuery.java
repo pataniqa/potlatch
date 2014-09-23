@@ -20,8 +20,12 @@ public class LocalGiftQuery extends BaseQuery<ClientGift> implements GiftQuery {
     String sortOrder(ResultOrder resultOrder, ResultOrderDirection resultOrderDirection) {
         String sortCol = resultOrder == ResultOrder.LIKES ? LocalSchema.Cols.LIKES
                 : LocalSchema.Cols.CREATED;
-        String order = resultOrderDirection == ResultOrderDirection.ASCENDING ? "ASC" : "DESC";
+        String order = direction(resultOrderDirection);
         return sortCol + " " + order;
+    }
+
+    String direction(ResultOrderDirection resultOrderDirection) {
+        return resultOrderDirection == ResultOrderDirection.ASCENDING ? "ASC" : "DESC";
     }
 
     @Override
@@ -33,38 +37,55 @@ public class LocalGiftQuery extends BaseQuery<ClientGift> implements GiftQuery {
         if (title == null || title.isEmpty())
             return query(null, null, null, sortOrder);
         else {
-            String filterWord = "%" + title + "%";
-            return query(null,
-                    LocalSchema.Cols.TITLE + " LIKE ? ",
-                    new String[] { filterWord },
-                    sortOrder);
+            String[] selectionArgs = new String[] { "%" + title + "%" };
+            return query(null, LocalSchema.Cols.TITLE + " LIKE ? ", selectionArgs, sortOrder);
         }
     }
 
     @Override
-    public ArrayList<ClientGift> queryByUser(long userID,
+    public ArrayList<ClientGift> queryByUser(String title,
+            long userID,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException {
-        String[] selectionArgs = { String.valueOf(userID) };
         String sortOrder = sortOrder(resultOrder, resultOrderDirection);
-        return query(null, LocalSchema.Cols.USER_ID + "= ?", selectionArgs, sortOrder);
+        if (title == null || title.isEmpty()) {
+            String[] selectionArgs = { String.valueOf(userID) };
+            return query(null, LocalSchema.Cols.USER_ID + "= ?", selectionArgs, sortOrder);
+        } else {
+            String[] selectionArgs = { String.valueOf(userID), title };
+            return query(null, LocalSchema.Cols.USER_ID + "= ? AND " + LocalSchema.Cols.TITLE
+                    + " LIKE ? ", selectionArgs, sortOrder);
+        }
     }
 
     @Override
-    public ArrayList<ClientGift> queryByTopGiftGivers(ResultOrderDirection resultOrderDirection)
-            throws RemoteException {
-        String order = resultOrderDirection == ResultOrderDirection.ASCENDING ? "ASC" : "DESC";
-        String sortOrder  = LocalSchema.Cols.USER_LIKES + " " + order;
-        return query(null, null, null, sortOrder);
+    public ArrayList<ClientGift> queryByTopGiftGivers(String title,
+            ResultOrderDirection resultOrderDirection) throws RemoteException {
+        // TODO userLikes is not an index - very inefficient!
+        String sortOrder = LocalSchema.Cols.USER_LIKES + " " + direction(resultOrderDirection);
+        if (title == null || title.isEmpty())
+            return query(null, null, null, sortOrder);
+        else {
+            String[] selectionArgs = new String[] { "%" + title + "%" };
+            return query(null, LocalSchema.Cols.TITLE + " LIKE ? ", selectionArgs, sortOrder);
+        }
     }
 
     @Override
-    public ArrayList<ClientGift> queryByGiftChain(String giftChainName,
+    public ArrayList<ClientGift> queryByGiftChain(String title,
+            String giftChainName,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException {
-        String[] selectionArgs = { String.valueOf(giftChainName) };
+        // TODO giftChainName is not an index - very inefficient!
         String sortOrder = sortOrder(resultOrder, resultOrderDirection);
-        return query(null, LocalSchema.Cols.GIFT_CHAIN_NAME + "= ?", selectionArgs, sortOrder);
+        if (title == null || title.isEmpty()) {
+            String[] selectionArgs = { giftChainName };
+            return query(null, LocalSchema.Cols.GIFT_CHAIN_NAME + "= ?", selectionArgs, sortOrder);
+        } else {
+            String[] selectionArgs = { giftChainName, title };
+            return query(null, LocalSchema.Cols.GIFT_CHAIN_NAME + "= ? AND "
+                    + LocalSchema.Cols.TITLE + " LIKE ? ", selectionArgs, sortOrder);
+        }
     }
 
 }
@@ -99,12 +120,9 @@ class ClientGiftCreator extends BaseCreator<ClientGift> implements Creator<Clien
     public ClientGift getFromCursor(Cursor cursor) {
         long rowID = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.ID));
         String title = cursor.getString(cursor.getColumnIndex(LocalSchema.Cols.TITLE));
-        String description = cursor.getString(cursor
-                .getColumnIndex(LocalSchema.Cols.DESCRIPTION));
-        String videoUri = cursor.getString(cursor
-                .getColumnIndex(LocalSchema.Cols.VIDEO_URI));
-        String imageUri = cursor.getString(cursor
-                .getColumnIndex(LocalSchema.Cols.IMAGE_URI));
+        String description = cursor.getString(cursor.getColumnIndex(LocalSchema.Cols.DESCRIPTION));
+        String videoUri = cursor.getString(cursor.getColumnIndex(LocalSchema.Cols.VIDEO_URI));
+        String imageUri = cursor.getString(cursor.getColumnIndex(LocalSchema.Cols.IMAGE_URI));
         long created = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.CREATED));
         long userID = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.USER_ID));
         boolean like = cursor.getInt(cursor.getColumnIndex(LocalSchema.Cols.LIKE)) > 0;
@@ -114,8 +132,7 @@ class ClientGiftCreator extends BaseCreator<ClientGift> implements Creator<Clien
         String giftChainName = cursor.getString(cursor
                 .getColumnIndex(LocalSchema.Cols.GIFT_CHAIN_NAME));
         long userLikes = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.USER_LIKES));
-        String username = cursor.getString(cursor
-                .getColumnIndex(LocalSchema.Cols.USER_NAME));
+        String username = cursor.getString(cursor.getColumnIndex(LocalSchema.Cols.USER_NAME));
 
         return new ClientGift(rowID, title, description, videoUri, imageUri, created, userID, like,
                 flag, likes, flagged, giftChainName, userLikes, username);

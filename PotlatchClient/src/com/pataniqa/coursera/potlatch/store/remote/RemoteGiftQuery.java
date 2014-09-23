@@ -7,49 +7,33 @@ import android.os.RemoteException;
 import com.pataniqa.coursera.potlatch.model.ClientGift;
 import com.pataniqa.coursera.potlatch.store.GiftQuery;
 
-class RemoteGiftQuery implements GiftQuery {
+interface RemoteGiftQuery extends GiftQuery {
 
     @Override
-    public ClientGift get(long rowID) throws RemoteException {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    ClientGift get(long rowID) throws RemoteException;
 
     @Override
-    public ArrayList<ClientGift> query() throws RemoteException {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    ArrayList<ClientGift> query() throws RemoteException;
 
     @Override
-    public ArrayList<ClientGift> queryByTitle(String title,
+    ArrayList<ClientGift> queryByTitle(String title,
             ResultOrder resultOrder,
-            ResultOrderDirection resultOrderDirection) throws RemoteException {
-        // TODO Auto-generated method stub
-        return null;
-    }
+            ResultOrderDirection resultOrderDirection) throws RemoteException;
 
     @Override
-    public ArrayList<ClientGift> queryByUser(long userID,
+    ArrayList<ClientGift> queryByUser(String title,
+            long userID,
             ResultOrder resultOrder,
-            ResultOrderDirection resultOrderDirection) throws RemoteException {
-        // TODO Auto-generated method stub
-        return null;
-    }
+            ResultOrderDirection resultOrderDirection) throws RemoteException;
 
     @Override
-    public ArrayList<ClientGift> queryByTopGiftGivers(ResultOrderDirection resultOrderDirection)
-            throws RemoteException {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    ArrayList<ClientGift> queryByTopGiftGivers(String title,
+            ResultOrderDirection resultOrderDirection) throws RemoteException;
 
     @Override
-    public ArrayList<ClientGift> queryByGiftChain(String giftChainName,
+    ArrayList<ClientGift> queryByGiftChain(String title,
+            String giftChainName,
             ResultOrder resultOrder,
-            ResultOrderDirection resultOrderDirection) throws RemoteException {
-        // TODO Auto-generated method stub
-        return null;
-    }
+            ResultOrderDirection resultOrderDirection) throws RemoteException;
 
 }

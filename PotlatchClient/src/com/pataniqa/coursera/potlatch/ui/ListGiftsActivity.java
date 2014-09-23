@@ -247,11 +247,11 @@ public class ListGiftsActivity extends GiftActivity implements
 
             ArrayList<ClientGift> results = null;
             if (queryType == QueryType.USER)
-                results = service.gifts().queryByUser(userID, resultOrder, resultDirection);
+                results = service.gifts().queryByUser(titleQuery, userID, resultOrder, resultDirection);
             else if (queryType == QueryType.TOP_GIFT_GIVERS)
-                results = service.gifts().queryByTopGiftGivers(resultDirection);
+                results = service.gifts().queryByTopGiftGivers(titleQuery, resultDirection);
             else if (queryType == QueryType.CHAIN)
-                results = service.gifts().queryByGiftChain(giftChainName, resultOrder, resultDirection);
+                results = service.gifts().queryByGiftChain(titleQuery, giftChainName, resultOrder, resultDirection);
             else
                 results = service.gifts().queryByTitle(titleQuery, resultOrder, resultDirection);
 

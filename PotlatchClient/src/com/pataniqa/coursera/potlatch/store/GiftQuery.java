@@ -37,13 +37,15 @@ public interface GiftQuery extends Query<ClientGift>, Retrieve<ClientGift> {
     /**
      * Query gift data by user - corresponds to QueryType.USER
      * 
+     * @param title
      * @param userID
      * @param resultOrder
      * @param resultOrderDirection
      * @return
      * @throws RemoteException
      */
-    ArrayList<ClientGift> queryByUser(long userID,
+    ArrayList<ClientGift> queryByUser(String title, 
+            long userID,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException;
 
@@ -51,23 +53,26 @@ public interface GiftQuery extends Query<ClientGift>, Retrieve<ClientGift> {
      * Query gift data by top gift givers - corresponds to
      * QueryType.TOP_GIFT_GIVERS
      * 
+     * @param title
      * @param resultOrderDirection
      * @return
      * @throws RemoteException
      */
-    ArrayList<ClientGift> queryByTopGiftGivers(ResultOrderDirection resultOrderDirection)
+    ArrayList<ClientGift> queryByTopGiftGivers(String title,
+            ResultOrderDirection resultOrderDirection)
             throws RemoteException;
 
     /**
      * Query gift data by gift chain.
      * 
+     * @param title
      * @param giftChainName
      * @param resultOrder
      * @param resultOrderDirection
      * @return
      * @throws RemoteException
      */
-    ArrayList<ClientGift> queryByGiftChain(String giftChainName,
+    ArrayList<ClientGift> queryByGiftChain(String title, String giftChainName,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException;
 }
