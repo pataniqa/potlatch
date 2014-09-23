@@ -37,7 +37,7 @@ class GiftCreator extends BaseCreator<Gift> implements Creator<Gift> {
         rValue.put(LocalSchema.Cols.IMAGE_URI, data.imageUri);
         rValue.put(LocalSchema.Cols.CREATED, data.created);
         rValue.put(LocalSchema.Cols.USER_ID, data.userID);
-        rValue.put(LocalSchema.Cols.GIFT_CHAIN_ID, data.giftChainID);
+        rValue.put(LocalSchema.Cols.GIFT_CHAIN_NAME, data.giftChainName);
         return rValue;
     }
 
@@ -51,9 +51,9 @@ class GiftCreator extends BaseCreator<Gift> implements Creator<Gift> {
         String imageUri = cursor.getString(cursor.getColumnIndex(LocalSchema.Cols.IMAGE_URI));
         long created = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.CREATED));
         long userID = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.USER_ID));
-        long giftChainID = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.GIFT_CHAIN_ID));
+        String giftChainName = cursor.getString(cursor.getColumnIndex(LocalSchema.Cols.GIFT_CHAIN_NAME));
 
         return new Gift(rowID, title, description, videoUri, imageUri, created, userID,
-                giftChainID);
+                giftChainName);
     }
 }

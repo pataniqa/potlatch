@@ -10,7 +10,7 @@ public class Gift implements HasID {
     public String imageUri;
     public long created; // TODO use better time representation
     public long userID;
-    public long giftChainID;
+    public String giftChainName;
 
     /**
      * Constructor.
@@ -22,7 +22,7 @@ public class Gift implements HasID {
      * @param imageUri
      * @param created
      * @param userID
-     * @param giftChainID
+     * @param giftChainName
      */
     public Gift(long keyID,
             String title,
@@ -31,7 +31,7 @@ public class Gift implements HasID {
             String imageUri,
             long created,
             long userID,
-            long giftChainID) {
+            String giftChainName) {
         this.keyID = keyID;
         this.title = title;
         this.description = description;
@@ -39,14 +39,14 @@ public class Gift implements HasID {
         this.imageUri = imageUri;
         this.created = created;
         this.userID = userID;
-        this.giftChainID = giftChainID;
+        this.giftChainName = giftChainName;
     }
 
     @Override
     public String toString() {
         return "Gift [keyID=" + keyID + ", title=" + title + ", description=" + description
                 + ", videoUri=" + videoUri + ", imageUri=" + imageUri + ", created=" + created
-                + ", userID=" + userID + ", giftChainID=" + giftChainID + "]";
+                + ", userID=" + userID + ", giftChainName=" + giftChainName + "]";
     }
 
     @Override

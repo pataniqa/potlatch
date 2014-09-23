@@ -172,7 +172,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
             giftChainButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    giftChainCallback.showGiftChain(gift.giftChainID);
+                    giftChainCallback.showGiftChain(gift.giftChainName);
                 }
             });
         }

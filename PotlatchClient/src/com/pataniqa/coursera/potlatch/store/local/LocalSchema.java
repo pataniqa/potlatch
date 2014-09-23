@@ -30,7 +30,6 @@ class LocalSchema {
                 put(Cols.FLAG, INTEGER);
                 put(Cols.LIKES, INTEGER);
                 put(Cols.FLAGGED, INTEGER);
-                put(Cols.GIFT_CHAIN_ID, INTEGER);
                 put(Cols.GIFT_CHAIN_NAME, TEXT);
                 put(Cols.USER_LIKES, INTEGER);
                 put(Cols.USER_NAME, TEXT);
@@ -76,7 +75,6 @@ class LocalSchema {
          static final String FLAG = "UFLAG";
          static final String LIKES = "LIKES";
          static final String FLAGGED = "FLAGGED";
-         static final String GIFT_CHAIN_ID = "GIFT_CHAIN_ID";
          static final String GIFT_CHAIN_NAME = "GIFT_CHAIN_NAME";
          static final String USER_LIKES = "USER_LIKES";
          static final String GIFT_ID = "GIFT_ID";

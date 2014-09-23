@@ -45,7 +45,7 @@ class RemoteGiftQuery implements GiftQuery {
     }
 
     @Override
-    public ArrayList<ClientGift> queryByGiftChain(long giftChainID,
+    public ArrayList<ClientGift> queryByGiftChain(String giftChainName,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException {
         // TODO Auto-generated method stub

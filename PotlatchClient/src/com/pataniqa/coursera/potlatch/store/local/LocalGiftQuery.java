@@ -59,12 +59,12 @@ public class LocalGiftQuery extends BaseQuery<ClientGift> implements GiftQuery {
     }
 
     @Override
-    public ArrayList<ClientGift> queryByGiftChain(long giftChainID,
+    public ArrayList<ClientGift> queryByGiftChain(String giftChainName,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException {
-        String[] selectionArgs = { String.valueOf(giftChainID) };
+        String[] selectionArgs = { String.valueOf(giftChainName) };
         String sortOrder = sortOrder(resultOrder, resultOrderDirection);
-        return query(null, LocalSchema.Cols.GIFT_CHAIN_ID + "= ?", selectionArgs, sortOrder);
+        return query(null, LocalSchema.Cols.GIFT_CHAIN_NAME + "= ?", selectionArgs, sortOrder);
     }
 
 }
@@ -89,7 +89,6 @@ class ClientGiftCreator extends BaseCreator<ClientGift> implements Creator<Clien
         rValue.put(LocalSchema.Cols.FLAG, data.flag);
         rValue.put(LocalSchema.Cols.LIKES, data.likes);
         rValue.put(LocalSchema.Cols.FLAGGED, data.flagged);
-        rValue.put(LocalSchema.Cols.GIFT_CHAIN_ID, data.giftChainID);
         rValue.put(LocalSchema.Cols.GIFT_CHAIN_NAME, data.giftChainName);
         rValue.put(LocalSchema.Cols.USER_LIKES, data.userLikes);
         rValue.put(LocalSchema.Cols.USER_NAME, data.username);
@@ -112,8 +111,6 @@ class ClientGiftCreator extends BaseCreator<ClientGift> implements Creator<Clien
         boolean flag = cursor.getInt(cursor.getColumnIndex(LocalSchema.Cols.FLAG)) > 0;
         long likes = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.LIKES));
         boolean flagged = cursor.getInt(cursor.getColumnIndex(LocalSchema.Cols.FLAGGED)) > 0;
-        long giftChainID = cursor.getLong(cursor
-                .getColumnIndex(LocalSchema.Cols.GIFT_CHAIN_ID));
         String giftChainName = cursor.getString(cursor
                 .getColumnIndex(LocalSchema.Cols.GIFT_CHAIN_NAME));
         long userLikes = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.USER_LIKES));
@@ -121,6 +118,6 @@ class ClientGiftCreator extends BaseCreator<ClientGift> implements Creator<Clien
                 .getColumnIndex(LocalSchema.Cols.USER_NAME));
 
         return new ClientGift(rowID, title, description, videoUri, imageUri, created, userID, like,
-                flag, likes, flagged, giftChainID, giftChainName, userLikes, username);
+                flag, likes, flagged, giftChainName, userLikes, username);
     }
 }

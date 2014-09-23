@@ -45,7 +45,7 @@ public class ListGiftsActivity extends GiftActivity implements
     private QueryType queryType = getQueryType();
     private ResultOrder resultOrder = getResultOrder();
     private ResultOrderDirection resultDirection = getResultOrderDirection();
-    private long giftChainID = getGiftChainID();
+    private String giftChainName = getGiftChainName();
     private long userID = 0; // FIXME
 
     private SharedPreferences prefs;
@@ -250,7 +250,7 @@ public class ListGiftsActivity extends GiftActivity implements
             else if (queryType == QueryType.TOP_GIFT_GIVERS)
                 results = service.gifts().queryByTopGiftGivers(resultDirection);
             else if (queryType == QueryType.CHAIN)
-                results = service.gifts().queryByGiftChain(giftChainID, resultOrder, resultDirection);
+                results = service.gifts().queryByGiftChain(giftChainName, resultOrder, resultDirection);
             else
                 results = service.gifts().queryByTitle(titleQuery, resultOrder, resultDirection);
 
@@ -275,9 +275,9 @@ public class ListGiftsActivity extends GiftActivity implements
     }
 
     @Override
-    public void showGiftChain(long giftChainID) {
+    public void showGiftChain(String giftChainID) {
         queryType = QueryType.CHAIN;
-        this.giftChainID = giftChainID;
+        this.giftChainName = giftChainName;
         updateGifts();
     }
 
@@ -317,8 +317,8 @@ public class ListGiftsActivity extends GiftActivity implements
         return queryType != null ? queryType : QueryType.ALL;
     }
 
-    long getGiftChainID() {
-        return getIntent() != null ? getIntent().getLongExtra(GIFT_CHAIN_ID_TAG, 0) : 0;
+    String getGiftChainName() {
+        return getIntent() != null ? getIntent().getStringExtra(GIFT_CHAIN_NAME_TAG) : "";
     }
 
     @Override

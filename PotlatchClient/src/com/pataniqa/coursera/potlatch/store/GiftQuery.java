@@ -61,13 +61,13 @@ public interface GiftQuery extends Query<ClientGift>, Retrieve<ClientGift> {
     /**
      * Query gift data by gift chain.
      * 
-     * @param giftChainID
+     * @param giftChainName
      * @param resultOrder
      * @param resultOrderDirection
      * @return
      * @throws RemoteException
      */
-    ArrayList<ClientGift> queryByGiftChain(long giftChainID,
+    ArrayList<ClientGift> queryByGiftChain(String giftChainName,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException;
 }

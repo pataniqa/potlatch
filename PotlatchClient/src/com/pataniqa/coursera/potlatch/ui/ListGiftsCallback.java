@@ -4,7 +4,7 @@ import com.pataniqa.coursera.potlatch.model.ClientGift;
 
 public interface ListGiftsCallback {
     
-    void showGiftChain(long giftChainID);
+    void showGiftChain(String giftChainName);
     
     void updateGift(ClientGift gift);
 }
