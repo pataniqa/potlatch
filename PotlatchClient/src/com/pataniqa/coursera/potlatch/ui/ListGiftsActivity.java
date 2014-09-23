@@ -246,13 +246,13 @@ public class ListGiftsActivity extends GiftActivity implements
 
             ArrayList<ClientGift> results = null;
             if (queryType == QueryType.USER)
-                results = giftQuery.queryByUser(userID, resultOrder, resultDirection);
+                results = service.gifts().queryByUser(userID, resultOrder, resultDirection);
             else if (queryType == QueryType.TOP_GIFT_GIVERS)
-                results = giftQuery.queryByTopGiftGivers(resultDirection);
+                results = service.gifts().queryByTopGiftGivers(resultDirection);
             else if (queryType == QueryType.CHAIN)
-                results = giftQuery.queryByGiftChain(giftChainID, resultOrder, resultDirection);
+                results = service.gifts().queryByGiftChain(giftChainID, resultOrder, resultDirection);
             else
-                results = giftQuery.queryByTitle(titleQuery, resultOrder, resultDirection);
+                results = service.gifts().queryByTitle(titleQuery, resultOrder, resultDirection);
 
             if (results != null) {
                 if (prefs.getBoolean("pref_hide_flagged_content", false)) {
@@ -325,7 +325,7 @@ public class ListGiftsActivity extends GiftActivity implements
     public void updateGift(ClientGift gift) {
         try {
             GiftMetadata giftMetadata = new GiftMetadata(gift.keyID, userID, gift.like, gift.flag);
-            giftMetadataStore.update(giftMetadata);
+            service.giftMetadata().update(giftMetadata);
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }

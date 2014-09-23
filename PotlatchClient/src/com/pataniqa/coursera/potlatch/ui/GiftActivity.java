@@ -13,20 +13,12 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.widget.EditText;
 
-import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
-import com.pataniqa.coursera.potlatch.model.GiftMetadata;
-import com.pataniqa.coursera.potlatch.store.GiftQuery;
 import com.pataniqa.coursera.potlatch.store.GiftQuery.QueryType;
 import com.pataniqa.coursera.potlatch.store.GiftQuery.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.GiftQuery.ResultOrderDirection;
-import com.pataniqa.coursera.potlatch.store.Store;
-import com.pataniqa.coursera.potlatch.store.Update;
-import com.pataniqa.coursera.potlatch.store.local.LocalDatabase;
-import com.pataniqa.coursera.potlatch.store.local.LocalGiftChainStore;
-import com.pataniqa.coursera.potlatch.store.local.LocalGiftMetadataStore;
-import com.pataniqa.coursera.potlatch.store.local.LocalGiftQuery;
-import com.pataniqa.coursera.potlatch.store.local.LocalGiftStore;
+import com.pataniqa.coursera.potlatch.store.Service;
+import com.pataniqa.coursera.potlatch.store.local.LocalService;
 
 /**
  * Base class for all GiftData UI activities.
@@ -50,35 +42,20 @@ abstract class GiftActivity extends Activity {
 
     private static final String LOG_TAG = GiftActivity.class.getCanonicalName();
 
-    Store<Gift> giftStore;
-    GiftQuery giftQuery;
-    Store<GiftChain> giftChainStore;
-    Update<GiftMetadata> giftMetadataStore;
+    Service service;
     Map<String, Long> giftChains = new HashMap<String, Long>();
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOG_TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        createStores(true);
+        service = new LocalService(this);
         updateGiftChains();
-    }
-    
-    void createStores(boolean local) {
-        if (local) {
-            LocalDatabase helper = new LocalDatabase(this);
-            giftStore = new LocalGiftStore(helper);
-            giftQuery = new LocalGiftQuery(helper);
-            giftChainStore = new LocalGiftChainStore(helper);
-            giftMetadataStore = new LocalGiftMetadataStore(helper);
-        } else {
-            
-        }
     }
     
     void updateGiftChains() {
         try {
-            List<GiftChain> results = giftChainStore.query();
+            List<GiftChain> results = service.giftChains().query();
             for (GiftChain result : results)
                 giftChains.put(result.giftChainName, result.keyID);
         } catch (RemoteException e) {

@@ -38,7 +38,7 @@ public class EditGiftActivity extends ViewGiftActivity {
     boolean setValuesToDefault() {
         Log.d(LOG_TAG, "setValuesToDefault");
         try {
-            ClientGift gift = giftQuery.get(getRowIdentifier());
+            ClientGift gift = service.gifts().get(getRowIdentifier());
             Log.d(LOG_TAG, "setValuesToDefualt :" + gift);
             if (gift != null) {
                 // set the EditTexts to the current values
@@ -82,7 +82,7 @@ public class EditGiftActivity extends ViewGiftActivity {
         try {
             Gift gift = makeGiftDataFromUI(getRowIdentifier());
             Log.d(LOG_TAG, "newGiftData:" + gift);
-            giftStore.update(gift);
+            service.userGifts().update(gift);
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }
@@ -94,7 +94,7 @@ public class EditGiftActivity extends ViewGiftActivity {
         try {
             long identifier = getRowIdentifier();
             Log.d(LOG_TAG, "Deleting gift with " + identifier);
-            giftStore.delete(identifier);
+            service.userGifts().delete(identifier);
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }

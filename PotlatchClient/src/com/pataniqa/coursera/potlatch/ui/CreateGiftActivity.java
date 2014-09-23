@@ -36,7 +36,7 @@ public class CreateGiftActivity extends ViewGiftActivity {
         try {
             Gift gift = makeGiftDataFromUI(-1);
             Log.d(LOG_TAG, "newGiftData:" + gift);
-            giftStore.insert(gift);
+            service.userGifts().insert(gift);
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }
