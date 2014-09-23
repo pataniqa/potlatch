@@ -2,7 +2,6 @@ package com.pataniqa.coursera.potlatch.store.local;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.text.format.Time;
 
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.store.Store;
@@ -36,7 +35,7 @@ class GiftCreator extends BaseCreator<Gift> implements Creator<Gift> {
         rValue.put(LocalSchema.Cols.DESCRIPTION, data.description);
         rValue.put(LocalSchema.Cols.VIDEO_URI, data.videoUri);
         rValue.put(LocalSchema.Cols.IMAGE_URI, data.imageUri);
-        rValue.put(LocalSchema.Cols.CREATED, data.created.format2445());
+        rValue.put(LocalSchema.Cols.CREATED, data.created);
         rValue.put(LocalSchema.Cols.USER_ID, data.userID);
         rValue.put(LocalSchema.Cols.GIFT_CHAIN_ID, data.giftChainID);
         return rValue;
@@ -50,8 +49,7 @@ class GiftCreator extends BaseCreator<Gift> implements Creator<Gift> {
                 .getColumnIndex(LocalSchema.Cols.DESCRIPTION));
         String videoUri = cursor.getString(cursor.getColumnIndex(LocalSchema.Cols.VIDEO_URI));
         String imageUri = cursor.getString(cursor.getColumnIndex(LocalSchema.Cols.IMAGE_URI));
-        Time created = new Time();
-        created.parse(cursor.getString(cursor.getColumnIndex(LocalSchema.Cols.CREATED)));
+        long created = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.CREATED));
         long userID = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.USER_ID));
         long giftChainID = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.GIFT_CHAIN_ID));
 

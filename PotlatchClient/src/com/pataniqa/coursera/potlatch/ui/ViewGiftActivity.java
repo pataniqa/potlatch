@@ -205,7 +205,7 @@ abstract class ViewGiftActivity extends GiftActivity {
             giftChainID = service.giftChains().insert(giftChain);
             giftChains.put(giftChainName, giftChainID);
         }
-        return new Gift(key, title, description, videoUri, imageData, created, userID,
+        return new Gift(key, title, description, videoUri, imageData, created.toMillis(false), userID,
                 giftChainID);
     }
 

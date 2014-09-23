@@ -1,6 +1,5 @@
 package com.pataniqa.coursera.potlatch.model;
 
-import android.text.format.Time;
 
 public class Gift implements HasID {
 
@@ -9,7 +8,7 @@ public class Gift implements HasID {
     public String description;
     public String videoUri;
     public String imageUri;
-    public Time created = new Time();
+    public long created; // TODO use better time representation
     public long userID;
     public long giftChainID;
 
@@ -30,7 +29,7 @@ public class Gift implements HasID {
             String description,
             String videoUri,
             String imageUri,
-            Time created,
+            long created,
             long userID,
             long giftChainID) {
         this.keyID = keyID;

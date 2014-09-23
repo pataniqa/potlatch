@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.RemoteException;
-import android.text.format.Time;
 
 import com.pataniqa.coursera.potlatch.model.ClientGift;
 import com.pataniqa.coursera.potlatch.store.GiftQuery;
@@ -84,7 +83,7 @@ class ClientGiftCreator extends BaseCreator<ClientGift> implements Creator<Clien
         rValue.put(LocalSchema.Cols.DESCRIPTION, data.description);
         rValue.put(LocalSchema.Cols.VIDEO_URI, data.videoUri);
         rValue.put(LocalSchema.Cols.IMAGE_URI, data.imageUri);
-        rValue.put(LocalSchema.Cols.CREATED, data.created.format2445());
+        rValue.put(LocalSchema.Cols.CREATED, data.created);
         rValue.put(LocalSchema.Cols.USER_ID, data.userID);
         rValue.put(LocalSchema.Cols.LIKE, data.like);
         rValue.put(LocalSchema.Cols.FLAG, data.flag);
@@ -107,8 +106,7 @@ class ClientGiftCreator extends BaseCreator<ClientGift> implements Creator<Clien
                 .getColumnIndex(LocalSchema.Cols.VIDEO_URI));
         String imageUri = cursor.getString(cursor
                 .getColumnIndex(LocalSchema.Cols.IMAGE_URI));
-        Time created = new Time();
-        created.parse(cursor.getString(cursor.getColumnIndex(LocalSchema.Cols.CREATED)));
+        long created = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.CREATED));
         long userID = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.USER_ID));
         boolean like = cursor.getInt(cursor.getColumnIndex(LocalSchema.Cols.LIKE)) > 0;
         boolean flag = cursor.getInt(cursor.getColumnIndex(LocalSchema.Cols.FLAG)) > 0;
