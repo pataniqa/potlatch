@@ -206,7 +206,7 @@ abstract class ViewGiftActivity extends GiftActivity {
             giftChains.put(giftChainName, giftChainID);
         }
         return new Gift(key, title, description, videoUri, imageData, created, userID,
-                giftChainID, giftChainName);
+                giftChainID);
     }
 
     void initializeSpinner() {

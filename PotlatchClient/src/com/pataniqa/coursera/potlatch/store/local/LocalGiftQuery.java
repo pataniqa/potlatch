@@ -93,6 +93,7 @@ class ClientGiftCreator extends BaseCreator<ClientGift> implements Creator<Clien
         rValue.put(LocalSchema.Cols.GIFT_CHAIN_ID, data.giftChainID);
         rValue.put(LocalSchema.Cols.GIFT_CHAIN_NAME, data.giftChainName);
         rValue.put(LocalSchema.Cols.USER_LIKES, data.userLikes);
+        rValue.put(LocalSchema.Cols.USER_NAME, data.username);
         return rValue;
     }
 
@@ -118,8 +119,10 @@ class ClientGiftCreator extends BaseCreator<ClientGift> implements Creator<Clien
         String giftChainName = cursor.getString(cursor
                 .getColumnIndex(LocalSchema.Cols.GIFT_CHAIN_NAME));
         long userLikes = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.USER_LIKES));
+        String username = cursor.getString(cursor
+                .getColumnIndex(LocalSchema.Cols.USER_NAME));
 
         return new ClientGift(rowID, title, description, videoUri, imageUri, created, userID, like,
-                flag, likes, flagged, giftChainID, giftChainName, userLikes);
+                flag, likes, flagged, giftChainID, giftChainName, userLikes, username);
     }
 }

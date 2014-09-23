@@ -4,6 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.format.Time;
 
+/**
+ * ClientGift is a de-normalized version of the data to make it easy to present in the user interface.
+ */
 public class ClientGift extends Gift implements Parcelable, HasID {
 
     public boolean like;
@@ -11,6 +14,8 @@ public class ClientGift extends Gift implements Parcelable, HasID {
     public long likes;
     public boolean flagged;
     public long userLikes;
+    public String giftChainName;
+    public String username;
 
     /**
      * Constructor
@@ -28,7 +33,8 @@ public class ClientGift extends Gift implements Parcelable, HasID {
      * @param flagged
      * @param giftChainID
      * @param giftChainName
-     * @param userLikes;
+     * @param userLikes
+     * @param username
      */
     public ClientGift(long keyID,
             String title,
@@ -43,20 +49,23 @@ public class ClientGift extends Gift implements Parcelable, HasID {
             boolean flagged,
             long giftChainID,
             String giftChainName,
-            long userLikes) {
-        super(keyID, title, description, videoUri, imageUri, created, userID, giftChainID, giftChainName);
+            long userLikes,
+            String username) {
+        super(keyID, title, description, videoUri, imageUri, created, userID, giftChainID);
+        this.giftChainName = giftChainName;
         this.like = like;
         this.flag = flag;
         this.likes = likes;
         this.flagged = flagged;
         this.userLikes = userLikes;
+        this.username = username;
     }
     
     @Override
     public String toString() {
-        return "ClientGift [keyID=" + keyID + ", like=" + like + ", flag=" + flag + ", likes="
-                + likes + ", flagged=" + flagged + ", giftChainID=" + giftChainID
-                + ", giftChainName=" + giftChainName + ", userLikes=" + userLikes + "]";
+        return "ClientGift [like=" + like + ", flag=" + flag + ", likes=" + likes + ", flagged="
+                + flagged + ", userLikes=" + userLikes + ", giftChainName=" + giftChainName
+                + ", username=" + username + "]";
     }
 
     /**
@@ -64,7 +73,7 @@ public class ClientGift extends Gift implements Parcelable, HasID {
      */
     public ClientGift clone() {
         return new ClientGift(-1, title, description, videoUri, imageUri, created, userID, like,
-                flag, likes, flagged, giftChainID, giftChainName, userLikes);
+                flag, likes, flagged, giftChainID, giftChainName, userLikes, username);
     }
 
     // Parcelable interface
@@ -96,6 +105,7 @@ public class ClientGift extends Gift implements Parcelable, HasID {
         dest.writeLong(likes);
         dest.writeByte((byte) (flagged ? 1 : 0));
         dest.writeLong(userLikes);
+        dest.writeString(username);
     }
 
     /**
@@ -116,12 +126,14 @@ public class ClientGift extends Gift implements Parcelable, HasID {
      */
     private ClientGift(Parcel in) {
         super(in.readLong(), in.readString(), in.readString(), in.readString(), in.readString(), readTime(in
-                .readString()), in.readLong(), in.readLong(), in.readString());
+                .readString()), in.readLong(), in.readLong());
+        giftChainName = in.readString();
         like = in.readByte() != 0;
         flag = in.readByte() != 0;
         likes = in.readLong();
         flagged = in.readByte() != 0;
         userLikes = in.readLong();
+        username = in.readString();
     }
 
     static Time readTime(String s) {
