@@ -140,6 +140,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
                         gift.likes -= 1;
                     likeButton.setImageResource(gift.like ? R.drawable.ic_fa_heart
                             : R.drawable.ic_fa_heart_o);
+                    likes.setText("" + gift.likes);
                 }
             });
 

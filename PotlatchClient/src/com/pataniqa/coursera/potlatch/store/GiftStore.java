@@ -60,7 +60,7 @@ public interface GiftStore extends Store<ClientGift> {
             ResultOrderDirection resultOrderDirection) throws RemoteException;
 
     /**
-     * Queyr gift data by gift chain.
+     * Query gift data by gift chain.
      * 
      * @param giftChainID
      * @param resultOrder

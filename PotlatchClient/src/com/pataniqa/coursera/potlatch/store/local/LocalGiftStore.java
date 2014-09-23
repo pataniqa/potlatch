@@ -39,14 +39,20 @@ public class LocalGiftStore extends BaseStore<ClientGift> implements GiftStore {
         if (helper != null)
             helper.close();
     }
+    
+    String sortOrder(ResultOrder resultOrder,
+            ResultOrderDirection resultOrderDirection) {
+        String sortCol = resultOrder == ResultOrder.LIKES ? PotlatchSchema.Gift.Cols.LIKES
+                : PotlatchSchema.Gift.Cols.CREATED;
+        String order = resultOrderDirection == ResultOrderDirection.ASCENDING ? "ASC" : "DESC";
+        return sortCol + " " + order;
+    }
 
     @Override
     public ArrayList<ClientGift> queryByTitle(String title,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException {
-        
-        // TODO need to use resultOrder / resultOrderDirection
-        
+
         if (title == null || title.isEmpty())
             return query(null, null, null, null);
         else {
@@ -54,7 +60,7 @@ public class LocalGiftStore extends BaseStore<ClientGift> implements GiftStore {
             return query(null,
                     PotlatchSchema.Gift.Cols.TITLE + " LIKE ? ",
                     new String[] { filterWord },
-                    null);
+                    sortOrder(resultOrder, resultOrderDirection));
         }
     }
 

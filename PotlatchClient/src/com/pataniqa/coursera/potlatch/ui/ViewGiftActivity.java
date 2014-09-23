@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,6 +29,9 @@ import butterknife.InjectView;
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.ClientGift;
 import com.pataniqa.coursera.potlatch.store.LocalStorageUtilities;
+import com.pataniqa.coursera.potlatch.store.GiftStore.QueryType;
+import com.pataniqa.coursera.potlatch.store.GiftStore.ResultOrder;
+import com.pataniqa.coursera.potlatch.store.GiftStore.ResultOrderDirection;
 
 /**
  * Abstract class that forms the basis of the CreateGiftActivity and
@@ -56,15 +60,33 @@ abstract class ViewGiftActivity extends GiftActivity {
     @InjectView(R.id.gift_create_gift_chain)
     AutoCompleteTextView giftChain;
 
+    Uri imagePathFinal = null;
+    Uri videoPathFinal = null;
+    
     // Making this static keeps it from getting GC'd when we take pictures
     private static Uri imagePath = null;
     private static Uri videoPath = null;
-    Uri imagePathFinal = null;
-    Uri videoPathFinal = null;
+    private SharedPreferences prefs;
+    private long userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadPreferences();
+    }
+    
+    @Override
+    protected void onPause() {
+        Log.d(LOG_TAG, "onPause");
+        super.onPause();
+        savePreferences();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(LOG_TAG, "onStop");
+        super.onStop();
+        savePreferences();
     }
 
     public void selectPhotoButtonClicked(View view) {
@@ -167,6 +189,20 @@ abstract class ViewGiftActivity extends GiftActivity {
             break;
         }
     }
+    
+    void loadPreferences() {
+        Log.d(LOG_TAG, "loadPreferences");
+        prefs = this.getPreferences(MODE_PRIVATE);
+        if (prefs.contains(USER_ID_TAG))
+            userID = prefs.getLong(USER_ID_TAG, 0);
+    }
+
+    void savePreferences() {
+        Log.d(LOG_TAG, "savePreferences");
+        SharedPreferences.Editor ed = prefs.edit();
+        ed.putLong(USER_ID_TAG, 0);
+        ed.commit();
+    }
 
     ClientGift makeGiftDataFromUI(long key) {
         String title = editTextToString(titleInput);
@@ -176,14 +212,11 @@ abstract class ViewGiftActivity extends GiftActivity {
         String giftChainName = editTextToString(giftChain);
         Time created = new Time();
         created.setToNow();
-
-        // TODO need to handle userID properly
-
-        long userID = 0;
         return new ClientGift(key, title, description, videoUri, imageData, created, userID, giftChainName);
     }
 
     void initializeSpinner() {
+        // TODO need to get the list of gift chains from the database
         String[] s = { "Cars", "Tractors" };
         ArrayList<String> spinnerArray = new ArrayList<String>(Arrays.asList(s));
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,
