@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
 
-import com.pataniqa.coursera.potlatch.store.GiftQuery.QueryType;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 import com.pataniqa.coursera.potlatch.store.Service;
@@ -22,6 +21,10 @@ import com.pataniqa.coursera.potlatch.store.local.LocalService;
  */
 @SuppressLint("Registered")
 abstract class GiftActivity extends Activity {
+    
+    enum QueryType {
+        USER, TOP_GIFT_GIVERS, ALL, CHAIN
+    };
 
     public final static String ROW_IDENTIFIER_TAG = "row_index";
     public final static String TITLE_QUERY_TAG = "title_query";

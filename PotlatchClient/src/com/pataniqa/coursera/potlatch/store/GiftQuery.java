@@ -8,10 +8,6 @@ import com.pataniqa.coursera.potlatch.model.ClientGift;
 
 public interface GiftQuery extends Query<ClientGift>, Retrieve<ClientGift, Long> {
 
-    enum QueryType {
-        USER, TOP_GIFT_GIVERS, ALL, CHAIN
-    };
-
     /**
      * Query gift data by title - corresponds to QueryType.ALL
      * 
