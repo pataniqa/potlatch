@@ -330,36 +330,18 @@ public class ListGiftsActivity extends GiftActivity implements
     }
 
     @Override
-    public void like(ClientGift gift) {
+    public void setLike(ClientGift gift) {
         try {
-            service.giftMetadata().like(gift.getID(), userID);
+            service.giftMetadata().setLike(gift.getID(), userID, gift.like);
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }
     }
 
     @Override
-    public void unlike(ClientGift gift) {
+    public void setFlag(ClientGift gift) {
         try {
-            service.giftMetadata().unlike(gift.getID(), userID);
-        } catch (RemoteException e) {
-            Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void flag(ClientGift gift) {
-        try {
-            service.giftMetadata().flag(gift.getID(), userID);
-        } catch (RemoteException e) {
-            Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void unflag(ClientGift gift) {
-        try {
-            service.giftMetadata().flag(gift.getID(), userID);
+            service.giftMetadata().setFlag(gift.getID(), userID, gift.flag);
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }

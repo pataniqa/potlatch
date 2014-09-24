@@ -4,12 +4,8 @@ import android.os.RemoteException;
 
 public interface MetadataStore {
 
-    void like(long giftID, long userID) throws RemoteException;
+    void setLike(long giftID, long userID, boolean like) throws RemoteException;
 
-    void unlike(long giftID, long userID) throws RemoteException;
-
-    void flag(long giftID, long userID) throws RemoteException;
-
-    void unflag(long giftID, long userID) throws RemoteException;
+    void setFlag(long giftID, long userID, boolean flag) throws RemoteException;
 
 }

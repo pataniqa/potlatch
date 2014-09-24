@@ -137,15 +137,9 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
             likeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!gift.like) {
-                        gift.like = true;
-                        gift.likes += 1;
-                        giftChainCallback.like(gift);
-                    } else {
-                        gift.like = false;
-                        gift.likes -= 1;
-                        giftChainCallback.unlike(gift);
-                    }
+                    gift.like = !gift.like;
+                    gift.likes += gift.like ? 1 : 0 ;
+                    giftChainCallback.setLike(gift);
                     likeButton.setImageResource(gift.like ? R.drawable.ic_fa_heart
                             : R.drawable.ic_fa_heart_o);
                     likes.setText("" + gift.likes);
@@ -155,13 +149,8 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
             flagButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!gift.flag) {
-                        gift.flag = true;
-                        giftChainCallback.flag(gift);
-                    } else {
-                        gift.flag = true;
-                        giftChainCallback.unflag(gift);
-                    }
+                    gift.flag = !gift.flag;                    
+                    giftChainCallback.setFlag(gift);
                     flagButton.setImageResource(gift.flag ? R.drawable.ic_fa_flag
                             : R.drawable.ic_fa_flag_o);
                 }

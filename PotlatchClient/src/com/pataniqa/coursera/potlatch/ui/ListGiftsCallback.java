@@ -6,11 +6,8 @@ public interface ListGiftsCallback {
     
     void showGiftChain(String giftChainName);
     
-    void like(ClientGift gift);
+    void setLike(ClientGift gift);
     
-    void unlike(ClientGift gift);
+    void setFlag(ClientGift gift);
     
-    void flag(ClientGift gift);
-    
-    void unflag(ClientGift gift);
 }

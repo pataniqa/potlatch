@@ -20,27 +20,14 @@ class RemoteGiftMetadataService implements MetadataStore {
     }
 
     @Override
-    public void like(long giftID, long userID) throws RemoteException {
+    public void setLike(long giftID, long userID, boolean like) throws RemoteException {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void unlike(long giftID, long userID) throws RemoteException {
+    public void setFlag(long giftID, long userID, boolean flag) throws RemoteException {
         // TODO Auto-generated method stub
         
     }
-
-    @Override
-    public void flag(long giftID, long userID) throws RemoteException {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void unflag(long giftID, long userID) throws RemoteException {
-        // TODO Auto-generated method stub
-        
-    }
-
 }
