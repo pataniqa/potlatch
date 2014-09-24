@@ -15,7 +15,7 @@ interface RemoteGiftStore {
     Gift insert(@Body Gift data) throws RemoteException;
     
     @PUT(GIFT_SVC_PATH + "/{id}")
-    void update(@Body Gift data) throws RemoteException;
+    void update(long id, @Body Gift data) throws RemoteException;
     
     @DELETE(GIFT_SVC_PATH + "/{id}")
     void delete(long id) throws RemoteException;
@@ -34,7 +34,7 @@ class RemoteGiftService implements GiftStore {
         if (data.getID() ==  HasID.UNDEFINED_ID) 
             data = service.insert(data);
         else
-            service.update(data);
+            service.update(data.getID(), data);
         return data;
     }
 

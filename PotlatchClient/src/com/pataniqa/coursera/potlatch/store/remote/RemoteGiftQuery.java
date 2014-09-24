@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import retrofit.RestAdapter;
+import retrofit.http.*;
 import android.os.RemoteException;
 
 import com.pataniqa.coursera.potlatch.model.ClientGift;
@@ -13,26 +14,36 @@ import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 
 interface RemoteGiftQuery {
+    @GET(RemoteGiftStore.GIFT_SVC_PATH + "/{id}")
     ClientGift findOne(Long id);
 
+    @GET(RemoteGiftStore.GIFT_SVC_PATH)
     List<ClientGift> findAll();
 
+    @GET(RemoteGiftStore.GIFT_SVC_PATH + 
+            "/queryTitle?title={title}&resultorder={order}&direction={direction}")
     List<ClientGift> queryByTitle(String title,
-            ResultOrder resultOrder,
-            ResultOrderDirection resultOrderDirection);
+            ResultOrder order,
+            ResultOrderDirection direction);
 
+    @GET(RemoteGiftStore.GIFT_SVC_PATH + 
+            "/queryUser?user={userID}&title={title}&resultorder={order}&direction={direction}")
     List<ClientGift> queryByUser(String title,
             long userID,
-            ResultOrder resultOrder,
-            ResultOrderDirection resultOrderDirection);
+            ResultOrder order,
+            ResultOrderDirection direction);
 
+    @GET(RemoteGiftStore.GIFT_SVC_PATH + "" +
+    		"/queryTopGiftGivers?title={title}&direction={direction}")
     List<ClientGift> queryByTopGiftGivers(String title,
-            ResultOrderDirection resultOrderDirection);
+            ResultOrderDirection direction);
 
+    @GET(RemoteGiftStore.GIFT_SVC_PATH + 
+            "/queryGiftChain?giftchain={giftchain}&title={title}&resultorder={order}&direction={direction}")
     List<ClientGift> queryByGiftChain(String title,
-            String giftChainName,
-            ResultOrder resultOrder,
-            ResultOrderDirection resultOrderDirection);
+            String giftChain,
+            ResultOrder order,
+            ResultOrderDirection direction);
 }
 
 class RemoteGiftQueryService implements GiftQuery {

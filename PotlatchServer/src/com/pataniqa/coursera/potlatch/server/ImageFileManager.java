@@ -28,42 +28,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-/**
- * This class provides a simple implementation to store video binary data on the
- * file system in a "videos" folder. The class provides methods for saving
- * videos and retrieving their binary data.
- * 
- * @author jules
- *
- */
-public class GiftFileManager {
-	/**
-	 * This static factory method creates and returns a VideoFileManager object
-	 * to the caller. Feel free to customize this method to take parameters,
-	 * etc. if you want.
-	 * 
-	 * @return
-	 * @throws IOException
-	 */
-	public static GiftFileManager get() throws IOException {
-		return new GiftFileManager();
-	}
+public class ImageFileManager {
 
-	private Path targetDir_ = Paths.get("gifts");
+	private Path targetDir_ = Paths.get("images");
 
-	// The VideoFileManager.get() method should be used
-	// to obtain an instance
-	private GiftFileManager() throws IOException {
+	public ImageFileManager() throws IOException {
 		if (!Files.exists(targetDir_)) {
 			Files.createDirectories(targetDir_);
 		}
 	}
 
-	// Private helper method for resolving video file paths
-	private Path getGiftPath(Gift g) {
+	private Path getImagePath(Gift g) {
 		assert (g != null);
-
-		return targetDir_.resolve("gift" + g.getId() + ".jpg");
+		return targetDir_.resolve("image" + g.getId() + ".jpg");
 	}
 
 	/**
@@ -73,9 +50,8 @@ public class GiftFileManager {
 	 * @param v
 	 * @return
 	 */
-	public boolean hasGiftData(Gift g) {
-		Path source = getGiftPath(g);
-		return Files.exists(source);
+	public boolean hasImageData(Gift g) {
+		return Files.exists(getImagePath(g));
 	}
 
 	/**
@@ -88,8 +64,8 @@ public class GiftFileManager {
 	 * @param out
 	 * @throws IOException
 	 */
-	public void copyGiftData(Gift g, OutputStream out) throws IOException {
-		Path source = getGiftPath(g);
+	public void copyImageData(Gift g, OutputStream out) throws IOException {
+		Path source = getImagePath(g);
 		if (!Files.exists(source)) {
 			throw new FileNotFoundException(
 					"Unable to find the referenced video file for videoId:"
@@ -104,14 +80,12 @@ public class GiftFileManager {
 	 * is provided by the caller.
 	 * 
 	 * @param v
-	 * @param videoData
+	 * @param imageData
 	 * @throws IOException
 	 */
-	public void saveGiftData(Gift g, InputStream videoData)
+	public void saveImageData(Gift g, InputStream imageData)
 			throws IOException {
-		assert (videoData != null);
-
-		Path target = getGiftPath(g);
-		Files.copy(videoData, target, StandardCopyOption.REPLACE_EXISTING);
+		assert (imageData != null);
+		Files.copy(imageData, getImagePath(g), StandardCopyOption.REPLACE_EXISTING);
 	}
 }

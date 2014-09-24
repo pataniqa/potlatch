@@ -6,13 +6,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.google.common.base.Objects;
+
 @Entity
 public class GiftChain {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="gift_id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "gift_id")
     private long giftChainID;
-	
+
     public String giftChainName;
 
     public long getGiftChainID() {
@@ -26,30 +28,24 @@ public class GiftChain {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (int) (giftChainID ^ (giftChainID >>> 32));
-        result = prime * result + ((giftChainName == null) ? 0 : giftChainName.hashCode());
-        return result;
+        // Google Guava provides great utilities for hashing
+        return Objects.hashCode(giftChainID, giftChainName);
     }
 
+    /**
+     * Two Videos are considered equal if they have exactly the same values for
+     * their name, url, and duration.
+     * 
+     */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
+        if (obj instanceof GiftChain) {
+            GiftChain other = (GiftChain) obj;
+            return giftChainID == other.giftChainID
+                    && Objects.equal(giftChainName, other.giftChainName);
+        } else {
             return false;
-        if (getClass() != obj.getClass())
-            return false;
-        GiftChain other = (GiftChain) obj;
-        if (giftChainID != other.giftChainID)
-            return false;
-        if (giftChainName == null) {
-            if (other.giftChainName != null)
-                return false;
-        } else if (!giftChainName.equals(other.giftChainName))
-            return false;
-        return true;
+        }
     }
 
 }
