@@ -26,5 +26,11 @@ public class GiftChain implements HasID {
     public long getID() {
         return giftChainID;
     }
+    
+    @Override
+    public void setID(long id) {
+        giftChainID = id;
+    }
+
 
 }

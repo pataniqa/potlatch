@@ -18,7 +18,7 @@ interface RemoteGiftChainStore extends GiftChainStore {
     // TODO not sure about returning a long here?
     @Override
     @POST(GIFT_CHAIN_SVC_PATH)
-    public long insert(@Body GiftChain data) throws RemoteException;
+    public GiftChain insert(@Body GiftChain data) throws RemoteException;
             
     @Override
     @DELETE(GIFT_CHAIN_SVC_PATH + "/{id}")

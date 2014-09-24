@@ -12,5 +12,5 @@ public interface Create <T extends HasID> {
      * @return row ID of inserted GiftData in the ContentProvider
      * @throws RemoteException
      */
-    long insert(T data) throws RemoteException;
+    T insert(T data) throws RemoteException;
 }

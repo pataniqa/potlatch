@@ -25,3 +25,12 @@ https://github.com/alexbbb
 
 Image caching library
 http://square.github.io/picasso
+
+Spent 12 hours on design
+Saturday 20th 10 hours
+Sunday 21st 10 hours
+Monday 22nd 6 hours
+Tuesday 23rd 10 hours
+Wednesday 24th 4 hours
+
+total so far => 52 hours

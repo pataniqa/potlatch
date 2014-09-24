@@ -3,7 +3,7 @@ package com.pataniqa.coursera.potlatch.model;
 
 public class Gift implements HasID {
 
-    public final long keyID;
+    private long keyID;
     public String title;
     public String description;
     public String videoUri;
@@ -52,6 +52,11 @@ public class Gift implements HasID {
     @Override
     public long getID() {
         return keyID;
+    }
+    
+    @Override
+    public void setID(long id) {
+        keyID = id;
     }
 
 }

@@ -87,11 +87,11 @@ public class ListGiftsActivity extends GiftActivity implements
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Log.d(LOG_TAG, "onListItemClick");
-                Log.d(LOG_TAG, "position: " + position + "id = " + (giftData.get(position)).keyID);
+                Log.d(LOG_TAG, "position: " + position + "id = " + (giftData.get(position)).getID());
 
                 // When an item is clicked, open the ViewGiftActivity so the
                 // user can view it in full screen
-                openEditGiftActivity((giftData.get(position)).keyID);
+                openEditGiftActivity((giftData.get(position)).getID());
             }
         });
     }
@@ -328,7 +328,7 @@ public class ListGiftsActivity extends GiftActivity implements
     @Override
     public void updateGift(ClientGift gift) {
         try {
-            GiftMetadata giftMetadata = new GiftMetadata(gift.keyID, userID, gift.like, gift.flag);
+            GiftMetadata giftMetadata = new GiftMetadata(gift.getID(), userID, gift.like, gift.flag);
             service.giftMetadata().update(giftMetadata);
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);

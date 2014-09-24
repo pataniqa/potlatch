@@ -16,7 +16,7 @@ interface RemoteGiftStore extends GiftStore {
     // TODO not sure about returning a long here?
     @Override
     @POST(GIFT_SVC_PATH)
-    long insert(@Body Gift data) throws RemoteException;
+    Gift insert(@Body Gift data) throws RemoteException;
     
     // TODO this will not work because ID is not an argument we are breaking REST?
     @Override

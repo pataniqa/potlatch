@@ -57,7 +57,7 @@ public class ClientGift extends Gift implements HasID {
     public String toString() {
         return "ClientGift [like=" + like + ", flag=" + flag + ", likes=" + likes + ", flagged="
                 + flagged + ", userLikes=" + userLikes + ", username=" + username + ", keyID="
-                + keyID + ", title=" + title + ", description=" + description + ", videoUri="
+                + getID() + ", title=" + title + ", description=" + description + ", videoUri="
                 + videoUri + ", imageUri=" + imageUri + ", created=" + created + ", userID="
                 + userID + ", giftChainName=" + giftChainName + "]";
     }

@@ -13,13 +13,14 @@ abstract class BaseCreateUpdateDelete<T extends HasID> extends BaseQuery<T> impl
         Update<T>, Delete<T> {
 
     @Override
-    public long insert(T data) throws RemoteException {
+    public T insert(T data) throws RemoteException {
         ContentValues tempCV = creator.getCV(data);
         tempCV.remove(LocalSchema.Cols.ID);
         SQLiteDatabase db = helper.getWritableDatabase();
         long res = db.insert(tableName, null, tempCV);
         db.close();
-        return res;
+        data.setID(res);
+        return data;
     }
 
     @Override
