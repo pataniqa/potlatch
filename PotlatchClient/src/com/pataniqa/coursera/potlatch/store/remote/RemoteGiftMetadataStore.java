@@ -1,21 +1,37 @@
 package com.pataniqa.coursera.potlatch.store.remote;
 
-import retrofit.http.Body;
-import retrofit.http.GET;
-import retrofit.http.PUT;
+import retrofit.RestAdapter;
 import android.os.RemoteException;
 
 import com.pataniqa.coursera.potlatch.model.GiftMetadata;
 import com.pataniqa.coursera.potlatch.store.MetadataStore;
 
-interface RemoteGiftMetadataStore extends MetadataStore {
+import retrofit.http.*;
 
-    @Override
+public interface RemoteGiftMetadataStore {
     @GET(RemoteGiftStore.GIFT_SVC_PATH + "/{id}/meta")
-    GiftMetadata findOne(Long id) throws RemoteException;
+    GiftMetadata findOne(Long id);
+
+    @PUT(RemoteGiftStore.GIFT_SVC_PATH + "/{id}/meta")
+    GiftMetadata update(@Body GiftMetadata data);
+}
+
+class RemoteGiftMetadataService implements MetadataStore {
+    
+    private RemoteGiftMetadataStore service;
+
+    RemoteGiftMetadataService(RestAdapter restAdapter) {
+        service = restAdapter.create(RemoteGiftMetadataStore.class);
+    }
 
     @Override
-    @PUT(RemoteGiftStore.GIFT_SVC_PATH + "/{id}/meta")
-    void update(@Body GiftMetadata data) throws RemoteException;
+    public GiftMetadata save(GiftMetadata data) throws RemoteException {
+        return service.update(data);
+    }
+
+    @Override
+    public GiftMetadata findOne(Long id) throws RemoteException {
+        return service.findOne(id);
+    }
 
 }

@@ -19,7 +19,7 @@ public class GiftChain implements HasID {
      * Clone this object into a new GiftData
      */
     public GiftChain clone() {
-        return new GiftChain(-1, giftChainName);
+        return new GiftChain(HasID.UNDEFINED_ID, giftChainName);
     }
 
     @Override
@@ -31,6 +31,4 @@ public class GiftChain implements HasID {
     public void setID(long id) {
         giftChainID = id;
     }
-
-
 }

@@ -8,6 +8,8 @@ import android.os.RemoteException;
 
 import com.pataniqa.coursera.potlatch.model.ClientGift;
 import com.pataniqa.coursera.potlatch.store.GiftQuery;
+import com.pataniqa.coursera.potlatch.store.ResultOrder;
+import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 
 public class LocalGiftQuery extends BaseQuery<ClientGift> implements GiftQuery {
 

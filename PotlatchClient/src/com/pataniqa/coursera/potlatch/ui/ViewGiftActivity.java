@@ -31,6 +31,7 @@ import butterknife.InjectView;
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
+import com.pataniqa.coursera.potlatch.model.HasID;
 import com.pataniqa.coursera.potlatch.store.LocalStorageUtilities;
 
 /**
@@ -205,12 +206,9 @@ abstract class ViewGiftActivity extends GiftActivity {
         // TODO we re-use the gift chain map here - so if someone adds a gift
         // chain in the meantime it will not show up
 
-        long giftChainID;
-        if (giftChains.containsKey(giftChainName)) {
-            giftChainID = giftChains.get(giftChainName);
-        } else {
-            GiftChain giftChain = new GiftChain(-1, giftChainName);
-            GiftChain result = service.giftChains().insert(giftChain);
+        if (!giftChains.containsKey(giftChainName)) {
+            GiftChain giftChain = new GiftChain(HasID.UNDEFINED_ID, giftChainName);
+            GiftChain result = service.giftChains().save(giftChain);
             giftChains.put(giftChainName, result.getID());
         }
         return new Gift(key, title, description, videoUri, imageData, created.toMillis(false),

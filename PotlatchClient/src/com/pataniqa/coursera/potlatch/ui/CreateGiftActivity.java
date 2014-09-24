@@ -9,6 +9,7 @@ import butterknife.ButterKnife;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.Gift;
+import com.pataniqa.coursera.potlatch.model.HasID;
 
 /**
  * The activity that allows a user to create and save a Gift.
@@ -34,9 +35,9 @@ public class CreateGiftActivity extends ViewGiftActivity {
     public void createButtonClicked(View v) {
         Log.d(LOG_TAG, "createButtonClicked");
         try {
-            Gift gift = makeGiftDataFromUI(-1);
+            Gift gift = makeGiftDataFromUI(HasID.UNDEFINED_ID);
             Log.d(LOG_TAG, "newGiftData:" + gift);
-            service.userGifts().insert(gift);
+            service.userGifts().save(gift);
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }

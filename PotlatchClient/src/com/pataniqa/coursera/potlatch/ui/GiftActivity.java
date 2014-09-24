@@ -9,8 +9,8 @@ import android.util.Log;
 import android.widget.EditText;
 
 import com.pataniqa.coursera.potlatch.store.GiftQuery.QueryType;
-import com.pataniqa.coursera.potlatch.store.GiftQuery.ResultOrder;
-import com.pataniqa.coursera.potlatch.store.GiftQuery.ResultOrderDirection;
+import com.pataniqa.coursera.potlatch.store.ResultOrder;
+import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 import com.pataniqa.coursera.potlatch.store.Service;
 import com.pataniqa.coursera.potlatch.store.local.LocalService;
 

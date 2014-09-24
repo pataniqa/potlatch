@@ -26,8 +26,8 @@ import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.ClientGift;
 import com.pataniqa.coursera.potlatch.model.GiftMetadata;
 import com.pataniqa.coursera.potlatch.store.GiftQuery.QueryType;
-import com.pataniqa.coursera.potlatch.store.GiftQuery.ResultOrder;
-import com.pataniqa.coursera.potlatch.store.GiftQuery.ResultOrderDirection;
+import com.pataniqa.coursera.potlatch.store.ResultOrder;
+import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 
 public class ListGiftsActivity extends GiftActivity implements
         SwipeRefreshLayout.OnRefreshListener, ListGiftsCallback {
@@ -329,7 +329,7 @@ public class ListGiftsActivity extends GiftActivity implements
     public void updateGift(ClientGift gift) {
         try {
             GiftMetadata giftMetadata = new GiftMetadata(gift.getID(), userID, gift.like, gift.flag);
-            service.giftMetadata().update(giftMetadata);
+            service.giftMetadata().save(giftMetadata);
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }

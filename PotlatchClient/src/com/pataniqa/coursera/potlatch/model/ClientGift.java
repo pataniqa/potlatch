@@ -66,7 +66,7 @@ public class ClientGift extends Gift implements HasID {
      * Clone this object into a new GiftData
      */
     public ClientGift clone() {
-        return new ClientGift(-1, title, description, videoUri, imageUri, created, userID, like,
+        return new ClientGift(HasID.UNDEFINED_ID, title, description, videoUri, imageUri, created, userID, like,
                 flag, likes, flagged, giftChainName, userLikes, username);
     }
 }

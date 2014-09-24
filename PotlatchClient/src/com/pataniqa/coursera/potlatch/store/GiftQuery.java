@@ -8,14 +8,6 @@ import com.pataniqa.coursera.potlatch.model.ClientGift;
 
 public interface GiftQuery extends Query<ClientGift>, Retrieve<ClientGift, Long> {
 
-    enum ResultOrder {
-        TIME, LIKES
-    };
-
-    enum ResultOrderDirection {
-        ASCENDING, DESCENDING
-    };
-
     enum QueryType {
         USER, TOP_GIFT_GIVERS, ALL, CHAIN
     };

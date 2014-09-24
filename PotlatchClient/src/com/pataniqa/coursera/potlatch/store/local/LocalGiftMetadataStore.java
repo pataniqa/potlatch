@@ -21,7 +21,7 @@ public class LocalGiftMetadataStore extends BaseQuery<GiftMetadata> implements M
     }
 
     @Override
-    public void update(GiftMetadata data) throws RemoteException {
+    public GiftMetadata save(GiftMetadata data) throws RemoteException {
         long rowID = data.giftID;
         ClientGift gift = localGiftStore.findOne(rowID);
         gift.like = data.like;
@@ -43,6 +43,7 @@ public class LocalGiftMetadataStore extends BaseQuery<GiftMetadata> implements M
         SQLiteDatabase db = helper.getWritableDatabase();
         db.update(tableName, localGiftStore.creator.getCV(gift), selection, selectionArgs);
         db.close();
+        return data;
     }
 }
 
