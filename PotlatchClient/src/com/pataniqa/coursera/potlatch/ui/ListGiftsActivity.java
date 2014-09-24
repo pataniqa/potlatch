@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Menu;
@@ -97,7 +98,7 @@ public class ListGiftsActivity extends GiftActivity implements
 
     void loadPreferences() {
         Log.d(LOG_TAG, "loadPreferences");
-        prefs = this.getPreferences(MODE_PRIVATE);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (prefs.contains(TITLE_QUERY_TAG))
             titleQuery = prefs.getString(TITLE_QUERY_TAG, titleQuery);
         if (prefs.contains(RESULT_ORDER_TAG))
@@ -258,7 +259,7 @@ public class ListGiftsActivity extends GiftActivity implements
             // TODO filtering the results does not work
             
             if (results != null) {
-                if (prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, false)) {
+                if (prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, true)) {
                     Log.d(LOG_TAG, "filtering flagged content");
                     for (ClientGift gift : results) {
                         if (!gift.flagged)

@@ -19,7 +19,6 @@ import com.pataniqa.coursera.potlatch.store.local.LocalService;
  * 
  * This class provides convenience functions for switching between the various
  * activities in the application.
- * 
  */
 @SuppressLint("Registered")
 abstract class GiftActivity extends Activity {
@@ -33,6 +32,7 @@ abstract class GiftActivity extends Activity {
     public final static String DEFAULT_TITLE_QUERY = "";
     public final static String GIFT_CHAIN_NAME_TAG = "gift_chain_name";
     public final static String USER_ID_TAG = "user_id";
+    public final static String USER_NAME_TAG ="user_name";
 
     private static final String LOG_TAG = GiftActivity.class.getCanonicalName();
 

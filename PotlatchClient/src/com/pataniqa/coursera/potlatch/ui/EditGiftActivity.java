@@ -39,7 +39,7 @@ public class EditGiftActivity extends ViewGiftActivity {
         Log.d(LOG_TAG, "setValuesToDefault");
         try {
             ClientGift gift = service.gifts().get(getRowIdentifier());
-            Log.d(LOG_TAG, "setValuesToDefualt :" + gift);
+            Log.d(LOG_TAG, "setValuesToDefault :" + gift);
             if (gift != null) {
                 // set the EditTexts to the current values
                 titleInput.setText(gift.title);

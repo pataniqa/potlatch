@@ -26,6 +26,7 @@ public class LocalGiftMetadataStore extends BaseQuery<GiftMetadata> implements M
         ClientGift gift = localGiftStore.get(rowID);
         gift.like = data.like;
         gift.flag = data.flag;
+        gift.flagged = data.flag;
 
         // we make the simplifying assumption that the local database will only
         // ever have one user

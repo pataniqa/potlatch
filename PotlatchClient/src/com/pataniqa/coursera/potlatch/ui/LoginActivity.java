@@ -1,6 +1,8 @@
 package com.pataniqa.coursera.potlatch.ui;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -21,7 +23,7 @@ public class LoginActivity extends GiftActivity {
     EditText usernameET;
     @InjectView(R.id.login_password)
     EditText passwordET;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOG_TAG, "onCreate");
@@ -40,7 +42,41 @@ public class LoginActivity extends GiftActivity {
         Log.d(LOG_TAG, "loginClicked");
         String username = editTextToString(usernameET);
         String password = editTextToString(passwordET);
+        savePreferences();
         if (!username.isEmpty())
             openListGiftActivity();
+    }
+    
+    @Override
+    protected void onPause() {
+        Log.d(LOG_TAG, "onPause");
+        super.onPause();
+        savePreferences();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(LOG_TAG, "onStop");
+        super.onStop();
+        savePreferences();
+    }
+    
+    void loadPreferences() {
+        Log.d(LOG_TAG, "loadPreferences");
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String username = prefs.getString(USER_NAME_TAG, "");
+        if (username != null && !username.isEmpty())       
+            usernameET.setText(username);
+    }
+
+    void savePreferences() {
+        Log.d(LOG_TAG, "savePreferences");
+        String username = editTextToString(usernameET);
+        if (username != null && !username.isEmpty()) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor ed = prefs.edit();
+            ed.putString(USER_NAME_TAG, username);
+            ed.commit();
+        }
     }
 }
