@@ -12,5 +12,5 @@ public interface Query<T> {
      * @return an ArrayList of GiftData objects
      * @throws RemoteException
      */
-    Collection<T> query() throws RemoteException;
+    Collection<T> findAll() throws RemoteException;
 }

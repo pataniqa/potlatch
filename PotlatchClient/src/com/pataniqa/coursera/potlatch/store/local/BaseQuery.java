@@ -10,7 +10,7 @@ import android.os.RemoteException;
 import com.pataniqa.coursera.potlatch.store.Query;
 import com.pataniqa.coursera.potlatch.store.Retrieve;
 
-abstract class BaseQuery<T> implements Query<T>, Retrieve<T> {
+abstract class BaseQuery<T> implements Query<T>, Retrieve<T, Long> {
 
     Creator<T> creator;
     String tableName;
@@ -36,12 +36,12 @@ abstract class BaseQuery<T> implements Query<T>, Retrieve<T> {
     }
 
     @Override
-    public ArrayList<T> query() throws RemoteException {
+    public ArrayList<T> findAll() throws RemoteException {
         return query(null, null, null, null);
     }
 
     @Override
-    public T get(long rowID) throws RemoteException {
+    public T findOne(Long rowID) throws RemoteException {
         String[] selectionArgs = { String.valueOf(rowID) };
         ArrayList<T> results = query(null, LocalSchema.Cols.ID + "= ?", selectionArgs, null);
         return results.size() > 0 ? results.get(0) : null;

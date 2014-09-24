@@ -23,7 +23,7 @@ public class LocalGiftMetadataStore extends BaseQuery<GiftMetadata> implements M
     @Override
     public void update(GiftMetadata data) throws RemoteException {
         long rowID = data.giftID;
-        ClientGift gift = localGiftStore.get(rowID);
+        ClientGift gift = localGiftStore.findOne(rowID);
         gift.like = data.like;
         gift.flag = data.flag;
         gift.flagged = data.flag;

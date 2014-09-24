@@ -38,7 +38,7 @@ public class EditGiftActivity extends ViewGiftActivity {
     boolean setValuesToDefault() {
         Log.d(LOG_TAG, "setValuesToDefault");
         try {
-            ClientGift gift = service.gifts().get(getRowIdentifier());
+            ClientGift gift = service.gifts().findOne(getRowIdentifier());
             Log.d(LOG_TAG, "setValuesToDefault :" + gift);
             if (gift != null) {
                 // set the EditTexts to the current values

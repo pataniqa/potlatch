@@ -2,7 +2,7 @@ package com.pataniqa.coursera.potlatch.store;
 
 import android.os.RemoteException;
 
-public interface Retrieve<T> {
+public interface Retrieve<T, ID> {
     /**
      * Retrieve a <T> object with a specific rowID.
      * 
@@ -10,5 +10,5 @@ public interface Retrieve<T> {
      * @return GiftData at the given rowID
      * @throws RemoteException
      */
-    T get(final long id) throws RemoteException;
+    T findOne(ID id) throws RemoteException;
 }

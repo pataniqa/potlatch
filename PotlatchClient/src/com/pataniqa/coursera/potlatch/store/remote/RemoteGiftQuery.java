@@ -10,10 +10,10 @@ import com.pataniqa.coursera.potlatch.store.GiftQuery;
 interface RemoteGiftQuery extends GiftQuery {
 
     @Override
-    ClientGift get(long rowID) throws RemoteException;
+    ClientGift findOne(Long rowID) throws RemoteException;
 
     @Override
-    ArrayList<ClientGift> query() throws RemoteException;
+    ArrayList<ClientGift> findAll() throws RemoteException;
 
     @Override
     ArrayList<ClientGift> queryByTitle(String title,

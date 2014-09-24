@@ -223,7 +223,7 @@ abstract class ViewGiftActivity extends GiftActivity {
 
         ArrayList<String> giftChainNames = new ArrayList<String>();
         try {
-            Collection<GiftChain> results = service.giftChains().query();
+            Collection<GiftChain> results = service.giftChains().findAll();
             for (GiftChain result : results) {
                 giftChains.put(result.giftChainName, result.giftChainID);
                 giftChainNames.add(result.giftChainName);

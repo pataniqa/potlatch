@@ -12,7 +12,7 @@ interface RemoteGiftMetadataStore extends MetadataStore {
 
     @Override
     @GET(RemoteGiftStore.GIFT_SVC_PATH + "/{id}/meta")
-    GiftMetadata get(long id) throws RemoteException;
+    GiftMetadata findOne(Long id) throws RemoteException;
 
     @Override
     @PUT(RemoteGiftStore.GIFT_SVC_PATH + "/{id}/meta")

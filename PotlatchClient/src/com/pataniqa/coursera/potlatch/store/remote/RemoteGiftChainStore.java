@@ -26,6 +26,6 @@ interface RemoteGiftChainStore extends GiftChainStore {
 
     @Override
     @GET(GIFT_CHAIN_SVC_PATH)
-    public Collection<GiftChain> query() throws RemoteException;
+    public Collection<GiftChain> findAll() throws RemoteException;
 
 }
