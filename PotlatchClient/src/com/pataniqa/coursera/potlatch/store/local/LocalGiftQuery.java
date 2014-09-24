@@ -30,6 +30,8 @@ public class LocalGiftQuery extends BaseQuery<ClientGift> implements GiftQuery {
         return resultOrderDirection == ResultOrderDirection.ASCENDING ? "ASC" : "DESC";
     }
 
+    static String LIKE_QUERY = LocalSchema.Cols.TITLE + " LIKE ? ";
+
     @Override
     public ArrayList<ClientGift> queryByTitle(String title,
             ResultOrder resultOrder,
@@ -40,7 +42,7 @@ public class LocalGiftQuery extends BaseQuery<ClientGift> implements GiftQuery {
             return query(null, null, null, sortOrder);
         else {
             String[] selectionArgs = new String[] { "%" + title + "%" };
-            return query(null, LocalSchema.Cols.TITLE + " LIKE ? ", selectionArgs, sortOrder);
+            return query(null, LIKE_QUERY, selectionArgs, sortOrder);
         }
     }
 
@@ -55,8 +57,10 @@ public class LocalGiftQuery extends BaseQuery<ClientGift> implements GiftQuery {
             return query(null, LocalSchema.Cols.USER_ID + "= ?", selectionArgs, sortOrder);
         } else {
             String[] selectionArgs = { String.valueOf(userID), title };
-            return query(null, LocalSchema.Cols.USER_ID + "= ? AND " + LocalSchema.Cols.TITLE
-                    + " LIKE ? ", selectionArgs, sortOrder);
+            return query(null,
+                    LocalSchema.Cols.USER_ID + "= ? AND " + LIKE_QUERY,
+                    selectionArgs,
+                    sortOrder);
         }
     }
 
@@ -69,7 +73,7 @@ public class LocalGiftQuery extends BaseQuery<ClientGift> implements GiftQuery {
             return query(null, null, null, sortOrder);
         else {
             String[] selectionArgs = new String[] { "%" + title + "%" };
-            return query(null, LocalSchema.Cols.TITLE + " LIKE ? ", selectionArgs, sortOrder);
+            return query(null, LIKE_QUERY, selectionArgs, sortOrder);
         }
     }
 
@@ -85,8 +89,10 @@ public class LocalGiftQuery extends BaseQuery<ClientGift> implements GiftQuery {
             return query(null, LocalSchema.Cols.GIFT_CHAIN_NAME + "= ?", selectionArgs, sortOrder);
         } else {
             String[] selectionArgs = { giftChainName, title };
-            return query(null, LocalSchema.Cols.GIFT_CHAIN_NAME + "= ? AND "
-                    + LocalSchema.Cols.TITLE + " LIKE ? ", selectionArgs, sortOrder);
+            return query(null,
+                    LocalSchema.Cols.GIFT_CHAIN_NAME + "= ? AND " + LIKE_QUERY,
+                    selectionArgs,
+                    sortOrder);
         }
     }
 
