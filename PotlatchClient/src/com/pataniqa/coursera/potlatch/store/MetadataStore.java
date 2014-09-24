@@ -1,7 +1,15 @@
 package com.pataniqa.coursera.potlatch.store;
 
-import com.pataniqa.coursera.potlatch.model.GiftMetadata;
+import android.os.RemoteException;
 
-public interface MetadataStore extends Save<GiftMetadata>, Retrieve<GiftMetadata, Long> {
+public interface MetadataStore {
+
+    void like(long giftID, long userID) throws RemoteException;
+
+    void unlike(long giftID, long userID) throws RemoteException;
+
+    void flag(long giftID, long userID) throws RemoteException;
+
+    void unflag(long giftID, long userID) throws RemoteException;
 
 }

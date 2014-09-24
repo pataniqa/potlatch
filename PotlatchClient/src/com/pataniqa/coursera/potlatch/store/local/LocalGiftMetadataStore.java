@@ -3,30 +3,28 @@ package com.pataniqa.coursera.potlatch.store.local;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.RemoteException;
 
 import com.pataniqa.coursera.potlatch.model.ClientGift;
-import com.pataniqa.coursera.potlatch.model.GiftMetadata;
 import com.pataniqa.coursera.potlatch.store.MetadataStore;
 
-public class LocalGiftMetadataStore extends BaseQuery<GiftMetadata> implements MetadataStore {
+public class LocalGiftMetadataStore implements MetadataStore {
 
+    String tableName;
+    SQLiteOpenHelper helper;
     LocalGiftQuery localGiftStore;
 
     public LocalGiftMetadataStore(LocalDatabase helper) {
-        creator = new GiftMetadataCreator();
         tableName = LocalSchema.Gift.TABLE_NAME;
         this.helper = helper;
         localGiftStore = new LocalGiftQuery(helper);
     }
 
-    @Override
-    public GiftMetadata save(GiftMetadata data) throws RemoteException {
-        long rowID = data.giftID;
+    void saveLike(long giftID, boolean like) throws RemoteException {
+        long rowID = giftID;
         ClientGift gift = localGiftStore.findOne(rowID);
-        gift.like = data.like;
-        gift.flag = data.flag;
-        gift.flagged = data.flag;
+        gift.like = like;
 
         // we make the simplifying assumption that the local database will only
         // ever have one user
@@ -43,28 +41,41 @@ public class LocalGiftMetadataStore extends BaseQuery<GiftMetadata> implements M
         SQLiteDatabase db = helper.getWritableDatabase();
         db.update(tableName, localGiftStore.creator.getCV(gift), selection, selectionArgs);
         db.close();
-        return data;
     }
-}
+    
+    void saveFlag(long giftID, boolean flag) throws RemoteException {
+        long rowID = giftID;
+        ClientGift gift = localGiftStore.findOne(rowID);
+        gift.flag = flag;
+        gift.flagged = flag;
 
-class GiftMetadataCreator extends BaseCreator<GiftMetadata> implements Creator<GiftMetadata> {
+        // and we don't have a separate table for metadata, instead we update
+        // the ClientGift table
+
+        String selection = LocalSchema.Cols.ID + " = ? ";
+        String[] selectionArgs = { String.valueOf(gift.getID()) };
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.update(tableName, localGiftStore.creator.getCV(gift), selection, selectionArgs);
+        db.close();
+    }
 
     @Override
-    public ContentValues getCV(GiftMetadata data) {
-        ContentValues rValue = new ContentValues();
-        rValue.put(LocalSchema.Cols.GIFT_ID, data.giftID);
-        rValue.put(LocalSchema.Cols.USER_ID, data.userID);
-        rValue.put(LocalSchema.Cols.LIKE, data.like);
-        rValue.put(LocalSchema.Cols.FLAG, data.flag);
-        return rValue;
+    public void like(long giftID, long userID) throws RemoteException {
+        saveLike(giftID, true);
     }
 
     @Override
-    public GiftMetadata getFromCursor(Cursor cursor) {
-        long giftID = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.GIFT_ID));
-        long userID = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.USER_ID));
-        boolean like = cursor.getInt(cursor.getColumnIndex(LocalSchema.Cols.LIKE)) > 0;
-        boolean flag = cursor.getInt(cursor.getColumnIndex(LocalSchema.Cols.FLAG)) > 0;
-        return new GiftMetadata(giftID, userID, like, flag);
+    public void unlike(long giftID, long userID) throws RemoteException {
+        saveLike(giftID, false);
+    }
+
+    @Override
+    public void flag(long giftID, long userID) throws RemoteException {
+        saveFlag(giftID, true);
+    }
+
+    @Override
+    public void unflag(long giftID, long userID) throws RemoteException {
+        saveFlag(giftID, false);
     }
 }

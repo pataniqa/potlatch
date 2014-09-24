@@ -24,7 +24,6 @@ import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.ClientGift;
-import com.pataniqa.coursera.potlatch.model.GiftMetadata;
 import com.pataniqa.coursera.potlatch.store.GiftQuery.QueryType;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
@@ -177,11 +176,11 @@ public class ListGiftsActivity extends GiftActivity implements
     }
 
     void updateQueryType(MenuItem item) {
-        
+
         // TODO because there are four options
         // this would be better as a spinner
         // http://developer.android.com/guide/topics/ui/actionbar.html#Dropdown
-        
+
         if (queryType == QueryType.USER)
             item.setIcon(R.drawable.ic_action_person);
         else if (queryType == QueryType.TOP_GIFT_GIVERS)
@@ -225,7 +224,7 @@ public class ListGiftsActivity extends GiftActivity implements
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.d(LOG_TAG, "onQueryTextSubmit: "+ query);
+                Log.d(LOG_TAG, "onQueryTextSubmit: " + query);
                 updateGifts(query);
                 search.clearFocus();
                 return false;
@@ -240,7 +239,7 @@ public class ListGiftsActivity extends GiftActivity implements
         titleQuery = query;
         updateGifts();
     }
-    
+
     void updateGifts() {
         Log.d(LOG_TAG, "updateGifts");
         try {
@@ -248,16 +247,22 @@ public class ListGiftsActivity extends GiftActivity implements
 
             ArrayList<ClientGift> results = null;
             if (queryType == QueryType.USER)
-                results = service.gifts().queryByUser(titleQuery, userID, resultOrder, resultDirection);
+                results = service.gifts().queryByUser(titleQuery,
+                        userID,
+                        resultOrder,
+                        resultDirection);
             else if (queryType == QueryType.TOP_GIFT_GIVERS)
                 results = service.gifts().queryByTopGiftGivers(titleQuery, resultDirection);
             else if (queryType == QueryType.CHAIN)
-                results = service.gifts().queryByGiftChain(titleQuery, giftChainName, resultOrder, resultDirection);
+                results = service.gifts().queryByGiftChain(titleQuery,
+                        giftChainName,
+                        resultOrder,
+                        resultDirection);
             else
                 results = service.gifts().queryByTitle(titleQuery, resultOrder, resultDirection);
 
             // TODO filtering the results does not work
-            
+
             if (results != null) {
                 if (prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, true)) {
                     Log.d(LOG_TAG, "filtering flagged content");
@@ -326,10 +331,36 @@ public class ListGiftsActivity extends GiftActivity implements
     }
 
     @Override
-    public void updateGift(ClientGift gift) {
+    public void like(ClientGift gift) {
         try {
-            GiftMetadata giftMetadata = new GiftMetadata(gift.getID(), userID, gift.like, gift.flag);
-            service.giftMetadata().save(giftMetadata);
+            service.giftMetadata().like(gift.getID(), userID);
+        } catch (RemoteException e) {
+            Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void unlike(ClientGift gift) {
+        try {
+            service.giftMetadata().unlike(gift.getID(), userID);
+        } catch (RemoteException e) {
+            Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void flag(ClientGift gift) {
+        try {
+            service.giftMetadata().flag(gift.getID(), userID);
+        } catch (RemoteException e) {
+            Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void unflag(ClientGift gift) {
+        try {
+            service.giftMetadata().flag(gift.getID(), userID);
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }

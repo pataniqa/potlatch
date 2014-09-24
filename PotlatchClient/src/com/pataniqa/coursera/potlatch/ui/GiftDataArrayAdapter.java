@@ -118,17 +118,17 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
                 image.setVisibility(View.VISIBLE);
                 image.setScaleType(ScaleType.FIT_CENTER);
             }
-            
+
             if (gift.giftChainName != null && !gift.giftChainName.isEmpty()) {
                 giftChainButton.setText(gift.giftChainName);
             } else {
                 giftChainButton.setVisibility(Button.INVISIBLE);
             }
-            
+
             likeButton.setImageResource(gift.like ? R.drawable.ic_fa_heart
                     : R.drawable.ic_fa_heart_o);
-            flagButton.setImageResource(gift.flag ? R.drawable.ic_fa_flag
-                    : R.drawable.ic_fa_flag_o);
+            flagButton
+                    .setImageResource(gift.flag ? R.drawable.ic_fa_flag : R.drawable.ic_fa_flag_o);
 
             title.setText(gift.title);
             description.setText(gift.description);
@@ -137,35 +137,33 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
             likeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    gift.like = !gift.like;
-                    if (gift.like)
+                    if (!gift.like) {
+                        gift.like = true;
                         gift.likes += 1;
-                    else
+                        giftChainCallback.like(gift);
+                    } else {
+                        gift.like = false;
                         gift.likes -= 1;
+                        giftChainCallback.unlike(gift);
+                    }
                     likeButton.setImageResource(gift.like ? R.drawable.ic_fa_heart
                             : R.drawable.ic_fa_heart_o);
                     likes.setText("" + gift.likes);
-                    
-                    // TODO should not be able to do the update like this
-                    // the API needs to change so local and remote match
-                    // should only able to update Gift not ClientGift - other attributes must be a separate API call
-                    
-                    giftChainCallback.updateGift(gift);
                 }
             });
 
             flagButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    gift.flag = !gift.flag;
+                    if (!gift.flag) {
+                        gift.flag = true;
+                        giftChainCallback.flag(gift);
+                    } else {
+                        gift.flag = true;
+                        giftChainCallback.unflag(gift);
+                    }
                     flagButton.setImageResource(gift.flag ? R.drawable.ic_fa_flag
                             : R.drawable.ic_fa_flag_o);
-                    
-                    // TODO should not be able to do the update like this
-                    // the API needs to change so local and remote match
-                    // should only able to update Gift not ClientGift - other attributes must be a separate API call
-                    
-                    giftChainCallback.updateGift(gift);
                 }
             });
 
