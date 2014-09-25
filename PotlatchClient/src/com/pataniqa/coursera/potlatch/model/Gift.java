@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Gift implements HasID {
 
-    private long keyID;
+    private long giftID;
     public String title;
     public String description;
     public String videoUri;
@@ -16,7 +16,7 @@ public class Gift implements HasID {
     /**
      * Constructor.
      * 
-     * @param keyID
+     * @param giftID
      * @param title
      * @param description
      * @param videoUri
@@ -25,7 +25,7 @@ public class Gift implements HasID {
      * @param userID
      * @param giftChainName
      */
-    public Gift(long keyID,
+    public Gift(long giftID,
             String title,
             String description,
             String videoUri,
@@ -33,7 +33,7 @@ public class Gift implements HasID {
             Date created,
             long userID,
             String giftChainName) {
-        this.keyID = keyID;
+        this.giftID = giftID;
         this.title = title;
         this.description = description;
         this.videoUri = videoUri;
@@ -45,19 +45,19 @@ public class Gift implements HasID {
 
     @Override
     public String toString() {
-        return "Gift [keyID=" + keyID + ", title=" + title + ", description=" + description
+        return "Gift [giftID=" + giftID + ", title=" + title + ", description=" + description
                 + ", videoUri=" + videoUri + ", imageUri=" + imageUri + ", created=" + created
                 + ", userID=" + userID + ", giftChainName=" + giftChainName + "]";
     }
 
     @Override
     public long getID() {
-        return keyID;
+        return giftID;
     }
     
     @Override
     public void setID(long id) {
-        keyID = id;
+        giftID = id;
     }
 
 }

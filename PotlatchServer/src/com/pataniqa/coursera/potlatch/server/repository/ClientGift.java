@@ -1,8 +1,5 @@
-package com.pataniqa.coursera.potlatch.model;
+package com.pataniqa.coursera.potlatch.server.repository;
 
-/**
- * ClientGift is a de-normalized version of the data to make it easy to present in the user interface.
- */
 public class ClientGift extends Gift implements HasID {
 
     public boolean like;
@@ -10,7 +7,6 @@ public class ClientGift extends Gift implements HasID {
     public long likes;
     public boolean flagged;
     public long userLikes;
-    public String giftChainName;
     public String username;
 
     /**
@@ -27,7 +23,6 @@ public class ClientGift extends Gift implements HasID {
      * @param flag
      * @param likes
      * @param flagged
-     * @param giftChainID
      * @param giftChainName
      * @param userLikes
      * @param username
@@ -43,12 +38,10 @@ public class ClientGift extends Gift implements HasID {
             boolean flag,
             long likes,
             boolean flagged,
-            long giftChainID,
             String giftChainName,
             long userLikes,
             String username) {
-        super(keyID, title, description, videoUri, imageUri, created, userID, giftChainID);
-        this.giftChainName = giftChainName;
+        super(keyID, title, description, videoUri, imageUri, created, userID, giftChainName);
         this.like = like;
         this.flag = flag;
         this.likes = likes;
@@ -56,19 +49,21 @@ public class ClientGift extends Gift implements HasID {
         this.userLikes = userLikes;
         this.username = username;
     }
-    
+
     @Override
     public String toString() {
         return "ClientGift [like=" + like + ", flag=" + flag + ", likes=" + likes + ", flagged="
-                + flagged + ", userLikes=" + userLikes + ", giftChainName=" + giftChainName
-                + ", username=" + username + "]";
+                + flagged + ", userLikes=" + userLikes + ", username=" + username + ", keyID="
+                + getID() + ", title=" + title + ", description=" + description + ", videoUri="
+                + videoUri + ", imageUri=" + imageUri + ", created=" + created + ", userID="
+                + userID + ", giftChainName=" + giftChainName + "]";
     }
 
     /**
      * Clone this object into a new GiftData
      */
     public ClientGift clone() {
-        return new ClientGift(-1, title, description, videoUri, imageUri, created, userID, like,
-                flag, likes, flagged, giftChainID, giftChainName, userLikes, username);
+        return new ClientGift(HasID.UNDEFINED_ID, title, description, videoUri, imageUri, created, userID, like,
+                flag, likes, flagged, giftChainName, userLikes, username);
     }
 }

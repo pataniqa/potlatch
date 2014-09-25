@@ -17,7 +17,7 @@ public class ClientGift extends Gift implements HasID {
     /**
      * Constructor
      * 
-     * @param keyID
+     * @param giftID
      * @param title
      * @param description
      * @param videoUri
@@ -32,7 +32,7 @@ public class ClientGift extends Gift implements HasID {
      * @param userLikes
      * @param username
      */
-    public ClientGift(long keyID,
+    public ClientGift(long giftID,
             String title,
             String description,
             String videoUri,
@@ -46,7 +46,7 @@ public class ClientGift extends Gift implements HasID {
             String giftChainName,
             long userLikes,
             String username) {
-        super(keyID, title, description, videoUri, imageUri, created, userID, giftChainName);
+        super(giftID, title, description, videoUri, imageUri, created, userID, giftChainName);
         this.like = like;
         this.flag = flag;
         this.likes = likes;
@@ -58,7 +58,7 @@ public class ClientGift extends Gift implements HasID {
     @Override
     public String toString() {
         return "ClientGift [like=" + like + ", flag=" + flag + ", likes=" + likes + ", flagged="
-                + flagged + ", userLikes=" + userLikes + ", username=" + username + ", keyID="
+                + flagged + ", userLikes=" + userLikes + ", username=" + username + ", giftID="
                 + getID() + ", title=" + title + ", description=" + description + ", videoUri="
                 + videoUri + ", imageUri=" + imageUri + ", created=" + created + ", userID="
                 + userID + ", giftChainName=" + giftChainName + "]";

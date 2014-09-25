@@ -12,7 +12,7 @@ public class GiftChain implements HasID {
 
     @Override
     public String toString() {
-        return "GiftChain [keyID=" + giftChainID + ", giftChainName=" + giftChainName + "]";
+        return "GiftChain [giftChainID=" + giftChainID + ", giftChainName=" + giftChainName + "]";
     }
 
     /**
