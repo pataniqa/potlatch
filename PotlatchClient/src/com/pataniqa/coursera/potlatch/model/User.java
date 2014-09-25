@@ -1,9 +1,7 @@
-package com.pataniqa.coursera.potlatch.model.client;
+package com.pataniqa.coursera.potlatch.model;
 
-import com.pataniqa.coursera.potlatch.model.HasID;
-import com.pataniqa.coursera.potlatch.model.IUser;
 
-public class User implements HasID, IUser {
+public class User implements HasID {
 
     private long userID;
     private String username;
@@ -32,22 +30,18 @@ public class User implements HasID, IUser {
         userID = id;
     }
 
-    @Override
     public long getUserID() {
         return userID;
     }
 
-    @Override
     public void setUserID(long userID) {
         this.userID = userID;
     }
 
-    @Override
     public String getUsername() {
         return username;
     }
 
-    @Override
     public void setUsername(String username) {
         this.username = username;
     }

@@ -1,6 +1,6 @@
 package com.pataniqa.coursera.potlatch.ui;
 
-import com.pataniqa.coursera.potlatch.model.client.GiftResult;
+import com.pataniqa.coursera.potlatch.model.GiftResult;
 
 public interface ListGiftsCallback {
     

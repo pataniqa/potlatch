@@ -11,8 +11,8 @@ import android.widget.MediaController;
 import butterknife.ButterKnife;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.model.client.Gift;
-import com.pataniqa.coursera.potlatch.model.client.GiftResult;
+import com.pataniqa.coursera.potlatch.model.Gift;
+import com.pataniqa.coursera.potlatch.model.GiftResult;
 
 public class EditGiftActivity extends ViewGiftActivity {
 

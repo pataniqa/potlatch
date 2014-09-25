@@ -17,6 +17,7 @@
  */
 package com.pataniqa.coursera.potlatch.server;
 
+import com.pataniqa.coursera.potlatch.model.server.Gift;
 import com.pataniqa.coursera.potlatch.server.repository.*;
 
 import java.io.FileNotFoundException;

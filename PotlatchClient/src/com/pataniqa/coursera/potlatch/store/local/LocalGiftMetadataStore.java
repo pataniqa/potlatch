@@ -4,7 +4,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.RemoteException;
 
-import com.pataniqa.coursera.potlatch.model.client.GiftResult;
+import com.pataniqa.coursera.potlatch.model.GiftResult;
 import com.pataniqa.coursera.potlatch.store.MetadataStore;
 
 public class LocalGiftMetadataStore implements MetadataStore {

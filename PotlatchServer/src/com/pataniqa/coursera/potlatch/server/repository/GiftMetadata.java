@@ -2,6 +2,8 @@ package com.pataniqa.coursera.potlatch.server.repository;
 
 import javax.persistence.*;
 
+import com.pataniqa.coursera.potlatch.model.server.Gift;
+
 @Entity
 @IdClass(GiftMetadataId.class)
 public class GiftMetadata {

@@ -7,8 +7,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.RemoteException;
 
+import com.pataniqa.coursera.potlatch.model.GiftResult;
 import com.pataniqa.coursera.potlatch.model.TimeUtils;
-import com.pataniqa.coursera.potlatch.model.client.GiftResult;
 import com.pataniqa.coursera.potlatch.store.GiftQuery;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;

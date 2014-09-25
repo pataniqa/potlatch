@@ -1,5 +1,7 @@
 package com.pataniqa.coursera.potlatch.server.repository;
 
+import com.pataniqa.coursera.potlatch.model.server.Gift;
+
 public class ClientGift extends Gift implements HasID {
 
     public boolean like;

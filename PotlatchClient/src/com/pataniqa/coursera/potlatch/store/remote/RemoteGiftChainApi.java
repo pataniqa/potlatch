@@ -8,7 +8,7 @@ import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.PUT;
 
-import com.pataniqa.coursera.potlatch.model.client.GiftChain;
+import com.pataniqa.coursera.potlatch.model.GiftChain;
 
 public interface RemoteGiftChainApi {
     

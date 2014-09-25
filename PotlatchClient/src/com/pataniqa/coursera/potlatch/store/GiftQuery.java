@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import android.os.RemoteException;
 
-import com.pataniqa.coursera.potlatch.model.client.GiftResult;
+import com.pataniqa.coursera.potlatch.model.GiftResult;
 
 public interface GiftQuery extends Query<GiftResult>, Retrieve<GiftResult, Long> {
 

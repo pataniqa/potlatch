@@ -1,9 +1,7 @@
-package com.pataniqa.coursera.potlatch.model.client;
+package com.pataniqa.coursera.potlatch.model;
 
-import com.pataniqa.coursera.potlatch.model.HasID;
-import com.pataniqa.coursera.potlatch.model.IGiftChain;
 
-public class GiftChain implements HasID, IGiftChain {
+public class GiftChain implements HasID {
 
     private long giftChainID;
     private String giftChainName;
@@ -39,22 +37,18 @@ public class GiftChain implements HasID, IGiftChain {
         giftChainID = id;
     }
 
-    @Override
     public long getGiftChainID() {
         return giftChainID;
     }
 
-    @Override
     public void setGiftChainID(long giftChainID) {
         this.giftChainID = giftChainID;
     }
 
-    @Override
     public String getGiftChainName() {
         return giftChainName;
     }
 
-    @Override
     public void setGiftChainName(String giftChainName) {
         this.giftChainName = giftChainName;
     }

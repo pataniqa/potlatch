@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import com.pataniqa.coursera.potlatch.model.server.Gift;
+
 @Repository
 public interface GiftRepository extends PagingAndSortingRepository<Gift, Long>{
 	

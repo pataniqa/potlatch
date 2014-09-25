@@ -3,7 +3,7 @@ package com.pataniqa.coursera.potlatch.store.local;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.pataniqa.coursera.potlatch.model.client.GiftChain;
+import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.store.GiftChainStore;
 
 public class LocalGiftChainStore extends BaseCreateUpdateDelete<GiftChain> implements GiftChainStore {

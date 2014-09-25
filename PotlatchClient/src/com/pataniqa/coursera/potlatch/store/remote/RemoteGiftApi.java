@@ -8,19 +8,18 @@ import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.PUT;
 
-import com.pataniqa.coursera.potlatch.model.IGift;
-import com.pataniqa.coursera.potlatch.model.client.Gift;
-import com.pataniqa.coursera.potlatch.model.client.GiftResult;
+import com.pataniqa.coursera.potlatch.model.Gift;
+import com.pataniqa.coursera.potlatch.model.GiftResult;
 
 public interface RemoteGiftApi {
     
     public static final String GIFT_SVC_PATH = "/gift";
     
     @POST(GIFT_SVC_PATH)
-    Gift insert(@Body IGift data);
+    Gift insert(@Body Gift data);
     
     @PUT(GIFT_SVC_PATH + "/{id}")
-    void update(long id, @Body IGift data);
+    void update(long id, @Body Gift data);
     
     @DELETE(GIFT_SVC_PATH + "/{id}")
     void deleteGift(long id);

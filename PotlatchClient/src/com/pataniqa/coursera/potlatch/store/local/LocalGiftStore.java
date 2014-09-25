@@ -5,8 +5,8 @@ import java.util.Date;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.TimeUtils;
-import com.pataniqa.coursera.potlatch.model.client.Gift;
 import com.pataniqa.coursera.potlatch.store.GiftStore;
 
 /**

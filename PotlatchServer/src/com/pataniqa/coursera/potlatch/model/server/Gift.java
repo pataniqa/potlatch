@@ -1,29 +1,43 @@
-package com.pataniqa.coursera.potlatch.server.repository;
+package com.pataniqa.coursera.potlatch.model.server;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.pataniqa.coursera.potlatch.model.IGift;
+import com.pataniqa.coursera.potlatch.server.repository.GiftChain;
+import com.pataniqa.coursera.potlatch.server.repository.User;
+
+import java.util.Date;
 
 @Entity
-public class Gift {
+public class Gift implements IGift {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="gift_id")
 	private long id;
 	
-    public String title;
-    public String description;
-    public String videoUri;
-    public String imageUri;
+    private String title;
+    private String description;
+    private String videoUri;
+    private String imageUri;
     
     @Temporal(TemporalType.TIMESTAMP) 
-    private java.util.Date created;
+    private Date created;
     
     @ManyToOne(optional=false)
     @JoinColumn(name="user_id",referencedColumnName="user_id")
-    public User user;
+    private User user;
     
     @ManyToOne(optional=false)
     @JoinColumn(name="giftchain_id",referencedColumnName="giftchain_id")
-    public GiftChain giftChain;
+    private GiftChain giftChain;
 
 	public long getId() {
 		return id;
@@ -98,6 +112,76 @@ public class Gift {
         } else if (!videoUri.equals(other.videoUri))
             return false;
         return true;
+    }
+
+    @Override
+    public long getID() {
+        return id;
+    }
+
+    @Override
+    public long getGiftID() {
+        return id;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public String getVideoUri() {
+        return videoUri;
+    }
+
+    @Override
+    public void setVideoUri(String videoUri) {
+        this.videoUri = videoUri;
+    }
+
+    @Override
+    public String getImageUri() {
+        return imageUri;
+    }
+
+    @Override
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
+    }
+
+    @Override
+    public Date getCreated() {
+        return created;
+    }
+
+    @Override
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    @Override
+    public long getUserID() {
+        return user.getId();
+    }
+
+    @Override
+    public long getGiftChainID() {
+        return giftChain.getId();
     }
 	
 }
