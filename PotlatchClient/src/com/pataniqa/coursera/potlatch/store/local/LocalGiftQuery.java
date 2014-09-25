@@ -110,17 +110,17 @@ class ClientGiftCreator extends BaseCreator<ClientGift> implements Creator<Clien
     @Override
     public ContentValues getCV(ClientGift data) {
         ContentValues rValue = new ContentValues();
-        rValue.put(LocalSchema.Cols.TITLE, data.title);
-        rValue.put(LocalSchema.Cols.DESCRIPTION, data.description);
-        rValue.put(LocalSchema.Cols.VIDEO_URI, data.videoUri);
-        rValue.put(LocalSchema.Cols.IMAGE_URI, data.imageUri);
-        rValue.put(LocalSchema.Cols.CREATED, TimeUtils.toLong(data.created));
-        rValue.put(LocalSchema.Cols.USER_ID, data.userID);
+        rValue.put(LocalSchema.Cols.TITLE, data.getTitle());
+        rValue.put(LocalSchema.Cols.DESCRIPTION, data.getDescription());
+        rValue.put(LocalSchema.Cols.VIDEO_URI, data.getVideoUri());
+        rValue.put(LocalSchema.Cols.IMAGE_URI, data.getImageUri());
+        rValue.put(LocalSchema.Cols.CREATED, TimeUtils.toLong(data.getCreated()));
+        rValue.put(LocalSchema.Cols.USER_ID, data.getUserID());
         rValue.put(LocalSchema.Cols.LIKE, data.like);
         rValue.put(LocalSchema.Cols.FLAG, data.flag);
         rValue.put(LocalSchema.Cols.LIKES, data.likes);
         rValue.put(LocalSchema.Cols.FLAGGED, data.flagged);
-        rValue.put(LocalSchema.Cols.GIFT_CHAIN_ID, data.giftChainID);
+        rValue.put(LocalSchema.Cols.GIFT_CHAIN_ID, data.getGiftChainID());
         rValue.put(LocalSchema.Cols.GIFT_CHAIN_NAME, data.giftChainName);
         rValue.put(LocalSchema.Cols.USER_LIKES, data.userLikes);
         rValue.put(LocalSchema.Cols.USER_NAME, data.username);

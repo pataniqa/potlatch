@@ -15,24 +15,8 @@ public class ClientGift extends Gift implements HasID {
     public String username;
     public String giftChainName;
 
-    /**
-     * Constructor
-     * 
-     * @param giftID
-     * @param title
-     * @param description
-     * @param videoUri
-     * @param imageUri
-     * @param created
-     * @param userID
-     * @param like
-     * @param flag
-     * @param likes
-     * @param flagged
-     * @param giftChainName
-     * @param userLikes
-     * @param username
-     */
+    public ClientGift() {}
+    
     public ClientGift(long giftID,
             String title,
             String description,
@@ -58,20 +42,26 @@ public class ClientGift extends Gift implements HasID {
         this.username = username;
     }
 
+
+
     @Override
     public String toString() {
         return "ClientGift [like=" + like + ", flag=" + flag + ", likes=" + likes + ", flagged="
                 + flagged + ", userLikes=" + userLikes + ", username=" + username
-                + ", giftChainName=" + giftChainName + ", title=" + title + ", description="
-                + description + ", videoUri=" + videoUri + ", imageUri=" + imageUri + ", created="
-                + created + ", userID=" + userID + ", giftChainID=" + giftChainID + "]";
+                + ", giftChainName=" + giftChainName + ", toString()=" + super.toString()
+                + ", getID()=" + getID() + ", getGiftID()=" + getGiftID() + ", getTitle()="
+                + getTitle() + ", getDescription()=" + getDescription() + ", getVideoUri()="
+                + getVideoUri() + ", getImageUri()=" + getImageUri() + ", getCreated()="
+                + getCreated() + ", getUserID()=" + getUserID() + ", getGiftChainID()="
+                + getGiftChainID() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+                + "]";
     }
 
     /**
      * Clone this object into a new GiftData
      */
     public ClientGift clone() {
-        return new ClientGift(HasID.UNDEFINED_ID, title, description, videoUri, imageUri, created, userID, like,
-                flag, likes, flagged, giftChainID, giftChainName, userLikes, username);
+        return new ClientGift(HasID.UNDEFINED_ID, getTitle(), getDescription(), getVideoUri(), getImageUri(), getCreated(), getUserID(), like,
+                flag, likes, flagged, getGiftChainID(), giftChainName, userLikes, username);
     }
 }

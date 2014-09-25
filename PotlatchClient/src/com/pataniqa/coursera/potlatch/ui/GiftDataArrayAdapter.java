@@ -104,17 +104,17 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
 
         public void setGiftData(final ClientGift gift) {
 
-            if (gift.videoUri != null && !gift.videoUri.isEmpty()) {
+            if (gift.getVideoUri() != null && !gift.getVideoUri().isEmpty()) {
                 if (viewSwitcher.getCurrentView() != video)
                     viewSwitcher.showNext();
                 MediaController mediaController = new MediaController(view.getContext());
                 mediaController.setAnchorView(video);
                 video.setMediaController(mediaController);
-                video.setVideoURI(Uri.parse(gift.videoUri));
+                video.setVideoURI(Uri.parse(gift.getVideoUri()));
             } else {
                 if (viewSwitcher.getCurrentView() != image)
                     viewSwitcher.showPrevious();
-                image.setImageURI(Uri.parse(gift.imageUri));
+                image.setImageURI(Uri.parse(gift.getImageUri()));
                 image.setVisibility(View.VISIBLE);
                 image.setScaleType(ScaleType.FIT_CENTER);
             }
@@ -130,8 +130,8 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
             flagButton
                     .setImageResource(gift.flag ? R.drawable.ic_fa_flag : R.drawable.ic_fa_flag_o);
 
-            title.setText(gift.title);
-            description.setText(gift.description);
+            title.setText(gift.getTitle());
+            description.setText(gift.getDescription());
             likes.setText("" + gift.likes);
 
             likeButton.setOnClickListener(new View.OnClickListener() {

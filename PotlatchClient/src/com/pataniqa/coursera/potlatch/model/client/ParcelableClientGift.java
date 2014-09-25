@@ -24,17 +24,17 @@ public class ParcelableClientGift extends ClientGift implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(getID());
-        dest.writeString(title);
-        dest.writeString(description);
-        dest.writeString(videoUri);
-        dest.writeString(imageUri);
-        dest.writeLong(TimeUtils.toLong(created));
-        dest.writeLong(userID);
+        dest.writeString(getTitle());
+        dest.writeString(getDescription());
+        dest.writeString(getVideoUri());
+        dest.writeString(getImageUri());
+        dest.writeLong(TimeUtils.toLong(getCreated()));
+        dest.writeLong(getUserID());
         dest.writeByte((byte) (like ? 1 : 0));
         dest.writeByte((byte) (flag ? 1 : 0));
         dest.writeLong(likes);
         dest.writeByte((byte) (flagged ? 1 : 0));
-        dest.writeLong(giftChainID);
+        dest.writeLong(getGiftChainID());
         dest.writeString(giftChainName);
         dest.writeLong(userLikes);
         dest.writeString(username);

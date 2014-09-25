@@ -42,20 +42,20 @@ public class EditGiftActivity extends ViewGiftActivity {
             Log.d(LOG_TAG, "setValuesToDefault :" + gift);
             if (gift != null) {
                 // set the EditTexts to the current values
-                titleInput.setText(gift.title);
-                descriptionInput.setText(gift.description);
+                titleInput.setText(gift.getTitle());
+                descriptionInput.setText(gift.getDescription());
                 
-                if (gift.videoUri != null && !gift.videoUri.isEmpty()) {
+                if (gift.getVideoUri() != null && !gift.getVideoUri().isEmpty()) {
                     if (viewSwitcher.getCurrentView() != video)
                         viewSwitcher.showNext();
                     MediaController mediaController = new MediaController(this);
                     mediaController.setAnchorView(video);
                     video.setMediaController(mediaController);
-                    video.setVideoURI(Uri.parse(gift.videoUri));
+                    video.setVideoURI(Uri.parse(gift.getVideoUri()));
                 } else {
                     if (viewSwitcher.getCurrentView() != image)
                         viewSwitcher.showPrevious();
-                    image.setImageURI(Uri.parse(gift.imageUri));
+                    image.setImageURI(Uri.parse(gift.getImageUri()));
                     image.setVisibility(View.VISIBLE);
                     image.setScaleType(ScaleType.FIT_CENTER);
                 }
@@ -67,8 +67,8 @@ public class EditGiftActivity extends ViewGiftActivity {
 
                 // TODO or in the case of a video play the video
 
-                imagePathFinal = stringToUri(gift.imageUri);
-                videoPathFinal = stringToUri(gift.videoUri);
+                imagePathFinal = stringToUri(gift.getImageUri());
+                videoPathFinal = stringToUri(gift.getVideoUri());
                 return true;
             }
         } catch (RemoteException e) {

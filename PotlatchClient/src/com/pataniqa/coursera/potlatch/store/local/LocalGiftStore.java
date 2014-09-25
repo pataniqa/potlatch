@@ -34,13 +34,13 @@ class GiftCreator extends BaseCreator<Gift> implements Creator<Gift> {
     @Override
     public ContentValues getCV(Gift data) {
         ContentValues rValue = new ContentValues();
-        rValue.put(LocalSchema.Cols.TITLE, data.title);
-        rValue.put(LocalSchema.Cols.DESCRIPTION, data.description);
-        rValue.put(LocalSchema.Cols.VIDEO_URI, data.videoUri);
-        rValue.put(LocalSchema.Cols.IMAGE_URI, data.imageUri);
-        rValue.put(LocalSchema.Cols.CREATED, TimeUtils.toLong(data.created));
-        rValue.put(LocalSchema.Cols.USER_ID, data.userID);
-        rValue.put(LocalSchema.Cols.GIFT_CHAIN_ID, data.giftChainID);
+        rValue.put(LocalSchema.Cols.TITLE, data.getTitle());
+        rValue.put(LocalSchema.Cols.DESCRIPTION, data.getDescription());
+        rValue.put(LocalSchema.Cols.VIDEO_URI, data.getVideoUri());
+        rValue.put(LocalSchema.Cols.IMAGE_URI, data.getImageUri());
+        rValue.put(LocalSchema.Cols.CREATED, TimeUtils.toLong(data.getCreated()));
+        rValue.put(LocalSchema.Cols.USER_ID, data.getUserID());
+        rValue.put(LocalSchema.Cols.GIFT_CHAIN_ID, data.getGiftChainID());
         return rValue;
     }
 

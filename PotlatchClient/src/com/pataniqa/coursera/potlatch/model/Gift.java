@@ -5,26 +5,14 @@ import java.util.Date;
 public class Gift implements HasID {
 
     private long giftID;
-    public String title;
-    public String description;
-    public String videoUri;
-    public String imageUri;
-    public Date created;
-    public long userID;
-    public long giftChainID;
+    private String title;
+    private String description;
+    private String videoUri;
+    private String imageUri;
+    private Date created;
+    private long userID;
+    private long giftChainID;
     
-    /**
-     * Constructor.
-     * 
-     * @param giftID
-     * @param title
-     * @param description
-     * @param videoUri
-     * @param imageUri
-     * @param created
-     * @param userID
-     * @param giftChainID
-     */
     public Gift(long giftID,
             String title,
             String description,
@@ -42,6 +30,9 @@ public class Gift implements HasID {
         this.userID = userID;
         this.giftChainID = giftChainID;
     }
+    
+    public Gift() {
+    }
 
     @Override
     public String toString() {
@@ -58,6 +49,70 @@ public class Gift implements HasID {
     @Override
     public void setID(long id) {
         giftID = id;
+    }
+
+    public long getGiftID() {
+        return giftID;
+    }
+
+    public void setGiftID(long giftID) {
+        this.giftID = giftID;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getVideoUri() {
+        return videoUri;
+    }
+
+    public void setVideoUri(String videoUri) {
+        this.videoUri = videoUri;
+    }
+
+    public String getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public long getUserID() {
+        return userID;
+    }
+
+    public void setUserID(long userID) {
+        this.userID = userID;
+    }
+
+    public long getGiftChainID() {
+        return giftChainID;
+    }
+
+    public void setGiftChainID(long giftChainID) {
+        this.giftChainID = giftChainID;
     }
 
 }
