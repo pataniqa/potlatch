@@ -3,10 +3,20 @@ package com.pataniqa.coursera.potlatch.server;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.pataniqa.coursera.potlatch.model.server.Gift;
-import com.pataniqa.coursera.potlatch.server.repository.*;
+import com.pataniqa.coursera.potlatch.model.Gift;
+import com.pataniqa.coursera.potlatch.model.GiftResult;
+import com.pataniqa.coursera.potlatch.server.repository.GiftChainRepository;
+import com.pataniqa.coursera.potlatch.server.repository.GiftRepository;
+import com.pataniqa.coursera.potlatch.server.repository.ServerGift;
+import com.pataniqa.coursera.potlatch.server.repository.ServerGiftChain;
+import com.pataniqa.coursera.potlatch.server.repository.ServerUser;
+import com.pataniqa.coursera.potlatch.server.repository.UserRepository;
 
 public class GiftService {
     
@@ -15,14 +25,24 @@ public class GiftService {
     @Autowired
     private GiftRepository gifts;
     
+    @Autowired
+    private UserRepository users;
+    
+    @Autowired
+    private GiftChainRepository giftChains;
+    
     @RequestMapping(value = GIFT_SVC_PATH, method = RequestMethod.POST)
     public @ResponseBody Gift insert(@RequestBody Gift gift) {
-        return gifts.save(gift);
+        ServerGiftChain giftChain = giftChains.findOne(gift.getGiftID());
+        ServerUser user = users.findOne(gift.getUserID());
+        return gifts.save(new ServerGift(gift, user, giftChain)).toClient();
     }
     
     @RequestMapping(value = GIFT_SVC_PATH + "/{id}", method = RequestMethod.PUT)
     public void update(@PathVariable long id, @RequestBody Gift gift) {
-        gifts.save(gift);
+        ServerGiftChain giftChain = giftChains.findOne(gift.getGiftID());
+        ServerUser user = users.findOne(gift.getUserID());
+        gifts.save(new ServerGift(gift, user, giftChain));
     }
     
     @RequestMapping(value = GIFT_SVC_PATH + "/{id}", method = RequestMethod.DELETE)
@@ -41,20 +61,20 @@ public class GiftService {
     }
     
     @RequestMapping(value = GIFT_SVC_PATH + "/{id}", method = RequestMethod.GET)
-    public ClientGift findOne(@PathVariable Long id) {
+    public GiftResult findOne(@PathVariable Long id) {
         // TODO
         return null;
     }
 
     @RequestMapping(value = GIFT_SVC_PATH, method = RequestMethod.GET)
-    public List<ClientGift> findAll() {
+    public List<GiftResult> findAll() {
         // TODO
         return null;
     }
     
     @RequestMapping(value = GIFT_SVC_PATH + 
             "/queryTitle?title={title}&resultorder={order}&direction={direction}", method = RequestMethod.GET)
-    public List<ClientGift> queryByTitle(String title,
+    public List<GiftResult> queryByTitle(String title,
             int order,
             int direction) {
         // TODO
@@ -63,7 +83,7 @@ public class GiftService {
 
     @RequestMapping(value = GIFT_SVC_PATH + 
             "/queryUser?user={userID}&title={title}&resultorder={order}&direction={direction}", method = RequestMethod.GET)
-    public List<ClientGift> queryByUser(String title,
+    public List<GiftResult> queryByUser(String title,
             long userID,
             int order,
             int direction) {
@@ -73,7 +93,7 @@ public class GiftService {
 
     @RequestMapping(value = GIFT_SVC_PATH + "" +
             "/queryTopGiftGivers?title={title}&direction={direction}", method = RequestMethod.GET)
-    public List<ClientGift> queryByTopGiftGivers(String title,
+    public List<GiftResult> queryByTopGiftGivers(String title,
             int direction) {
         // TODO
         return null;
@@ -81,7 +101,7 @@ public class GiftService {
 
     @RequestMapping(value = GIFT_SVC_PATH + 
             "/queryGiftChain?giftchain={giftchain}&title={title}&resultorder={order}&direction={direction}", method = RequestMethod.GET)
-    public List<ClientGift> queryByGiftChain(String title,
+    public List<GiftResult> queryByGiftChain(String title,
             String giftChain,
             int order,
             int direction) {

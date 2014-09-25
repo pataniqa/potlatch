@@ -2,7 +2,6 @@ package com.pataniqa.coursera.potlatch.server.repository;
 
 import javax.persistence.*;
 
-import com.pataniqa.coursera.potlatch.model.server.Gift;
 
 @Entity
 @IdClass(GiftMetadataId.class)
@@ -14,11 +13,11 @@ public class GiftMetadata {
     
     @ManyToOne
     @PrimaryKeyJoinColumn(name="gift_id", referencedColumnName="gift_id")
-    public Gift gift;
+    public ServerGift gift;
     
     @ManyToOne
     @PrimaryKeyJoinColumn(name="user_id", referencedColumnName="user_id")
-    public User user;
+    public ServerUser user;
     
     public boolean like;
     public boolean flag;

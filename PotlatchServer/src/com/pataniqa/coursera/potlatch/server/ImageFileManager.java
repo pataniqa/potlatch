@@ -17,7 +17,6 @@
  */
 package com.pataniqa.coursera.potlatch.server;
 
-import com.pataniqa.coursera.potlatch.model.server.Gift;
 import com.pataniqa.coursera.potlatch.server.repository.*;
 
 import java.io.FileNotFoundException;
@@ -39,7 +38,7 @@ public class ImageFileManager {
 		}
 	}
 
-	private Path getImagePath(Gift g) {
+	private Path getImagePath(ServerGift g) {
 		assert (g != null);
 		return targetDir_.resolve("image" + g.getId() + ".jpg");
 	}
@@ -51,7 +50,7 @@ public class ImageFileManager {
 	 * @param v
 	 * @return
 	 */
-	public boolean hasImageData(Gift g) {
+	public boolean hasImageData(ServerGift g) {
 		return Files.exists(getImagePath(g));
 	}
 
@@ -65,7 +64,7 @@ public class ImageFileManager {
 	 * @param out
 	 * @throws IOException
 	 */
-	public void copyImageData(Gift g, OutputStream out) throws IOException {
+	public void copyImageData(ServerGift g, OutputStream out) throws IOException {
 		Path source = getImagePath(g);
 		if (!Files.exists(source)) {
 			throw new FileNotFoundException(
@@ -84,7 +83,7 @@ public class ImageFileManager {
 	 * @param imageData
 	 * @throws IOException
 	 */
-	public void saveImageData(Gift g, InputStream imageData)
+	public void saveImageData(ServerGift g, InputStream imageData)
 			throws IOException {
 		assert (imageData != null);
 		Files.copy(imageData, getImagePath(g), StandardCopyOption.REPLACE_EXISTING);

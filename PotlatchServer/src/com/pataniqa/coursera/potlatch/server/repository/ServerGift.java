@@ -1,4 +1,6 @@
-package com.pataniqa.coursera.potlatch.model.server;
+package com.pataniqa.coursera.potlatch.server.repository;
+
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,38 +12,53 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.pataniqa.coursera.potlatch.model.IGift;
-import com.pataniqa.coursera.potlatch.server.repository.GiftChain;
-import com.pataniqa.coursera.potlatch.server.repository.User;
-
-import java.util.Date;
+import com.pataniqa.coursera.potlatch.model.Gift;
 
 @Entity
-public class Gift implements IGift {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="gift_id")
-	private long id;
-	
+public class ServerGift {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "gift_id")
+    private long id;
+
     private String title;
     private String description;
     private String videoUri;
     private String imageUri;
-    
-    @Temporal(TemporalType.TIMESTAMP) 
-    private Date created;
-    
-    @ManyToOne(optional=false)
-    @JoinColumn(name="user_id",referencedColumnName="user_id")
-    private User user;
-    
-    @ManyToOne(optional=false)
-    @JoinColumn(name="giftchain_id",referencedColumnName="giftchain_id")
-    private GiftChain giftChain;
 
-	public long getId() {
-		return id;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private ServerUser user;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "giftchain_id", referencedColumnName = "giftchain_id")
+    private ServerGiftChain giftChain;
+
+    public ServerGift() {
+
+    }
+
+    public ServerGift(Gift gift, ServerUser user, ServerGiftChain giftChain) {
+        this.title = gift.getTitle();
+        this.description = gift.getDescription();
+        this.videoUri = gift.getVideoUri();
+        this.imageUri = gift.getImageUri();
+        this.created = gift.getCreated();
+        this.user = user;
+        this.giftChain = giftChain;
+    }
+
+    public Gift toClient() {
+        return new Gift(id, title, description, videoUri, imageUri, created, user.getId(),
+                giftChain.getGiftChainID());
+    }
+
+    public long getId() {
+        return id;
+    }
 
     @Override
     public String toString() {
@@ -73,7 +90,7 @@ public class Gift implements IGift {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Gift other = (Gift) obj;
+        ServerGift other = (ServerGift) obj;
         if (created == null) {
             if (other.created != null)
                 return false;
@@ -114,74 +131,60 @@ public class Gift implements IGift {
         return true;
     }
 
-    @Override
     public long getID() {
         return id;
     }
 
-    @Override
     public long getGiftID() {
         return id;
     }
 
-    @Override
     public String getTitle() {
         return title;
     }
 
-    @Override
     public void setTitle(String title) {
         this.title = title;
     }
 
-    @Override
     public String getDescription() {
         return description;
     }
 
-    @Override
     public void setDescription(String description) {
         this.description = description;
     }
 
-    @Override
     public String getVideoUri() {
         return videoUri;
     }
 
-    @Override
     public void setVideoUri(String videoUri) {
         this.videoUri = videoUri;
     }
 
-    @Override
     public String getImageUri() {
         return imageUri;
     }
 
-    @Override
     public void setImageUri(String imageUri) {
         this.imageUri = imageUri;
     }
 
-    @Override
     public Date getCreated() {
         return created;
     }
 
-    @Override
     public void setCreated(Date created) {
         this.created = created;
     }
 
-    @Override
     public long getUserID() {
         return user.getId();
     }
 
-    @Override
     public long getGiftChainID() {
-        return giftChain.getId();
+        return giftChain.getGiftChainID();
     }
-	
+
 }
