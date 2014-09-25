@@ -1,6 +1,6 @@
 package com.pataniqa.coursera.potlatch.model.client.parcel;
 
-import com.pataniqa.coursera.potlatch.model.GiftChain;
+import com.pataniqa.coursera.potlatch.model.client.GiftChain;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -8,18 +8,19 @@ import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.PUT;
 
-import com.pataniqa.coursera.potlatch.model.ClientGift;
-import com.pataniqa.coursera.potlatch.model.Gift;
+import com.pataniqa.coursera.potlatch.model.IGift;
+import com.pataniqa.coursera.potlatch.model.client.Gift;
+import com.pataniqa.coursera.potlatch.model.client.GiftResult;
 
 public interface RemoteGiftApi {
     
     public static final String GIFT_SVC_PATH = "/gift";
     
     @POST(GIFT_SVC_PATH)
-    Gift insert(@Body Gift data);
+    Gift insert(@Body IGift data);
     
     @PUT(GIFT_SVC_PATH + "/{id}")
-    void update(long id, @Body Gift data);
+    void update(long id, @Body IGift data);
     
     @DELETE(GIFT_SVC_PATH + "/{id}")
     void deleteGift(long id);
@@ -31,32 +32,32 @@ public interface RemoteGiftApi {
     void setFlag(long id, long userID, boolean like);
     
     @GET(GIFT_SVC_PATH + "/{id}")
-    ClientGift findOne(Long id);
+    GiftResult findOne(Long id);
 
     @GET(GIFT_SVC_PATH)
-    List<ClientGift> findAll();
+    List<GiftResult> findAll();
 
     @GET(GIFT_SVC_PATH + 
             "/queryTitle?title={title}&resultorder={order}&direction={direction}")
-    List<ClientGift> queryByTitle(String title,
+    List<GiftResult> queryByTitle(String title,
             int order,
             int direction);
 
     @GET(GIFT_SVC_PATH + 
             "/queryUser?user={userID}&title={title}&resultorder={order}&direction={direction}")
-    List<ClientGift> queryByUser(String title,
+    List<GiftResult> queryByUser(String title,
             long userID,
             int order,
             int direction);
 
     @GET(GIFT_SVC_PATH + "" +
             "/queryTopGiftGivers?title={title}&direction={direction}")
-    List<ClientGift> queryByTopGiftGivers(String title,
+    List<GiftResult> queryByTopGiftGivers(String title,
             int direction);
 
     @GET(GIFT_SVC_PATH + 
             "/queryGiftChain?giftchain={giftchain}&title={title}&resultorder={order}&direction={direction}")
-    List<ClientGift> queryByGiftChain(String title,
+    List<GiftResult> queryByGiftChain(String title,
             String giftChain,
             int order,
             int direction);

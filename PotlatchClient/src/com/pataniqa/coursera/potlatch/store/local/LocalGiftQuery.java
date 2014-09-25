@@ -7,13 +7,13 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.RemoteException;
 
-import com.pataniqa.coursera.potlatch.model.ClientGift;
 import com.pataniqa.coursera.potlatch.model.TimeUtils;
+import com.pataniqa.coursera.potlatch.model.client.GiftResult;
 import com.pataniqa.coursera.potlatch.store.GiftQuery;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 
-public class LocalGiftQuery extends BaseQuery<ClientGift> implements GiftQuery {
+public class LocalGiftQuery extends BaseQuery<GiftResult> implements GiftQuery {
 
     public LocalGiftQuery(LocalDatabase helper) {
         creator = new ClientGiftCreator();
@@ -35,7 +35,7 @@ public class LocalGiftQuery extends BaseQuery<ClientGift> implements GiftQuery {
     static String LIKE_QUERY = LocalSchema.Cols.TITLE + " LIKE ? ";
 
     @Override
-    public ArrayList<ClientGift> queryByTitle(String title,
+    public ArrayList<GiftResult> queryByTitle(String title,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException {
 
@@ -49,7 +49,7 @@ public class LocalGiftQuery extends BaseQuery<ClientGift> implements GiftQuery {
     }
 
     @Override
-    public ArrayList<ClientGift> queryByUser(String title,
+    public ArrayList<GiftResult> queryByUser(String title,
             long userID,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException {
@@ -67,7 +67,7 @@ public class LocalGiftQuery extends BaseQuery<ClientGift> implements GiftQuery {
     }
 
     @Override
-    public ArrayList<ClientGift> queryByTopGiftGivers(String title,
+    public ArrayList<GiftResult> queryByTopGiftGivers(String title,
             ResultOrderDirection resultOrderDirection) throws RemoteException {
         // TODO userLikes is not an index - very inefficient!
         String sortOrder = LocalSchema.Cols.USER_LIKES + " " + direction(resultOrderDirection);
@@ -80,7 +80,7 @@ public class LocalGiftQuery extends BaseQuery<ClientGift> implements GiftQuery {
     }
 
     @Override
-    public ArrayList<ClientGift> queryByGiftChain(String title,
+    public ArrayList<GiftResult> queryByGiftChain(String title,
             String giftChainName,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException {
@@ -105,10 +105,10 @@ public class LocalGiftQuery extends BaseQuery<ClientGift> implements GiftQuery {
  * between the Custom ORM objects (such as GiftData), ContentValues, and
  * Cursors.
  */
-class ClientGiftCreator extends BaseCreator<ClientGift> implements Creator<ClientGift> {
+class ClientGiftCreator extends BaseCreator<GiftResult> implements Creator<GiftResult> {
 
     @Override
-    public ContentValues getCV(ClientGift data) {
+    public ContentValues getCV(GiftResult data) {
         ContentValues rValue = new ContentValues();
         rValue.put(LocalSchema.Cols.TITLE, data.getTitle());
         rValue.put(LocalSchema.Cols.DESCRIPTION, data.getDescription());
@@ -128,7 +128,7 @@ class ClientGiftCreator extends BaseCreator<ClientGift> implements Creator<Clien
     }
 
     @Override
-    public ClientGift getFromCursor(Cursor cursor) {
+    public GiftResult getFromCursor(Cursor cursor) {
         long rowID = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.ID));
         String title = cursor.getString(cursor.getColumnIndex(LocalSchema.Cols.TITLE));
         String description = cursor.getString(cursor.getColumnIndex(LocalSchema.Cols.DESCRIPTION));
@@ -146,7 +146,7 @@ class ClientGiftCreator extends BaseCreator<ClientGift> implements Creator<Clien
         long userLikes = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.USER_LIKES));
         String username = cursor.getString(cursor.getColumnIndex(LocalSchema.Cols.USER_NAME));
 
-        return new ClientGift(rowID, title, description, videoUri, imageUri, created, userID, like,
+        return new GiftResult(rowID, title, description, videoUri, imageUri, created, userID, like,
                 flag, likes, flagged, giftChainID, giftChainName, userLikes, username);
     }
 }

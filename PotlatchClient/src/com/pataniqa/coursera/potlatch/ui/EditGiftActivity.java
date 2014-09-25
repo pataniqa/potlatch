@@ -11,8 +11,8 @@ import android.widget.MediaController;
 import butterknife.ButterKnife;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.model.ClientGift;
-import com.pataniqa.coursera.potlatch.model.Gift;
+import com.pataniqa.coursera.potlatch.model.client.Gift;
+import com.pataniqa.coursera.potlatch.model.client.GiftResult;
 
 public class EditGiftActivity extends ViewGiftActivity {
 
@@ -38,7 +38,7 @@ public class EditGiftActivity extends ViewGiftActivity {
     boolean setValuesToDefault() {
         Log.d(LOG_TAG, "setValuesToDefault");
         try {
-            ClientGift gift = service.gifts().findOne(getRowIdentifier());
+            GiftResult gift = service.gifts().findOne(getRowIdentifier());
             Log.d(LOG_TAG, "setValuesToDefault :" + gift);
             if (gift != null) {
                 // set the EditTexts to the current values

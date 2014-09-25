@@ -6,10 +6,10 @@ import java.util.Collection;
 import retrofit.RestAdapter;
 
 import com.google.common.collect.Lists;
-import com.pataniqa.coursera.potlatch.model.ClientGift;
-import com.pataniqa.coursera.potlatch.model.Gift;
-import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.model.HasID;
+import com.pataniqa.coursera.potlatch.model.client.Gift;
+import com.pataniqa.coursera.potlatch.model.client.GiftChain;
+import com.pataniqa.coursera.potlatch.model.client.GiftResult;
 import com.pataniqa.coursera.potlatch.store.BaseService;
 import com.pataniqa.coursera.potlatch.store.GiftChainStore;
 import com.pataniqa.coursera.potlatch.store.GiftQuery;
@@ -91,17 +91,17 @@ public class RemoteService extends BaseService implements Service {
     class RemoteGiftQueryService implements GiftQuery {
 
         @Override
-        public Collection<ClientGift> findAll() {
+        public Collection<GiftResult> findAll() {
             return giftService.findAll();
         }
 
         @Override
-        public ClientGift findOne(Long id) {
+        public GiftResult findOne(Long id) {
             return giftService.findOne(id);
         }
 
         @Override
-        public ArrayList<ClientGift> queryByTitle(String title,
+        public ArrayList<GiftResult> queryByTitle(String title,
                 ResultOrder resultOrder,
                 ResultOrderDirection resultOrderDirection) {
             return Lists.newArrayList(giftService.queryByTitle(title,
@@ -110,7 +110,7 @@ public class RemoteService extends BaseService implements Service {
         }
 
         @Override
-        public ArrayList<ClientGift> queryByUser(String title,
+        public ArrayList<GiftResult> queryByUser(String title,
                 long userID,
                 ResultOrder resultOrder,
                 ResultOrderDirection resultOrderDirection) {
@@ -121,14 +121,14 @@ public class RemoteService extends BaseService implements Service {
         }
 
         @Override
-        public ArrayList<ClientGift> queryByTopGiftGivers(String title,
+        public ArrayList<GiftResult> queryByTopGiftGivers(String title,
                 ResultOrderDirection resultOrderDirection) {
             return Lists
                     .newArrayList(giftService.queryByTopGiftGivers(title, resultOrderDirection.getVal()));
         }
 
         @Override
-        public ArrayList<ClientGift> queryByGiftChain(String title,
+        public ArrayList<GiftResult> queryByGiftChain(String title,
                 String giftChainName,
                 ResultOrder resultOrder,
                 ResultOrderDirection resultOrderDirection) {

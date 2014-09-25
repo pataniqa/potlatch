@@ -1,11 +1,15 @@
-package com.pataniqa.coursera.potlatch.model;
+package com.pataniqa.coursera.potlatch.model.client;
 
 import java.util.Date;
+
+import com.pataniqa.coursera.potlatch.model.HasID;
+import com.pataniqa.coursera.potlatch.model.IGift;
+import com.pataniqa.coursera.potlatch.model.IGiftResult;
 
 /**
  * ClientGift is a de-normalized version of the data to make it easy to present in the user interface.
  */
-public class ClientGift extends Gift implements HasID {
+public class GiftResult extends Gift implements HasID, IGiftResult, IGift {
 
     private boolean like;
     private boolean flag;
@@ -15,9 +19,9 @@ public class ClientGift extends Gift implements HasID {
     private String username;
     private String giftChainName;
 
-    public ClientGift() {}
+    public GiftResult() {}
     
-    public ClientGift(long giftID,
+    public GiftResult(long giftID,
             String title,
             String description,
             String videoUri,
@@ -58,63 +62,77 @@ public class ClientGift extends Gift implements HasID {
     /**
      * Clone this object into a new GiftData
      */
-    public ClientGift clone() {
-        return new ClientGift(HasID.UNDEFINED_ID, getTitle(), getDescription(), getVideoUri(), getImageUri(), getCreated(), getUserID(), like,
+    public GiftResult clone() {
+        return new GiftResult(HasID.UNDEFINED_ID, getTitle(), getDescription(), getVideoUri(), getImageUri(), getCreated(), getUserID(), like,
                 flag, likes, flagged, getGiftChainID(), giftChainName, userLikes, username);
     }
 
+    @Override
     public boolean isLike() {
         return like;
     }
 
+    @Override
     public void setLike(boolean like) {
         this.like = like;
     }
 
+    @Override
     public boolean isFlag() {
         return flag;
     }
 
+    @Override
     public void setFlag(boolean flag) {
         this.flag = flag;
     }
 
+    @Override
     public long getLikes() {
         return likes;
     }
 
+    @Override
     public void setLikes(long likes) {
         this.likes = likes;
     }
 
+    @Override
     public boolean isFlagged() {
         return flagged;
     }
 
+    @Override
     public void setFlagged(boolean flagged) {
         this.flagged = flagged;
     }
 
+    @Override
     public long getUserLikes() {
         return userLikes;
     }
 
+    @Override
     public void setUserLikes(long userLikes) {
         this.userLikes = userLikes;
     }
 
+    @Override
     public String getUsername() {
         return username;
     }
 
+    @Override
     public void setUsername(String username) {
         this.username = username;
     }
 
+    @Override
     public String getGiftChainName() {
         return giftChainName;
     }
 
+    @Override
     public void setGiftChainName(String giftChainName) {
         this.giftChainName = giftChainName;
     }

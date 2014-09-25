@@ -30,9 +30,9 @@ import android.widget.ViewSwitcher;
 import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.model.Gift;
-import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.model.HasID;
+import com.pataniqa.coursera.potlatch.model.client.Gift;
+import com.pataniqa.coursera.potlatch.model.client.GiftChain;
 import com.pataniqa.coursera.potlatch.store.LocalStorageUtilities;
 
 /**

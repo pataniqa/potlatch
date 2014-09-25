@@ -1,4 +1,7 @@
-package com.pataniqa.coursera.potlatch.model;
+package com.pataniqa.coursera.potlatch.model.client;
+
+import com.pataniqa.coursera.potlatch.model.HasID;
+import com.pataniqa.coursera.potlatch.model.IGiftChain;
 
 public class GiftChain implements HasID, IGiftChain {
 

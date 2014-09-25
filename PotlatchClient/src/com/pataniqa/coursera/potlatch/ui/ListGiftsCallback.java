@@ -1,13 +1,13 @@
 package com.pataniqa.coursera.potlatch.ui;
 
-import com.pataniqa.coursera.potlatch.model.ClientGift;
+import com.pataniqa.coursera.potlatch.model.client.GiftResult;
 
 public interface ListGiftsCallback {
     
     void showGiftChain(String giftChainName);
     
-    void setLike(ClientGift gift);
+    void setLike(GiftResult gift);
     
-    void setFlag(ClientGift gift);
+    void setFlag(GiftResult gift);
     
 }

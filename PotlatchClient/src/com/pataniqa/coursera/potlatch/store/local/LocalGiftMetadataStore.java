@@ -4,7 +4,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.RemoteException;
 
-import com.pataniqa.coursera.potlatch.model.ClientGift;
+import com.pataniqa.coursera.potlatch.model.client.GiftResult;
 import com.pataniqa.coursera.potlatch.store.MetadataStore;
 
 public class LocalGiftMetadataStore implements MetadataStore {
@@ -19,7 +19,7 @@ public class LocalGiftMetadataStore implements MetadataStore {
         localGiftStore = new LocalGiftQuery(helper);
     }
 
-    void update(ClientGift gift) {
+    void update(GiftResult gift) {
         String selection = LocalSchema.Cols.ID + " = ? ";
         String[] selectionArgs = { String.valueOf(gift.getID()) };
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -30,7 +30,7 @@ public class LocalGiftMetadataStore implements MetadataStore {
     @Override
     public void setLike(long giftID, long userID, boolean like) throws RemoteException {
         long rowID = giftID;
-        ClientGift gift = localGiftStore.findOne(rowID);
+        GiftResult gift = localGiftStore.findOne(rowID);
         gift.setLike(like);
 
         // we make the simplifying assumption that the local database will only
@@ -44,7 +44,7 @@ public class LocalGiftMetadataStore implements MetadataStore {
     @Override
     public void setFlag(long giftID, long userID, boolean flag) throws RemoteException {
         long rowID = giftID;
-        ClientGift gift = localGiftStore.findOne(rowID);
+        GiftResult gift = localGiftStore.findOne(rowID);
         gift.setFlag(flag);
         gift.setFlagged(flag);
         update(gift);

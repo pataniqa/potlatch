@@ -3,10 +3,10 @@ package com.pataniqa.coursera.potlatch.model.client.parcel;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.pataniqa.coursera.potlatch.model.ClientGift;
 import com.pataniqa.coursera.potlatch.model.TimeUtils;
+import com.pataniqa.coursera.potlatch.model.client.GiftResult;
 
-public class ParcelableClientGift extends ClientGift implements Parcelable {
+public class ParcelableClientGift extends GiftResult implements Parcelable {
 
     // Parcelable interface
 

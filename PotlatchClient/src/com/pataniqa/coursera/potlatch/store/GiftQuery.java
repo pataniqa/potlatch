@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import android.os.RemoteException;
 
-import com.pataniqa.coursera.potlatch.model.ClientGift;
+import com.pataniqa.coursera.potlatch.model.client.GiftResult;
 
-public interface GiftQuery extends Query<ClientGift>, Retrieve<ClientGift, Long> {
+public interface GiftQuery extends Query<GiftResult>, Retrieve<GiftResult, Long> {
 
     /**
      * Query gift data by title - corresponds to QueryType.ALL
@@ -18,7 +18,7 @@ public interface GiftQuery extends Query<ClientGift>, Retrieve<ClientGift, Long>
      * @throws RemoteException
      */
 
-    ArrayList<ClientGift> queryByTitle(String title,
+    ArrayList<GiftResult> queryByTitle(String title,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException;
 
@@ -32,7 +32,7 @@ public interface GiftQuery extends Query<ClientGift>, Retrieve<ClientGift, Long>
      * @return
      * @throws RemoteException
      */
-    ArrayList<ClientGift> queryByUser(String title, 
+    ArrayList<GiftResult> queryByUser(String title, 
             long userID,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException;
@@ -46,7 +46,7 @@ public interface GiftQuery extends Query<ClientGift>, Retrieve<ClientGift, Long>
      * @return
      * @throws RemoteException
      */
-    ArrayList<ClientGift> queryByTopGiftGivers(String title,
+    ArrayList<GiftResult> queryByTopGiftGivers(String title,
             ResultOrderDirection resultOrderDirection)
             throws RemoteException;
 
@@ -60,7 +60,7 @@ public interface GiftQuery extends Query<ClientGift>, Retrieve<ClientGift, Long>
      * @return
      * @throws RemoteException
      */
-    ArrayList<ClientGift> queryByGiftChain(String title, String giftChainName,
+    ArrayList<GiftResult> queryByGiftChain(String title, String giftChainName,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException;
 }

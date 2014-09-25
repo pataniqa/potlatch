@@ -21,12 +21,12 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.model.ClientGift;
+import com.pataniqa.coursera.potlatch.model.client.GiftResult;
 
 /**
  * This is an ArrayAdapter for an array of GiftData.
  */
-public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
+public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
 
     private static final String LOG_TAG = GiftDataArrayAdapter.class.getCanonicalName();
 
@@ -36,7 +36,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
 
     public GiftDataArrayAdapter(Context context,
             int resource,
-            List<ClientGift> items,
+            List<GiftResult> items,
             ListGiftsCallback giftChainCallback) {
         super(context, resource, items);
         Log.v(LOG_TAG, "constructor");
@@ -102,7 +102,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
             this.giftChainCallback = giftChainCallback;
         }
 
-        public void setGiftData(final ClientGift gift) {
+        public void setGiftData(final GiftResult gift) {
 
             if (gift.getVideoUri() != null && !gift.getVideoUri().isEmpty()) {
                 if (viewSwitcher.getCurrentView() != video)

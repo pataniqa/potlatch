@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.model.ClientGift;
+import com.pataniqa.coursera.potlatch.model.client.GiftResult;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 
@@ -32,7 +32,7 @@ public class ListGiftsActivity extends GiftActivity implements
 
     private static final String LOG_TAG = ListGiftsActivity.class.getCanonicalName();
 
-    private ArrayList<ClientGift> giftData;
+    private ArrayList<GiftResult> giftData;
     private GiftDataArrayAdapter arrayAdapter;
 
     @InjectView(R.id.list_gifts_swipe_container)
@@ -69,7 +69,7 @@ public class ListGiftsActivity extends GiftActivity implements
                 android.R.color.holo_red_light);
 
         // Instantiate the resolver and the ArrayList
-        giftData = new ArrayList<ClientGift>();
+        giftData = new ArrayList<GiftResult>();
 
         // Instantiate the adapter using our local GiftData ArrayList.
         arrayAdapter = new GiftDataArrayAdapter(this, R.layout.gift_listview_custom_row, giftData,
@@ -244,7 +244,7 @@ public class ListGiftsActivity extends GiftActivity implements
         try {
             giftData.clear();
 
-            ArrayList<ClientGift> results = null;
+            ArrayList<GiftResult> results = null;
             if (queryType == QueryType.USER)
                 results = service.gifts().queryByUser(titleQuery,
                         userID,
@@ -265,7 +265,7 @@ public class ListGiftsActivity extends GiftActivity implements
             if (results != null) {
                 if (prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, true)) {
                     Log.d(LOG_TAG, "filtering flagged content");
-                    for (ClientGift gift : results) {
+                    for (GiftResult gift : results) {
                         if (!gift.isFlagged())
                             giftData.add(gift);
                     }
@@ -330,7 +330,7 @@ public class ListGiftsActivity extends GiftActivity implements
     }
 
     @Override
-    public void setLike(ClientGift gift) {
+    public void setLike(GiftResult gift) {
         try {
             service.giftMetadata().setLike(gift.getID(), userID, gift.isLike());
         } catch (RemoteException e) {
@@ -339,7 +339,7 @@ public class ListGiftsActivity extends GiftActivity implements
     }
 
     @Override
-    public void setFlag(ClientGift gift) {
+    public void setFlag(GiftResult gift) {
         try {
             service.giftMetadata().setFlag(gift.getID(), userID, gift.isFlag());
         } catch (RemoteException e) {
