@@ -1,9 +1,10 @@
 package com.pataniqa.coursera.potlatch.model.client;
 
-import com.pataniqa.coursera.potlatch.model.ClientGift;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.pataniqa.coursera.potlatch.model.ClientGift;
+import com.pataniqa.coursera.potlatch.model.TimeUtils;
 
 public class ParcelableClientGift extends ClientGift implements Parcelable {
 
@@ -27,7 +28,7 @@ public class ParcelableClientGift extends ClientGift implements Parcelable {
         dest.writeString(description);
         dest.writeString(videoUri);
         dest.writeString(imageUri);
-        dest.writeLong(created);
+        dest.writeLong(TimeUtils.toLong(created));
         dest.writeLong(userID);
         dest.writeByte((byte) (like ? 1 : 0));
         dest.writeByte((byte) (flag ? 1 : 0));
@@ -55,9 +56,10 @@ public class ParcelableClientGift extends ClientGift implements Parcelable {
      * Used for writing a copy of this object to a Parcel, do not manually call.
      */
     private ParcelableClientGift(Parcel in) {
-        super(in.readLong(), in.readString(), in.readString(), in.readString(), in.readString(), in
-                .readLong(), in.readLong(), in.readByte() != 0, in.readByte() != 0, in.readLong(),
-                in.readByte() != 0, in.readString(), in.readLong(), in.readString());
+        super(in.readLong(), in.readString(), in.readString(), in.readString(), in.readString(),
+                TimeUtils.toDate(in.readLong()), in.readLong(), in.readByte() != 0, in.readByte() != 0, in
+                        .readLong(), in.readByte() != 0, in.readString(), in.readLong(), in
+                        .readString());
 
     }
 }

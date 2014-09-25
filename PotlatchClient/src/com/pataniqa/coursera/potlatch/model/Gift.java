@@ -1,5 +1,6 @@
 package com.pataniqa.coursera.potlatch.model;
 
+import java.util.Date;
 
 public class Gift implements HasID {
 
@@ -8,7 +9,7 @@ public class Gift implements HasID {
     public String description;
     public String videoUri;
     public String imageUri;
-    public long created; // TODO use better time representation
+    public Date created;
     public long userID;
     public String giftChainName;
 
@@ -29,7 +30,7 @@ public class Gift implements HasID {
             String description,
             String videoUri,
             String imageUri,
-            long created,
+            Date created,
             long userID,
             String giftChainName) {
         this.keyID = keyID;

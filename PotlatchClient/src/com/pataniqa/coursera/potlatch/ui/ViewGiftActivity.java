@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Date;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -211,8 +212,8 @@ abstract class ViewGiftActivity extends GiftActivity {
             GiftChain result = service.giftChains().save(giftChain);
             giftChains.put(giftChainName, result.getID());
         }
-        return new Gift(key, title, description, videoUri, imageData, created.toMillis(false),
-                userID, giftChainName);
+        return new Gift(key, title, description, videoUri, imageData, new Date(
+                created.toMillis(false)), userID, giftChainName);
     }
 
     void initializeSpinner() {

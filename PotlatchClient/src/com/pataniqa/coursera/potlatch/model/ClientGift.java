@@ -1,5 +1,7 @@
 package com.pataniqa.coursera.potlatch.model;
 
+import java.util.Date;
+
 /**
  * ClientGift is a de-normalized version of the data to make it easy to present in the user interface.
  */
@@ -35,7 +37,7 @@ public class ClientGift extends Gift implements HasID {
             String description,
             String videoUri,
             String imageUri,
-            long created,
+            Date created,
             long userID,
             boolean like,
             boolean flag,

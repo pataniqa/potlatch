@@ -10,8 +10,6 @@ import retrofit.http.PUT;
 
 import com.pataniqa.coursera.potlatch.model.ClientGift;
 import com.pataniqa.coursera.potlatch.model.Gift;
-import com.pataniqa.coursera.potlatch.store.ResultOrder;
-import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 
 public interface RemoteGiftApi {
     
@@ -41,26 +39,26 @@ public interface RemoteGiftApi {
     @GET(GIFT_SVC_PATH + 
             "/queryTitle?title={title}&resultorder={order}&direction={direction}")
     List<ClientGift> queryByTitle(String title,
-            ResultOrder order,
-            ResultOrderDirection direction);
+            int order,
+            int direction);
 
     @GET(GIFT_SVC_PATH + 
             "/queryUser?user={userID}&title={title}&resultorder={order}&direction={direction}")
     List<ClientGift> queryByUser(String title,
             long userID,
-            ResultOrder order,
-            ResultOrderDirection direction);
+            int order,
+            int direction);
 
     @GET(GIFT_SVC_PATH + "" +
             "/queryTopGiftGivers?title={title}&direction={direction}")
     List<ClientGift> queryByTopGiftGivers(String title,
-            ResultOrderDirection direction);
+            int direction);
 
     @GET(GIFT_SVC_PATH + 
             "/queryGiftChain?giftchain={giftchain}&title={title}&resultorder={order}&direction={direction}")
     List<ClientGift> queryByGiftChain(String title,
             String giftChain,
-            ResultOrder order,
-            ResultOrderDirection direction);
+            int order,
+            int direction);
 
 }

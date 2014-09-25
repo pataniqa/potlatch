@@ -105,8 +105,8 @@ public class RemoteService extends BaseService implements Service {
                 ResultOrder resultOrder,
                 ResultOrderDirection resultOrderDirection) {
             return Lists.newArrayList(giftService.queryByTitle(title,
-                    resultOrder,
-                    resultOrderDirection));
+                    resultOrder.getVal(),
+                    resultOrderDirection.getVal()));
         }
 
         @Override
@@ -116,15 +116,15 @@ public class RemoteService extends BaseService implements Service {
                 ResultOrderDirection resultOrderDirection) {
             return Lists.newArrayList(giftService.queryByUser(title,
                     userID,
-                    resultOrder,
-                    resultOrderDirection));
+                    resultOrder.getVal(),
+                    resultOrderDirection.getVal()));
         }
 
         @Override
         public ArrayList<ClientGift> queryByTopGiftGivers(String title,
                 ResultOrderDirection resultOrderDirection) {
             return Lists
-                    .newArrayList(giftService.queryByTopGiftGivers(title, resultOrderDirection));
+                    .newArrayList(giftService.queryByTopGiftGivers(title, resultOrderDirection.getVal()));
         }
 
         @Override
@@ -134,8 +134,8 @@ public class RemoteService extends BaseService implements Service {
                 ResultOrderDirection resultOrderDirection) {
             return Lists.newArrayList(giftService.queryByGiftChain(title,
                     giftChainName,
-                    resultOrder,
-                    resultOrderDirection));
+                    resultOrder.getVal(),
+                    resultOrderDirection.getVal()));
         }
 
     }
