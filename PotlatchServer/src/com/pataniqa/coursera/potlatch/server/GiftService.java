@@ -1,5 +1,7 @@
 package com.pataniqa.coursera.potlatch.server;
 
+import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,13 +52,13 @@ public class GiftService {
         gifts.delete(id);
     }
     
-    @RequestMapping(value = GIFT_SVC_PATH + "/{id}/like/{userID}/{like}", method = RequestMethod.PUT)
-    public void setLike(@PathVariable long id, @PathVariable long userID, @PathVariable boolean like) {
+    @RequestMapping(value = GIFT_SVC_PATH + "/{id}/like/{like}", method = RequestMethod.PUT)
+    public void setLike(@PathVariable long id, @PathVariable boolean like, Principal p) {
         // TODO
     }
     
-    @RequestMapping(value = GIFT_SVC_PATH + "/{id}/flag/{userID}/{like}", method = RequestMethod.PUT)
-    public void setFlag(@PathVariable long id, @PathVariable long userID, @PathVariable boolean like) {
+    @RequestMapping(value = GIFT_SVC_PATH + "/{id}/flag/{like}", method = RequestMethod.PUT)
+    public void setFlag(@PathVariable long id, @PathVariable boolean like, Principal p) {
         // TODO
     }
     
@@ -67,7 +69,28 @@ public class GiftService {
     }
 
     @RequestMapping(value = GIFT_SVC_PATH, method = RequestMethod.GET)
-    public List<GiftResult> findAll() {
+    public List<GiftResult> findAll(Principal p) {
+        ServerUser user = users.findByUsername(p.getName()).get(0);
+        
+        
+        List<GiftResult> results = new ArrayList<GiftResult>();
+        for (ServerGift gift : gifts.findAll()) {
+            GiftResult result = new GiftResult(gift.getGiftID(),
+                    gift.getTitle(),
+                    gift.getDescription(),
+                    gift.getVideoUri(),
+                    gift.getImageUri(),
+                    gift.getCreated(),
+                    gift.getUserID(),
+                    boolean like,
+                    boolean flag,
+                    long likes,
+                    boolean flagged,
+                    long giftChainID,
+                    String giftChainName,
+                    long userLikes,
+                    String username);
+        }
         // TODO
         return null;
     }

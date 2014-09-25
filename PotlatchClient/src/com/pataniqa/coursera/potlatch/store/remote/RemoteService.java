@@ -60,13 +60,13 @@ public class RemoteService extends BaseService implements Service {
     class RemoteGiftMetadataService implements MetadataStore {
 
         @Override
-        public void setLike(long giftID, long userID, boolean like) {
-            giftService.setLike(giftID, userID, like);
+        public void setLike(long giftID, boolean like) {
+            giftService.setLike(giftID, like);
         }
 
         @Override
-        public void setFlag(long giftID, long userID, boolean flag) {
-            giftService.setFlag(giftID, userID, flag);
+        public void setFlag(long giftID, boolean flag) {
+            giftService.setFlag(giftID, flag);
         }
     }
 

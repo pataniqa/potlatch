@@ -1,10 +1,22 @@
 package com.pataniqa.coursera.potlatch.server.repository;
 
+import java.util.List;
+
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
+import com.pataniqa.coursera.potlatch.model.Gift;
 
 @Entity
 public class ServerUser {
@@ -12,46 +24,48 @@ public class ServerUser {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="user_id")
     private long id;
-    public String username;
-    public long userLikes;
     
+    private String username;
+    private long userLikes;
+    
+    // Maybe get rid of this one
+    
+//    @OneToMany(mappedBy="user",fetch=FetchType.LAZY)
+//    private List<Gift> gifts;
+    
+    // need to take the approach here to solve the many to many problem
+    
+    // http://giannigar.wordpress.com/2009/09/04/mapping-a-many-to-many-join-table-with-extra-column-using-jpa/
+    
+    @ManyToMany
+    @JoinTable(name="user_likes", 
+    joinColumns={@JoinColumn(name="user_id", referencedColumnName="user_id")},
+    inverseJoinColumns={@JoinColumn(name="gift_id", referencedColumnName="gift_id")})
+    private List<Gift> likes;
+    
+    @ManyToMany
+    @JoinTable(name="user_flags", 
+    joinColumns={@JoinColumn(name="user_id", referencedColumnName="user_id")},
+    inverseJoinColumns={@JoinColumn(name="gift_id", referencedColumnName="gift_id")})
+    private List<Gift> flagged;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public long getUserLikes() {
+        return userLikes;
+    }
+
+    public void setUserLikes(long userLikes) {
+        this.userLikes = userLikes;
+    }
+
     public long getId() {
         return id;
-    }
-
-    @Override
-    public String toString() {
-        return "User [id=" + id + ", username=" + username + ", userLikes=" + userLikes + "]";
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (int) (id ^ (id >>> 32));
-        result = prime * result + (int) (userLikes ^ (userLikes >>> 32));
-        result = prime * result + ((username == null) ? 0 : username.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        ServerUser other = (ServerUser) obj;
-        if (id != other.id)
-            return false;
-        if (userLikes != other.userLikes)
-            return false;
-        if (username == null) {
-            if (other.username != null)
-                return false;
-        } else if (!username.equals(other.username))
-            return false;
-        return true;
     }
 }

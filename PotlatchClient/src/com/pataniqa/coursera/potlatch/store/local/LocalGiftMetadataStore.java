@@ -28,7 +28,7 @@ public class LocalGiftMetadataStore implements MetadataStore {
     }
 
     @Override
-    public void setLike(long giftID, long userID, boolean like) throws RemoteException {
+    public void setLike(long giftID, boolean like) throws RemoteException {
         long rowID = giftID;
         GiftResult gift = localGiftStore.findOne(rowID);
         gift.setLike(like);
@@ -42,7 +42,7 @@ public class LocalGiftMetadataStore implements MetadataStore {
     }
 
     @Override
-    public void setFlag(long giftID, long userID, boolean flag) throws RemoteException {
+    public void setFlag(long giftID, boolean flag) throws RemoteException {
         long rowID = giftID;
         GiftResult gift = localGiftStore.findOne(rowID);
         gift.setFlag(flag);

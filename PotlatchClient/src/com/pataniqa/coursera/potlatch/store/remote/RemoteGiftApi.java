@@ -24,11 +24,11 @@ public interface RemoteGiftApi {
     @DELETE(GIFT_SVC_PATH + "/{id}")
     void deleteGift(long id);
     
-    @PUT(GIFT_SVC_PATH + "/{id}/like/{userID}/{like}")
-    void setLike(long id, long userID, boolean like);
+    @PUT(GIFT_SVC_PATH + "/{id}/like/{like}")
+    void setLike(long id, boolean like);
     
-    @PUT(GIFT_SVC_PATH + "/{id}/flag/{userID}/{like}")
-    void setFlag(long id, long userID, boolean like);
+    @PUT(GIFT_SVC_PATH + "/{id}/flag/{flag}")
+    void setFlag(long id, boolean flag);
     
     @GET(GIFT_SVC_PATH + "/{id}")
     GiftResult findOne(Long id);
