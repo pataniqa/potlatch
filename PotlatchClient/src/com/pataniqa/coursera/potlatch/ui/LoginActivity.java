@@ -35,7 +35,6 @@ public class LoginActivity extends GiftActivity {
         setContentView(R.layout.login_activity);
         
         ButterKnife.inject(this);
-
     }
 
     public void loginClicked(View v) {

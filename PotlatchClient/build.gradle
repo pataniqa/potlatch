@@ -1,0 +1,66 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.8.+'
+    }
+}
+
+apply plugin: 'android'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+repositories {
+    mavenCentral()
+}
+
+android {
+	compileSdkVersion 19
+	buildToolsVersion "19.0.0"
+
+sourceSets {
+		main {
+			manifest {
+				srcFile 'AndroidManifest.xml'
+			}
+			java {
+				srcDir 'src'
+			}
+			res {
+				srcDir 'res'
+			}
+			assets {
+				srcDir 'assets'
+			}
+			resources {
+				srcDir 'src'
+			}
+			aidl {
+				srcDir 'src'
+			}
+		}
+	}
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 19
+        versionCode 1
+        versionName "1.0"
+    }
+
+      lintOptions {
+          abortOnError false
+      }
+
+}
+
+dependencies {
+    compile files("libs/android-support-v4.jar")
+    compile("com.google.guava:guava:17.0")
+    compile("com.squareup.retrofit:retrofit:1.6.0")
+    compile 'com.jakewharton:butterknife:5.1.2'
+    compile 'org.slf4j:slf4j-log4j12:1.7.5'
+}
