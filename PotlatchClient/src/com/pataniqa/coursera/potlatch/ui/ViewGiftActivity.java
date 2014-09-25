@@ -207,13 +207,17 @@ abstract class ViewGiftActivity extends GiftActivity {
         // TODO we re-use the gift chain map here - so if someone adds a gift
         // chain in the meantime it will not show up
 
-        if (!giftChains.containsKey(giftChainName)) {
+        long giftChainID;
+        if (giftChains.containsKey(giftChainName)) {
+            giftChainID = giftChains.get(giftChainName);
+        } else {
             GiftChain giftChain = new GiftChain(HasID.UNDEFINED_ID, giftChainName);
             GiftChain result = service.giftChains().save(giftChain);
             giftChains.put(giftChainName, result.getID());
+            giftChainID = result.giftChainID;
         }
         return new Gift(key, title, description, videoUri, imageData, new Date(
-                created.toMillis(false)), userID, giftChainName);
+                created.toMillis(false)), userID, giftChainID);
     }
 
     void initializeSpinner() {

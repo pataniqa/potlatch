@@ -34,6 +34,7 @@ public class ParcelableClientGift extends ClientGift implements Parcelable {
         dest.writeByte((byte) (flag ? 1 : 0));
         dest.writeLong(likes);
         dest.writeByte((byte) (flagged ? 1 : 0));
+        dest.writeLong(giftChainID);
         dest.writeString(giftChainName);
         dest.writeLong(userLikes);
         dest.writeString(username);
@@ -58,7 +59,7 @@ public class ParcelableClientGift extends ClientGift implements Parcelable {
     private ParcelableClientGift(Parcel in) {
         super(in.readLong(), in.readString(), in.readString(), in.readString(), in.readString(),
                 TimeUtils.toDate(in.readLong()), in.readLong(), in.readByte() != 0, in.readByte() != 0, in
-                        .readLong(), in.readByte() != 0, in.readString(), in.readLong(), in
+                        .readLong(), in.readByte() != 0, in.readLong(), in.readString(), in.readLong(), in
                         .readString());
 
     }

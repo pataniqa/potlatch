@@ -30,6 +30,7 @@ class LocalSchema {
                 put(Cols.FLAG, INTEGER);
                 put(Cols.LIKES, INTEGER);
                 put(Cols.FLAGGED, INTEGER);
+                put(Cols.GIFT_CHAIN_ID, INTEGER);
                 put(Cols.GIFT_CHAIN_NAME, TEXT);
                 put(Cols.USER_LIKES, INTEGER);
                 put(Cols.USER_NAME, TEXT);
@@ -79,6 +80,7 @@ class LocalSchema {
          static final String USER_LIKES = "USER_LIKES";
          static final String GIFT_ID = "GIFT_ID";
          static final String USER_NAME = "USERNAME";
+         static final String GIFT_CHAIN_ID = "GIFT_CHAIN_ID";
     }
     
     static ContentValues initialize(Map<String, String> columns,

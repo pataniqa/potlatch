@@ -13,6 +13,7 @@ public class ClientGift extends Gift implements HasID {
     public boolean flagged;
     public long userLikes;
     public String username;
+    public String giftChainName;
 
     /**
      * Constructor
@@ -43,10 +44,12 @@ public class ClientGift extends Gift implements HasID {
             boolean flag,
             long likes,
             boolean flagged,
+            long giftChainID,
             String giftChainName,
             long userLikes,
             String username) {
-        super(giftID, title, description, videoUri, imageUri, created, userID, giftChainName);
+        super(giftID, title, description, videoUri, imageUri, created, userID, giftChainID);
+        this.giftChainName = giftChainName;
         this.like = like;
         this.flag = flag;
         this.likes = likes;
@@ -58,10 +61,10 @@ public class ClientGift extends Gift implements HasID {
     @Override
     public String toString() {
         return "ClientGift [like=" + like + ", flag=" + flag + ", likes=" + likes + ", flagged="
-                + flagged + ", userLikes=" + userLikes + ", username=" + username + ", giftID="
-                + getID() + ", title=" + title + ", description=" + description + ", videoUri="
-                + videoUri + ", imageUri=" + imageUri + ", created=" + created + ", userID="
-                + userID + ", giftChainName=" + giftChainName + "]";
+                + flagged + ", userLikes=" + userLikes + ", username=" + username
+                + ", giftChainName=" + giftChainName + ", title=" + title + ", description="
+                + description + ", videoUri=" + videoUri + ", imageUri=" + imageUri + ", created="
+                + created + ", userID=" + userID + ", giftChainID=" + giftChainID + "]";
     }
 
     /**
@@ -69,6 +72,6 @@ public class ClientGift extends Gift implements HasID {
      */
     public ClientGift clone() {
         return new ClientGift(HasID.UNDEFINED_ID, title, description, videoUri, imageUri, created, userID, like,
-                flag, likes, flagged, giftChainName, userLikes, username);
+                flag, likes, flagged, giftChainID, giftChainName, userLikes, username);
     }
 }
