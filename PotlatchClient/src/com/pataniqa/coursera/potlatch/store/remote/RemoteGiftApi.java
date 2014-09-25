@@ -1,6 +1,5 @@
 package com.pataniqa.coursera.potlatch.store.remote;
 
-import java.util.Collection;
 import java.util.List;
 
 import retrofit.http.Body;
@@ -11,13 +10,11 @@ import retrofit.http.PUT;
 
 import com.pataniqa.coursera.potlatch.model.ClientGift;
 import com.pataniqa.coursera.potlatch.model.Gift;
-import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 
-public interface RemoteApi {
+public interface RemoteGiftApi {
     
-    public static final String GIFT_CHAIN_SVC_PATH = "/giftchain";
     public static final String GIFT_SVC_PATH = "/gift";
     
     @POST(GIFT_SVC_PATH)
@@ -39,7 +36,7 @@ public interface RemoteApi {
     ClientGift findOne(Long id);
 
     @GET(GIFT_SVC_PATH)
-    List<ClientGift> findAllGifts();
+    List<ClientGift> findAll();
 
     @GET(GIFT_SVC_PATH + 
             "/queryTitle?title={title}&resultorder={order}&direction={direction}")
@@ -65,17 +62,5 @@ public interface RemoteApi {
             String giftChain,
             ResultOrder order,
             ResultOrderDirection direction);
-    
-    @POST(GIFT_CHAIN_SVC_PATH)
-    GiftChain insert(@Body GiftChain data);
-
-    @PUT(GIFT_CHAIN_SVC_PATH + "/{id}")
-    void update(long id, @Body GiftChain data);
-
-    @DELETE(GIFT_CHAIN_SVC_PATH + "/{id}")
-    void deleteGiftChain(long id);
-
-    @GET(GIFT_CHAIN_SVC_PATH)
-    Collection<GiftChain> findAllGiftChains();
 
 }

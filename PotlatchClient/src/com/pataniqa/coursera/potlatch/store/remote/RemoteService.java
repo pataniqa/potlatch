@@ -2,10 +2,10 @@ package com.pataniqa.coursera.potlatch.store.remote;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import retrofit.RestAdapter;
 
+import com.google.common.collect.Lists;
 import com.pataniqa.coursera.potlatch.model.ClientGift;
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
@@ -21,11 +21,13 @@ import com.pataniqa.coursera.potlatch.store.Service;
 
 public class RemoteService extends BaseService implements Service {
 
-    private RemoteApi service;
+    private RemoteGiftApi giftService;
+    private RemoteGiftChainApi giftChainService;
 
     public RemoteService(String endpoint) {
         RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(endpoint).build();
-        service = restAdapter.create(RemoteApi.class);
+        giftService = restAdapter.create(RemoteGiftApi.class);
+        giftChainService = restAdapter.create(RemoteGiftChainApi.class);
         userGifts = new RemoteGiftService();
         gifts = new RemoteGiftQueryService();
         giftChains = new RemoteGiftChainService();
@@ -36,21 +38,21 @@ public class RemoteService extends BaseService implements Service {
 
         @Override
         public Collection<GiftChain> findAll() {
-            return service.findAllGiftChains();
+            return giftChainService.findAll();
         }
 
         @Override
         public GiftChain save(GiftChain data) {
             if (data.getID() == HasID.UNDEFINED_ID)
-                data = service.insert(data);
+                data = giftChainService.insert(data);
             else
-                service.update(data.getID(), data);
+                giftChainService.update(data.getID(), data);
             return data;
         }
 
         @Override
         public void delete(long id) {
-            service.deleteGiftChain(id);
+            giftChainService.deleteGiftChain(id);
         }
 
     }
@@ -59,12 +61,12 @@ public class RemoteService extends BaseService implements Service {
 
         @Override
         public void setLike(long giftID, long userID, boolean like) {
-            service.setLike(giftID, userID, like);
+            giftService.setLike(giftID, userID, like);
         }
 
         @Override
         public void setFlag(long giftID, long userID, boolean flag) {
-            service.setFlag(giftID, userID, flag);
+            giftService.setFlag(giftID, userID, flag);
         }
     }
 
@@ -73,42 +75,38 @@ public class RemoteService extends BaseService implements Service {
         @Override
         public Gift save(Gift data) {
             if (data.getID() == HasID.UNDEFINED_ID)
-                data = service.insert(data);
+                data = giftService.insert(data);
             else
-                service.update(data.getID(), data);
+                giftService.update(data.getID(), data);
             return data;
         }
 
         @Override
         public void delete(long id) {
-            service.deleteGift(id);
+            giftService.deleteGift(id);
         }
 
     }
-    
+
     class RemoteGiftQueryService implements GiftQuery {
-        
+
         @Override
         public Collection<ClientGift> findAll() {
-            return service.findAllGifts();
+            return giftService.findAll();
         }
 
         @Override
         public ClientGift findOne(Long id) {
-            return service.findOne(id);
+            return giftService.findOne(id);
         }
 
-        ArrayList<ClientGift> toArrayList(List<ClientGift> input) {
-            ArrayList<ClientGift> result = new ArrayList<ClientGift>();
-            result.addAll(input);
-            return result;
-        }
-        
         @Override
         public ArrayList<ClientGift> queryByTitle(String title,
                 ResultOrder resultOrder,
                 ResultOrderDirection resultOrderDirection) {
-            return toArrayList(service.queryByTitle(title, resultOrder, resultOrderDirection));
+            return Lists.newArrayList(giftService.queryByTitle(title,
+                    resultOrder,
+                    resultOrderDirection));
         }
 
         @Override
@@ -116,13 +114,17 @@ public class RemoteService extends BaseService implements Service {
                 long userID,
                 ResultOrder resultOrder,
                 ResultOrderDirection resultOrderDirection) {
-            return toArrayList(service.queryByUser(title, userID, resultOrder, resultOrderDirection));
+            return Lists.newArrayList(giftService.queryByUser(title,
+                    userID,
+                    resultOrder,
+                    resultOrderDirection));
         }
 
         @Override
         public ArrayList<ClientGift> queryByTopGiftGivers(String title,
                 ResultOrderDirection resultOrderDirection) {
-            return toArrayList(service.queryByTopGiftGivers(title, resultOrderDirection));
+            return Lists
+                    .newArrayList(giftService.queryByTopGiftGivers(title, resultOrderDirection));
         }
 
         @Override
@@ -130,7 +132,10 @@ public class RemoteService extends BaseService implements Service {
                 String giftChainName,
                 ResultOrder resultOrder,
                 ResultOrderDirection resultOrderDirection) {
-            return toArrayList(service.queryByGiftChain(title, giftChainName, resultOrder, resultOrderDirection));
+            return Lists.newArrayList(giftService.queryByGiftChain(title,
+                    giftChainName,
+                    resultOrder,
+                    resultOrderDirection));
         }
 
     }
