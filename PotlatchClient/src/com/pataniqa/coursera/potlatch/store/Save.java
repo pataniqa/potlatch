@@ -10,5 +10,5 @@ public interface Save <T> {
      * @return The object that was saved.
      * @throws RemoteException
      */
-    T save(T data) throws RemoteException;
+    <S extends T> S save(S data) throws RemoteException;
 }

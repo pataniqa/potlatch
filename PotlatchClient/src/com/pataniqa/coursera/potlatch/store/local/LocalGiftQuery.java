@@ -116,14 +116,14 @@ class ClientGiftCreator extends BaseCreator<ClientGift> implements Creator<Clien
         rValue.put(LocalSchema.Cols.IMAGE_URI, data.getImageUri());
         rValue.put(LocalSchema.Cols.CREATED, TimeUtils.toLong(data.getCreated()));
         rValue.put(LocalSchema.Cols.USER_ID, data.getUserID());
-        rValue.put(LocalSchema.Cols.LIKE, data.like);
-        rValue.put(LocalSchema.Cols.FLAG, data.flag);
-        rValue.put(LocalSchema.Cols.LIKES, data.likes);
-        rValue.put(LocalSchema.Cols.FLAGGED, data.flagged);
+        rValue.put(LocalSchema.Cols.LIKE, data.isLike());
+        rValue.put(LocalSchema.Cols.FLAG, data.isFlag());
+        rValue.put(LocalSchema.Cols.LIKES, data.getLikes());
+        rValue.put(LocalSchema.Cols.FLAGGED, data.isFlagged());
         rValue.put(LocalSchema.Cols.GIFT_CHAIN_ID, data.getGiftChainID());
-        rValue.put(LocalSchema.Cols.GIFT_CHAIN_NAME, data.giftChainName);
-        rValue.put(LocalSchema.Cols.USER_LIKES, data.userLikes);
-        rValue.put(LocalSchema.Cols.USER_NAME, data.username);
+        rValue.put(LocalSchema.Cols.GIFT_CHAIN_NAME, data.getGiftChainName());
+        rValue.put(LocalSchema.Cols.USER_LIKES, data.getUserLikes());
+        rValue.put(LocalSchema.Cols.USER_NAME, data.getUsername());
         return rValue;
     }
 

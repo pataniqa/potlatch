@@ -119,39 +119,39 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
                 image.setScaleType(ScaleType.FIT_CENTER);
             }
 
-            if (gift.giftChainName != null && !gift.giftChainName.isEmpty()) {
-                giftChainButton.setText(gift.giftChainName);
+            if (gift.getGiftChainName() != null && !gift.getGiftChainName().isEmpty()) {
+                giftChainButton.setText(gift.getGiftChainName());
             } else {
                 giftChainButton.setVisibility(Button.INVISIBLE);
             }
 
-            likeButton.setImageResource(gift.like ? R.drawable.ic_fa_heart
+            likeButton.setImageResource(gift.isLike() ? R.drawable.ic_fa_heart
                     : R.drawable.ic_fa_heart_o);
             flagButton
-                    .setImageResource(gift.flag ? R.drawable.ic_fa_flag : R.drawable.ic_fa_flag_o);
+                    .setImageResource(gift.isFlag() ? R.drawable.ic_fa_flag : R.drawable.ic_fa_flag_o);
 
             title.setText(gift.getTitle());
             description.setText(gift.getDescription());
-            likes.setText("" + gift.likes);
+            likes.setText("" + gift.getLikes());
 
             likeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    gift.like = !gift.like;
-                    gift.likes += gift.like ? 1 : 0 ;
+                    gift.setLike(!gift.isLike());
+                    gift.setLikes(gift.getLikes() + (gift.isLike() ? 1 : 0)) ;
                     giftChainCallback.setLike(gift);
-                    likeButton.setImageResource(gift.like ? R.drawable.ic_fa_heart
+                    likeButton.setImageResource(gift.isLike() ? R.drawable.ic_fa_heart
                             : R.drawable.ic_fa_heart_o);
-                    likes.setText("" + gift.likes);
+                    likes.setText("" + gift.getLikes());
                 }
             });
 
             flagButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    gift.flag = !gift.flag;                    
+                    gift.setFlag(!gift.isFlag());                    
                     giftChainCallback.setFlag(gift);
-                    flagButton.setImageResource(gift.flag ? R.drawable.ic_fa_flag
+                    flagButton.setImageResource(gift.isFlag() ? R.drawable.ic_fa_flag
                             : R.drawable.ic_fa_flag_o);
                 }
             });
@@ -159,7 +159,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<ClientGift> {
             giftChainButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    giftChainCallback.showGiftChain(gift.giftChainName);
+                    giftChainCallback.showGiftChain(gift.getGiftChainName());
                 }
             });
         }

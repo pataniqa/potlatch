@@ -1,4 +1,4 @@
-package com.pataniqa.coursera.potlatch.model.client;
+package com.pataniqa.coursera.potlatch.model.client.parcel;
 
 import com.pataniqa.coursera.potlatch.model.GiftChain;
 
@@ -22,8 +22,8 @@ public class ParcelableGiftChain extends GiftChain implements Parcelable {
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(giftChainName);
-        dest.writeLong(giftChainID);
+        dest.writeString(getGiftChainName());
+        dest.writeLong(getGiftChainID());
     }
 
     /**

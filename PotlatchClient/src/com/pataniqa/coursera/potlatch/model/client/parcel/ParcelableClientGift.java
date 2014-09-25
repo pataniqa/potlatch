@@ -1,4 +1,4 @@
-package com.pataniqa.coursera.potlatch.model.client;
+package com.pataniqa.coursera.potlatch.model.client.parcel;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -30,14 +30,14 @@ public class ParcelableClientGift extends ClientGift implements Parcelable {
         dest.writeString(getImageUri());
         dest.writeLong(TimeUtils.toLong(getCreated()));
         dest.writeLong(getUserID());
-        dest.writeByte((byte) (like ? 1 : 0));
-        dest.writeByte((byte) (flag ? 1 : 0));
-        dest.writeLong(likes);
-        dest.writeByte((byte) (flagged ? 1 : 0));
+        dest.writeByte((byte) (isLike() ? 1 : 0));
+        dest.writeByte((byte) (isFlag() ? 1 : 0));
+        dest.writeLong(getLikes());
+        dest.writeByte((byte) (isFlagged() ? 1 : 0));
         dest.writeLong(getGiftChainID());
-        dest.writeString(giftChainName);
-        dest.writeLong(userLikes);
-        dest.writeString(username);
+        dest.writeString(getGiftChainName());
+        dest.writeLong(getUserLikes());
+        dest.writeString(getUsername());
     }
 
     /**

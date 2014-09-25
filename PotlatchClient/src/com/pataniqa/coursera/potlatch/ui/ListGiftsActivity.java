@@ -266,7 +266,7 @@ public class ListGiftsActivity extends GiftActivity implements
                 if (prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, true)) {
                     Log.d(LOG_TAG, "filtering flagged content");
                     for (ClientGift gift : results) {
-                        if (!gift.flagged)
+                        if (!gift.isFlagged())
                             giftData.add(gift);
                     }
                 } else {
@@ -332,7 +332,7 @@ public class ListGiftsActivity extends GiftActivity implements
     @Override
     public void setLike(ClientGift gift) {
         try {
-            service.giftMetadata().setLike(gift.getID(), userID, gift.like);
+            service.giftMetadata().setLike(gift.getID(), userID, gift.isLike());
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }
@@ -341,7 +341,7 @@ public class ListGiftsActivity extends GiftActivity implements
     @Override
     public void setFlag(ClientGift gift) {
         try {
-            service.giftMetadata().setFlag(gift.getID(), userID, gift.flag);
+            service.giftMetadata().setFlag(gift.getID(), userID, gift.isFlag());
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }

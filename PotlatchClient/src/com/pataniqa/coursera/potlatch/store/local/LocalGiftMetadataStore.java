@@ -31,13 +31,13 @@ public class LocalGiftMetadataStore implements MetadataStore {
     public void setLike(long giftID, long userID, boolean like) throws RemoteException {
         long rowID = giftID;
         ClientGift gift = localGiftStore.findOne(rowID);
-        gift.like = like;
+        gift.setLike(like);
 
         // we make the simplifying assumption that the local database will only
         // ever have one user
         // so we will only every have one like
 
-        gift.likes = gift.like ? 1 : 0;
+        gift.setLikes(gift.isLike() ? 1 : 0);
         update(gift);
     }
 
@@ -45,8 +45,8 @@ public class LocalGiftMetadataStore implements MetadataStore {
     public void setFlag(long giftID, long userID, boolean flag) throws RemoteException {
         long rowID = giftID;
         ClientGift gift = localGiftStore.findOne(rowID);
-        gift.flag = flag;
-        gift.flagged = flag;
+        gift.setFlag(flag);
+        gift.setFlagged(flag);
         update(gift);
     }
 

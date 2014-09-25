@@ -12,7 +12,7 @@ abstract class BaseCreateUpdateDelete<T extends HasID> extends BaseQuery<T> impl
         Delete<T> {
 
     @Override
-    public T save(T data) throws RemoteException {
+    public <S extends T> S save(S data) throws RemoteException {
         if (data.getID() == HasID.UNDEFINED_ID) {
             ContentValues tempCV = creator.getCV(data);
             tempCV.remove(LocalSchema.Cols.ID);

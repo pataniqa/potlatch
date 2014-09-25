@@ -214,7 +214,7 @@ abstract class ViewGiftActivity extends GiftActivity {
             GiftChain giftChain = new GiftChain(HasID.UNDEFINED_ID, giftChainName);
             GiftChain result = service.giftChains().save(giftChain);
             giftChains.put(giftChainName, result.getID());
-            giftChainID = result.giftChainID;
+            giftChainID = result.getGiftChainID();
         }
         return new Gift(key, title, description, videoUri, imageData, new Date(
                 created.toMillis(false)), userID, giftChainID);
@@ -228,8 +228,8 @@ abstract class ViewGiftActivity extends GiftActivity {
         try {
             Collection<GiftChain> results = service.giftChains().findAll();
             for (GiftChain result : results) {
-                giftChains.put(result.giftChainName, result.giftChainID);
-                giftChainNames.add(result.giftChainName);
+                giftChains.put(result.getGiftChainName(), result.getGiftChainID());
+                giftChainNames.add(result.getGiftChainName());
             }
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);

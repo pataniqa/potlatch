@@ -7,13 +7,13 @@ import java.util.Date;
  */
 public class ClientGift extends Gift implements HasID {
 
-    public boolean like;
-    public boolean flag;
-    public long likes;
-    public boolean flagged;
-    public long userLikes;
-    public String username;
-    public String giftChainName;
+    private boolean like;
+    private boolean flag;
+    private long likes;
+    private boolean flagged;
+    private long userLikes;
+    private String username;
+    private String giftChainName;
 
     public ClientGift() {}
     
@@ -42,8 +42,6 @@ public class ClientGift extends Gift implements HasID {
         this.username = username;
     }
 
-
-
     @Override
     public String toString() {
         return "ClientGift [like=" + like + ", flag=" + flag + ", likes=" + likes + ", flagged="
@@ -64,4 +62,62 @@ public class ClientGift extends Gift implements HasID {
         return new ClientGift(HasID.UNDEFINED_ID, getTitle(), getDescription(), getVideoUri(), getImageUri(), getCreated(), getUserID(), like,
                 flag, likes, flagged, getGiftChainID(), giftChainName, userLikes, username);
     }
+
+    public boolean isLike() {
+        return like;
+    }
+
+    public void setLike(boolean like) {
+        this.like = like;
+    }
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
+
+    public long getLikes() {
+        return likes;
+    }
+
+    public void setLikes(long likes) {
+        this.likes = likes;
+    }
+
+    public boolean isFlagged() {
+        return flagged;
+    }
+
+    public void setFlagged(boolean flagged) {
+        this.flagged = flagged;
+    }
+
+    public long getUserLikes() {
+        return userLikes;
+    }
+
+    public void setUserLikes(long userLikes) {
+        this.userLikes = userLikes;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getGiftChainName() {
+        return giftChainName;
+    }
+
+    public void setGiftChainName(String giftChainName) {
+        this.giftChainName = giftChainName;
+    }
+    
+    
 }

@@ -60,8 +60,8 @@ public class EditGiftActivity extends ViewGiftActivity {
                     image.setScaleType(ScaleType.FIT_CENTER);
                 }
                 
-                if (gift.giftChainName != null && !gift.giftChainName.isEmpty()) 
-                    giftChain.setText(gift.giftChainName);
+                if (gift.getGiftChainName() != null && !gift.getGiftChainName().isEmpty()) 
+                    giftChain.setText(gift.getGiftChainName());
                 
                 // TODO clicking the image should display a higher resolution version
 
