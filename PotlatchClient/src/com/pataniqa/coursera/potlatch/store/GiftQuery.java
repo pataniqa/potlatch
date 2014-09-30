@@ -38,6 +38,19 @@ public interface GiftQuery extends Query<GiftResult>, Retrieve<GiftResult, Long>
             ResultOrderDirection resultOrderDirection) throws RemoteException;
 
     /**
+     * Query gift data by top gift givers - corresponds to
+     * QueryType.TOP_GIFT_GIVERS
+     * 
+     * @param title
+     * @param resultOrderDirection
+     * @return
+     * @throws RemoteException
+     */
+    ArrayList<GiftResult> queryByTopGiftGivers(String title,
+            ResultOrderDirection resultOrderDirection)
+            throws RemoteException;
+
+    /**
      * Query gift data by gift chain.
      * 
      * @param title

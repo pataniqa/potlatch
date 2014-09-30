@@ -62,6 +62,11 @@ public interface RemoteGiftApi {
     @GET(QUERY_BY_USER)
     List<GiftResult> queryByUser(String title, long userID, int order, int direction);
 
+    public static final String QUERY_BY_TOP_GIFT_GIVERS = "/gift/queryTopGiftGivers?title={title}&direction={direction}";
+
+    @GET(QUERY_BY_TOP_GIFT_GIVERS)
+    List<GiftResult> queryByTopGiftGivers(String title, int direction);
+
     public static final String QUERY_BY_GIFT_CHAIN = "/gift/queryGiftChain?giftchain={giftchain}&title={title}&resultorder={order}&direction={direction}";
 
     @GET(QUERY_BY_GIFT_CHAIN)

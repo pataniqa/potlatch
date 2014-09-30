@@ -251,7 +251,7 @@ public class ListGiftsActivity extends GiftActivity implements
                         resultOrder,
                         resultDirection);
             else if (queryType == QueryType.TOP_GIFT_GIVERS)
-                results = service.gifts().queryByTitle(titleQuery, ResultOrder.TOP_GIFT_GIVERS, resultDirection);
+                results = service.gifts().queryByTopGiftGivers(titleQuery, resultDirection);
             else if (queryType == QueryType.CHAIN)
                 results = service.gifts().queryByGiftChain(titleQuery,
                         giftChainName,

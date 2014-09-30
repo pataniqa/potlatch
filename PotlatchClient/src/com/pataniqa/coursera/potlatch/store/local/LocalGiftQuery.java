@@ -72,6 +72,19 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements GiftQuery {
     }
 
     @Override
+    public ArrayList<GiftResult> queryByTopGiftGivers(String title,
+            ResultOrderDirection resultOrderDirection) throws RemoteException {
+        // TODO userLikes is not an index - very inefficient!
+        String sortOrder = LocalSchema.Cols.USER_LIKES + " " + direction(resultOrderDirection);
+        if (title == null || title.isEmpty())
+            return query(null, null, null, sortOrder);
+        else {
+            String[] selectionArgs = new String[] { "%" + title + "%" };
+            return query(null, LIKE_QUERY, selectionArgs, sortOrder);
+        }
+    }
+
+    @Override
     public ArrayList<GiftResult> queryByGiftChain(String title,
             String giftChainName,
             ResultOrder resultOrder,

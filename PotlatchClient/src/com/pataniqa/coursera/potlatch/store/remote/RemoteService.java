@@ -121,6 +121,13 @@ public class RemoteService extends BaseService implements Service {
         }
 
         @Override
+        public ArrayList<GiftResult> queryByTopGiftGivers(String title,
+                ResultOrderDirection resultOrderDirection) {
+            return Lists
+                    .newArrayList(giftService.queryByTopGiftGivers(title, resultOrderDirection.getVal()));
+        }
+
+        @Override
         public ArrayList<GiftResult> queryByGiftChain(String title,
                 String giftChainName,
                 ResultOrder resultOrder,

@@ -125,26 +125,10 @@ public class GiftService {
         giftMetadata.save(metadata);
     }
 
-    private Sort.Direction getDirection(int direction) {
-        ResultOrderDirection resultDirection = ResultOrderDirection.toEnum(direction);
-        return resultDirection == ResultOrderDirection.ASCENDING ? Sort.Direction.ASC
-                : Sort.Direction.DESC;
-    }
-
     @RequestMapping(value = RemoteGiftApi.QUERY_BY_TITLE, method = RequestMethod.GET)
-    public List<GiftResult> queryByTitle(String title, int order, int direction, Principal p) {
-        String col = null;
-        if (ResultOrder.toEnum(order) == ResultOrder.LIKES) {
-            col = ServerGift.LIKES;
-        } else if (ResultOrder.toEnum(order) == ResultOrder.TOP_GIFT_GIVERS) {
-
-            // TODO fix me this won't work no such column
-
-            col = "top_gift_givers";
-        } else {
-            col = ServerGift.CREATED;
-        }
-        return toResult(gifts.findByTitleLike(title, new Sort(getDirection(direction), col)), p);
+    public List<GiftResult> queryByTitle(String title, int order, int direction, Principal principal) {
+        Sort sort = new Sort(getDirection(direction), getSortColumn(order));
+        return toResult(gifts.findByTitleLike(title, sort), principal);
     }
 
     @RequestMapping(value = RemoteGiftApi.QUERY_BY_USER, method = RequestMethod.GET)
@@ -152,12 +136,10 @@ public class GiftService {
             long userID,
             int order,
             int direction,
-            Principal p) {
+            Principal principal) {
         ServerUser user = users.findOne(userID);
-        String col = ResultOrder.toEnum(order) == ResultOrder.LIKES ? ServerGift.LIKES
-                : ServerGift.CREATED;
-        return toResult(gifts.findByUserAndTitleLike(user, title, new Sort(getDirection(direction),
-                col)), p);
+        Sort sort = getSort(direction, order);
+        return toResult(gifts.findByUserAndTitleLike(user, title, sort), principal);
     }
 
     @RequestMapping(value = RemoteGiftApi.QUERY_BY_GIFT_CHAIN, method = RequestMethod.GET)
@@ -165,13 +147,34 @@ public class GiftService {
             long giftChainID,
             int order,
             int direction,
-            Principal p) {
+            Principal principal) {
         ServerGiftChain giftChain = giftChains.findOne(giftChainID);
-        String col = ResultOrder.toEnum(order) == ResultOrder.LIKES ? ServerGift.LIKES
+        Sort sort = getSort(direction, order);
+        return toResult(gifts.findByGiftChainAndTitleLike(giftChain, title, sort), principal);
+    }
+
+    @RequestMapping(value = RemoteGiftApi.QUERY_BY_TOP_GIFT_GIVERS, method = RequestMethod.GET)
+    public List<GiftResult> queryByTopGiftGivers(String title, int direction, Principal p) {
+
+        // TODO need to get a list of users ranked by the number of likes
+        // then turn that into a list of gifts
+
+        return null;
+    }
+
+    private String getSortColumn(int order) {
+        return ResultOrder.toEnum(order) == ResultOrder.LIKES ? ServerGift.LIKES
                 : ServerGift.CREATED;
-        return toResult(gifts.findByGiftChainAndTitleLike(giftChain,
-                title,
-                new Sort(getDirection(direction), col)), p);
+    }
+
+    private Sort.Direction getDirection(int direction) {
+        ResultOrderDirection resultDirection = ResultOrderDirection.toEnum(direction);
+        return resultDirection == ResultOrderDirection.ASCENDING ? Sort.Direction.ASC
+                : Sort.Direction.DESC;
+    }
+
+    private Sort getSort(int order, int direction) {
+        return new Sort(getDirection(direction), getSortColumn(order));
     }
 
     private ServerUser getUser(Principal p) {
