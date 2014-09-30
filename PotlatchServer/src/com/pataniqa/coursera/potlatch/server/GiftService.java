@@ -9,6 +9,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -92,9 +93,16 @@ public class GiftService {
     public void setLike(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id,
             @PathVariable boolean like,
             Principal p) {
+
         // TODO use join
+
         ServerGiftMetadata metadata = giftMetadata.findOne(new ServerGiftMetadataPk(getUser(p),
                 gifts.findOne(id)));
+
+        // TODO need to update total likes for user
+
+        // TODO need to update total likes for gift
+
         metadata.setUserLike(like);
         giftMetadata.save(metadata);
     }
@@ -103,9 +111,16 @@ public class GiftService {
     public void setFlag(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id,
             @PathVariable boolean flag,
             Principal p) {
+
         // TODO use join
+
         ServerGiftMetadata metadata = giftMetadata.findOne(new ServerGiftMetadataPk(getUser(p),
                 gifts.findOne(id)));
+
+        // TODO need to update total flags for user
+
+        // TODO need to update total flags for gift
+
         metadata.setUserFlagged(flag);
         giftMetadata.save(metadata);
     }
@@ -113,23 +128,19 @@ public class GiftService {
     @RequestMapping(value = RemoteGiftApi.QUERY_BY_TITLE, method = RequestMethod.GET)
     public List<GiftResult> queryByTitle(String title, int order, int direction, Principal p) {
         ResultOrderDirection resultDirection = ResultOrderDirection.toEnum(direction);
-        Collection<ServerGift> query = null;
+        Sort sort = null;
+        Sort.Direction d = resultDirection == ResultOrderDirection.ASCENDING ? Sort.Direction.ASC : Sort.Direction.DESC;
+        
+        // TODO need to use constants for column names
+        
         if (ResultOrder.toEnum(order) == ResultOrder.LIKES) {
-            if (resultDirection == ResultOrderDirection.ASCENDING)
-                query = gifts.findByTitleLikeOrderByLikesAsc(title);
-            else
-                query = gifts.findByTitleLikeOrderByLikesDesc(title);
+            sort = new Sort(d, "likes");
         } else if (ResultOrder.toEnum(order) == ResultOrder.TOP_GIFT_GIVERS) {
-            if (resultDirection == ResultOrderDirection.ASCENDING)
-                query = gifts.findByTitleLikeOrderByUserLikesAsc(title);
-            else
-                query = gifts.findByTitleLikeOrderByUserLikesDesc(title);
+            sort = new Sort(d, "top_gift_givers");
         } else {
-            if (resultDirection == ResultOrderDirection.ASCENDING)
-                query = gifts.findByTitleLikeOrderByCreatedAsc(title);
-            else
-                query = gifts.findByTitleLikeOrderByCreatedDesc(title);
+            sort = new Sort(d, "created");
         }
+        Collection<ServerGift> query = gifts.findByTitleLike(title, sort);
         return toResult(query, p);
     }
 
@@ -144,14 +155,14 @@ public class GiftService {
         Collection<ServerGift> query = null;
         if (ResultOrder.toEnum(order) == ResultOrder.LIKES) {
             if (resultDirection == ResultOrderDirection.ASCENDING)
-                query = gifts.findByUserIDAndTitleLikeOrderByLikesAsc(user, title);
+                query = gifts.findByUserAndTitleLikeOrderByLikesAsc(user, title);
             else
-                query = gifts.findByUserIDAndTitleLikeOrderByLikesDesc(user, title);
+                query = gifts.findByUserAndTitleLikeOrderByLikesDesc(user, title);
         } else {
             if (resultDirection == ResultOrderDirection.ASCENDING)
-                query = gifts.findByUserIDAndTitleLikeOrderByCreatedAsc(user, title);
+                query = gifts.findByUserAndTitleLikeOrderByCreatedAsc(user, title);
             else
-                query = gifts.findByUserIdAndTitleLikeOrderByCreatedDesc(user, title);
+                query = gifts.findByUserAndTitleLikeOrderByCreatedDesc(user, title);
         }
         return toResult(query, p);
     }
@@ -167,14 +178,14 @@ public class GiftService {
         Collection<ServerGift> query = null;
         if (ResultOrder.toEnum(order) == ResultOrder.LIKES) {
             if (resultDirection == ResultOrderDirection.ASCENDING)
-                query = gifts.findByGiftChainIDAndTitleLikeOrderByLikesAsc(giftChain, title);
+                query = gifts.findByGiftChainAndTitleLikeOrderByLikesAsc(giftChain, title);
             else
-                query = gifts.findByGiftChainIDIDAndTitleLikeOrderByLikesDesc(giftChain, title);
+                query = gifts.findByGiftChainAndTitleLikeOrderByLikesDesc(giftChain, title);
         } else {
             if (resultDirection == ResultOrderDirection.ASCENDING)
-                query = gifts.findByGiftChainIDAndTitleLikeOrderByCreatedAsc(giftChain, title);
+                query = gifts.findByGiftChainAndTitleLikeOrderByCreatedAsc(giftChain, title);
             else
-                query = gifts.findByGiftChainIDAndTitleLikeOrderByCreatedDesc(giftChain, title);
+                query = gifts.findByGiftChainAndTitleLikeOrderByCreatedDesc(giftChain, title);
         }
         return toResult(query, p);
     }
