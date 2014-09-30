@@ -9,6 +9,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,6 +47,10 @@ public class GiftService {
 
     @Autowired
     private GiftMetadataRepository giftMetadata;
+
+    private FileManager imageManager = new FileManager("image", "jpg");
+
+    private FileManager videoManager = new FileManager("video", "mpg");
 
     @RequestMapping(value = RemoteGiftApi.GIFT_PATH, method = RequestMethod.POST)
     public @ResponseBody
@@ -187,11 +192,21 @@ public class GiftService {
         ServerGiftMetadata metadata = giftMetadata.findOne(new ServerGiftMetadataPk(user, gift));
         boolean like = metadata != null ? metadata.isUserLike() : false;
         boolean flag = metadata != null ? metadata.isUserFlagged() : false;
-        return new GiftResult(gift.getGiftID(), gift.getTitle(), gift.getDescription(),
-                gift.getVideoUri(), gift.getImageUri(), gift.getCreated(), gift.getUserID(), like,
-                flag, gift.getLikes(), gift.isFlagged(), gift.getGiftChainID(), gift.getGiftChain()
-                        .getGiftChainName(), gift.getUser().getUserLikes(), gift.getUser()
-                        .getUsername());
+        return new GiftResult(gift.getGiftID(),
+                gift.getTitle(),
+                gift.getDescription(),
+                gift.getVideoUri(),
+                gift.getImageUri(),
+                gift.getCreated(),
+                gift.getUserID(),
+                like,
+                flag,
+                gift.getLikes(),
+                gift.isFlagged(),
+                gift.getGiftChainID(),
+                gift.getGiftChain().getGiftChainName(),
+                gift.getUser().getUserLikes(),
+                gift.getUser().getUsername());
     }
 
     private List<GiftResult> toResult(Collection<ServerGift> query, Principal p) {
@@ -207,28 +222,49 @@ public class GiftService {
     public @ResponseBody
     ResourceStatus setVideoData(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id,
             @RequestParam(RemoteGiftApi.DATA_PARAMETER) MultipartFile videoData) throws IOException {
-        // TODO
-        return null;
+        return setData(id, videoData, videoManager);
     }
 
     @RequestMapping(value = RemoteGiftApi.GIFT_VIDEO_PATH, method = RequestMethod.GET)
     public void getVideoData(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id,
             HttpServletResponse response) throws IOException {
-        // TODO
+        getData(id, response, videoManager);
     }
 
     @RequestMapping(value = RemoteGiftApi.GIFT_IMAGE_PATH, method = RequestMethod.POST)
     public @ResponseBody
     ResourceStatus setImageData(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id,
-            @RequestParam(RemoteGiftApi.DATA_PARAMETER) MultipartFile videoData) throws IOException {
-        // TODO
-        return null;
+            @RequestParam(RemoteGiftApi.DATA_PARAMETER) MultipartFile imageData) throws IOException {
+        return setData(id, imageData, imageManager);
     }
 
     @RequestMapping(value = RemoteGiftApi.GIFT_IMAGE_PATH, method = RequestMethod.GET)
     public void getImageData(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id,
             HttpServletResponse response) throws IOException {
-        // TODO
+        getData(id, response, imageManager);
+    }
+
+    private ResourceStatus setData(long id, MultipartFile data, FileManager manager)
+            throws IOException {
+        if (gifts.exists(id)) {
+            ServerGift gift = gifts.findOne(id);
+            manager.saveData(gift, data.getInputStream());
+            return new ResourceStatus(ResourceStatus.ResourceState.READY);
+        } else
+            throw new ResourceNotFoundException();
+    }
+
+    private void getData(long id, HttpServletResponse response, FileManager manager)
+            throws IOException {
+        if (gifts.exists(id)) {
+            ServerGift gift = gifts.findOne(id);
+            if (manager.hasData(gift)) {
+                manager.getData(gift, response.getOutputStream());
+            } else
+                throw new ResourceNotFoundException();
+        } else
+            throw new ResourceNotFoundException();
+
     }
 
 }
