@@ -15,29 +15,29 @@ public interface GiftRepository extends CrudRepository<ServerGift, Long> {
     Collection<ServerGift> findByTitleLikeOrderByCreatedAsc(String title);
 
     Collection<ServerGift> findByTitleLikeOrderByCreatedDesc(String title);
-
-    Collection<ServerGift> findByUserIDAndTitleLikeOrderByLikesAsc(long userID, String title);
-
-    Collection<ServerGift> findByUserIDAndTitleLikeOrderByLikesDesc(long userID, String title);
-
-    Collection<ServerGift> findByUserIDAndTitleLikeOrderByCreatedAsc(long userID, String title);
-
-    Collection<ServerGift> findByUserIdAndTitleLikeOrderByCreatedDesc(long userID, String title);
-
+    
     Collection<ServerGift> findByTitleLikeOrderByUserLikesAsc(String title);
 
     Collection<ServerGift> findByTitleLikeOrderByUserLikesDesc(String title);
 
-    Collection<ServerGift> findByGiftChainIDAndTitleLikeOrderByLikesAsc(long giftChainID,
+    Collection<ServerGift> findByUserIDAndTitleLikeOrderByLikesAsc(ServerUser user, String title);
+
+    Collection<ServerGift> findByUserIDAndTitleLikeOrderByLikesDesc(ServerUser user, String title);
+
+    Collection<ServerGift> findByUserIDAndTitleLikeOrderByCreatedAsc(ServerUser user, String title);
+
+    Collection<ServerGift> findByUserIdAndTitleLikeOrderByCreatedDesc(ServerUser user, String title);
+
+    Collection<ServerGift> findByGiftChainIDAndTitleLikeOrderByLikesAsc(ServerGiftChain giftChain,
             String title);
 
-    Collection<ServerGift> findByGiftChainIDIDAndTitleLikeOrderByLikesDesc(long giftChainID,
+    Collection<ServerGift> findByGiftChainIDIDAndTitleLikeOrderByLikesDesc(ServerGiftChain giftChain,
             String title);
 
-    Collection<ServerGift> findByGiftChainIDAndTitleLikeOrderByCreatedAsc(long giftChainID,
+    Collection<ServerGift> findByGiftChainIDAndTitleLikeOrderByCreatedAsc(ServerGiftChain giftChain,
             String title);
 
-    Collection<ServerGift> findByGiftChainIDAndTitleLikeOrderByCreatedDesc(long giftChainID,
+    Collection<ServerGift> findByGiftChainIDAndTitleLikeOrderByCreatedDesc(ServerGiftChain giftChain,
             String title);
 
 }

@@ -1,7 +1,7 @@
 package com.pataniqa.coursera.potlatch.store;
 
 public enum ResultOrder {
-    TIME(0), LIKES(1);
+    TIME(0), LIKES(1), TOP_GIFT_GIVERS(2);
 
     private final int val;
 

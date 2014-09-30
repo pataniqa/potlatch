@@ -119,6 +119,11 @@ public class GiftService {
                 query = gifts.findByTitleLikeOrderByLikesAsc(title);
             else
                 query = gifts.findByTitleLikeOrderByLikesDesc(title);
+        } else if (ResultOrder.toEnum(order) == ResultOrder.TOP_GIFT_GIVERS) {
+            if (resultDirection == ResultOrderDirection.ASCENDING)
+                query = gifts.findByTitleLikeOrderByUserLikesAsc(title);
+            else
+                query = gifts.findByTitleLikeOrderByUserLikesDesc(title);
         } else {
             if (resultDirection == ResultOrderDirection.ASCENDING)
                 query = gifts.findByTitleLikeOrderByCreatedAsc(title);
@@ -135,29 +140,19 @@ public class GiftService {
             int direction,
             Principal p) {
         ResultOrderDirection resultDirection = ResultOrderDirection.toEnum(direction);
+        ServerUser user = users.findOne(userID);
         Collection<ServerGift> query = null;
         if (ResultOrder.toEnum(order) == ResultOrder.LIKES) {
             if (resultDirection == ResultOrderDirection.ASCENDING)
-                query = gifts.findByUserIDAndTitleLikeOrderByLikesAsc(userID, title);
+                query = gifts.findByUserIDAndTitleLikeOrderByLikesAsc(user, title);
             else
-                query = gifts.findByUserIDAndTitleLikeOrderByLikesDesc(userID, title);
+                query = gifts.findByUserIDAndTitleLikeOrderByLikesDesc(user, title);
         } else {
             if (resultDirection == ResultOrderDirection.ASCENDING)
-                query = gifts.findByUserIDAndTitleLikeOrderByCreatedAsc(userID, title);
+                query = gifts.findByUserIDAndTitleLikeOrderByCreatedAsc(user, title);
             else
-                query = gifts.findByUserIdAndTitleLikeOrderByCreatedDesc(userID, title);
+                query = gifts.findByUserIdAndTitleLikeOrderByCreatedDesc(user, title);
         }
-        return toResult(query, p);
-    }
-
-    @RequestMapping(value = RemoteGiftApi.QUERY_BY_TOP_GIFT_GIVERS, method = RequestMethod.GET)
-    public List<GiftResult> queryByTopGiftGivers(String title, int direction, Principal p) {
-        ResultOrderDirection resultDirection = ResultOrderDirection.toEnum(direction);
-        Collection<ServerGift> query = null;
-        if (resultDirection == ResultOrderDirection.ASCENDING)
-            query = gifts.findByTitleLikeOrderByUserLikesAsc(title);
-        else
-            query = gifts.findByTitleLikeOrderByUserLikesDesc(title);
         return toResult(query, p);
     }
 
@@ -168,17 +163,18 @@ public class GiftService {
             int direction,
             Principal p) {
         ResultOrderDirection resultDirection = ResultOrderDirection.toEnum(direction);
+        ServerGiftChain giftChain = giftChains.findOne(giftChainID);
         Collection<ServerGift> query = null;
         if (ResultOrder.toEnum(order) == ResultOrder.LIKES) {
             if (resultDirection == ResultOrderDirection.ASCENDING)
-                query = gifts.findByGiftChainIDAndTitleLikeOrderByLikesAsc(giftChainID, title);
+                query = gifts.findByGiftChainIDAndTitleLikeOrderByLikesAsc(giftChain, title);
             else
-                query = gifts.findByGiftChainIDIDAndTitleLikeOrderByLikesDesc(giftChainID, title);
+                query = gifts.findByGiftChainIDIDAndTitleLikeOrderByLikesDesc(giftChain, title);
         } else {
             if (resultDirection == ResultOrderDirection.ASCENDING)
-                query = gifts.findByGiftChainIDAndTitleLikeOrderByCreatedAsc(giftChainID, title);
+                query = gifts.findByGiftChainIDAndTitleLikeOrderByCreatedAsc(giftChain, title);
             else
-                query = gifts.findByGiftChainIDAndTitleLikeOrderByCreatedDesc(giftChainID, title);
+                query = gifts.findByGiftChainIDAndTitleLikeOrderByCreatedDesc(giftChain, title);
         }
         return toResult(query, p);
     }

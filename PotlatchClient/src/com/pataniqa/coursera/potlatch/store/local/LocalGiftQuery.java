@@ -22,8 +22,13 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements GiftQuery {
     }
 
     String sortOrder(ResultOrder resultOrder, ResultOrderDirection resultOrderDirection) {
-        String sortCol = resultOrder == ResultOrder.LIKES ? LocalSchema.Cols.LIKES
-                : LocalSchema.Cols.CREATED;
+        String sortCol;
+        if (resultOrder == ResultOrder.LIKES)
+            sortCol = LocalSchema.Cols.LIKES;
+        else if (resultOrder == ResultOrder.TIME)
+            sortCol = LocalSchema.Cols.CREATED;
+        else
+            sortCol = LocalSchema.Cols.USER_LIKES;
         String order = direction(resultOrderDirection);
         return sortCol + " " + order;
     }
@@ -63,19 +68,6 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements GiftQuery {
                     LocalSchema.Cols.USER_ID + "= ? AND " + LIKE_QUERY,
                     selectionArgs,
                     sortOrder);
-        }
-    }
-
-    @Override
-    public ArrayList<GiftResult> queryByTopGiftGivers(String title,
-            ResultOrderDirection resultOrderDirection) throws RemoteException {
-        // TODO userLikes is not an index - very inefficient!
-        String sortOrder = LocalSchema.Cols.USER_LIKES + " " + direction(resultOrderDirection);
-        if (title == null || title.isEmpty())
-            return query(null, null, null, sortOrder);
-        else {
-            String[] selectionArgs = new String[] { "%" + title + "%" };
-            return query(null, LIKE_QUERY, selectionArgs, sortOrder);
         }
     }
 
@@ -134,7 +126,8 @@ class ClientGiftCreator extends BaseCreator<GiftResult> implements Creator<GiftR
         String description = cursor.getString(cursor.getColumnIndex(LocalSchema.Cols.DESCRIPTION));
         String videoUri = cursor.getString(cursor.getColumnIndex(LocalSchema.Cols.VIDEO_URI));
         String imageUri = cursor.getString(cursor.getColumnIndex(LocalSchema.Cols.IMAGE_URI));
-        Date created = TimeUtils.toDate(cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.CREATED)));
+        Date created = TimeUtils.toDate(cursor.getLong(cursor
+                .getColumnIndex(LocalSchema.Cols.CREATED)));
         long userID = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.USER_ID));
         boolean like = cursor.getInt(cursor.getColumnIndex(LocalSchema.Cols.LIKE)) > 0;
         boolean flag = cursor.getInt(cursor.getColumnIndex(LocalSchema.Cols.FLAG)) > 0;
@@ -146,7 +139,20 @@ class ClientGiftCreator extends BaseCreator<GiftResult> implements Creator<GiftR
         long userLikes = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.USER_LIKES));
         String username = cursor.getString(cursor.getColumnIndex(LocalSchema.Cols.USER_NAME));
 
-        return new GiftResult(rowID, title, description, videoUri, imageUri, created, userID, like,
-                flag, likes, flagged, giftChainID, giftChainName, userLikes, username);
+        return new GiftResult(rowID,
+                title,
+                description,
+                videoUri,
+                imageUri,
+                created,
+                userID,
+                like,
+                flag,
+                likes,
+                flagged,
+                giftChainID,
+                giftChainName,
+                userLikes,
+                username);
     }
 }
