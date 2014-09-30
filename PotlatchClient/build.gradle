@@ -59,8 +59,10 @@ sourceSets {
 
 dependencies {
     compile files("libs/android-support-v4.jar")
-    compile("com.google.guava:guava:17.0")
-    compile("com.squareup.retrofit:retrofit:1.6.0")
+    compile 'com.google.guava:guava:17.0'
+    compile 'com.squareup.retrofit:retrofit:1.6.0'
     compile 'com.jakewharton:butterknife:5.1.2'
     compile 'org.slf4j:slf4j-log4j12:1.7.5'
+    compile 'commons-io:commons-io:2.4'
+    compile 'com.google.code.gson:gson:2.3'
 }
