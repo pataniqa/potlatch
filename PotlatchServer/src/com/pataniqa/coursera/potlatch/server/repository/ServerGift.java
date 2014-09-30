@@ -9,12 +9,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.pataniqa.coursera.potlatch.model.Gift;
 
 @Entity
+@Table(name="gift")
 public class ServerGift {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,6 +27,8 @@ public class ServerGift {
     private String description;
     private String videoUri;
     private String imageUri;
+    private long likes;
+    private boolean flagged;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date created;
@@ -36,7 +40,7 @@ public class ServerGift {
     @ManyToOne(optional = false)
     @JoinColumn(name = "giftchain_id", referencedColumnName = "giftchain_id")
     private ServerGiftChain giftChain;
-
+    
     public ServerGift() {
 
     }
@@ -49,6 +53,8 @@ public class ServerGift {
         this.created = gift.getCreated();
         this.user = user;
         this.giftChain = giftChain;
+        this.likes = 0;
+        this.flagged = false;
     }
 
     public Gift toClient() {
@@ -71,14 +77,7 @@ public class ServerGift {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((created == null) ? 0 : created.hashCode());
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
-        result = prime * result + ((giftChain == null) ? 0 : giftChain.hashCode());
         result = prime * result + (int) (id ^ (id >>> 32));
-        result = prime * result + ((imageUri == null) ? 0 : imageUri.hashCode());
-        result = prime * result + ((title == null) ? 0 : title.hashCode());
-        result = prime * result + ((user == null) ? 0 : user.hashCode());
-        result = prime * result + ((videoUri == null) ? 0 : videoUri.hashCode());
         return result;
     }
 
@@ -91,42 +90,7 @@ public class ServerGift {
         if (getClass() != obj.getClass())
             return false;
         ServerGift other = (ServerGift) obj;
-        if (created == null) {
-            if (other.created != null)
-                return false;
-        } else if (!created.equals(other.created))
-            return false;
-        if (description == null) {
-            if (other.description != null)
-                return false;
-        } else if (!description.equals(other.description))
-            return false;
-        if (giftChain == null) {
-            if (other.giftChain != null)
-                return false;
-        } else if (!giftChain.equals(other.giftChain))
-            return false;
         if (id != other.id)
-            return false;
-        if (imageUri == null) {
-            if (other.imageUri != null)
-                return false;
-        } else if (!imageUri.equals(other.imageUri))
-            return false;
-        if (title == null) {
-            if (other.title != null)
-                return false;
-        } else if (!title.equals(other.title))
-            return false;
-        if (user == null) {
-            if (other.user != null)
-                return false;
-        } else if (!user.equals(other.user))
-            return false;
-        if (videoUri == null) {
-            if (other.videoUri != null)
-                return false;
-        } else if (!videoUri.equals(other.videoUri))
             return false;
         return true;
     }
@@ -187,4 +151,35 @@ public class ServerGift {
         return giftChain.getGiftChainID();
     }
 
+    public ServerUser getUser() {
+        return user;
+    }
+
+    public void setUser(ServerUser user) {
+        this.user = user;
+    }
+
+    public ServerGiftChain getGiftChain() {
+        return giftChain;
+    }
+
+    public void setGiftChain(ServerGiftChain giftChain) {
+        this.giftChain = giftChain;
+    }
+
+    public long getLikes() {
+        return likes;
+    }
+
+    public void setLikes(long likes) {
+        this.likes = likes;
+    }
+
+    public boolean isFlagged() {
+        return flagged;
+    }
+
+    public void setFlagged(boolean flagged) {
+        this.flagged = flagged;
+    }
 }

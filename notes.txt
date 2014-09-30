@@ -31,6 +31,9 @@ Saturday 20th 10 hours
 Sunday 21st 10 hours
 Monday 22nd 6 hours
 Tuesday 23rd 10 hours
-Wednesday 24th 4 hours
+Wednesday 24th 6 hours
+Thursday 9 hours
+total so far => 9 hours
 
-total so far => 52 hours
+JPA Gradle schema plugin
+https://github.com/divinespear/jpa-schema-gradle-plugin

@@ -1,53 +1,20 @@
 package com.pataniqa.coursera.potlatch.server.repository;
 
-import java.util.List;
-
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-
-import com.pataniqa.coursera.potlatch.model.Gift;
 
 @Entity
 public class ServerUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private long id;
-    
+
     private String username;
     private long userLikes;
-    
-    // Maybe get rid of this one
-    
-//    @OneToMany(mappedBy="user",fetch=FetchType.LAZY)
-//    private List<Gift> gifts;
-    
-    // need to take the approach here to solve the many to many problem
-    
-    // http://giannigar.wordpress.com/2009/09/04/mapping-a-many-to-many-join-table-with-extra-column-using-jpa/
-    
-    @ManyToMany
-    @JoinTable(name="user_likes", 
-    joinColumns={@JoinColumn(name="user_id", referencedColumnName="user_id")},
-    inverseJoinColumns={@JoinColumn(name="gift_id", referencedColumnName="gift_id")})
-    private List<Gift> likes;
-    
-    @ManyToMany
-    @JoinTable(name="user_flags", 
-    joinColumns={@JoinColumn(name="user_id", referencedColumnName="user_id")},
-    inverseJoinColumns={@JoinColumn(name="gift_id", referencedColumnName="gift_id")})
-    private List<Gift> flagged;
 
     public String getUsername() {
         return username;
@@ -68,4 +35,32 @@ public class ServerUser {
     public long getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "ServerUser [id=" + id + ", username=" + username + ", userLikes=" + userLikes + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) (id ^ (id >>> 32));
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ServerUser other = (ServerUser) obj;
+        if (id != other.id)
+            return false;
+        return true;
+    }
+
 }

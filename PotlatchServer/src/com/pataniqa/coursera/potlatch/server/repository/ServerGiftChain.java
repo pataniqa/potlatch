@@ -16,16 +16,24 @@ public class ServerGiftChain {
     @Column(name = "gift_id")
     private long giftChainID;
 
-    public String giftChainName;
+    private String giftChainName;
+
+    public ServerGiftChain() {
+
+    }
 
     public long getGiftChainID() {
         return giftChainID;
     }
     
-    public ServerGiftChain() {
-        
+    public String getGiftChainName() {
+        return giftChainName;
     }
-    
+
+    public void setGiftChainName(String giftChainName) {
+        this.giftChainName = giftChainName;
+    }
+
     @Override
     public String toString() {
         return "GiftChain [giftChainID=" + giftChainID + ", giftChainName=" + giftChainName + "]";
@@ -51,12 +59,12 @@ public class ServerGiftChain {
             return false;
         }
     }
-    
+
     public ServerGiftChain(GiftChain giftChain) {
         this.giftChainID = giftChain.getID();
         this.giftChainName = giftChain.getGiftChainName();
     }
-    
+
     public GiftChain toClient() {
         return new GiftChain(giftChainID, giftChainName);
     }

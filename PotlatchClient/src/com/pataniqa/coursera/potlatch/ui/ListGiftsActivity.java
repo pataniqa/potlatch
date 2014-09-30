@@ -332,7 +332,7 @@ public class ListGiftsActivity extends GiftActivity implements
     @Override
     public void setLike(GiftResult gift) {
         try {
-            service.giftMetadata().setLike(gift.getID(), userID, gift.isLike());
+            service.giftMetadata().setLike(gift.getID(), gift.isLike());
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }
@@ -341,7 +341,7 @@ public class ListGiftsActivity extends GiftActivity implements
     @Override
     public void setFlag(GiftResult gift) {
         try {
-            service.giftMetadata().setFlag(gift.getID(), userID, gift.isFlag());
+            service.giftMetadata().setFlag(gift.getID(), gift.isFlag());
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }
