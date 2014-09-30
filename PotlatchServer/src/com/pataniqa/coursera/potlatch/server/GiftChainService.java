@@ -15,32 +15,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.server.repository.GiftChainRepository;
 import com.pataniqa.coursera.potlatch.server.repository.ServerGiftChain;
+import com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi;
+import com.pataniqa.coursera.potlatch.store.remote.RemoteGiftChainApi;
 
 @Controller
 public class GiftChainService {
 
-    public static final String GIFT_CHAIN_SVC_PATH = "/giftchain";
-
     @Autowired
     private GiftChainRepository giftChains;
 
-    @RequestMapping(value = GIFT_CHAIN_SVC_PATH, method = RequestMethod.POST)
+    @RequestMapping(value = RemoteGiftChainApi.GIFT_CHAIN_PATH, method = RequestMethod.POST)
     public @ResponseBody
     GiftChain insert(@RequestBody GiftChain data) {
         return giftChains.save(new ServerGiftChain(data)).toClient();
     }
 
-    @RequestMapping(value = GIFT_CHAIN_SVC_PATH + "/{id}", method = RequestMethod.PUT)
-    public void update(@PathVariable long id, @RequestBody GiftChain data) {
-        giftChains.save(new ServerGiftChain(data));
-    }
-
-    @RequestMapping(value = GIFT_CHAIN_SVC_PATH + "/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable long id) {
-        giftChains.delete(id);
-    }
-
-    @RequestMapping(value = GIFT_CHAIN_SVC_PATH, method = RequestMethod.GET)
+    @RequestMapping(value = RemoteGiftChainApi.GIFT_CHAIN_PATH, method = RequestMethod.GET)
     public @ResponseBody
     Collection<GiftChain> findAll() {
         List<GiftChain> result = new ArrayList<GiftChain>();
@@ -48,6 +38,16 @@ public class GiftChainService {
             result.add(giftChain.toClient());
         }
         return result;
+    }
+
+    @RequestMapping(value = RemoteGiftChainApi.GIFT_CHAIN_ID_PATH, method = RequestMethod.PUT)
+    public void update(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id, @RequestBody GiftChain data) {
+        giftChains.save(new ServerGiftChain(data));
+    }
+
+    @RequestMapping(value = RemoteGiftChainApi.GIFT_CHAIN_ID_PATH, method = RequestMethod.DELETE)
+    public void delete(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id) {
+        giftChains.delete(id);
     }
 
 }

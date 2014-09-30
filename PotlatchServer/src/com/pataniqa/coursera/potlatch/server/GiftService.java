@@ -1,16 +1,21 @@
 package com.pataniqa.coursera.potlatch.server;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
@@ -25,10 +30,10 @@ import com.pataniqa.coursera.potlatch.server.repository.ServerUser;
 import com.pataniqa.coursera.potlatch.server.repository.UserRepository;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
+import com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi;
+import com.pataniqa.coursera.potlatch.store.remote.ResourceStatus;
 
 public class GiftService {
-
-    public static final String GIFT_SVC_PATH = "/gift";
 
     @Autowired
     private GiftRepository gifts;
@@ -42,7 +47,7 @@ public class GiftService {
     @Autowired
     private GiftMetadataRepository giftMetadata;
 
-    @RequestMapping(value = GIFT_SVC_PATH, method = RequestMethod.POST)
+    @RequestMapping(value = RemoteGiftApi.GIFT_PATH, method = RequestMethod.POST)
     public @ResponseBody
     Gift insert(@RequestBody Gift gift) {
         ServerGiftChain giftChain = giftChains.findOne(gift.getGiftID());
@@ -50,43 +55,7 @@ public class GiftService {
         return gifts.save(new ServerGift(gift, user, giftChain)).toClient();
     }
 
-    @RequestMapping(value = GIFT_SVC_PATH + "/{id}", method = RequestMethod.PUT)
-    public void update(@PathVariable long id, @RequestBody Gift gift) {
-        ServerGiftChain giftChain = giftChains.findOne(gift.getGiftID());
-        ServerUser user = users.findOne(gift.getUserID());
-        gifts.save(new ServerGift(gift, user, giftChain));
-    }
-
-    @RequestMapping(value = GIFT_SVC_PATH + "/{id}", method = RequestMethod.DELETE)
-    public void deleteGift(@PathVariable long id) {
-        gifts.delete(id);
-    }
-
-    @RequestMapping(value = GIFT_SVC_PATH + "/{id}/like/{like}", method = RequestMethod.PUT)
-    public void setLike(@PathVariable long id, @PathVariable boolean like, Principal p) {
-        // TODO use join
-        ServerGiftMetadata metadata = giftMetadata.findOne(new ServerGiftMetadataPk(getUser(p),
-                gifts.findOne(id)));
-        metadata.setUserLike(like);
-        giftMetadata.save(metadata);
-    }
-
-    @RequestMapping(value = GIFT_SVC_PATH + "/{id}/flag/{like}", method = RequestMethod.PUT)
-    public void setFlag(@PathVariable long id, @PathVariable boolean flag, Principal p) {
-        // TODO use join
-        ServerGiftMetadata metadata = giftMetadata.findOne(new ServerGiftMetadataPk(getUser(p),
-                gifts.findOne(id)));
-        metadata.setUserFlagged(flag);
-        giftMetadata.save(metadata);
-    }
-
-    @RequestMapping(value = GIFT_SVC_PATH + "/{id}", method = RequestMethod.GET)
-    public GiftResult findOne(@PathVariable Long id, Principal p) {
-        // TODO use join
-        return fromGift(gifts.findOne(id), getUser(p));
-    }
-
-    @RequestMapping(value = GIFT_SVC_PATH, method = RequestMethod.GET)
+    @RequestMapping(value = RemoteGiftApi.GIFT_PATH, method = RequestMethod.GET)
     public List<GiftResult> findAll(Principal p) {
         ServerUser user = getUser(p);
         List<GiftResult> results = new ArrayList<GiftResult>();
@@ -96,8 +65,47 @@ public class GiftService {
         return results;
     }
 
-    @RequestMapping(value = GIFT_SVC_PATH
-            + "/queryTitle?title={title}&resultorder={order}&direction={direction}", method = RequestMethod.GET)
+    @RequestMapping(value = RemoteGiftApi.GIFT_ID_PATH, method = RequestMethod.PUT)
+    public void update(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id, @RequestBody Gift gift) {
+        ServerGiftChain giftChain = giftChains.findOne(gift.getGiftID());
+        ServerUser user = users.findOne(gift.getUserID());
+        gifts.save(new ServerGift(gift, user, giftChain));
+    }
+
+    @RequestMapping(value = RemoteGiftApi.GIFT_ID_PATH, method = RequestMethod.DELETE)
+    public void deleteGift(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id) {
+        gifts.delete(id);
+    }
+
+    @RequestMapping(value = RemoteGiftApi.GIFT_ID_PATH, method = RequestMethod.GET)
+    public GiftResult findOne(@PathVariable(RemoteGiftApi.ID_PARAMETER) Long id, Principal p) {
+        // TODO use join
+        return fromGift(gifts.findOne(id), getUser(p));
+    }
+
+    @RequestMapping(value = RemoteGiftApi.GIFT_LIKE_PATH, method = RequestMethod.PUT)
+    public void setLike(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id,
+            @PathVariable boolean like,
+            Principal p) {
+        // TODO use join
+        ServerGiftMetadata metadata = giftMetadata.findOne(new ServerGiftMetadataPk(getUser(p),
+                gifts.findOne(id)));
+        metadata.setUserLike(like);
+        giftMetadata.save(metadata);
+    }
+
+    @RequestMapping(value = RemoteGiftApi.GIFT_FLAG_PATH, method = RequestMethod.PUT)
+    public void setFlag(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id,
+            @PathVariable boolean flag,
+            Principal p) {
+        // TODO use join
+        ServerGiftMetadata metadata = giftMetadata.findOne(new ServerGiftMetadataPk(getUser(p),
+                gifts.findOne(id)));
+        metadata.setUserFlagged(flag);
+        giftMetadata.save(metadata);
+    }
+
+    @RequestMapping(value = RemoteGiftApi.QUERY_BY_TITLE, method = RequestMethod.GET)
     public List<GiftResult> queryByTitle(String title, int order, int direction, Principal p) {
         ResultOrderDirection resultDirection = ResultOrderDirection.toEnum(direction);
         Collection<ServerGift> query = null;
@@ -115,8 +123,7 @@ public class GiftService {
         return toResult(query, p);
     }
 
-    @RequestMapping(value = GIFT_SVC_PATH
-            + "/queryUser?user={userID}&title={title}&resultorder={order}&direction={direction}", method = RequestMethod.GET)
+    @RequestMapping(value = RemoteGiftApi.QUERY_BY_USER, method = RequestMethod.GET)
     public List<GiftResult> queryByUser(String title,
             long userID,
             int order,
@@ -138,8 +145,7 @@ public class GiftService {
         return toResult(query, p);
     }
 
-    @RequestMapping(value = GIFT_SVC_PATH + ""
-            + "/queryTopGiftGivers?title={title}&direction={direction}", method = RequestMethod.GET)
+    @RequestMapping(value = RemoteGiftApi.QUERY_BY_TOP_GIFT_GIVERS, method = RequestMethod.GET)
     public List<GiftResult> queryByTopGiftGivers(String title, int direction, Principal p) {
         ResultOrderDirection resultDirection = ResultOrderDirection.toEnum(direction);
         Collection<ServerGift> query = null;
@@ -150,8 +156,7 @@ public class GiftService {
         return toResult(query, p);
     }
 
-    @RequestMapping(value = GIFT_SVC_PATH
-            + "/queryGiftChain?giftchain={giftchain}&title={title}&resultorder={order}&direction={direction}", method = RequestMethod.GET)
+    @RequestMapping(value = RemoteGiftApi.QUERY_BY_GIFT_CHAIN, method = RequestMethod.GET)
     public List<GiftResult> queryByGiftChain(String title,
             long giftChainID,
             int order,
@@ -196,6 +201,34 @@ public class GiftService {
             results.add(fromGift(gift, user));
         }
         return results;
+    }
+
+    @RequestMapping(value = RemoteGiftApi.GIFT_VIDEO_PATH, method = RequestMethod.POST)
+    public @ResponseBody
+    ResourceStatus setVideoData(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id,
+            @RequestParam(RemoteGiftApi.DATA_PARAMETER) MultipartFile videoData) throws IOException {
+        // TODO
+        return null;
+    }
+
+    @RequestMapping(value = RemoteGiftApi.GIFT_VIDEO_PATH, method = RequestMethod.GET)
+    public void getVideoData(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id,
+            HttpServletResponse response) throws IOException {
+        // TODO
+    }
+
+    @RequestMapping(value = RemoteGiftApi.GIFT_IMAGE_PATH, method = RequestMethod.POST)
+    public @ResponseBody
+    ResourceStatus setImageData(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id,
+            @RequestParam(RemoteGiftApi.DATA_PARAMETER) MultipartFile videoData) throws IOException {
+        // TODO
+        return null;
+    }
+
+    @RequestMapping(value = RemoteGiftApi.GIFT_IMAGE_PATH, method = RequestMethod.GET)
+    public void getImageData(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id,
+            HttpServletResponse response) throws IOException {
+        // TODO
     }
 
 }

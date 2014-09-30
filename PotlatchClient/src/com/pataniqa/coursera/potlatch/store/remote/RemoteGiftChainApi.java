@@ -12,18 +12,22 @@ import com.pataniqa.coursera.potlatch.model.GiftChain;
 
 public interface RemoteGiftChainApi {
     
-    public static final String GIFT_CHAIN_SVC_PATH = "/giftchain";
+    public static final String GIFT_CHAIN_PATH = "/giftchain";
     
-    @POST(GIFT_CHAIN_SVC_PATH)
+    public static final String GIFT_CHAIN_ID_PATH = "/giftchain/{id}";
+    
+    @POST(GIFT_CHAIN_PATH)
     GiftChain insert(@Body GiftChain data);
+    
+    @GET(GIFT_CHAIN_PATH)
+    Collection<GiftChain> findAll();
 
-    @PUT(GIFT_CHAIN_SVC_PATH + "/{id}")
+    @PUT(GIFT_CHAIN_ID_PATH)
     void update(long id, @Body GiftChain data);
 
-    @DELETE(GIFT_CHAIN_SVC_PATH + "/{id}")
+    @DELETE(GIFT_CHAIN_ID_PATH)
     void deleteGiftChain(long id);
 
-    @GET(GIFT_CHAIN_SVC_PATH)
-    Collection<GiftChain> findAll();
+
 
 }
