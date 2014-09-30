@@ -18,6 +18,10 @@ import com.pataniqa.coursera.potlatch.model.Gift;
 @Entity
 @Table(name="gift")
 public class ServerGift {
+    
+    public static final String LIKES = "likes";
+    public static final String CREATED = "created";
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "gift_id")
@@ -27,10 +31,12 @@ public class ServerGift {
     private String description;
     private String videoUri;
     private String imageUri;
+    @Column(name=LIKES)
     private long likes;
     private boolean flagged;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name=CREATED)
     private Date created;
 
     @ManyToOne(optional = false)

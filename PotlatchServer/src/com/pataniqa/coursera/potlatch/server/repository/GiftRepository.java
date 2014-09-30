@@ -11,24 +11,9 @@ public interface GiftRepository extends CrudRepository<ServerGift, Long> {
 
     Collection<ServerGift> findByTitleLike(String title, Sort sort);
 
-    Collection<ServerGift> findByUserAndTitleLikeOrderByLikesAsc(ServerUser user, String title);
+    Collection<ServerGift> findByUserAndTitleLike(ServerUser user, String title, Sort sort);
 
-    Collection<ServerGift> findByUserAndTitleLikeOrderByLikesDesc(ServerUser user, String title);
-
-    Collection<ServerGift> findByUserAndTitleLikeOrderByCreatedAsc(ServerUser user, String title);
-
-    Collection<ServerGift> findByUserAndTitleLikeOrderByCreatedDesc(ServerUser user, String title);
-
-    Collection<ServerGift> findByGiftChainAndTitleLikeOrderByLikesAsc(ServerGiftChain giftChain,
-            String title);
-
-    Collection<ServerGift> findByGiftChainAndTitleLikeOrderByLikesDesc(ServerGiftChain giftChain,
-            String title);
-
-    Collection<ServerGift> findByGiftChainAndTitleLikeOrderByCreatedAsc(ServerGiftChain giftChain,
-            String title);
-
-    Collection<ServerGift> findByGiftChainAndTitleLikeOrderByCreatedDesc(ServerGiftChain giftChain,
-            String title);
+    Collection<ServerGift> findByGiftChainAndTitleLike(ServerGiftChain giftChain,
+            String title, Sort sort);
 
 }
