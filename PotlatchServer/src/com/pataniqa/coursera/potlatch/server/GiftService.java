@@ -49,8 +49,10 @@ public class GiftService {
     @Autowired
     private GiftMetadataRepository giftMetadata;
 
+    // TODO - should be injected
     private FileManager imageManager = new FileManager("image", "jpg");
 
+    // TODO - should be injected
     private FileManager videoManager = new FileManager("video", "mpg");
 
     @RequestMapping(value = RemoteGiftApi.GIFT_PATH, method = RequestMethod.POST)
@@ -85,7 +87,9 @@ public class GiftService {
 
     @RequestMapping(value = RemoteGiftApi.GIFT_ID_PATH, method = RequestMethod.GET)
     public GiftResult findOne(@PathVariable(RemoteGiftApi.ID_PARAMETER) Long id, Principal p) {
+
         // TODO use join
+
         return fromGift(gifts.findOne(id), getUser(p));
     }
 
@@ -96,15 +100,22 @@ public class GiftService {
 
         // TODO use join
 
-        ServerGiftMetadata metadata = giftMetadata.findOne(new ServerGiftMetadataPk(getUser(p),
-                gifts.findOne(id)));
-
-        // TODO need to update total likes for user
-
-        // TODO need to update total likes for gift
-
-        metadata.setUserLike(like);
-        giftMetadata.save(metadata);
+        ServerUser user = getUser(p);
+        ServerGift gift = gifts.findOne(id);
+        ServerGiftMetadata metadata = getMetadata(user, gift);
+        if (like != metadata.likes()) {
+            if (like) {
+                gift.incrementLikes();
+                user.incrementLikes();
+            } else {
+                gift.decrementLikes();
+                user.decrementLikes();
+            }
+            metadata.setLikes(like);
+            giftMetadata.save(metadata);
+            users.save(user);
+            gifts.save(gift);
+        }
     }
 
     @RequestMapping(value = RemoteGiftApi.GIFT_FLAG_PATH, method = RequestMethod.PUT)
@@ -114,20 +125,23 @@ public class GiftService {
 
         // TODO use join
 
-        ServerGiftMetadata metadata = giftMetadata.findOne(new ServerGiftMetadataPk(getUser(p),
-                gifts.findOne(id)));
-
-        // TODO need to update total flags for user
-
-        // TODO need to update total flags for gift
-
-        metadata.setUserFlagged(flag);
-        giftMetadata.save(metadata);
+        ServerUser user = getUser(p);
+        ServerGift gift = gifts.findOne(id);
+        ServerGiftMetadata metadata = getMetadata(user, gift);
+        if (flag != metadata.hasFlagged()) {
+            if (flag)
+                gift.incrementFlagged();
+            else
+                gift.decrementFlagged();
+            metadata.setFlagged(flag);
+            giftMetadata.save(metadata);
+            gifts.save(gift);
+        }
     }
 
     @RequestMapping(value = RemoteGiftApi.QUERY_BY_TITLE, method = RequestMethod.GET)
     public List<GiftResult> queryByTitle(String title, int order, int direction, Principal principal) {
-        Sort sort = new Sort(getDirection(direction), getSortColumn(order));
+        Sort sort = getSort(direction, order);
         return toResult(gifts.findByTitleLike(title, sort), principal);
     }
 
@@ -162,60 +176,13 @@ public class GiftService {
         return null;
     }
 
-    private String getSortColumn(int order) {
-        return ResultOrder.toEnum(order) == ResultOrder.LIKES ? ServerGift.LIKES
-                : ServerGift.CREATED;
-    }
-
-    private Sort.Direction getDirection(int direction) {
-        ResultOrderDirection resultDirection = ResultOrderDirection.toEnum(direction);
-        return resultDirection == ResultOrderDirection.ASCENDING ? Sort.Direction.ASC
-                : Sort.Direction.DESC;
-    }
-
-    private Sort getSort(int order, int direction) {
-        return new Sort(getDirection(direction), getSortColumn(order));
-    }
-
-    private ServerUser getUser(Principal p) {
-        return users.findByUsername(p.getName()).get(0);
-    }
-
-    private GiftResult fromGift(ServerGift gift, ServerUser user) {
-        // TODO - do proper join!
-        ServerGiftMetadata metadata = giftMetadata.findOne(new ServerGiftMetadataPk(user, gift));
-        boolean like = metadata != null ? metadata.isUserLike() : false;
-        boolean flag = metadata != null ? metadata.isUserFlagged() : false;
-        return new GiftResult(gift.getGiftID(),
-                gift.getTitle(),
-                gift.getDescription(),
-                gift.getVideoUri(),
-                gift.getImageUri(),
-                gift.getCreated(),
-                gift.getUserID(),
-                like,
-                flag,
-                gift.getLikes(),
-                gift.isFlagged(),
-                gift.getGiftChainID(),
-                gift.getGiftChain().getGiftChainName(),
-                gift.getUser().getUserLikes(),
-                gift.getUser().getUsername());
-    }
-
-    private List<GiftResult> toResult(Collection<ServerGift> query, Principal p) {
-        ServerUser user = getUser(p);
-        List<GiftResult> results = new ArrayList<GiftResult>();
-        for (ServerGift gift : query) {
-            results.add(fromGift(gift, user));
-        }
-        return results;
-    }
-
     @RequestMapping(value = RemoteGiftApi.GIFT_VIDEO_PATH, method = RequestMethod.POST)
     public @ResponseBody
     ResourceStatus setVideoData(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id,
             @RequestParam(RemoteGiftApi.DATA_PARAMETER) MultipartFile videoData) throws IOException {
+        
+        // TODO need to set video field in ServerGift
+        
         return setData(id, videoData, videoManager);
     }
 
@@ -229,6 +196,9 @@ public class GiftService {
     public @ResponseBody
     ResourceStatus setImageData(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id,
             @RequestParam(RemoteGiftApi.DATA_PARAMETER) MultipartFile imageData) throws IOException {
+        
+        // TODO need to set image field in ServerGift
+        
         return setData(id, imageData, imageManager);
     }
 
@@ -259,6 +229,55 @@ public class GiftService {
         } else
             throw new ResourceNotFoundException();
 
+    }
+
+    private Sort getSort(int order, int direction) {
+        String col = ResultOrder.toEnum(order) == ResultOrder.LIKES ? ServerGift.LIKES
+                : ServerGift.CREATED;
+        ResultOrderDirection resultDirection = ResultOrderDirection.toEnum(direction);
+        Sort.Direction d = resultDirection == ResultOrderDirection.ASCENDING ? Sort.Direction.ASC
+                : Sort.Direction.DESC;
+        return new Sort(d, col);
+    }
+
+    private ServerUser getUser(Principal p) {
+        return users.findByUsername(p.getName()).get(0);
+    }
+
+    private GiftResult fromGift(ServerGift gift, ServerUser user) {
+        // TODO - do proper join!
+        ServerGiftMetadata metadata = getMetadata(user, gift);
+        boolean like = metadata != null ? metadata.likes() : false;
+        boolean flag = metadata != null ? metadata.hasFlagged() : false;
+        return new GiftResult(gift.getGiftID(),
+                gift.getTitle(),
+                gift.getDescription(),
+                gift.getVideoUri(),
+                gift.getImageUri(),
+                gift.getCreated(),
+                gift.getUserID(),
+                like,
+                flag,
+                gift.getLikes(),
+                gift.isFlagged(),
+                gift.getGiftChainID(),
+                gift.getGiftChain().getGiftChainName(),
+                gift.getUser().getUserLikes(),
+                gift.getUser().getUsername());
+    }
+
+    private List<GiftResult> toResult(Collection<ServerGift> query, Principal p) {
+        ServerUser user = getUser(p);
+        List<GiftResult> results = new ArrayList<GiftResult>();
+        for (ServerGift gift : query) {
+            results.add(fromGift(gift, user));
+        }
+        return results;
+    }
+
+    private ServerGiftMetadata getMetadata(ServerUser user, ServerGift gift) {
+        ServerGiftMetadataPk pk = new ServerGiftMetadataPk(user, gift);
+        return giftMetadata.exists(pk) ? giftMetadata.findOne(pk) : new ServerGiftMetadata(pk);
     }
 
 }

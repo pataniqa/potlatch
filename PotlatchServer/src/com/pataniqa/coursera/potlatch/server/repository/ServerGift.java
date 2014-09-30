@@ -19,7 +19,8 @@ import com.pataniqa.coursera.potlatch.model.Gift;
 @Table(name="gift")
 public class ServerGift {
     
-    public static final String LIKES = "likes";
+    public static final String LIKES = "gift_likes";
+    public static final String FLAGGED = "gift_flagged";
     public static final String CREATED = "created";
     
     @Id
@@ -31,9 +32,11 @@ public class ServerGift {
     private String description;
     private String videoUri;
     private String imageUri;
+    
     @Column(name=LIKES)
     private long likes;
-    private boolean flagged;
+    @Column(name=FLAGGED)
+    private long flagged;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name=CREATED)
@@ -60,7 +63,7 @@ public class ServerGift {
         this.user = user;
         this.giftChain = giftChain;
         this.likes = 0;
-        this.flagged = false;
+        this.flagged = 0;
     }
 
     public Gift toClient() {
@@ -177,15 +180,23 @@ public class ServerGift {
         return likes;
     }
 
-    public void setLikes(long likes) {
-        this.likes = likes;
-    }
-
     public boolean isFlagged() {
-        return flagged;
+        return flagged > 0;
     }
 
-    public void setFlagged(boolean flagged) {
-        this.flagged = flagged;
+    public void incrementLikes() {
+        this.likes += 1;
+    }
+
+    public void decrementLikes() {
+        this.likes -= 1;
+    }
+
+    public void decrementFlagged() {
+        this.flagged -= 1;
+    }
+    
+    public void incrementFlagged() {
+        this.flagged += 1;
     }
 }

@@ -8,12 +8,19 @@ import javax.persistence.Id;
 
 @Entity
 public class ServerUser {
+    
+    public static final String USER_ID = "user_id";
+    
+    public static final String USER_LIKES = "user_likes";
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id")
+    @Column(name = USER_ID)
     private long id;
 
     private String username;
+    
+    @Column(name = USER_LIKES)
     private long userLikes;
 
     public String getUsername() {
@@ -26,10 +33,6 @@ public class ServerUser {
 
     public long getUserLikes() {
         return userLikes;
-    }
-
-    public void setUserLikes(long userLikes) {
-        this.userLikes = userLikes;
     }
 
     public long getId() {
@@ -63,4 +66,11 @@ public class ServerUser {
         return true;
     }
 
+    public void incrementLikes() {
+        this.userLikes += 1;
+    }
+
+    public void decrementLikes() {
+        this.userLikes -= 1;
+    }
 }

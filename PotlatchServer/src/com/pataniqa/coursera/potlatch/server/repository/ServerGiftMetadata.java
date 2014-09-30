@@ -2,6 +2,7 @@ package com.pataniqa.coursera.potlatch.server.repository;
 
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -14,18 +15,28 @@ import javax.persistence.Transient;
         @AssociationOverride(name = "pk.user", joinColumns = @JoinColumn(name = "user_id")),
         @AssociationOverride(name = "pk.gift", joinColumns = @JoinColumn(name = "gift_id")) })
 public class ServerGiftMetadata {
+    
+    public static final String LIKES = "user_likes";
+    public static final String FLAGGED = "user_flagged";
 
     private ServerGiftMetadataPk pk = new ServerGiftMetadataPk();
 
-    private boolean userLike;
-    private boolean userFlagged;
+    @Column(name = LIKES)
+    private boolean likes = false;
+    
+    @Column(name = FLAGGED)
+    private boolean flagged = false;
 
     @EmbeddedId
     public ServerGiftMetadataPk getPk() {
         return pk;
     }
-
-    private void setPk(ServerGiftMetadataPk pk) {
+    
+    public ServerGiftMetadata() {
+        // no-args constructor
+    }
+    
+    public ServerGiftMetadata(ServerGiftMetadataPk pk) {
         this.pk = pk;
     }
 
@@ -47,20 +58,20 @@ public class ServerGiftMetadata {
         getPk().setGift(gift);
     }
 
-    public boolean isUserLike() {
-        return userLike;
+    public boolean likes() {
+        return likes;
     }
 
-    public void setUserLike(boolean userLike) {
-        this.userLike = userLike;
+    public void setLikes(boolean userLike) {
+        this.likes = userLike;
     }
 
-    public boolean isUserFlagged() {
-        return userFlagged;
+    public boolean hasFlagged() {
+        return flagged;
     }
 
-    public void setUserFlagged(boolean userFlagged) {
-        this.userFlagged = userFlagged;
+    public void setFlagged(boolean userFlagged) {
+        this.flagged = userFlagged;
     }
 
     @Override
@@ -90,8 +101,8 @@ public class ServerGiftMetadata {
 
     @Override
     public String toString() {
-        return "ServerGiftMetadata [pk=" + pk + ", userLike=" + userLike + ", userFlagged="
-                + userFlagged + "]";
+        return "ServerGiftMetadata [pk=" + pk + ", userLike=" + likes + ", userFlagged="
+                + flagged + "]";
     }
 
 }
