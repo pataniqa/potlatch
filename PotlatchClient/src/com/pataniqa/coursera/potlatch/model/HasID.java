@@ -4,8 +4,8 @@ public interface HasID {
     
     public static final long UNDEFINED_ID = -1;
     
-    long getID();
+    long getId();
     
-    void setID(long id);
+    void setId(long id);
 
 }

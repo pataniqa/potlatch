@@ -21,7 +21,7 @@ public class LocalGiftMetadataStore implements MetadataStore {
 
     void update(GiftResult gift) {
         String selection = LocalSchema.Cols.ID + " = ? ";
-        String[] selectionArgs = { String.valueOf(gift.getID()) };
+        String[] selectionArgs = { String.valueOf(gift.getId()) };
         SQLiteDatabase db = helper.getWritableDatabase();
         db.update(tableName, localGiftStore.creator.getCV(gift), selection, selectionArgs);
         db.close();

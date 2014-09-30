@@ -13,16 +13,16 @@ abstract class BaseCreateUpdateDelete<T extends HasID> extends BaseQuery<T> impl
 
     @Override
     public <S extends T> S save(S data) throws RemoteException {
-        if (data.getID() == HasID.UNDEFINED_ID) {
+        if (data.getId() == HasID.UNDEFINED_ID) {
             ContentValues tempCV = creator.getCV(data);
             tempCV.remove(LocalSchema.Cols.ID);
             SQLiteDatabase db = helper.getWritableDatabase();
             long res = db.insert(tableName, null, tempCV);
             db.close();
-            data.setID(res);
+            data.setId(res);
         } else {
             String selection = LocalSchema.Cols.ID + " = ?";
-            String[] selectionArgs = { String.valueOf(data.getID()) };
+            String[] selectionArgs = { String.valueOf(data.getId()) };
             SQLiteDatabase db = helper.getWritableDatabase();
             db.update(tableName, creator.getCV(data), selection, selectionArgs);
             db.close();

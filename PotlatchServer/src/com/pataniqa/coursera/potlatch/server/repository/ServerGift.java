@@ -13,45 +13,46 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import com.pataniqa.coursera.potlatch.model.Gift;
 
+@EqualsAndHashCode(exclude = { "title", "description", "videoUri", "imageUri", "likes", "flagged", "created", "user", "giftChain" })
+@ToString
 @Entity
-@Table(name="gift")
+@Table(name = "gift")
 public class ServerGift {
-    
+
+    public static final String ID = "gift_id";
+    @Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = ID) private long id;
+
+    @Getter @Setter private String title;
+    @Getter @Setter private String description;
+    @Getter @Setter private String videoUri;
+    @Getter @Setter private String imageUri;
+
     public static final String LIKES = "gift_likes";
+    @Getter @Column(name = LIKES) private long likes;
+    
     public static final String FLAGGED = "gift_flagged";
+    @Column(name = FLAGGED) private long flagged;
+
     public static final String CREATED = "created";
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "gift_id")
-    private long id;
+    @Getter @Temporal(TemporalType.TIMESTAMP) @Column(name = CREATED) private Date created;
 
-    private String title;
-    private String description;
-    private String videoUri;
-    private String imageUri;
-    
-    @Column(name=LIKES)
-    private long likes;
-    @Column(name=FLAGGED)
-    private long flagged;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name=CREATED)
-    private Date created;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @Getter @ManyToOne(optional = false) 
+    @JoinColumn(name = ServerUser.ID, referencedColumnName = ServerUser.ID) 
     private ServerUser user;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "giftchain_id", referencedColumnName = "giftchain_id")
+    @Getter @ManyToOne(optional = false) 
+    @JoinColumn(name = ServerGiftChain.ID, referencedColumnName = ServerGiftChain.ID) 
     private ServerGiftChain giftChain;
-    
-    public ServerGift() {
 
+    public ServerGift() {
+        // zero args constructor
     }
 
     public ServerGift(Gift gift, ServerUser user, ServerGiftChain giftChain) {
@@ -67,117 +68,14 @@ public class ServerGift {
     }
 
     public Gift toClient() {
-        return new Gift(id, title, description, videoUri, imageUri, created, user.getId(),
-                giftChain.getGiftChainID());
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    @Override
-    public String toString() {
-        return "Gift [id=" + id + ", title=" + title + ", description=" + description
-                + ", videoUri=" + videoUri + ", imageUri=" + imageUri + ", created=" + created
-                + ", user=" + user + ", giftChain=" + giftChain + "]";
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (int) (id ^ (id >>> 32));
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        ServerGift other = (ServerGift) obj;
-        if (id != other.id)
-            return false;
-        return true;
-    }
-
-    public long getID() {
-        return id;
-    }
-
-    public long getGiftID() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getVideoUri() {
-        return videoUri;
-    }
-
-    public void setVideoUri(String videoUri) {
-        this.videoUri = videoUri;
-    }
-
-    public String getImageUri() {
-        return imageUri;
-    }
-
-    public void setImageUri(String imageUri) {
-        this.imageUri = imageUri;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public long getUserID() {
-        return user.getId();
-    }
-
-    public long getGiftChainID() {
-        return giftChain.getGiftChainID();
-    }
-
-    public ServerUser getUser() {
-        return user;
-    }
-
-    public void setUser(ServerUser user) {
-        this.user = user;
-    }
-
-    public ServerGiftChain getGiftChain() {
-        return giftChain;
-    }
-
-    public void setGiftChain(ServerGiftChain giftChain) {
-        this.giftChain = giftChain;
-    }
-
-    public long getLikes() {
-        return likes;
+        return new Gift(id,
+                title,
+                description,
+                videoUri,
+                imageUri,
+                created,
+                user.getId(),
+                giftChain.getId());
     }
 
     public boolean isFlagged() {
@@ -195,7 +93,7 @@ public class ServerGift {
     public void decrementFlagged() {
         this.flagged -= 1;
     }
-    
+
     public void incrementFlagged() {
         this.flagged += 1;
     }

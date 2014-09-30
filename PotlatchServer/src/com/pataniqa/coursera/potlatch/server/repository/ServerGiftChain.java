@@ -6,67 +6,33 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.google.common.base.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+
 import com.pataniqa.coursera.potlatch.model.GiftChain;
 
+@EqualsAndHashCode(exclude = { "giftChainName" })
+@ToString
 @Entity
 public class ServerGiftChain {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "gift_id")
-    private long giftChainID;
+    public static final String ID = "gift_id";
 
-    private String giftChainName;
+    @Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = ID) private long id;
+
+    @Getter private String giftChainName;
 
     public ServerGiftChain() {
-
-    }
-
-    public long getGiftChainID() {
-        return giftChainID;
-    }
-    
-    public String getGiftChainName() {
-        return giftChainName;
-    }
-
-    public void setGiftChainName(String giftChainName) {
-        this.giftChainName = giftChainName;
-    }
-
-    @Override
-    public String toString() {
-        return "GiftChain [giftChainID=" + giftChainID + ", giftChainName=" + giftChainName + "]";
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(giftChainID, giftChainName);
-    }
-
-    /**
-     * Two Videos are considered equal if they have exactly the same values for
-     * their name, url, and duration.
-     * 
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof ServerGiftChain) {
-            ServerGiftChain other = (ServerGiftChain) obj;
-            return giftChainID == other.giftChainID
-                    && Objects.equal(giftChainName, other.giftChainName);
-        } else {
-            return false;
-        }
+        // no args constructor
     }
 
     public ServerGiftChain(GiftChain giftChain) {
-        this.giftChainID = giftChain.getID();
-        this.giftChainName = giftChain.getGiftChainName();
+        this.id = giftChain.getId();
+        this.giftChainName = giftChain.getName();
     }
 
     public GiftChain toClient() {
-        return new GiftChain(giftChainID, giftChainName);
+        return new GiftChain(id, giftChainName);
     }
 
 }

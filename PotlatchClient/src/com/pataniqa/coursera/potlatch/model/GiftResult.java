@@ -2,22 +2,31 @@ package com.pataniqa.coursera.potlatch.model;
 
 import java.util.Date;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
- * ClientGift is a de-normalized version of the data to make it easy to present in the user interface.
+ * GiftResult is a de-normalized version of the data to make it easy to present
+ * in the user interface.
  */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class GiftResult extends Gift implements HasID {
 
-    private boolean like;
-    private boolean flag;
-    private long likes;
-    private boolean flagged;
-    private long userLikes;
-    private String username;
-    private String giftChainName;
+    @Getter @Setter private boolean like;
+    @Getter @Setter private boolean flag;
+    @Getter @Setter private long likes;
+    @Getter @Setter private boolean flagged;
+    @Getter private long userLikes;
+    @Getter private String username;
+    @Getter private String giftChainName;
 
-    public GiftResult() {}
-    
+    public GiftResult() {
+        // zero args constructor
+    }
+
     public GiftResult(long giftID,
             String title,
             String description,
@@ -43,82 +52,25 @@ public class GiftResult extends Gift implements HasID {
         this.username = username;
     }
 
-    @Override
-    public String toString() {
-        return "ClientGift [like=" + like + ", flag=" + flag + ", likes=" + likes + ", flagged="
-                + flagged + ", userLikes=" + userLikes + ", username=" + username
-                + ", giftChainName=" + giftChainName + ", toString()=" + super.toString()
-                + ", getID()=" + getID() + ", getGiftID()=" + getGiftID() + ", getTitle()="
-                + getTitle() + ", getDescription()=" + getDescription() + ", getVideoUri()="
-                + getVideoUri() + ", getImageUri()=" + getImageUri() + ", getCreated()="
-                + getCreated() + ", getUserID()=" + getUserID() + ", getGiftChainID()="
-                + getGiftChainID() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-                + "]";
-    }
-
     /**
      * Clone this object into a new GiftData
      */
     public GiftResult clone() {
-        return new GiftResult(HasID.UNDEFINED_ID, getTitle(), getDescription(), getVideoUri(), getImageUri(), getCreated(), getUserID(), like,
-                flag, likes, flagged, getGiftChainID(), giftChainName, userLikes, username);
+        return new GiftResult(HasID.UNDEFINED_ID,
+                getTitle(),
+                getDescription(),
+                getVideoUri(),
+                getImageUri(),
+                getCreated(),
+                getUserID(),
+                like,
+                flag,
+                likes,
+                flagged,
+                getGiftChainID(),
+                giftChainName,
+                userLikes,
+                username);
     }
 
-    public boolean isLike() {
-        return like;
-    }
-
-    public void setLike(boolean like) {
-        this.like = like;
-    }
-
-    public boolean isFlag() {
-        return flag;
-    }
-
-    public void setFlag(boolean flag) {
-        this.flag = flag;
-    }
-
-    public long getLikes() {
-        return likes;
-    }
-
-    public void setLikes(long likes) {
-        this.likes = likes;
-    }
-
-    public boolean isFlagged() {
-        return flagged;
-    }
-
-    public void setFlagged(boolean flagged) {
-        this.flagged = flagged;
-    }
-
-    public long getUserLikes() {
-        return userLikes;
-    }
-
-    public void setUserLikes(long userLikes) {
-        this.userLikes = userLikes;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getGiftChainName() {
-        return giftChainName;
-    }
-
-    public void setGiftChainName(String giftChainName) {
-        this.giftChainName = giftChainName;
-    }
-    
-    
 }

@@ -42,6 +42,7 @@ public class GiftService {
 
     @Autowired
     private UserRepository users;
+    // TODO where and how are users this created?
 
     @Autowired
     private GiftChainRepository giftChains;
@@ -58,7 +59,7 @@ public class GiftService {
     @RequestMapping(value = RemoteGiftApi.GIFT_PATH, method = RequestMethod.POST)
     public @ResponseBody
     Gift insert(@RequestBody Gift gift) {
-        ServerGiftChain giftChain = giftChains.findOne(gift.getGiftID());
+        ServerGiftChain giftChain = giftChains.findOne(gift.getId());
         ServerUser user = users.findOne(gift.getUserID());
         return gifts.save(new ServerGift(gift, user, giftChain)).toClient();
     }
@@ -75,7 +76,7 @@ public class GiftService {
 
     @RequestMapping(value = RemoteGiftApi.GIFT_ID_PATH, method = RequestMethod.PUT)
     public void update(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id, @RequestBody Gift gift) {
-        ServerGiftChain giftChain = giftChains.findOne(gift.getGiftID());
+        ServerGiftChain giftChain = giftChains.findOne(gift.getId());
         ServerUser user = users.findOne(gift.getUserID());
         gifts.save(new ServerGift(gift, user, giftChain));
     }
@@ -103,7 +104,7 @@ public class GiftService {
         ServerUser user = getUser(p);
         ServerGift gift = gifts.findOne(id);
         ServerGiftMetadata metadata = getMetadata(user, gift);
-        if (like != metadata.likes()) {
+        if (like != metadata.isLiked()) {
             if (like) {
                 gift.incrementLikes();
                 user.incrementLikes();
@@ -111,7 +112,7 @@ public class GiftService {
                 gift.decrementLikes();
                 user.decrementLikes();
             }
-            metadata.setLikes(like);
+            metadata.setLiked(like);
             giftMetadata.save(metadata);
             users.save(user);
             gifts.save(gift);
@@ -128,7 +129,7 @@ public class GiftService {
         ServerUser user = getUser(p);
         ServerGift gift = gifts.findOne(id);
         ServerGiftMetadata metadata = getMetadata(user, gift);
-        if (flag != metadata.hasFlagged()) {
+        if (flag != metadata.isFlagged()) {
             if (flag)
                 gift.incrementFlagged();
             else
@@ -247,22 +248,22 @@ public class GiftService {
     private GiftResult fromGift(ServerGift gift, ServerUser user) {
         // TODO - do proper join!
         ServerGiftMetadata metadata = getMetadata(user, gift);
-        boolean like = metadata != null ? metadata.likes() : false;
-        boolean flag = metadata != null ? metadata.hasFlagged() : false;
-        return new GiftResult(gift.getGiftID(),
+        boolean like = metadata != null ? metadata.isLiked() : false;
+        boolean flag = metadata != null ? metadata.isFlagged() : false;
+        return new GiftResult(gift.getId(),
                 gift.getTitle(),
                 gift.getDescription(),
                 gift.getVideoUri(),
                 gift.getImageUri(),
                 gift.getCreated(),
-                gift.getUserID(),
+                gift.getUser().getId(),
                 like,
                 flag,
                 gift.getLikes(),
                 gift.isFlagged(),
-                gift.getGiftChainID(),
+                gift.getGiftChain().getId(),
                 gift.getGiftChain().getGiftChainName(),
-                gift.getUser().getUserLikes(),
+                gift.getUser().getLikes(),
                 gift.getUser().getUsername());
     }
 

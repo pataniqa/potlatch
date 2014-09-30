@@ -20,7 +20,7 @@ class GiftChainCreator extends BaseCreator<GiftChain> implements Creator<GiftCha
     @Override
     public ContentValues getCV(GiftChain data) {
         ContentValues rValue = new ContentValues();
-        rValue.put(LocalSchema.Cols.GIFT_CHAIN_NAME, data.getGiftChainName());
+        rValue.put(LocalSchema.Cols.GIFT_CHAIN_NAME, data.getName());
         return rValue;
     }
 

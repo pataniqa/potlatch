@@ -1,56 +1,30 @@
 package com.pataniqa.coursera.potlatch.model;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@EqualsAndHashCode
+@ToString
 public class GiftChain implements HasID {
 
-    private long giftChainID;
-    private String giftChainName;
+    @Getter @Setter private long id;
+    @Getter private String name;
 
     public GiftChain() {
-
+        // zero args constructor
     }
 
-    public GiftChain(long giftChainID, String giftChainName) {
-        this.giftChainID = giftChainID;
-        this.giftChainName = giftChainName;
-    }
-
-    @Override
-    public String toString() {
-        return "GiftChain [giftChainID=" + giftChainID + ", giftChainName=" + giftChainName + "]";
+    public GiftChain(long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     /**
      * Clone this object into a new GiftData
      */
     public GiftChain clone() {
-        return new GiftChain(HasID.UNDEFINED_ID, giftChainName);
+        return new GiftChain(HasID.UNDEFINED_ID, name);
     }
-
-    @Override
-    public long getID() {
-        return giftChainID;
-    }
-
-    @Override
-    public void setID(long id) {
-        giftChainID = id;
-    }
-
-    public long getGiftChainID() {
-        return giftChainID;
-    }
-
-    public void setGiftChainID(long giftChainID) {
-        this.giftChainID = giftChainID;
-    }
-
-    public String getGiftChainName() {
-        return giftChainName;
-    }
-
-    public void setGiftChainName(String giftChainName) {
-        this.giftChainName = giftChainName;
-    }
-    
 }

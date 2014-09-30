@@ -6,71 +6,31 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@EqualsAndHashCode(exclude = { "username", "likes" })
+@ToString
 @Entity
 public class ServerUser {
-    
-    public static final String USER_ID = "user_id";
-    
+
+    public static final String ID = "user_id";
+    @Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = ID) private long id;
+
+    @Getter @Setter private String username;
+
     public static final String USER_LIKES = "user_likes";
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = USER_ID)
-    private long id;
-
-    private String username;
-    
-    @Column(name = USER_LIKES)
-    private long userLikes;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public long getUserLikes() {
-        return userLikes;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    @Override
-    public String toString() {
-        return "ServerUser [id=" + id + ", username=" + username + ", userLikes=" + userLikes + "]";
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (int) (id ^ (id >>> 32));
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        ServerUser other = (ServerUser) obj;
-        if (id != other.id)
-            return false;
-        return true;
-    }
+    @Getter @Column(name = USER_LIKES) private long likes;
 
     public void incrementLikes() {
-        this.userLikes += 1;
+        this.likes += 1;
     }
 
     public void decrementLikes() {
-        this.userLikes -= 1;
+        this.likes -= 1;
     }
+    
+    // TODO where and how is this created?
 }

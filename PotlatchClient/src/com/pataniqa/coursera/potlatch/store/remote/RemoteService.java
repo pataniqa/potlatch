@@ -43,10 +43,10 @@ public class RemoteService extends BaseService implements Service {
 
         @Override
         public GiftChain save(GiftChain data) {
-            if (data.getID() == HasID.UNDEFINED_ID)
+            if (data.getId() == HasID.UNDEFINED_ID)
                 data = giftChainService.insert(data);
             else
-                giftChainService.update(data.getID(), data);
+                giftChainService.update(data.getId(), data);
             return data;
         }
 
@@ -74,10 +74,10 @@ public class RemoteService extends BaseService implements Service {
 
         @Override
         public Gift save(Gift data) {
-            if (data.getID() == HasID.UNDEFINED_ID)
+            if (data.getId() == HasID.UNDEFINED_ID)
                 data = giftService.insert(data);
             else
-                giftService.update(data.getID(), data);
+                giftService.update(data.getId(), data);
             return data;
         }
 

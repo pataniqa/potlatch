@@ -22,8 +22,8 @@ public class ParcelableGiftChain extends GiftChain implements Parcelable {
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(getGiftChainName());
-        dest.writeLong(getGiftChainID());
+        dest.writeString(getName());
+        dest.writeLong(getId());
     }
 
     /**

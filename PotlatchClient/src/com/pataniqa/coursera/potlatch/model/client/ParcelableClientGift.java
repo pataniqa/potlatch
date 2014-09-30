@@ -23,7 +23,7 @@ public class ParcelableClientGift extends GiftResult implements Parcelable {
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(getID());
+        dest.writeLong(getId());
         dest.writeString(getTitle());
         dest.writeString(getDescription());
         dest.writeString(getVideoUri());

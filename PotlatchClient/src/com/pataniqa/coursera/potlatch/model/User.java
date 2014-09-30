@@ -1,49 +1,23 @@
 package com.pataniqa.coursera.potlatch.model;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@EqualsAndHashCode
+@ToString
 public class User implements HasID {
 
-    private long userID;
-    private String username;
+    @Getter @Setter private long id;
+    @Getter private String username;
 
     public User() {
-
+        // zero args constructor
     }
 
-    public User(long userID) {
-        super();
-        this.userID = userID;
-    }
-
-    @Override
-    public String toString() {
-        return "User [userID=" + userID + ", username=" + username + "]";
-    }
-
-    @Override
-    public long getID() {
-        return userID;
-    }
-
-    @Override
-    public void setID(long id) {
-        userID = id;
-    }
-
-    public long getUserID() {
-        return userID;
-    }
-
-    public void setUserID(long userID) {
-        this.userID = userID;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
+    public User(long id, String username) {
+        this.id = id;
         this.username = username;
     }
-
 }
