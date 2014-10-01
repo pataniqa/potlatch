@@ -5,10 +5,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.RemoteException;
 
-import com.pataniqa.coursera.potlatch.model.HasID;
+import com.pataniqa.coursera.potlatch.model.GetId;
+import com.pataniqa.coursera.potlatch.model.SetId;
 import com.pataniqa.coursera.potlatch.store.SaveDelete;
 
-abstract class BaseCreateUpdateDelete<T extends HasID> extends BaseQuery<T> implements
+abstract class BaseCreateUpdateDelete<T extends SetId> extends BaseQuery<T> implements
         SaveDelete<T> {
 
     private static String selection = LocalSchema.Cols.ID + " = ?";
@@ -19,7 +20,7 @@ abstract class BaseCreateUpdateDelete<T extends HasID> extends BaseQuery<T> impl
     
     @Override
     public <S extends T> S save(S data) throws RemoteException {
-        if (data.getId() == HasID.UNDEFINED_ID) {
+        if (data.getId() == GetId.UNDEFINED_ID) {
             ContentValues tempCV = creator().getCV(data);
             tempCV.remove(LocalSchema.Cols.ID);
             SQLiteDatabase db = helper().getWritableDatabase();

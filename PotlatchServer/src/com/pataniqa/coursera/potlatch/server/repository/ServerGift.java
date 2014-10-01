@@ -20,13 +20,14 @@ import lombok.Setter;
 import lombok.ToString;
 
 import com.pataniqa.coursera.potlatch.model.Gift;
+import com.pataniqa.coursera.potlatch.model.GetId;
 
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = { "title", "description", "videoUri", "imageUri", "likes", "flagged", "created", "user", "giftChain" })
 @ToString
 @Entity
 @Table(name = "gift")
-public class ServerGift {
+public class ServerGift implements GetId {
 
     public static final String ID = "gift_id";
     @Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = ID) private long id;

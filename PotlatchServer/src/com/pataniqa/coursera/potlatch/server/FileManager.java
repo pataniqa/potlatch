@@ -9,13 +9,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-import com.pataniqa.coursera.potlatch.server.repository.ServerGift;
+import com.pataniqa.coursera.potlatch.model.GetId;
 
-public class FileManager {
+public class FileManager<T extends GetId> {
 
-    private String path;
-    private String extension;
-    private Path targetDir;
+    private final String path;
+    private final String extension;
+    private final Path targetDir;
 
     public FileManager(String path, String extension) {
         this.path = path;
@@ -30,26 +30,26 @@ public class FileManager {
             }
     }
 
-    private Path getPath(ServerGift g) {
-        assert (g != null);
-        return targetDir.resolve(path + g.getId() + extension);
+    private Path getPath(T t) {
+        assert (t != null);
+        return targetDir.resolve(path + t.getId() + extension);
     }
 
-    public boolean hasData(ServerGift g) {
-        return Files.exists(getPath(g));
+    public boolean hasData(T t) {
+        return Files.exists(getPath(t));
     }
 
-    public void getData(ServerGift g, OutputStream out) throws IOException {
-        Path source = getPath(g);
+    public void getData(T t, OutputStream out) throws IOException {
+        Path source = getPath(t);
         if (!Files.exists(source)) {
-            throw new FileNotFoundException("Unable to find the referenced file for gift Id:"
-                    + g.getId());
+            throw new FileNotFoundException("Unable to find the referenced file for Id:"
+                    + t.getId());
         }
         Files.copy(source, out);
     }
 
-    public void saveData(ServerGift g, InputStream giftData) throws IOException {
+    public void saveData(T t, InputStream giftData) throws IOException {
         assert (giftData != null);
-        Files.copy(giftData, getPath(g), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(giftData, getPath(t), StandardCopyOption.REPLACE_EXISTING);
     }
 }

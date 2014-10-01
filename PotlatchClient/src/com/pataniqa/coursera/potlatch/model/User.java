@@ -11,7 +11,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class User implements HasID {
+public class User implements GetId {
 
     @Getter @Setter private long id;
     @Getter private String username;

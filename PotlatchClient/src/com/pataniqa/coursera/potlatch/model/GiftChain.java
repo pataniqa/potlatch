@@ -11,7 +11,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class GiftChain implements HasID {
+public class GiftChain implements SetId {
 
     @Getter @Setter private long id;
     @Getter private String name;

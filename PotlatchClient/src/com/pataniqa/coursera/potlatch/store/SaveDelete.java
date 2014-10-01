@@ -2,9 +2,9 @@ package com.pataniqa.coursera.potlatch.store;
 
 import android.os.RemoteException;
 
-import com.pataniqa.coursera.potlatch.model.HasID;
+import com.pataniqa.coursera.potlatch.model.GetId;
 
-public interface SaveDelete <T extends HasID> {
+public interface SaveDelete <T extends GetId> {
     
     /**
      * Delete a <T> object.

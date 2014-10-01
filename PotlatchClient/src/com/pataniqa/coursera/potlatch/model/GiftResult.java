@@ -15,7 +15,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class GiftResult extends Gift implements HasID {
+public class GiftResult extends Gift implements GetId {
 
     @Getter @Setter private boolean like;
     @Getter @Setter private boolean flag;

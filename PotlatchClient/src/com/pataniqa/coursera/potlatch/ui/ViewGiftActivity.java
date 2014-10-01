@@ -32,7 +32,7 @@ import butterknife.InjectView;
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
-import com.pataniqa.coursera.potlatch.model.HasID;
+import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.store.local.LocalStorageUtilities;
 
 /**
@@ -56,9 +56,9 @@ abstract class ViewGiftActivity extends GiftActivity {
     @InjectView(R.id.gift_create_video) VideoView video;
     @InjectView(R.id.gift_create_gift_chain) AutoCompleteTextView giftChain;
 
-    Uri imagePathFinal = null;
-    Uri videoPathFinal = null;
-    Map<String, Long> giftChains = new HashMap<String, Long>();
+    protected Uri imagePathFinal = null;
+    protected Uri videoPathFinal = null;
+    private Map<String, Long> giftChains = new HashMap<String, Long>();
 
     // Making this static keeps it from getting GC'd when we take pictures
     private static Uri imagePath = null;
@@ -205,7 +205,7 @@ abstract class ViewGiftActivity extends GiftActivity {
         if (giftChains.containsKey(giftChainName)) {
             giftChainID = giftChains.get(giftChainName);
         } else {
-            GiftChain giftChain = new GiftChain(HasID.UNDEFINED_ID, giftChainName);
+            GiftChain giftChain = new GiftChain(GetId.UNDEFINED_ID, giftChainName);
             GiftChain result = service.giftChains().save(giftChain);
             giftChains.put(giftChainName, result.getId());
             giftChainID = result.getId();

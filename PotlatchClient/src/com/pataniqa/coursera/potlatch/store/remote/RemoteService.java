@@ -11,7 +11,7 @@ import com.google.common.collect.Lists;
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
-import com.pataniqa.coursera.potlatch.model.HasID;
+import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.store.GiftChains;
 import com.pataniqa.coursera.potlatch.store.GiftMetadata;
 import com.pataniqa.coursera.potlatch.store.Gifts;
@@ -47,7 +47,7 @@ public class RemoteService implements Service {
 
         @Override
         public GiftChain save(GiftChain data) {
-            if (data.getId() == HasID.UNDEFINED_ID)
+            if (data.getId() == GetId.UNDEFINED_ID)
                 data = giftChainService.insert(data);
             else
                 giftChainService.update(data.getId(), data);
@@ -78,7 +78,7 @@ public class RemoteService implements Service {
         
         @Override
         public Gift save(Gift data) {
-            if (data.getId() == HasID.UNDEFINED_ID)
+            if (data.getId() == GetId.UNDEFINED_ID)
                 data = giftService.insert(data);
             else
                 giftService.update(data.getId(), data);

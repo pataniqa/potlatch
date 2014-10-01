@@ -13,7 +13,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class Gift implements HasID {
+public class Gift implements SetId {
 
     @Getter @Setter private long id;
     @Getter private String title;

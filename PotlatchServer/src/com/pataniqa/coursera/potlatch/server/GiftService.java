@@ -51,10 +51,10 @@ public class GiftService {
     private GiftMetadataRepository giftMetadata;
 
     // TODO - should be injected
-    private FileManager imageManager = new FileManager("image", "jpg");
+    private FileManager<ServerGift> imageManager = new FileManager<ServerGift>("image", "jpg");
 
     // TODO - should be injected
-    private FileManager videoManager = new FileManager("video", "mpg");
+    private FileManager<ServerGift> videoManager = new FileManager<ServerGift>("video", "mpg");
 
     @RequestMapping(value = RemoteGiftApi.GIFT_PATH, method = RequestMethod.POST)
     public @ResponseBody
@@ -209,7 +209,7 @@ public class GiftService {
         getData(id, response, imageManager);
     }
 
-    private ResourceStatus setData(long id, MultipartFile data, FileManager manager)
+    private ResourceStatus setData(long id, MultipartFile data, FileManager<ServerGift> manager)
             throws IOException {
         if (gifts.exists(id)) {
             ServerGift gift = gifts.findOne(id);
@@ -219,7 +219,7 @@ public class GiftService {
             throw new ResourceNotFoundException();
     }
 
-    private void getData(long id, HttpServletResponse response, FileManager manager)
+    private void getData(long id, HttpServletResponse response, FileManager<ServerGift> manager)
             throws IOException {
         if (gifts.exists(id)) {
             ServerGift gift = gifts.findOne(id);
