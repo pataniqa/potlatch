@@ -1,4 +1,4 @@
-package com.pataniqa.coursera.potlatch.server.repository;
+package com.pataniqa.coursera.potlatch.server.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +14,7 @@ import lombok.ToString;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
 
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = { "giftChainName" })
+@EqualsAndHashCode(exclude = { "name" })
 @ToString
 @Entity
 public class ServerGiftChain {
@@ -22,15 +22,15 @@ public class ServerGiftChain {
     public static final String ID = "gift_id";
     @Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = ID) private long id;
 
-    @Getter private String giftChainName;
+    @Getter private String name;
 
     public ServerGiftChain(GiftChain giftChain) {
         this.id = giftChain.getId();
-        this.giftChainName = giftChain.getName();
+        this.name = giftChain.getName();
     }
 
     public GiftChain toClient() {
-        return new GiftChain(id, giftChainName);
+        return new GiftChain(id, name);
     }
 
 }

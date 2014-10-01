@@ -1,4 +1,4 @@
-package com.pataniqa.coursera.potlatch.server.repository;
+package com.pataniqa.coursera.potlatch.server.model;
 
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -21,17 +22,16 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "gift_metadata")
 @AssociationOverrides({
-        @AssociationOverride(name = "pk.user", joinColumns = @JoinColumn(name = "user_id")),
-        @AssociationOverride(name = "pk.gift", joinColumns = @JoinColumn(name = "gift_id")) })
+        @AssociationOverride(name = "pk.user", joinColumns = @JoinColumn(name = ServerUser.ID)),
+        @AssociationOverride(name = "pk.gift", joinColumns = @JoinColumn(name = ServerGift.ID)) })
 public class ServerGiftMetadata {
-
-    public static final String LIKED = "user_liked";
-    public static final String FLAGGED = "user_flagged";
 
     private ServerGiftMetadataPk pk = new ServerGiftMetadataPk();
 
+    public static final String LIKED = "user_liked";
     @Getter @Setter @Column(name = LIKED) private boolean liked = false;
-
+    
+    public static final String FLAGGED = "user_flagged";
     @Getter @Setter @Column(name = FLAGGED) private boolean flagged = false;
 
     @EmbeddedId

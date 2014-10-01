@@ -1,4 +1,4 @@
-package com.pataniqa.coursera.potlatch.server.repository;
+package com.pataniqa.coursera.potlatch.server.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@EqualsAndHashCode(exclude = { "username", "likes" })
+@EqualsAndHashCode(exclude = { "name", "likes" })
 @ToString
 @Entity
 public class ServerUser {
@@ -19,7 +19,7 @@ public class ServerUser {
     public static final String ID = "user_id";
     @Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = ID) private long id;
 
-    @Getter @Setter private String username;
+    @Getter @Setter private String name;
 
     public static final String USER_LIKES = "user_likes";
     @Getter @Column(name = USER_LIKES) private long likes;

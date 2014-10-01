@@ -22,28 +22,16 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.pataniqa.coursera.potlatch.auth.OAuth2SecurityConfiguration;
 
-// This annotation tells Spring to auto-wire your application
 @EnableAutoConfiguration
-// Tell Spring to turn on WebMVC (e.g., it should enable the DispatcherServlet
-// so that requests can be routed to our Controllers)
 @EnableWebMvc
-// This annotation tells Spring to look for controllers, etc.
-// starting in the current package
 @ComponentScan
-// This annotation tells Spring that this class contains configuration
-// information
-// for the application.
 @Configuration
 @Import(OAuth2SecurityConfiguration.class)
 public class Application {
 
     private static final String MAX_REQUEST_SIZE = "150MB";
 
-    // The entry point to the application.
     public static void main(String[] args) {
-        // This call tells spring to launch the application and
-        // use the configuration specified in LocalApplication to
-        // configure the application's components.
         SpringApplication.run(Application.class, args);
     }
 
@@ -51,17 +39,19 @@ public class Application {
     // requests to the web container.
     @Bean
     public MultipartConfigElement multipartConfigElement() {
-        // Setup the application container to be accept multipart requests
         final MultiPartConfigFactory factory = new MultiPartConfigFactory();
         // Place upper bounds on the size of the requests to ensure that
         // clients don't abuse the web container by sending huge requests
         factory.setMaxFileSize(MAX_REQUEST_SIZE);
         factory.setMaxRequestSize(MAX_REQUEST_SIZE);
 
-        // Return the configuration to setup multipart in the container
         return factory.createMultipartConfig();
     }
 
+    private static final String DEFAULT_KEYSTORE_FILE = "${keystore.file:src/main/resources/private/keystore}";
+    
+    private static final String DEFAULT_KEYSTORE_PASS = "${keystore.pass:changeit}";
+    
     // This version uses the Tomcat web container and configures it to
     // support HTTPS. The code below performs the configuration of Tomcat
     // for HTTPS. Each web container has a different API for configuring
@@ -85,8 +75,9 @@ public class Application {
     // http://tomcat.apache.org/tomcat-7.0-doc/ssl-howto.html
     //
     @Bean
-    EmbeddedServletContainerCustomizer containerCustomizer(@Value("${keystore.file:src/main/resources/private/keystore}") String keystoreFile,
-            @Value("${keystore.pass:changeit}") final String keystorePass) throws Exception {
+    EmbeddedServletContainerCustomizer containerCustomizer(
+            @Value(DEFAULT_KEYSTORE_FILE) String keystoreFile,
+            @Value(DEFAULT_KEYSTORE_PASS) final String keystorePass) throws Exception {
 
         // If you were going to reuse this class in another
         // application, this is one of the key sections that you

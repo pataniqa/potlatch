@@ -1,4 +1,4 @@
-package com.pataniqa.coursera.potlatch.server.repository;
+package com.pataniqa.coursera.potlatch.server.model;
 
 import java.util.Date;
 

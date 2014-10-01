@@ -21,14 +21,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
+import com.pataniqa.coursera.potlatch.server.model.ServerGift;
+import com.pataniqa.coursera.potlatch.server.model.ServerGiftChain;
+import com.pataniqa.coursera.potlatch.server.model.ServerGiftMetadata;
+import com.pataniqa.coursera.potlatch.server.model.ServerGiftMetadataPk;
+import com.pataniqa.coursera.potlatch.server.model.ServerUser;
 import com.pataniqa.coursera.potlatch.server.repository.GiftChainRepository;
 import com.pataniqa.coursera.potlatch.server.repository.GiftMetadataRepository;
 import com.pataniqa.coursera.potlatch.server.repository.GiftRepository;
-import com.pataniqa.coursera.potlatch.server.repository.ServerGift;
-import com.pataniqa.coursera.potlatch.server.repository.ServerGiftChain;
-import com.pataniqa.coursera.potlatch.server.repository.ServerGiftMetadata;
-import com.pataniqa.coursera.potlatch.server.repository.ServerGiftMetadataPk;
-import com.pataniqa.coursera.potlatch.server.repository.ServerUser;
 import com.pataniqa.coursera.potlatch.server.repository.UserRepository;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
@@ -59,7 +59,7 @@ public class GiftService {
     @RequestMapping(value = RemoteGiftApi.GIFT_PATH, method = RequestMethod.POST)
     public @ResponseBody
     Gift insert(@RequestBody Gift gift) {
-        ServerGiftChain giftChain = giftChains.findOne(gift.getId());
+        ServerGiftChain giftChain = getGiftChain(gift);
         ServerUser user = users.findOne(gift.getUserID());
         return gifts.save(new ServerGift(gift, user, giftChain)).toClient();
     }
@@ -76,7 +76,7 @@ public class GiftService {
 
     @RequestMapping(value = RemoteGiftApi.GIFT_ID_PATH, method = RequestMethod.PUT)
     public void update(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id, @RequestBody Gift gift) {
-        ServerGiftChain giftChain = giftChains.findOne(gift.getId());
+        ServerGiftChain giftChain = getGiftChain(gift);
         ServerUser user = users.findOne(gift.getUserID());
         gifts.save(new ServerGift(gift, user, giftChain));
     }
@@ -262,9 +262,9 @@ public class GiftService {
                 gift.getLikes(),
                 gift.isFlagged(),
                 gift.getGiftChain().getId(),
-                gift.getGiftChain().getGiftChainName(),
+                gift.getGiftChain().getName(),
                 gift.getUser().getLikes(),
-                gift.getUser().getUsername());
+                gift.getUser().getName());
     }
 
     private List<GiftResult> toResult(Collection<ServerGift> query, Principal p) {
@@ -279,6 +279,10 @@ public class GiftService {
     private ServerGiftMetadata getMetadata(ServerUser user, ServerGift gift) {
         ServerGiftMetadataPk pk = new ServerGiftMetadataPk(user, gift);
         return giftMetadata.exists(pk) ? giftMetadata.findOne(pk) : new ServerGiftMetadata(pk);
+    }
+    
+    private ServerGiftChain getGiftChain(Gift gift) {
+        return giftChains.findOne(gift.getGiftChainID());
     }
 
 }

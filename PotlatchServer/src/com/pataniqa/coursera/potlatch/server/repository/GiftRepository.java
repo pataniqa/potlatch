@@ -6,6 +6,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import com.pataniqa.coursera.potlatch.server.model.ServerGift;
+import com.pataniqa.coursera.potlatch.server.model.ServerGiftChain;
+import com.pataniqa.coursera.potlatch.server.model.ServerUser;
+
 @Repository
 public interface GiftRepository extends CrudRepository<ServerGift, Long> {
 

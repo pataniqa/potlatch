@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pataniqa.coursera.potlatch.model.GiftChain;
+import com.pataniqa.coursera.potlatch.server.model.ServerGiftChain;
 import com.pataniqa.coursera.potlatch.server.repository.GiftChainRepository;
-import com.pataniqa.coursera.potlatch.server.repository.ServerGiftChain;
 import com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi;
 import com.pataniqa.coursera.potlatch.store.remote.RemoteGiftChainApi;
 

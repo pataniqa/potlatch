@@ -118,7 +118,7 @@ public class OAuth2SecurityConfiguration {
         private AuthenticationManager authenticationManager;
 
         // A data structure used to store both a ClientDetailsService and a UserDetailsService
-        private ClientAndUserDetailsService combinedService_;
+        private ClientAndUserDetailsService combinedService;
 
         /**
          * 
@@ -159,7 +159,7 @@ public class OAuth2SecurityConfiguration {
             // as well. When the BASIC authentication information is pulled from the
             // request, this combined UserDetailsService will authenticate that the
             // client is a valid "user". 
-            combinedService_ = new ClientAndUserDetailsService(csvc, svc);
+            this.combinedService = new ClientAndUserDetailsService(csvc, svc);
         }
 
         /**
@@ -167,7 +167,7 @@ public class OAuth2SecurityConfiguration {
          */
         @Bean
         public ClientDetailsService clientDetailsService() throws Exception {
-            return combinedService_;
+            return combinedService;
         }
 
         /**
@@ -175,7 +175,7 @@ public class OAuth2SecurityConfiguration {
          */
         @Bean
         public UserDetailsService userDetailsService() {
-            return combinedService_;
+            return combinedService;
         }
 
         /**

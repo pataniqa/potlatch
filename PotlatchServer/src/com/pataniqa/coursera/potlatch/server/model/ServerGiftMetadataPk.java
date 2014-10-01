@@ -1,9 +1,10 @@
-package com.pataniqa.coursera.potlatch.server.repository;
+package com.pataniqa.coursera.potlatch.server.model;
 
 import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
+
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
