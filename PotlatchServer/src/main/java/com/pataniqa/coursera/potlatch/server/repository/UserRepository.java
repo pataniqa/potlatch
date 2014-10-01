@@ -11,6 +11,6 @@ import com.pataniqa.coursera.potlatch.server.model.ServerUser;
 public interface UserRepository extends
 		CrudRepository<ServerUser, Long> {
 
-    List<ServerUser> findByUsername(String name);
+    List<ServerUser> findByName(String name);
     
 }

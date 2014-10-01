@@ -19,7 +19,7 @@ import com.pataniqa.coursera.potlatch.model.GiftChain;
 @Entity
 public class ServerGiftChain {
     
-    public static final String ID = "gift_id";
+    public static final String ID = "giftchain_id";
     @Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = ID) private long id;
 
     @Getter private String name;

@@ -1,5 +1,6 @@
 package com.pataniqa.coursera.potlatch.server;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +19,7 @@ public class FileManager<T extends GetId> {
     private final Path targetDir;
 
     public FileManager(String path, String extension) {
-        this.path = path;
+        this.path = "target" + File.separator + path;
         this.extension = extension;
         targetDir = Paths.get(path);
         if (!Files.exists(targetDir))

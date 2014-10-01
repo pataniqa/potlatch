@@ -18,6 +18,8 @@ import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
 
 public interface RemoteGiftApi {
+    
+    static final String TOKEN_PATH = "/oauth/token";
 
     static final String DATA_PARAMETER = "data";
 

@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
         @AssociationOverride(name = "pk.gift", joinColumns = @JoinColumn(name = ServerGift.ID)) })
 public class ServerGiftMetadata {
 
-    private ServerGiftMetadataPk pk = new ServerGiftMetadataPk();
+    @Setter private ServerGiftMetadataPk pk = new ServerGiftMetadataPk();
 
     public static final String LIKED = "user_liked";
     @Getter @Setter @Column(name = LIKED) private boolean liked = false;

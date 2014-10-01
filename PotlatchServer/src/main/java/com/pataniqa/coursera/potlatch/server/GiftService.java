@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,7 @@ import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 import com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi;
 import com.pataniqa.coursera.potlatch.store.remote.ResourceStatus;
 
+@Controller
 public class GiftService {
 
     @Autowired
@@ -242,7 +244,7 @@ public class GiftService {
     }
 
     private ServerUser getUser(Principal p) {
-        return users.findByUsername(p.getName()).get(0);
+        return users.findByName(p.getName()).get(0);
     }
 
     private GiftResult fromGift(ServerGift gift, ServerUser user) {
