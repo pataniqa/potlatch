@@ -21,13 +21,13 @@ public class FileManager<T extends GetId> {
     public FileManager(String path, String extension) {
         this.path = "target" + File.separator + path;
         this.extension = extension;
-        targetDir = Paths.get(path);
+        targetDir = Paths.get(this.path);
         if (!Files.exists(targetDir))
             try {
                 Files.createDirectories(targetDir);
             } catch (IOException e) {
                 e.printStackTrace();
-                throw new RuntimeException("Could not create file manager directory " + path);
+                throw new RuntimeException("Could not create file manager directory " + this.path);
             }
     }
 
