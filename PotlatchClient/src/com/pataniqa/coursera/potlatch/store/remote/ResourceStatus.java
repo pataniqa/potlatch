@@ -1,23 +1,16 @@
 package com.pataniqa.coursera.potlatch.store.remote;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@AllArgsConstructor
 public class ResourceStatus {
 
-        public enum ResourceState {
-            READY, PROCESSING
-        }
-
-        private ResourceState state;
-
-        public ResourceStatus(ResourceState state) {
-            this.state = state;
-        }
-
-        public ResourceState getState() {
-            return state;
-        }
-
-        public void setState(ResourceState state) {
-            this.state = state;
-        }
-
+    public enum ResourceState {
+        READY, PROCESSING
     }
+
+    @Getter @Setter private ResourceState state;
+
+}

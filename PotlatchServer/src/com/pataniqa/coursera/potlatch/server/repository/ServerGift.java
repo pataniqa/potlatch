@@ -15,11 +15,13 @@ import javax.persistence.TemporalType;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 import com.pataniqa.coursera.potlatch.model.Gift;
 
+@NoArgsConstructor
 @EqualsAndHashCode(exclude = { "title", "description", "videoUri", "imageUri", "likes", "flagged", "created", "user", "giftChain" })
 @ToString
 @Entity
@@ -50,10 +52,6 @@ public class ServerGift {
     @Getter @ManyToOne(optional = false) 
     @JoinColumn(name = ServerGiftChain.ID, referencedColumnName = ServerGiftChain.ID) 
     private ServerGiftChain giftChain;
-
-    public ServerGift() {
-        // zero args constructor
-    }
 
     public ServerGift(Gift gift, ServerUser user, ServerGiftChain giftChain) {
         this.title = gift.getTitle();

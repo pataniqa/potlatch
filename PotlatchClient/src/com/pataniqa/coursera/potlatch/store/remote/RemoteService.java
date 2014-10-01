@@ -3,6 +3,8 @@ package com.pataniqa.coursera.potlatch.store.remote;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import retrofit.RestAdapter;
 
 import com.google.common.collect.Lists;
@@ -10,16 +12,19 @@ import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
 import com.pataniqa.coursera.potlatch.model.HasID;
-import com.pataniqa.coursera.potlatch.store.BaseService;
-import com.pataniqa.coursera.potlatch.store.GiftChainStore;
-import com.pataniqa.coursera.potlatch.store.GiftQuery;
-import com.pataniqa.coursera.potlatch.store.GiftStore;
-import com.pataniqa.coursera.potlatch.store.MetadataStore;
+import com.pataniqa.coursera.potlatch.store.GiftChains;
+import com.pataniqa.coursera.potlatch.store.GiftMetadata;
+import com.pataniqa.coursera.potlatch.store.Gifts;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 import com.pataniqa.coursera.potlatch.store.Service;
 
-public class RemoteService extends BaseService implements Service {
+@Accessors(fluent=true)
+public class RemoteService implements Service {
+    
+    @Getter private Gifts gifts;
+    @Getter private GiftChains giftChains;
+    @Getter private GiftMetadata giftMetadata;
 
     private RemoteGiftApi giftService;
     private RemoteGiftChainApi giftChainService;
@@ -28,13 +33,12 @@ public class RemoteService extends BaseService implements Service {
         RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(endpoint).build();
         giftService = restAdapter.create(RemoteGiftApi.class);
         giftChainService = restAdapter.create(RemoteGiftChainApi.class);
-        userGifts = new RemoteGiftService();
         gifts = new RemoteGiftQueryService();
         giftChains = new RemoteGiftChainService();
         giftMetadata = new RemoteGiftMetadataService();
     }
 
-    class RemoteGiftChainService implements GiftChainStore {
+    class RemoteGiftChainService implements GiftChains {
 
         @Override
         public Collection<GiftChain> findAll() {
@@ -52,12 +56,12 @@ public class RemoteService extends BaseService implements Service {
 
         @Override
         public void delete(long id) {
-            giftChainService.deleteGiftChain(id);
+            giftChainService.delete(id);
         }
 
     }
 
-    class RemoteGiftMetadataService implements MetadataStore {
+    class RemoteGiftMetadataService implements GiftMetadata {
 
         @Override
         public void setLike(long giftID, boolean like) {
@@ -70,8 +74,8 @@ public class RemoteService extends BaseService implements Service {
         }
     }
 
-    class RemoteGiftService implements GiftStore {
-
+    class RemoteGiftQueryService implements Gifts {
+        
         @Override
         public Gift save(Gift data) {
             if (data.getId() == HasID.UNDEFINED_ID)
@@ -83,12 +87,8 @@ public class RemoteService extends BaseService implements Service {
 
         @Override
         public void delete(long id) {
-            giftService.deleteGift(id);
+            giftService.delete(id);
         }
-
-    }
-
-    class RemoteGiftQueryService implements GiftQuery {
 
         @Override
         public Collection<GiftResult> findAll() {

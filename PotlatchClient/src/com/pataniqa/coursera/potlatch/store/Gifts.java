@@ -4,9 +4,10 @@ import java.util.ArrayList;
 
 import android.os.RemoteException;
 
+import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
 
-public interface GiftQuery extends Query<GiftResult>, Retrieve<GiftResult, Long> {
+public interface Gifts extends Query<GiftResult>, Retrieve<GiftResult, Long>, SaveDelete<Gift> {
 
     /**
      * Query gift data by title - corresponds to QueryType.ALL

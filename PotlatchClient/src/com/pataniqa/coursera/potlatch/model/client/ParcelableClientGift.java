@@ -57,10 +57,21 @@ public class ParcelableClientGift extends GiftResult implements Parcelable {
      * Used for writing a copy of this object to a Parcel, do not manually call.
      */
     private ParcelableClientGift(Parcel in) {
-        super(in.readLong(), in.readString(), in.readString(), in.readString(), in.readString(),
-                TimeUtils.toDate(in.readLong()), in.readLong(), in.readByte() != 0, in.readByte() != 0, in
-                        .readLong(), in.readByte() != 0, in.readLong(), in.readString(), in.readLong(), in
-                        .readString());
+        super(in.readLong(),
+                in.readString(),
+                in.readString(),
+                in.readString(),
+                in.readString(),
+                TimeUtils.toDate(in.readLong()),
+                in.readLong(),
+                in.readByte() != 0,
+                in.readByte() != 0,
+                in.readLong(),
+                in.readByte() != 0,
+                in.readLong(),
+                in.readString(),
+                in.readLong(),
+                in.readString());
 
     }
 }

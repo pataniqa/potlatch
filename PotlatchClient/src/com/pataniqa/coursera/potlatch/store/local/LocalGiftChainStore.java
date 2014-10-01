@@ -4,31 +4,30 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.pataniqa.coursera.potlatch.model.GiftChain;
-import com.pataniqa.coursera.potlatch.store.GiftChainStore;
+import com.pataniqa.coursera.potlatch.store.GiftChains;
 
-public class LocalGiftChainStore extends BaseCreateUpdateDelete<GiftChain> implements GiftChainStore {
-    
+public class LocalGiftChainStore extends BaseCreateUpdateDelete<GiftChain> implements GiftChains {
+
     public LocalGiftChainStore(LocalDatabase helper) {
-        creator = new GiftChainCreator();
-        tableName = LocalSchema.GiftChain.TABLE_NAME;
-        this.helper = helper;
-    }
-}
-
-class GiftChainCreator extends BaseCreator<GiftChain> implements Creator<GiftChain> {
-
-    @Override
-    public ContentValues getCV(GiftChain data) {
-        ContentValues rValue = new ContentValues();
-        rValue.put(LocalSchema.Cols.GIFT_CHAIN_NAME, data.getName());
-        return rValue;
+        super(new GiftChainCreator(), LocalSchema.GiftChain.TABLE_NAME, helper);
     }
 
-    @Override
-    public GiftChain getFromCursor(Cursor cursor) {
-        long giftChainID = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.ID));
-        String giftChainName = cursor.getString(cursor
-                .getColumnIndex(LocalSchema.Cols.GIFT_CHAIN_NAME));
-        return new GiftChain(giftChainID, giftChainName);
+    private static class GiftChainCreator extends BaseCreator<GiftChain> implements
+            Creator<GiftChain> {
+
+        @Override
+        public ContentValues getCV(GiftChain data) {
+            ContentValues rValue = new ContentValues();
+            rValue.put(LocalSchema.Cols.GIFT_CHAIN_NAME, data.getName());
+            return rValue;
+        }
+
+        @Override
+        public GiftChain getFromCursor(Cursor cursor) {
+            long giftChainID = cursor.getLong(cursor.getColumnIndex(LocalSchema.Cols.ID));
+            String giftChainName = cursor.getString(cursor
+                    .getColumnIndex(LocalSchema.Cols.GIFT_CHAIN_NAME));
+            return new GiftChain(giftChainID, giftChainName);
+        }
     }
 }

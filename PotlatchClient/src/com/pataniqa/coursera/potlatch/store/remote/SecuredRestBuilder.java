@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
 import org.apache.commons.io.IOUtils;
 
 import retrofit.Endpoint;
@@ -46,6 +49,7 @@ import com.google.gson.JsonObject;
  * @author Jules, Mitchell
  *
  */
+@Accessors(fluent = true)
 public class SecuredRestBuilder extends RestAdapter.Builder {
 
     private class OAuthHandler implements RequestInterceptor {
@@ -153,18 +157,13 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
 
     }
 
-    private String username;
-    private String password;
-    private String loginUrl;
-    private String clientId;
-    private String clientSecret = "";
+    @Setter private String username;
+    @Setter private String password;
+    @Setter private String loginUrl;
+    @Setter private String clientId;
+    @Setter private String clientSecret = "";
     private Client client;
     
-    public SecuredRestBuilder setLoginEndpoint(String endpoint){
-        loginUrl = endpoint;
-        return this;
-    }
-
     @Override
     public SecuredRestBuilder setEndpoint(String endpoint) {
         return (SecuredRestBuilder) super.setEndpoint(endpoint);
@@ -189,14 +188,12 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
 
     @Override
     public SecuredRestBuilder setErrorHandler(ErrorHandler errorHandler) {
-
         return (SecuredRestBuilder) super.setErrorHandler(errorHandler);
     }
 
     @Override
     public SecuredRestBuilder setExecutors(Executor httpExecutor,
             Executor callbackExecutor) {
-
         return (SecuredRestBuilder) super.setExecutors(httpExecutor,
                 callbackExecutor);
     }
@@ -204,14 +201,12 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
     @Override
     public SecuredRestBuilder setRequestInterceptor(
             RequestInterceptor requestInterceptor) {
-
         return (SecuredRestBuilder) super
                 .setRequestInterceptor(requestInterceptor);
     }
 
     @Override
     public SecuredRestBuilder setConverter(Converter converter) {
-
         return (SecuredRestBuilder) super.setConverter(converter);
     }
 
@@ -223,37 +218,13 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
 
     @Override
     public SecuredRestBuilder setLog(Log log) {
-
         return (SecuredRestBuilder) super.setLog(log);
     }
 
     @Override
     public SecuredRestBuilder setLogLevel(LogLevel logLevel) {
-
         return (SecuredRestBuilder) super.setLogLevel(logLevel);
     }
-
-    public SecuredRestBuilder setUsername(String username) {
-        this.username = username;
-        return this;
-    }
-
-    public SecuredRestBuilder setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
-    public SecuredRestBuilder setClientId(String clientId) {
-        this.clientId = clientId;
-        return this;
-    }
-    
-    public SecuredRestBuilder setClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
-        return this;
-    }
-    
-        
 
     @Override
     public RestAdapter build() {

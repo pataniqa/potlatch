@@ -19,11 +19,9 @@ public class LoginActivity extends GiftActivity {
 
     private static final String LOG_TAG = LoginActivity.class.getCanonicalName();
 
-    @InjectView(R.id.login_username)
-    EditText usernameET;
-    @InjectView(R.id.login_password)
-    EditText passwordET;
-    
+    @InjectView(R.id.login_username) EditText usernameET;
+    @InjectView(R.id.login_password) EditText passwordET;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOG_TAG, "onCreate");
@@ -33,7 +31,7 @@ public class LoginActivity extends GiftActivity {
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getActionBar().hide();
         setContentView(R.layout.login_activity);
-        
+
         ButterKnife.inject(this);
     }
 
@@ -45,7 +43,7 @@ public class LoginActivity extends GiftActivity {
         if (!username.isEmpty())
             openListGiftActivity();
     }
-    
+
     @Override
     protected void onPause() {
         Log.d(LOG_TAG, "onPause");
@@ -59,16 +57,16 @@ public class LoginActivity extends GiftActivity {
         super.onStop();
         savePreferences();
     }
-    
-    void loadPreferences() {
+
+    private void loadPreferences() {
         Log.d(LOG_TAG, "loadPreferences");
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String username = prefs.getString(USER_NAME_TAG, "");
-        if (username != null && !username.isEmpty())       
+        if (username != null && !username.isEmpty())
             usernameET.setText(username);
     }
 
-    void savePreferences() {
+    private void savePreferences() {
         Log.d(LOG_TAG, "savePreferences");
         String username = editTextToString(usernameET);
         if (username != null && !username.isEmpty()) {

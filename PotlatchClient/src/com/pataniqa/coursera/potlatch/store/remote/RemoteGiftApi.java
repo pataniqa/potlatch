@@ -19,11 +19,11 @@ import com.pataniqa.coursera.potlatch.model.GiftResult;
 
 public interface RemoteGiftApi {
 
-    public static final String DATA_PARAMETER = "data";
+    static final String DATA_PARAMETER = "data";
 
-    public static final String ID_PARAMETER = "id";
+    static final String ID_PARAMETER = "id";
 
-    public static final String GIFT_PATH = "/gift";
+    static final String GIFT_PATH = "/gift";
 
     @GET(GIFT_PATH)
     List<GiftResult> findAll();
@@ -31,63 +31,63 @@ public interface RemoteGiftApi {
     @POST(GIFT_PATH)
     Gift insert(@Body Gift data);
 
-    public static final String GIFT_ID_PATH = "/gift/{id}";
+    static final String GIFT_ID_PATH = "/gift/{id}";
 
     @PUT(GIFT_ID_PATH)
     void update(long id, @Body Gift data);
 
     @DELETE(GIFT_ID_PATH)
-    void deleteGift(long id);
+    void delete(long id);
 
     @GET(GIFT_ID_PATH)
     GiftResult findOne(Long id);
 
-    public static final String GIFT_LIKE_PATH = "/gift/{id}/like/{like}";
+    static final String GIFT_LIKE_PATH = "/gift/{id}/like/{like}";
 
     @PUT(GIFT_LIKE_PATH)
     void setLike(long id, boolean like);
 
-    public static final String GIFT_FLAG_PATH = "/gift/{id}/like/{flag}";
+    static final String GIFT_FLAG_PATH = "/gift/{id}/like/{flag}";
 
     @PUT(GIFT_FLAG_PATH)
     void setFlag(long id, boolean flag);
 
-    public static final String QUERY_BY_TITLE = "/gift/queryTitle?title={title}&resultorder={order}&direction={direction}";
+    static final String QUERY_BY_TITLE = "/gift/title?title={title}&resultorder={order}&direction={direction}";
 
     @GET(QUERY_BY_TITLE)
     List<GiftResult> queryByTitle(String title, int order, int direction);
 
-    public static final String QUERY_BY_USER = "/gift/queryUser?user={userID}&title={title}&resultorder={order}&direction={direction}";
+    static final String QUERY_BY_USER = "/gift/user?user={userID}&title={title}&resultorder={order}&direction={direction}";
 
     @GET(QUERY_BY_USER)
     List<GiftResult> queryByUser(String title, long userID, int order, int direction);
 
-    public static final String QUERY_BY_TOP_GIFT_GIVERS = "/gift/queryTopGiftGivers?title={title}&direction={direction}";
+    static final String QUERY_BY_TOP_GIFT_GIVERS = "/gift/topGiftGivers?title={title}&direction={direction}";
 
     @GET(QUERY_BY_TOP_GIFT_GIVERS)
     List<GiftResult> queryByTopGiftGivers(String title, int direction);
 
-    public static final String QUERY_BY_GIFT_CHAIN = "/gift/queryGiftChain?giftchain={giftchain}&title={title}&resultorder={order}&direction={direction}";
+    static final String QUERY_BY_GIFT_CHAIN = "/gift/giftchain?giftchain={giftchain}&title={title}&resultorder={order}&direction={direction}";
 
     @GET(QUERY_BY_GIFT_CHAIN)
     List<GiftResult> queryByGiftChain(String title, String giftChain, int order, int direction);
 
-    public static final String GIFT_IMAGE_PATH = "/{id}/image";
+    static final String GIFT_IMAGE_PATH = "/{id}/image";
 
     @Multipart
     @POST(GIFT_IMAGE_PATH)
-    public ResourceStatus setImageData(@Path(ID_PARAMETER) long id,
+    ResourceStatus setImageData(@Path(ID_PARAMETER) long id,
             @Part(DATA_PARAMETER) TypedFile imageData);
 
     @Streaming
     @GET(GIFT_IMAGE_PATH)
     Response getImageData(@Path(ID_PARAMETER) long id);
 
-    public static final String GIFT_VIDEO_PATH = "/gift/{id}/video";
+    static final String GIFT_VIDEO_PATH = "/gift/{id}/video";
 
     @Multipart
     @POST(GIFT_VIDEO_PATH)
-    public ResourceStatus setVideoData(@Path(ID_PARAMETER) long id,
+    ResourceStatus setVideoData(@Path(ID_PARAMETER) long id,
             @Part(DATA_PARAMETER) TypedFile imageData);
 
     @Streaming

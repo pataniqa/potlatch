@@ -35,10 +35,9 @@ public class ListGiftsActivity extends GiftActivity implements
     private ArrayList<GiftResult> giftData;
     private GiftDataArrayAdapter arrayAdapter;
 
-    @InjectView(R.id.list_gifts_swipe_container)
-    SwipeRefreshLayout swipeLayout;
-    @InjectView(R.id.list_gifts_list_view)
-    ListView listView;
+    @InjectView(R.id.list_gifts_swipe_container) SwipeRefreshLayout swipeLayout;
+
+    @InjectView(R.id.list_gifts_list_view) ListView listView;
 
     private String titleQuery = getTitleQuery();
     private QueryType queryType = getQueryType();
@@ -72,7 +71,9 @@ public class ListGiftsActivity extends GiftActivity implements
         giftData = new ArrayList<GiftResult>();
 
         // Instantiate the adapter using our local GiftData ArrayList.
-        arrayAdapter = new GiftDataArrayAdapter(this, R.layout.gift_listview_custom_row, giftData,
+        arrayAdapter = new GiftDataArrayAdapter(this,
+                R.layout.gift_listview_custom_row,
+                giftData,
                 this);
 
         loadPreferences();
@@ -301,34 +302,6 @@ public class ListGiftsActivity extends GiftActivity implements
         });
     }
 
-    String getTitleQuery() {
-        String title = getIntent() != null ? getIntent().getStringExtra(TITLE_QUERY_TAG) : null;
-        return title != null ? title : "";
-    }
-
-    ResultOrder getResultOrder() {
-        ResultOrder resultOrder = getIntent() != null ? (ResultOrder) getIntent()
-                .getSerializableExtra(RESULT_ORDER_TAG) : null;
-        return resultOrder != null ? resultOrder : ResultOrder.TIME;
-    }
-
-    ResultOrderDirection getResultOrderDirection() {
-        ResultOrderDirection resultOrderDirection = getIntent() != null ? (ResultOrderDirection) getIntent()
-                .getSerializableExtra(RESULT_ORDER_DIRECTION_TAG) : null;
-        return resultOrderDirection != null ? resultOrderDirection
-                : ResultOrderDirection.DESCENDING;
-    }
-
-    QueryType getQueryType() {
-        QueryType queryType = getIntent() != null ? (QueryType) getIntent()
-                .getSerializableExtra(QUERY_TYPE_TAG) : null;
-        return queryType != null ? queryType : QueryType.ALL;
-    }
-
-    String getGiftChainName() {
-        return getIntent() != null ? getIntent().getStringExtra(GIFT_CHAIN_NAME_TAG) : "";
-    }
-
     @Override
     public void setLike(GiftResult gift) {
         try {
@@ -345,5 +318,33 @@ public class ListGiftsActivity extends GiftActivity implements
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }
+    }
+
+    private String getTitleQuery() {
+        String title = getIntent() != null ? getIntent().getStringExtra(TITLE_QUERY_TAG) : null;
+        return title != null ? title : "";
+    }
+
+    private ResultOrder getResultOrder() {
+        ResultOrder resultOrder = getIntent() != null ? (ResultOrder) getIntent()
+                .getSerializableExtra(RESULT_ORDER_TAG) : null;
+        return resultOrder != null ? resultOrder : ResultOrder.TIME;
+    }
+
+    private ResultOrderDirection getResultOrderDirection() {
+        ResultOrderDirection resultOrderDirection = getIntent() != null ? (ResultOrderDirection) getIntent()
+                .getSerializableExtra(RESULT_ORDER_DIRECTION_TAG) : null;
+        return resultOrderDirection != null ? resultOrderDirection
+                : ResultOrderDirection.DESCENDING;
+    }
+
+    private QueryType getQueryType() {
+        QueryType queryType = getIntent() != null ? (QueryType) getIntent()
+                .getSerializableExtra(QUERY_TYPE_TAG) : null;
+        return queryType != null ? queryType : QueryType.ALL;
+    }
+
+    private String getGiftChainName() {
+        return getIntent() != null ? getIntent().getStringExtra(GIFT_CHAIN_NAME_TAG) : "";
     }
 }

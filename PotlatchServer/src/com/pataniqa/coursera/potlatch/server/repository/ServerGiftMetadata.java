@@ -13,8 +13,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.NoArgsConstructor;
 
-@EqualsAndHashCode(exclude = { "likes", "flagged" })
+@EqualsAndHashCode(exclude = { "liked", "flagged" })
+@NoArgsConstructor
 @ToString
 @Entity
 @Table(name = "gift_metadata")
@@ -35,10 +37,6 @@ public class ServerGiftMetadata {
     @EmbeddedId
     public ServerGiftMetadataPk getPk() {
         return pk;
-    }
-
-    public ServerGiftMetadata() {
-        // no-args constructor
     }
 
     public ServerGiftMetadata(ServerGiftMetadataPk pk) {

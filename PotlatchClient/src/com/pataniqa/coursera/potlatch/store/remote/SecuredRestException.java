@@ -12,6 +12,8 @@ package com.pataniqa.coursera.potlatch.store.remote;
  */
 public class SecuredRestException extends RuntimeException {
 
+    private static final long serialVersionUID = -463399859676486428L;
+
     public SecuredRestException() {
         super();
     }

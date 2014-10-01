@@ -82,7 +82,7 @@ public class EditGiftActivity extends ViewGiftActivity {
         try {
             Gift gift = makeGiftDataFromUI(getRowIdentifier());
             Log.d(LOG_TAG, "newGiftData:" + gift);
-            service.userGifts().save(gift);
+            service.gifts().save(gift);
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }
@@ -94,7 +94,7 @@ public class EditGiftActivity extends ViewGiftActivity {
         try {
             long identifier = getRowIdentifier();
             Log.d(LOG_TAG, "Deleting gift with " + identifier);
-            service.userGifts().delete(identifier);
+            service.gifts().delete(identifier);
         } catch (RemoteException e) {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }

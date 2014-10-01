@@ -33,7 +33,7 @@ import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.model.HasID;
-import com.pataniqa.coursera.potlatch.store.LocalStorageUtilities;
+import com.pataniqa.coursera.potlatch.store.local.LocalStorageUtilities;
 
 /**
  * Abstract class that forms the basis of the CreateGiftActivity and
@@ -49,18 +49,12 @@ abstract class ViewGiftActivity extends GiftActivity {
     };
 
     // The various UI elements we use
-    @InjectView(R.id.gift_create_title)
-    EditText titleInput;
-    @InjectView(R.id.gift_create_description)
-    EditText descriptionInput;
-    @InjectView(R.id.gift_create_img)
-    ImageView image;
-    @InjectView(R.id.view_gift_viewswitcher)
-    ViewSwitcher viewSwitcher;
-    @InjectView(R.id.gift_create_video)
-    VideoView video;
-    @InjectView(R.id.gift_create_gift_chain)
-    AutoCompleteTextView giftChain;
+    @InjectView(R.id.gift_create_title) EditText titleInput;
+    @InjectView(R.id.gift_create_description) EditText descriptionInput;
+    @InjectView(R.id.gift_create_img) ImageView image;
+    @InjectView(R.id.view_gift_viewswitcher) ViewSwitcher viewSwitcher;
+    @InjectView(R.id.gift_create_video) VideoView video;
+    @InjectView(R.id.gift_create_gift_chain) AutoCompleteTextView giftChain;
 
     Uri imagePathFinal = null;
     Uri videoPathFinal = null;
@@ -216,8 +210,14 @@ abstract class ViewGiftActivity extends GiftActivity {
             giftChains.put(giftChainName, result.getId());
             giftChainID = result.getId();
         }
-        return new Gift(key, title, description, videoUri, imageData, new Date(
-                created.toMillis(false)), userID, giftChainID);
+        return new Gift(key,
+                title,
+                description,
+                videoUri,
+                imageData,
+                new Date(created.toMillis(false)),
+                userID,
+                giftChainID);
     }
 
     void initializeSpinner() {
@@ -235,7 +235,8 @@ abstract class ViewGiftActivity extends GiftActivity {
             Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
         }
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, giftChainNames);
+                android.R.layout.simple_dropdown_item_1line,
+                giftChainNames);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         giftChain.setAdapter(spinnerArrayAdapter);
     }

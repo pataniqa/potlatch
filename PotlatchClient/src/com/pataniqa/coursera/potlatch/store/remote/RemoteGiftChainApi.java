@@ -12,9 +12,9 @@ import com.pataniqa.coursera.potlatch.model.GiftChain;
 
 public interface RemoteGiftChainApi {
     
-    public static final String GIFT_CHAIN_PATH = "/giftchain";
+    static final String GIFT_CHAIN_PATH = "/giftchain";
     
-    public static final String GIFT_CHAIN_ID_PATH = "/giftchain/{id}";
+    static final String GIFT_CHAIN_ID_PATH = "/giftchain/{id}";
     
     @POST(GIFT_CHAIN_PATH)
     GiftChain insert(@Body GiftChain data);
@@ -26,8 +26,6 @@ public interface RemoteGiftChainApi {
     void update(long id, @Body GiftChain data);
 
     @DELETE(GIFT_CHAIN_ID_PATH)
-    void deleteGiftChain(long id);
-
-
+    void delete(long id);
 
 }

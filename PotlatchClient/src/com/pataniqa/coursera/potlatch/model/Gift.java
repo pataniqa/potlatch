@@ -2,11 +2,15 @@ package com.pataniqa.coursera.potlatch.model;
 
 import java.util.Date;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 @ToString
 public class Gift implements HasID {
@@ -19,27 +23,5 @@ public class Gift implements HasID {
     @Getter private Date created;
     @Getter private long userID;
     @Getter private long giftChainID;
-
-    public Gift() {
-        // zero args constructor
-    }
-    
-    public Gift(long id,
-            String title,
-            String description,
-            String videoUri,
-            String imageUri,
-            Date created,
-            long userID,
-            long giftChainID) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.videoUri = videoUri;
-        this.imageUri = imageUri;
-        this.created = created;
-        this.userID = userID;
-        this.giftChainID = giftChainID;
-    }
 
 }

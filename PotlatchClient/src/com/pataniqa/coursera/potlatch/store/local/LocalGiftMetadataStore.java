@@ -5,49 +5,41 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.RemoteException;
 
 import com.pataniqa.coursera.potlatch.model.GiftResult;
-import com.pataniqa.coursera.potlatch.store.MetadataStore;
+import com.pataniqa.coursera.potlatch.store.GiftMetadata;
 
-public class LocalGiftMetadataStore implements MetadataStore {
+public class LocalGiftMetadataStore implements GiftMetadata {
 
-    String tableName;
-    SQLiteOpenHelper helper;
-    LocalGiftQuery localGiftStore;
+    private final String tableName = LocalSchema.Gift.TABLE_NAME;
+    private final SQLiteOpenHelper helper;
+    private final LocalGiftQuery localGiftStore;
 
     public LocalGiftMetadataStore(LocalDatabase helper) {
-        tableName = LocalSchema.Gift.TABLE_NAME;
         this.helper = helper;
         localGiftStore = new LocalGiftQuery(helper);
     }
 
-    void update(GiftResult gift) {
-        String selection = LocalSchema.Cols.ID + " = ? ";
-        String[] selectionArgs = { String.valueOf(gift.getId()) };
-        SQLiteDatabase db = helper.getWritableDatabase();
-        db.update(tableName, localGiftStore.creator.getCV(gift), selection, selectionArgs);
-        db.close();
-    }
-
     @Override
     public void setLike(long giftID, boolean like) throws RemoteException {
-        long rowID = giftID;
-        GiftResult gift = localGiftStore.findOne(rowID);
+        GiftResult gift = localGiftStore.findOne(giftID);
         gift.setLike(like);
-
-        // we make the simplifying assumption that the local database will only
-        // ever have one user
-        // so we will only every have one like
-
         gift.setLikes(gift.isLike() ? 1 : 0);
         update(gift);
     }
 
     @Override
     public void setFlag(long giftID, boolean flag) throws RemoteException {
-        long rowID = giftID;
-        GiftResult gift = localGiftStore.findOne(rowID);
+        GiftResult gift = localGiftStore.findOne(giftID);
         gift.setFlag(flag);
         gift.setFlagged(flag);
         update(gift);
+    }
+    
+    private void update(GiftResult gift) {
+        String selection = LocalSchema.Cols.ID + " = ? ";
+        String[] selectionArgs = { String.valueOf(gift.getId()) };
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.update(tableName, localGiftStore.creator().getCV(gift), selection, selectionArgs);
+        db.close();
     }
 
 }

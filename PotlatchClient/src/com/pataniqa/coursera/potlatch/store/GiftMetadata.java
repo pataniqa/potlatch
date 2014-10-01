@@ -2,7 +2,7 @@ package com.pataniqa.coursera.potlatch.store;
 
 import android.os.RemoteException;
 
-public interface MetadataStore {
+public interface GiftMetadata {
 
     void setLike(long giftID, boolean like) throws RemoteException;
 

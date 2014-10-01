@@ -2,20 +2,28 @@ package com.pataniqa.coursera.potlatch.store.local;
 
 import java.util.Map;
 
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.pataniqa.coursera.potlatch.store.BaseService;
+import com.pataniqa.coursera.potlatch.store.GiftChains;
+import com.pataniqa.coursera.potlatch.store.GiftMetadata;
+import com.pataniqa.coursera.potlatch.store.Gifts;
 import com.pataniqa.coursera.potlatch.store.Service;
 
-public class LocalService extends BaseService implements Service {
+@Accessors(fluent=true)
+public class LocalService implements Service {
+    
+    @Getter private Gifts gifts;
+    @Getter private GiftChains giftChains;
+    @Getter private GiftMetadata giftMetadata;
 
     public LocalService(Context context) {
         LocalDatabase helper = new LocalDatabase(context);
-        userGifts = new LocalGiftStore(helper);
         gifts = new LocalGiftQuery(helper);
         giftChains = new LocalGiftChainStore(helper);
         giftMetadata = new LocalGiftMetadataStore(helper);

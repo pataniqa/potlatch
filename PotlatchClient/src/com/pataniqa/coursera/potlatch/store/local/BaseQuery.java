@@ -2,6 +2,10 @@ package com.pataniqa.coursera.potlatch.store.local;
 
 import java.util.ArrayList;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -10,13 +14,15 @@ import android.os.RemoteException;
 import com.pataniqa.coursera.potlatch.store.Query;
 import com.pataniqa.coursera.potlatch.store.Retrieve;
 
+@Accessors(fluent = true)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 abstract class BaseQuery<T> implements Query<T>, Retrieve<T, Long> {
 
-    Creator<T> creator;
-    String tableName;
-    SQLiteOpenHelper helper;
-
-    ArrayList<T> query(String[] projection,
+    @Getter private final Creator<T> creator;
+    @Getter private final String tableName;
+    @Getter private final SQLiteOpenHelper helper;
+    
+    protected ArrayList<T> query(String[] projection,
             String selection,
             String[] selectionArgs,
             String sortOrder) throws RemoteException {

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -11,6 +12,7 @@ import lombok.ToString;
  * GiftResult is a de-normalized version of the data to make it easy to present
  * in the user interface.
  */
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class GiftResult extends Gift implements HasID {
@@ -22,10 +24,6 @@ public class GiftResult extends Gift implements HasID {
     @Getter private long userLikes;
     @Getter private String username;
     @Getter private String giftChainName;
-
-    public GiftResult() {
-        // zero args constructor
-    }
 
     public GiftResult(long giftID,
             String title,
@@ -50,27 +48,6 @@ public class GiftResult extends Gift implements HasID {
         this.flagged = flagged;
         this.userLikes = userLikes;
         this.username = username;
-    }
-
-    /**
-     * Clone this object into a new GiftData
-     */
-    public GiftResult clone() {
-        return new GiftResult(HasID.UNDEFINED_ID,
-                getTitle(),
-                getDescription(),
-                getVideoUri(),
-                getImageUri(),
-                getCreated(),
-                getUserID(),
-                like,
-                flag,
-                likes,
-                flagged,
-                getGiftChainID(),
-                giftChainName,
-                userLikes,
-                username);
     }
 
 }

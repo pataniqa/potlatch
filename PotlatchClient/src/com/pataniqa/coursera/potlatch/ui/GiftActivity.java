@@ -50,36 +50,29 @@ abstract class GiftActivity extends Activity {
 
     void openLoginActivity() {
         Log.d(LOG_TAG, "openLoginActivity");
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, LoginActivity.class));
     }
 
     void openPreferenceActivity() {
         Log.d(LOG_TAG, "openPreferencesActivity");
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 
     void openEditGiftActivity(final long index) {
         Log.d(LOG_TAG, "openEditGiftActivity(" + index + ")");
-        Intent intent = new Intent();
-        intent.setClass(this, EditGiftActivity.class);
+        Intent intent = new Intent(this, EditGiftActivity.class);
         intent.putExtra(ROW_IDENTIFIER_TAG, index);
         startActivity(intent);
     }
 
     void openCreateGiftActivity() {
         Log.d(LOG_TAG, "openCreateGiftActivity");
-        Intent intent = new Intent();
-        intent.setClass(this, CreateGiftActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, CreateGiftActivity.class));
     }
 
     void openListGiftActivity() {
         Log.d(LOG_TAG, "openCreateGiftActivity");
-        Intent intent = new Intent();
-        intent.setClass(this, ListGiftsActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, ListGiftsActivity.class));
     }
 
     void openListGiftActivity(String titleQuery,
@@ -88,8 +81,7 @@ abstract class GiftActivity extends Activity {
             final QueryType queryType,
             final long giftChainID) {
         Log.d(LOG_TAG, "openCreateGiftActivity");
-        Intent intent = new Intent();
-        intent.setClass(this, ListGiftsActivity.class);
+        Intent intent = new Intent(this, ListGiftsActivity.class);
         intent.putExtra(TITLE_QUERY_TAG, titleQuery);
         intent.putExtra(RESULT_ORDER_TAG, resultOrder);
         intent.putExtra(RESULT_ORDER_DIRECTION_TAG, resultOrderDirection);
