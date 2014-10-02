@@ -1,5 +1,7 @@
 package com.pataniqa.coursera.potlatch.server;
 
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.ID_PARAMETER;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.pataniqa.coursera.potlatch.model.User;
 import com.pataniqa.coursera.potlatch.server.model.ServerUser;
 import com.pataniqa.coursera.potlatch.server.repository.UserRepository;
-import com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi;
 import com.pataniqa.coursera.potlatch.store.remote.RemoteUserApi;
 
 @Controller
@@ -40,14 +41,15 @@ public class UserService {
     }
 
     @RequestMapping(value = RemoteUserApi.USER_ID_PATH, method = RequestMethod.PUT)
-    public void update(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id,
-            @RequestBody User user) {
-        users.save(new ServerUser(user));
+    public @ResponseBody
+    User update(@PathVariable(ID_PARAMETER) long id, @RequestBody User user) {
+        return users.save(users.findOne(id).update(user)).toClient();
     }
 
     @RequestMapping(value = RemoteUserApi.USER_ID_PATH, method = RequestMethod.DELETE)
-    public void delete(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id) {
+    public @ResponseBody boolean delete(@PathVariable(ID_PARAMETER) long id) {
         users.delete(id);
+        return true;
     }
 
 }

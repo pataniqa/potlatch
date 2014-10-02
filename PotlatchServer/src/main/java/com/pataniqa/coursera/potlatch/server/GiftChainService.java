@@ -21,8 +21,7 @@ import com.pataniqa.coursera.potlatch.store.remote.RemoteGiftChainApi;
 @Controller
 public class GiftChainService {
 
-    @Autowired
-    private GiftChainRepository giftChains;
+    @Autowired private GiftChainRepository giftChains;
 
     @RequestMapping(value = RemoteGiftChainApi.GIFT_CHAIN_PATH, method = RequestMethod.POST)
     public @ResponseBody
@@ -41,13 +40,16 @@ public class GiftChainService {
     }
 
     @RequestMapping(value = RemoteGiftChainApi.GIFT_CHAIN_ID_PATH, method = RequestMethod.PUT)
-    public void update(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id, @RequestBody GiftChain data) {
-        giftChains.save(new ServerGiftChain(data));
+    public @ResponseBody
+    GiftChain update(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id, @RequestBody GiftChain giftChain) {
+        return giftChains.save(giftChains.findOne(id).update(giftChain)).toClient();
     }
 
     @RequestMapping(value = RemoteGiftChainApi.GIFT_CHAIN_ID_PATH, method = RequestMethod.DELETE)
-    public void delete(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id) {
+    public @ResponseBody
+    boolean delete(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id) {
         giftChains.delete(id);
+        return true;
     }
 
 }

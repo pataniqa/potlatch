@@ -3,7 +3,6 @@ package com.pataniqa.coursera.potlatch.store.local;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.model.User;
 import com.pataniqa.coursera.potlatch.store.Users;
 

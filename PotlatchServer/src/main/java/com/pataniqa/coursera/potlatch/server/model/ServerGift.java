@@ -65,6 +65,19 @@ public class ServerGift implements GetId {
         this.likes = 0;
         this.flagged = 0;
     }
+    
+    public ServerGift update(Gift gift, ServerUser user, ServerGiftChain giftChain) {
+        this.title = gift.getTitle();
+        this.description = gift.getDescription();
+        this.videoUri = gift.getVideoUri();
+        this.imageUri = gift.getImageUri();
+        this.created = gift.getCreated();
+        this.user = user;
+        this.giftChain = giftChain;
+        this.likes = 0;
+        this.flagged = 0;
+        return this;
+    }
 
     public Gift toClient() {
         return new Gift(id,

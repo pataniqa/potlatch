@@ -9,14 +9,14 @@ import com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi
 import com.pataniqa.coursera.potlatch.store.remote.SecuredRestBuilder
 import com.pataniqa.coursera.potlatch.server.UnsafeHttpsClient
 
-class RemoteGiftApiSpec extends spock.lang.Specification {
+class GiftApiSpec extends spock.lang.Specification {
 
     def TEST_URL = "https://localhost:8443"
     def USERNAME1 = "user0"
     def PASSWORD = "pass"
     def CLIENT_ID = "mobile";
 
-    def readWriteVideoSvcUser1 = new SecuredRestBuilder()
+    def giftSvcUser1 = new SecuredRestBuilder()
         .setClient(new ApacheClient(UnsafeHttpsClient.createUnsafeClient()))
         .setEndpoint(TEST_URL)
         .loginUrl(TEST_URL + RemoteGiftApi.TOKEN_PATH)
@@ -44,7 +44,7 @@ class RemoteGiftApiSpec extends spock.lang.Specification {
     def "Add a gift"() {
         when:
         def gift = randomGift()
-        def received = readWriteVideoSvcUser1.insert(gift)
+        def received = giftUser1.insert(gift)
         
         then:
         gift.getTitle() == received.getTitle()

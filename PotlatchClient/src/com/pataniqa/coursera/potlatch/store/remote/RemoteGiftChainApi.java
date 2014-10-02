@@ -1,5 +1,7 @@
 package com.pataniqa.coursera.potlatch.store.remote;
 
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.ID_PARAMETER;
+
 import java.util.Collection;
 
 import retrofit.http.Body;
@@ -7,6 +9,7 @@ import retrofit.http.DELETE;
 import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.PUT;
+import retrofit.http.Path;
 
 import com.pataniqa.coursera.potlatch.model.GiftChain;
 
@@ -23,9 +26,9 @@ public interface RemoteGiftChainApi {
     Collection<GiftChain> findAll();
 
     @PUT(GIFT_CHAIN_ID_PATH)
-    void update(long id, @Body GiftChain data);
+    void update(@Path(ID_PARAMETER) long id, @Body GiftChain data);
 
     @DELETE(GIFT_CHAIN_ID_PATH)
-    void delete(long id);
+    void delete(@Path(ID_PARAMETER) long id);
 
 }

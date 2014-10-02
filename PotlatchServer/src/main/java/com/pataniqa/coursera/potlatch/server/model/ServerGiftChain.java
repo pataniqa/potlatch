@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import com.pataniqa.coursera.potlatch.model.GiftChain;
@@ -22,7 +23,7 @@ public class ServerGiftChain {
     public static final String ID = "giftchain_id";
     @Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = ID) private long id;
 
-    @Getter private String name;
+    @Getter @Setter private String name;
 
     public ServerGiftChain(GiftChain giftChain) {
         this.id = giftChain.getId();
@@ -31,6 +32,11 @@ public class ServerGiftChain {
 
     public GiftChain toClient() {
         return new GiftChain(id, name);
+    }
+
+    public ServerGiftChain update(GiftChain giftChain) {
+        this.name = giftChain.getName();
+        return this;
     }
 
 }

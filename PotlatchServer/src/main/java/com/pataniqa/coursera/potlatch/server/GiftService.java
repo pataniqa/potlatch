@@ -39,18 +39,13 @@ import com.pataniqa.coursera.potlatch.store.remote.ResourceStatus;
 @Controller
 public class GiftService {
 
-    @Autowired
-    private GiftRepository gifts;
+    @Autowired private GiftRepository gifts;
 
-    @Autowired
-    private UserRepository users;
-    // TODO where and how are users this created?
+    @Autowired private UserRepository users;
 
-    @Autowired
-    private GiftChainRepository giftChains;
+    @Autowired private GiftChainRepository giftChains;
 
-    @Autowired
-    private GiftMetadataRepository giftMetadata;
+    @Autowired private GiftMetadataRepository giftMetadata;
 
     // TODO - should be injected
     private FileManager<ServerGift> imageManager = new FileManager<ServerGift>("image", "jpg");
@@ -67,7 +62,8 @@ public class GiftService {
     }
 
     @RequestMapping(value = RemoteGiftApi.GIFT_PATH, method = RequestMethod.GET)
-    public List<GiftResult> findAll(Principal p) {
+    public @ResponseBody
+    List<GiftResult> findAll(Principal p) {
         ServerUser user = getUser(p);
         List<GiftResult> results = new ArrayList<GiftResult>();
         for (ServerGift gift : gifts.findAll()) {
@@ -77,19 +73,23 @@ public class GiftService {
     }
 
     @RequestMapping(value = RemoteGiftApi.GIFT_ID_PATH, method = RequestMethod.PUT)
-    public void update(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id, @RequestBody Gift gift) {
+    public @ResponseBody
+    Gift update(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id, @RequestBody Gift gift) {
         ServerGiftChain giftChain = getGiftChain(gift);
         ServerUser user = users.findOne(gift.getUserID());
-        gifts.save(new ServerGift(gift, user, giftChain));
+        return gifts.save(gifts.findOne(id).update(gift, user, giftChain)).toClient();
     }
 
     @RequestMapping(value = RemoteGiftApi.GIFT_ID_PATH, method = RequestMethod.DELETE)
-    public void deleteGift(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id) {
+    public @ResponseBody
+    boolean deleteGift(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id) {
         gifts.delete(id);
+        return true;
     }
 
     @RequestMapping(value = RemoteGiftApi.GIFT_ID_PATH, method = RequestMethod.GET)
-    public GiftResult findOne(@PathVariable(RemoteGiftApi.ID_PARAMETER) Long id, Principal p) {
+    public @ResponseBody
+    GiftResult findOne(@PathVariable(RemoteGiftApi.ID_PARAMETER) Long id, Principal p) {
 
         // TODO use join
 
@@ -97,7 +97,8 @@ public class GiftService {
     }
 
     @RequestMapping(value = RemoteGiftApi.GIFT_LIKE_PATH, method = RequestMethod.PUT)
-    public void setLike(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id,
+    public @ResponseBody
+    boolean setLike(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id,
             @PathVariable boolean like,
             Principal p) {
 
@@ -119,10 +120,12 @@ public class GiftService {
             users.save(user);
             gifts.save(gift);
         }
+        return true;
     }
 
     @RequestMapping(value = RemoteGiftApi.GIFT_FLAG_PATH, method = RequestMethod.PUT)
-    public void setFlag(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id,
+    public @ResponseBody
+    boolean setFlag(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id,
             @PathVariable boolean flag,
             Principal p) {
 
@@ -140,16 +143,18 @@ public class GiftService {
             giftMetadata.save(metadata);
             gifts.save(gift);
         }
+        return true;
     }
 
     @RequestMapping(value = RemoteGiftApi.QUERY_BY_TITLE, method = RequestMethod.GET)
-    public List<GiftResult> queryByTitle(String title, int order, int direction, Principal principal) {
+    public @ResponseBody
+    List<GiftResult> queryByTitle(String title, int order, int direction, Principal principal) {
         Sort sort = getSort(direction, order);
         return toResult(gifts.findByTitleLike(title, sort), principal);
     }
 
     @RequestMapping(value = RemoteGiftApi.QUERY_BY_USER, method = RequestMethod.GET)
-    public List<GiftResult> queryByUser(String title,
+    public @ResponseBody List<GiftResult> queryByUser(String title,
             long userID,
             int order,
             int direction,
@@ -160,7 +165,7 @@ public class GiftService {
     }
 
     @RequestMapping(value = RemoteGiftApi.QUERY_BY_GIFT_CHAIN, method = RequestMethod.GET)
-    public List<GiftResult> queryByGiftChain(String title,
+    public @ResponseBody List<GiftResult> queryByGiftChain(String title,
             long giftChainID,
             int order,
             int direction,
@@ -171,7 +176,7 @@ public class GiftService {
     }
 
     @RequestMapping(value = RemoteGiftApi.QUERY_BY_TOP_GIFT_GIVERS, method = RequestMethod.GET)
-    public List<GiftResult> queryByTopGiftGivers(String title, int direction, Principal p) {
+    public @ResponseBody List<GiftResult> queryByTopGiftGivers(String title, int direction, Principal p) {
 
         // TODO need to get a list of users ranked by the number of likes
         // then turn that into a list of gifts
@@ -183,9 +188,9 @@ public class GiftService {
     public @ResponseBody
     ResourceStatus setVideoData(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id,
             @RequestParam(RemoteGiftApi.DATA_PARAMETER) MultipartFile videoData) throws IOException {
-        
+
         // TODO need to set video field in ServerGift
-        
+
         return setData(id, videoData, videoManager);
     }
 
@@ -199,9 +204,9 @@ public class GiftService {
     public @ResponseBody
     ResourceStatus setImageData(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id,
             @RequestParam(RemoteGiftApi.DATA_PARAMETER) MultipartFile imageData) throws IOException {
-        
+
         // TODO need to set image field in ServerGift
-        
+
         return setData(id, imageData, imageManager);
     }
 
@@ -282,7 +287,7 @@ public class GiftService {
         ServerGiftMetadataPk pk = new ServerGiftMetadataPk(user, gift);
         return giftMetadata.exists(pk) ? giftMetadata.findOne(pk) : new ServerGiftMetadata(pk);
     }
-    
+
     private ServerGiftChain getGiftChain(Gift gift) {
         return giftChains.findOne(gift.getGiftChainID());
     }
