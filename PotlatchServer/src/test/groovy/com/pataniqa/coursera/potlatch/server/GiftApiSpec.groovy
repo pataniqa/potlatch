@@ -1,3 +1,4 @@
+package com.pataniqa.coursera.potlatch.server
 import java.util.Date
 import java.util.Random
 
