@@ -60,11 +60,11 @@ public class GiftService {
     @RequestMapping(value = GIFT_PATH, method = RequestMethod.POST)
     public @ResponseBody
     GiftResult insert(@RequestBody Gift gift) {
-        System.out.println("Got gift: " + gift);
+        log.info("Got gift: " + gift);
         ServerGiftChain giftChain = getGiftChain(gift);
-        System.out.println("Got giftChain: " + giftChain);
+        log.info("Got giftChain: " + giftChain);
         ServerUser user = users.findOne(gift.getUserID());
-        System.out.println("Got user: " + user);
+        log.info("Got user: " + user);
         return fromGift(gifts.save(new ServerGift(gift, user, giftChain)), user);
     }
 

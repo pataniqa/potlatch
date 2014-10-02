@@ -7,8 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,8 +19,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GetId;
+import com.pataniqa.coursera.potlatch.model.Gift;
 
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = { "title", "description", "videoUri", "imageUri", "likes", "flagged", "created", "user", "giftChain" })
@@ -46,12 +46,12 @@ public class ServerGift implements GetId {
     public static final String CREATED = "created";
     @Getter @Temporal(TemporalType.TIMESTAMP) @Column(name = CREATED) private Date created;
 
-    @Getter @ManyToOne(optional = false) 
-    @JoinColumn(name = ServerUser.ID, referencedColumnName = ServerUser.ID) 
+    @Getter @ManyToOne 
+    @PrimaryKeyJoinColumn(name = ServerUser.ID, referencedColumnName = ServerUser.ID) 
     private ServerUser user;
 
-    @Getter @ManyToOne(optional = false) 
-    @JoinColumn(name = ServerGiftChain.ID, referencedColumnName = ServerGiftChain.ID) 
+    @Getter @ManyToOne 
+    @PrimaryKeyJoinColumn(name = ServerGiftChain.ID, referencedColumnName = ServerGiftChain.ID) 
     private ServerGiftChain giftChain;
 
     public ServerGift(Gift gift, ServerUser user, ServerGiftChain giftChain) {

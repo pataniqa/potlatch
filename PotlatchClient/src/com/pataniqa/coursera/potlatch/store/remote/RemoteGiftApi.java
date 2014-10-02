@@ -28,13 +28,13 @@ public interface RemoteGiftApi {
     List<GiftResult> findAll();
 
     @POST(GIFT_PATH)
-    GiftResult insert(@Body Gift data);
+    Gift insert(@Body Gift data);
 
     static final String GIFT_ID_PATH = "/gift/{id}";
     static final String ID = "id";
 
     @PUT(GIFT_ID_PATH)
-    GiftResult update(@Path(ID) long id, @Body Gift data);
+    Gift update(@Path(ID) long id, @Body Gift data);
 
     @DELETE(GIFT_ID_PATH)
     boolean delete(@Path(ID) long id);

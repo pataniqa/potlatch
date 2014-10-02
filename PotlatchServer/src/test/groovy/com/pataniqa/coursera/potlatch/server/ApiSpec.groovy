@@ -1,27 +1,11 @@
 package com.pataniqa.coursera.potlatch.server
 
-import java.util.List
-
-import retrofit.client.Response
-import retrofit.http.Body
-import retrofit.http.DELETE
-import retrofit.http.GET
-import retrofit.http.Multipart
-import retrofit.http.POST
-import retrofit.http.PUT
-import retrofit.http.Part
-import retrofit.http.Path
-import retrofit.http.Streaming
-import retrofit.mime.TypedFile
-
-import com.pataniqa.coursera.potlatch.model.GetId
-import com.pataniqa.coursera.potlatch.model.Gift
-import com.pataniqa.coursera.potlatch.model.GiftResult
-import com.pataniqa.coursera.potlatch.store.remote.ResourceStatus
-
 import retrofit.RestAdapter.LogLevel
 import retrofit.client.ApacheClient
 
+import org.codehaus.jackson.map.ObjectMapper
+import com.pataniqa.coursera.potlatch.model.GetId
+import com.pataniqa.coursera.potlatch.model.Gift
 import com.pataniqa.coursera.potlatch.model.GiftChain
 import com.pataniqa.coursera.potlatch.model.User
 import com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi
@@ -29,12 +13,16 @@ import com.pataniqa.coursera.potlatch.store.remote.RemoteGiftChainApi
 import com.pataniqa.coursera.potlatch.store.remote.RemoteUserApi
 import com.pataniqa.coursera.potlatch.store.remote.SecuredRestBuilder
 
+import com.pataniqa.coursera.potlatch.server.JacksonConverter
+
 class ApiSpec extends spock.lang.Specification {
     
     def TEST_URL = "https://localhost:8443"
     def USERNAME1 = "user0"
     def PASSWORD = "pass"
     def CLIENT_ID = "mobile"
+    
+    def converter = new JacksonConverter(new ObjectMapper())
     
     def svcUser = new SecuredRestBuilder()
         .setClient(new ApacheClient(UnsafeHttpsClient.createUnsafeClient()))
@@ -44,6 +32,7 @@ class ApiSpec extends spock.lang.Specification {
         .username(USERNAME1)
         .password(PASSWORD)
         .clientId(CLIENT_ID)
+        .setConverter(converter)
         .build()
         
     def userSvcUser = svcUser.create(RemoteUserApi.class)
@@ -121,6 +110,8 @@ class ApiSpec extends spock.lang.Specification {
         when: "a gift chain is created"
         def giftChain = new GiftChain("some-random-giftchain-" + new Random().nextLong())
         def newGiftChain = giftChainSvcUser.insert(giftChain)
+        
+        println(numberOfGifts())
             
         and: "a gift is created"
         def numberOfGiftsBefore = numberOfGifts()
@@ -136,7 +127,10 @@ class ApiSpec extends spock.lang.Specification {
         def newGift = giftSvcUser.insert(gift)
 
         then: "the new gift should have the same properties"
-        gift.getName() == newGift.getName()
+        gift.getTitle() == newGift.getTitle()
+        gift.getDescription() == newGift.getDescription()
+        gift.getGiftChainID() == newGift.getGiftChainID()
+        gift.getUserID() == newGift.getUserID()
         and: "there should be one more user"
         numberOfGifts() == numberOfGiftsBefore + 1
 

@@ -4,6 +4,7 @@ import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.ID;
 
 import java.util.Collection;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,8 @@ import com.pataniqa.coursera.potlatch.store.remote.RemoteUserApi;
 @Controller
 public class UserService {
 
+    static Logger log = Logger.getLogger(GiftService.class.getName());
+    
     @Autowired private UserRepository users;
 
     @RequestMapping(value = RemoteUserApi.USER_PATH, method = RequestMethod.POST)

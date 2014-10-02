@@ -37,3 +37,9 @@ total so far => 9 hours
 
 JPA Gradle schema plugin
 https://github.com/divinespear/jpa-schema-gradle-plugin
+
+
+https://github.com/ReactiveX/RxJava/wiki/The-RxJava-Android-Module
+https://github.com/kdubb1337/retrofit-examples
+https://github.com/spring-projects/spring-data-jpa-examples/tree/master/spring-data-jpa-example/src
+http://www.node.mu/2014/07/02/using-retrofit-and-rxjava-to-interact-with-web-services-on-android/
