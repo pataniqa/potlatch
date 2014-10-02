@@ -1,8 +1,6 @@
 package com.pataniqa.coursera.potlatch.server;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.common.collect.Lists;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.server.model.ServerGiftChain;
 import com.pataniqa.coursera.potlatch.server.repository.GiftChainRepository;
@@ -25,24 +24,20 @@ public class GiftChainService {
 
     @RequestMapping(value = RemoteGiftChainApi.GIFT_CHAIN_PATH, method = RequestMethod.POST)
     public @ResponseBody
-    GiftChain insert(@RequestBody GiftChain data) {
-        return giftChains.save(new ServerGiftChain(data)).toClient();
+    ServerGiftChain insert(@RequestBody GiftChain data) {
+        return giftChains.save(new ServerGiftChain(data));
     }
 
     @RequestMapping(value = RemoteGiftChainApi.GIFT_CHAIN_PATH, method = RequestMethod.GET)
     public @ResponseBody
-    Collection<GiftChain> findAll() {
-        List<GiftChain> result = new ArrayList<GiftChain>();
-        for (ServerGiftChain giftChain : giftChains.findAll()) {
-            result.add(giftChain.toClient());
-        }
-        return result;
+    Collection<ServerGiftChain> findAll() {
+        return Lists.newArrayList(giftChains.findAll());
     }
 
     @RequestMapping(value = RemoteGiftChainApi.GIFT_CHAIN_ID_PATH, method = RequestMethod.PUT)
     public @ResponseBody
-    GiftChain update(@PathVariable(RemoteGiftApi.ID) long id, @RequestBody GiftChain giftChain) {
-        return giftChains.save(giftChains.findOne(id).update(giftChain)).toClient();
+    ServerGiftChain update(@PathVariable(RemoteGiftApi.ID) long id, @RequestBody GiftChain giftChain) {
+        return giftChains.save(giftChains.findOne(id).update(giftChain));
     }
 
     @RequestMapping(value = RemoteGiftChainApi.GIFT_CHAIN_ID_PATH, method = RequestMethod.DELETE)

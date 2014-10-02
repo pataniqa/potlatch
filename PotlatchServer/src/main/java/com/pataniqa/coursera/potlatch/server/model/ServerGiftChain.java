@@ -30,10 +30,6 @@ public class ServerGiftChain {
         this.name = giftChain.getName();
     }
 
-    public GiftChain toClient() {
-        return new GiftChain(id, name);
-    }
-
     public ServerGiftChain update(GiftChain giftChain) {
         this.name = giftChain.getName();
         return this;

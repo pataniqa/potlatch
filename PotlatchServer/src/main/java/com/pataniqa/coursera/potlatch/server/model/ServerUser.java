@@ -45,10 +45,6 @@ public class ServerUser {
         this(user.getName());
     }
 
-    public User toClient() {
-        return new User(id, name);
-    }
-
     public ServerUser update(User user) {
         this.name = user.getName();
         return this;
