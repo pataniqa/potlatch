@@ -3,6 +3,8 @@ package com.pataniqa.coursera.potlatch.auth;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -127,6 +129,10 @@ public class OAuth2SecurityConfiguration {
         
         @Autowired
         private UserRepository userRepo;
+        
+        private final List<UserDetails> users = Arrays.asList(
+                User.create("user0", "pass", "ADMIN", "USER"),
+                User.create("user1", "pass", "USER"));
 
         /**
          * 
@@ -155,15 +161,6 @@ public class OAuth2SecurityConfiguration {
                     .authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT")
                     .scopes("read","write").resourceIds("video")
                     .accessTokenValiditySeconds(3600).and().build();
-            
-            List<UserDetails> users = Arrays.asList(
-                    User.create("user0", "pass", "ADMIN", "USER"),
-                    User.create("user1", "pass", "USER"));
-            
-            for (UserDetails user : users) {
-                ServerUser u = new ServerUser(user.getUsername());
-                //userRepo.save(u);
-            }
 
             // Create a series of hard-coded users. 
             UserDetailsService svc = new InMemoryUserDetailsManager(users);
@@ -174,6 +171,14 @@ public class OAuth2SecurityConfiguration {
             // request, this combined UserDetailsService will authenticate that the
             // client is a valid "user". 
             this.combinedService = new ClientAndUserDetailsService(csvc, svc);
+        }
+        
+        @PostConstruct 
+        protected void createUsers() {
+            for (UserDetails user : users) {
+                ServerUser u = new ServerUser(user.getUsername());
+                userRepo.save(u);
+            }
         }
 
         /**

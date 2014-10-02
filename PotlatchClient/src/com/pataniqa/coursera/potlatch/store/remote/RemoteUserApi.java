@@ -1,6 +1,6 @@
 package com.pataniqa.coursera.potlatch.store.remote;
 
-import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.ID_PARAMETER;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.ID;
 
 import java.util.Collection;
 
@@ -26,8 +26,8 @@ public interface RemoteUserApi {
     Collection<User> findAll();
 
     @PUT(USER_ID_PATH)
-    User update(@Path(ID_PARAMETER) long id, @Body User user);
+    User update(@Path(ID) long id, @Body User user);
 
     @DELETE(USER_ID_PATH)
-    boolean delete(@Path(ID_PARAMETER) long id);
+    boolean delete(@Path(ID) long id);
 }

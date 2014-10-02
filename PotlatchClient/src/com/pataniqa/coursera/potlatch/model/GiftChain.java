@@ -13,11 +13,10 @@ import lombok.ToString;
 @ToString
 public class GiftChain implements SetId {
 
-    @Getter @Setter private long id;
+    @Getter @Setter private long id = GetId.UNDEFINED_ID;
     @Getter private String name;
 
     public GiftChain(String name) {
-        this.id = GetId.UNDEFINED_ID;
         this.name = name;
     }
 }

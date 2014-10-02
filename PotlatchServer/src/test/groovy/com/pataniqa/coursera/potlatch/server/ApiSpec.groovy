@@ -1,5 +1,24 @@
 package com.pataniqa.coursera.potlatch.server
 
+import java.util.List
+
+import retrofit.client.Response
+import retrofit.http.Body
+import retrofit.http.DELETE
+import retrofit.http.GET
+import retrofit.http.Multipart
+import retrofit.http.POST
+import retrofit.http.PUT
+import retrofit.http.Part
+import retrofit.http.Path
+import retrofit.http.Streaming
+import retrofit.mime.TypedFile
+
+import com.pataniqa.coursera.potlatch.model.GetId
+import com.pataniqa.coursera.potlatch.model.Gift
+import com.pataniqa.coursera.potlatch.model.GiftResult
+import com.pataniqa.coursera.potlatch.store.remote.ResourceStatus
+
 import retrofit.RestAdapter.LogLevel
 import retrofit.client.ApacheClient
 
@@ -26,10 +45,12 @@ class ApiSpec extends spock.lang.Specification {
         .password(PASSWORD)
         .clientId(CLIENT_ID)
         .build()
+        
+    def userSvcUser = svcUser.create(RemoteUserApi.class)
+    
+    def giftChainSvcUser = svcUser.create(RemoteGiftChainApi.class)
     
     def "Create, retrieve, update and delete a gift chain"() {
-        
-        def giftChainSvcUser = svcUser.create(RemoteGiftChainApi.class)
         
         def numberOfGiftChains = { giftChainSvcUser.findAll().size() }
                 
@@ -61,8 +82,6 @@ class ApiSpec extends spock.lang.Specification {
 
     def "Create, retrieve, update and delete a user"() {
         
-        def userSvcUser = svcUser.create(RemoteUserApi.class)
-    
         def numberOfUsers = { userSvcUser.findAll().size() }
             
         when: "a user is added"
@@ -89,6 +108,74 @@ class ApiSpec extends spock.lang.Specification {
         then: "there should be one less user"
         numberOfUsers() == numberOfUsersBefore - 1
         
+    }
+    
+    def "Create, retrieve, update and delete a gift"() {
+        
+        def giftSvcUser = svcUser.create(RemoteGiftApi.class)
+    
+        def numberOfGifts = { giftSvcUser.findAll().size() }
+        
+        println(giftSvcUser.findAll())
+        
+        when: "a gift chain is created"
+        def giftChain = new GiftChain("some-random-giftchain-" + new Random().nextLong())
+        def newGiftChain = giftChainSvcUser.insert(giftChain)
+            
+        and: "a gift is created"
+        def numberOfGiftsBefore = numberOfGifts()
+        def title = "some-random-gift-" + new Random().nextLong()
+        def description = "some-random-description-" + new Random().nextLong()
+        def videoUri = "http://www.example.com/gift/" + new Random().nextLong() + "/video"
+        def imageUri = "http://www.example.com/gift/" + new Random().nextLong() + "/image"
+        def created = new Date()
+        def userId = userSvcUser.findAll().get(0).getId()
+        def giftChainId = newGiftChain.getId()
+        
+        def gift = new Gift(GetId.UNDEFINED_ID, title, description, videoUri, imageUri, created, userId, giftChainId) 
+        def newGift = giftSvcUser.insert(gift)
+
+        then: "the new gift should have the same properties"
+        gift.getName() == newGift.getName()
+        and: "there should be one more user"
+        numberOfGifts() == numberOfGiftsBefore + 1
+
+        when: "a gift is updated"
+        numberOfGiftsBefore = numberOfGifts()
+        giftSvcUser.update(newGift.getId(), newGift)
+
+        then: "there should be the same number of gifts"
+        numberOfGifts() == numberOfGiftsBefore
+
+        when: "a gift is deleted"
+        numberOfGiftsBefore = numberOfGifts()
+        giftSvcUser.delete(newGift.getId())
+
+        then: "there should be one less gift"
+        numberOfGifts() == numberOfGiftsBefore - 1
+        
+    }
+    
+    def "The Gift API should work correctly"() {
+        
+//        List<GiftResult> findAll()    
+//        Gift insert(@Body Gift data)
+//        Gift update(long id, @Body Gift data)
+//        boolean delete(long id)
+//        GiftResult findOne(Long id)
+//        boolean setLike(long id, boolean like)
+//        boolean setFlag(long id, boolean flag)
+//        List<GiftResult> queryByTitle(String title, int order, int direction)
+//        List<GiftResult> queryByUser(String title, long userID, int order, int direction)
+//        List<GiftResult> queryByTopGiftGivers(String title, int direction)
+//        List<GiftResult> queryByGiftChain(String title, String giftChain, int order, int direction)
+//        ResourceStatus setImageData(@Path(ID_PARAMETER) long id,
+//                @Part(DATA_PARAMETER) TypedFile imageData)
+//        Response getImageData(@Path(ID_PARAMETER) long id)
+//        ResourceStatus setVideoData(@Path(ID_PARAMETER) long id,
+//                @Part(DATA_PARAMETER) TypedFile imageData)
+//        Response getVideoData(@Path(ID_PARAMETER) long id)
+
     }
 }
 

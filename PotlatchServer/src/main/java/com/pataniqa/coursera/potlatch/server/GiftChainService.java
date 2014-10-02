@@ -41,13 +41,13 @@ public class GiftChainService {
 
     @RequestMapping(value = RemoteGiftChainApi.GIFT_CHAIN_ID_PATH, method = RequestMethod.PUT)
     public @ResponseBody
-    GiftChain update(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id, @RequestBody GiftChain giftChain) {
+    GiftChain update(@PathVariable(RemoteGiftApi.ID) long id, @RequestBody GiftChain giftChain) {
         return giftChains.save(giftChains.findOne(id).update(giftChain)).toClient();
     }
 
     @RequestMapping(value = RemoteGiftChainApi.GIFT_CHAIN_ID_PATH, method = RequestMethod.DELETE)
     public @ResponseBody
-    boolean delete(@PathVariable(RemoteGiftApi.ID_PARAMETER) long id) {
+    boolean delete(@PathVariable(RemoteGiftApi.ID) long id) {
         giftChains.delete(id);
         return true;
     }

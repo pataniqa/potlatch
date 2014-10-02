@@ -11,6 +11,7 @@ import retrofit.http.POST;
 import retrofit.http.PUT;
 import retrofit.http.Part;
 import retrofit.http.Path;
+import retrofit.http.Query;
 import retrofit.http.Streaming;
 import retrofit.mime.TypedFile;
 
@@ -18,12 +19,8 @@ import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
 
 public interface RemoteGiftApi {
-    
+
     static final String TOKEN_PATH = "/oauth/token";
-
-    static final String DATA_PARAMETER = "data";
-
-    static final String ID_PARAMETER = "id";
 
     static final String GIFT_PATH = "/gift";
 
@@ -31,69 +28,88 @@ public interface RemoteGiftApi {
     List<GiftResult> findAll();
 
     @POST(GIFT_PATH)
-    Gift insert(@Body Gift data);
+    GiftResult insert(@Body Gift data);
 
     static final String GIFT_ID_PATH = "/gift/{id}";
+    static final String ID = "id";
 
     @PUT(GIFT_ID_PATH)
-    Gift update(long id, @Body Gift data);
+    GiftResult update(@Path(ID) long id, @Body Gift data);
 
     @DELETE(GIFT_ID_PATH)
-    boolean delete(long id);
+    boolean delete(@Path(ID) long id);
 
     @GET(GIFT_ID_PATH)
-    GiftResult findOne(Long id);
+    GiftResult findOne(@Path(ID) long id);
 
     static final String GIFT_LIKE_PATH = "/gift/{id}/like/{like}";
+    static final String LIKE = "like";
 
     @PUT(GIFT_LIKE_PATH)
-    boolean setLike(long id, boolean like);
+    boolean setLike(@Path(ID) long id, @Path(LIKE) boolean like);
 
     static final String GIFT_FLAG_PATH = "/gift/{id}/like/{flag}";
 
     @PUT(GIFT_FLAG_PATH)
-    boolean setFlag(long id, boolean flag);
+    boolean setFlag(@Path(ID) long id, @Path(LIKE) boolean flag);
 
-    static final String QUERY_BY_TITLE = "/gift/title?title={title}&resultorder={order}&direction={direction}";
+    static final String QUERY_BY_TITLE = "/gift/title";
+    static final String TITLE = "title";
+    static final String ORDER = "order";
+    static final String DIRECTION = "direction";
 
     @GET(QUERY_BY_TITLE)
-    List<GiftResult> queryByTitle(String title, int order, int direction);
+    List<GiftResult> queryByTitle(@Query(TITLE) String title,
+            @Query(ORDER) int order,
+            @Query(DIRECTION) int direction);
 
-    static final String QUERY_BY_USER = "/gift/user?user={userID}&title={title}&resultorder={order}&direction={direction}";
+    static final String QUERY_BY_USER = "/gift/user";
+
+    static final String USER = "user";
 
     @GET(QUERY_BY_USER)
-    List<GiftResult> queryByUser(String title, long userID, int order, int direction);
+    List<GiftResult> queryByUser(@Query(TITLE) String title,
+            @Query(USER) long userID,
+            @Query(ORDER) int order,
+            @Query(DIRECTION) int direction);
 
-    static final String QUERY_BY_TOP_GIFT_GIVERS = "/gift/topGiftGivers?title={title}&direction={direction}";
+    static final String QUERY_BY_TOP_GIFT_GIVERS = "/gift/topGivers";
 
     @GET(QUERY_BY_TOP_GIFT_GIVERS)
-    List<GiftResult> queryByTopGiftGivers(String title, int direction);
+    List<GiftResult> queryByTopGiftGivers(@Query(TITLE) String title,
+            @Query(DIRECTION) int direction);
 
-    static final String QUERY_BY_GIFT_CHAIN = "/gift/giftchain?giftchain={giftchain}&title={title}&resultorder={order}&direction={direction}";
+    static final String QUERY_BY_GIFT_CHAIN = "/gift/giftchain";
+
+    static final String GIFT_CHAIN = "giftchain";
 
     @GET(QUERY_BY_GIFT_CHAIN)
-    List<GiftResult> queryByGiftChain(String title, String giftChain, int order, int direction);
+    List<GiftResult> queryByGiftChain(@Query(TITLE) String title,
+            @Query(GIFT_CHAIN) String giftChain,
+            @Query(ORDER) int order,
+            @Query(DIRECTION) int direction);
 
     static final String GIFT_IMAGE_PATH = "/{id}/image";
+    static final String DATA = "data";
 
     @Multipart
     @POST(GIFT_IMAGE_PATH)
-    ResourceStatus setImageData(@Path(ID_PARAMETER) long id,
-            @Part(DATA_PARAMETER) TypedFile imageData);
+    ResourceStatus setImageData(@Path(ID) long id,
+            @Part(DATA) TypedFile imageData);
 
     @Streaming
     @GET(GIFT_IMAGE_PATH)
-    Response getImageData(@Path(ID_PARAMETER) long id);
+    Response getImageData(@Path(ID) long id);
 
     static final String GIFT_VIDEO_PATH = "/gift/{id}/video";
 
     @Multipart
     @POST(GIFT_VIDEO_PATH)
-    ResourceStatus setVideoData(@Path(ID_PARAMETER) long id,
-            @Part(DATA_PARAMETER) TypedFile imageData);
+    ResourceStatus setVideoData(@Path(ID) long id,
+            @Part(DATA) TypedFile imageData);
 
     @Streaming
     @GET(GIFT_VIDEO_PATH)
-    Response getVideoData(@Path(ID_PARAMETER) long id);
+    Response getVideoData(@Path(ID) long id);
 
 }

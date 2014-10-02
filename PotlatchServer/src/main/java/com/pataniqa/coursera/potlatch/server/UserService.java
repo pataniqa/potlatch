@@ -1,6 +1,6 @@
 package com.pataniqa.coursera.potlatch.server;
 
-import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.ID_PARAMETER;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.ID;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,12 +42,12 @@ public class UserService {
 
     @RequestMapping(value = RemoteUserApi.USER_ID_PATH, method = RequestMethod.PUT)
     public @ResponseBody
-    User update(@PathVariable(ID_PARAMETER) long id, @RequestBody User user) {
+    User update(@PathVariable(ID) long id, @RequestBody User user) {
         return users.save(users.findOne(id).update(user)).toClient();
     }
 
     @RequestMapping(value = RemoteUserApi.USER_ID_PATH, method = RequestMethod.DELETE)
-    public @ResponseBody boolean delete(@PathVariable(ID_PARAMETER) long id) {
+    public @ResponseBody boolean delete(@PathVariable(ID) long id) {
         users.delete(id);
         return true;
     }

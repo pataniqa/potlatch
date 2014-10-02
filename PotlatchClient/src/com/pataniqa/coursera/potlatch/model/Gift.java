@@ -15,7 +15,7 @@ import lombok.ToString;
 @ToString
 public class Gift implements SetId {
 
-    @Getter @Setter private long id;
+    @Getter @Setter private long id = GetId.UNDEFINED_ID;
     @Getter private String title;
     @Getter private String description;
     @Getter private String videoUri;
@@ -23,5 +23,5 @@ public class Gift implements SetId {
     @Getter private Date created;
     @Getter private long userID;
     @Getter private long giftChainID;
-
+    
 }

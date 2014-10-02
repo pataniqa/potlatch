@@ -38,10 +38,10 @@ public class ServerGift implements GetId {
     @Getter @Setter private String imageUri;
 
     public static final String LIKES = "gift_likes";
-    @Getter @Column(name = LIKES) private long likes;
+    @Getter @Column(name = LIKES) private long likes = 0;
     
     public static final String FLAGGED = "gift_flagged";
-    @Column(name = FLAGGED) private long flagged;
+    @Column(name = FLAGGED) private long flagged = 0;
 
     public static final String CREATED = "created";
     @Getter @Temporal(TemporalType.TIMESTAMP) @Column(name = CREATED) private Date created;
@@ -62,8 +62,6 @@ public class ServerGift implements GetId {
         this.created = gift.getCreated();
         this.user = user;
         this.giftChain = giftChain;
-        this.likes = 0;
-        this.flagged = 0;
     }
     
     public ServerGift update(Gift gift, ServerUser user, ServerGiftChain giftChain) {
@@ -74,20 +72,7 @@ public class ServerGift implements GetId {
         this.created = gift.getCreated();
         this.user = user;
         this.giftChain = giftChain;
-        this.likes = 0;
-        this.flagged = 0;
         return this;
-    }
-
-    public Gift toClient() {
-        return new Gift(id,
-                title,
-                description,
-                videoUri,
-                imageUri,
-                created,
-                user.getId(),
-                giftChain.getId());
     }
 
     public boolean isFlagged() {

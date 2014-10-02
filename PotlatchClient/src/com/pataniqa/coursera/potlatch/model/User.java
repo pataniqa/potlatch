@@ -13,12 +13,11 @@ import lombok.ToString;
 @ToString
 public class User implements SetId {
 
-    @Getter @Setter private long id;
+    @Getter @Setter private long id = GetId.UNDEFINED_ID;
     @Getter private String name;
     
     public User(String name) {
         this.name = name;
-        this.id = GetId.UNDEFINED_ID;
     }
 
 }
