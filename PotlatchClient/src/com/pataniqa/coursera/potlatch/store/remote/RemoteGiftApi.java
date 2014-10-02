@@ -36,10 +36,10 @@ public interface RemoteGiftApi {
     static final String GIFT_ID_PATH = "/gift/{id}";
 
     @PUT(GIFT_ID_PATH)
-    void update(long id, @Body Gift data);
+    Gift update(long id, @Body Gift data);
 
     @DELETE(GIFT_ID_PATH)
-    void delete(long id);
+    boolean delete(long id);
 
     @GET(GIFT_ID_PATH)
     GiftResult findOne(Long id);
@@ -47,12 +47,12 @@ public interface RemoteGiftApi {
     static final String GIFT_LIKE_PATH = "/gift/{id}/like/{like}";
 
     @PUT(GIFT_LIKE_PATH)
-    void setLike(long id, boolean like);
+    boolean setLike(long id, boolean like);
 
     static final String GIFT_FLAG_PATH = "/gift/{id}/like/{flag}";
 
     @PUT(GIFT_FLAG_PATH)
-    void setFlag(long id, boolean flag);
+    boolean setFlag(long id, boolean flag);
 
     static final String QUERY_BY_TITLE = "/gift/title?title={title}&resultorder={order}&direction={direction}";
 

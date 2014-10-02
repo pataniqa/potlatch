@@ -26,9 +26,9 @@ public interface RemoteGiftChainApi {
     Collection<GiftChain> findAll();
 
     @PUT(GIFT_CHAIN_ID_PATH)
-    void update(@Path(ID_PARAMETER) long id, @Body GiftChain data);
+    GiftChain update(@Path(ID_PARAMETER) long id, @Body GiftChain data);
 
     @DELETE(GIFT_CHAIN_ID_PATH)
-    void delete(@Path(ID_PARAMETER) long id);
+    boolean delete(@Path(ID_PARAMETER) long id);
 
 }

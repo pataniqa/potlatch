@@ -16,4 +16,8 @@ public class GiftChain implements SetId {
     @Getter @Setter private long id;
     @Getter private String name;
 
+    public GiftChain(String name) {
+        this.id = GetId.UNDEFINED_ID;
+        this.name = name;
+    }
 }
