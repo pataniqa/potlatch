@@ -8,34 +8,62 @@ import lombok.experimental.Accessors;
 import retrofit.RestAdapter;
 
 import com.google.common.collect.Lists;
+import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
-import com.pataniqa.coursera.potlatch.model.GetId;
+import com.pataniqa.coursera.potlatch.model.User;
 import com.pataniqa.coursera.potlatch.store.GiftChains;
 import com.pataniqa.coursera.potlatch.store.GiftMetadata;
 import com.pataniqa.coursera.potlatch.store.Gifts;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 import com.pataniqa.coursera.potlatch.store.Service;
+import com.pataniqa.coursera.potlatch.store.Users;
 
 @Accessors(fluent=true)
 public class RemoteService implements Service {
     
-    @Getter private Gifts gifts;
-    @Getter private GiftChains giftChains;
-    @Getter private GiftMetadata giftMetadata;
+    @Getter private final Gifts gifts;
+    @Getter private final GiftChains giftChains;
+    @Getter private final GiftMetadata giftMetadata;
+    @Getter private final Users users;
 
-    private RemoteGiftApi giftService;
-    private RemoteGiftChainApi giftChainService;
+    private final RemoteGiftApi giftService;
+    private final RemoteGiftChainApi giftChainService;
+    private final RemoteUserApi userService;
 
     public RemoteService(String endpoint) {
         RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(endpoint).build();
         giftService = restAdapter.create(RemoteGiftApi.class);
         giftChainService = restAdapter.create(RemoteGiftChainApi.class);
+        userService = restAdapter.create(RemoteUserApi.class);
         gifts = new RemoteGiftQueryService();
         giftChains = new RemoteGiftChainService();
         giftMetadata = new RemoteGiftMetadataService();
+        users = new RemoteUserService();
+    }
+    
+    class RemoteUserService implements Users {
+        
+        @Override
+        public Collection<User> findAll() {
+            return userService.findAll();
+        }
+
+        @Override
+        public User save(User data) {
+            if (data.getId() == GetId.UNDEFINED_ID)
+                data = userService.insert(data);
+            else
+                userService.update(data.getId(), data);
+            return data;
+        }
+
+        @Override
+        public void delete(long id) {
+            userService.delete(id);
+        }
     }
 
     class RemoteGiftChainService implements GiftChains {

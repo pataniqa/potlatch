@@ -14,19 +14,22 @@ import com.pataniqa.coursera.potlatch.store.GiftChains;
 import com.pataniqa.coursera.potlatch.store.GiftMetadata;
 import com.pataniqa.coursera.potlatch.store.Gifts;
 import com.pataniqa.coursera.potlatch.store.Service;
+import com.pataniqa.coursera.potlatch.store.Users;
 
 @Accessors(fluent=true)
 public class LocalService implements Service {
     
-    @Getter private Gifts gifts;
-    @Getter private GiftChains giftChains;
-    @Getter private GiftMetadata giftMetadata;
+    @Getter private final Gifts gifts;
+    @Getter private final GiftChains giftChains;
+    @Getter private final GiftMetadata giftMetadata;
+    @Getter private final Users users;
 
     public LocalService(Context context) {
         LocalDatabase helper = new LocalDatabase(context);
         gifts = new LocalGiftQuery(helper);
         giftChains = new LocalGiftChainStore(helper);
         giftMetadata = new LocalGiftMetadataStore(helper);
+        users = new LocalUserStore(helper);
     }
 }
 

@@ -8,9 +8,13 @@ import javax.persistence.Id;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import com.pataniqa.coursera.potlatch.model.User;
+
+@NoArgsConstructor
 @EqualsAndHashCode(exclude = { "name", "likes" })
 @ToString
 @Entity
@@ -32,5 +36,16 @@ public class ServerUser {
         this.likes -= 1;
     }
     
-    // TODO where and how is this created?
+    public ServerUser(String name) {
+        this.name = name;
+        this.likes = 0;
+    }
+
+    public ServerUser(User user) {
+        this(user.getName());
+    }
+
+    public User toClient() {
+        return new User(id, name);
+    }
 }

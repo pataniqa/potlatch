@@ -11,9 +11,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class User implements GetId {
+public class User implements SetId {
 
     @Getter @Setter private long id;
-    @Getter private String username;
+    @Getter private String name;
 
 }

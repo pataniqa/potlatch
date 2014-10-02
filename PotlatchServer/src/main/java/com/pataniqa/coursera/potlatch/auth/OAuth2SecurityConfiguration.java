@@ -1,6 +1,7 @@
 package com.pataniqa.coursera.potlatch.auth;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.builders.InMemoryClientDetailsServiceBuilder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -23,6 +25,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+
+import com.pataniqa.coursera.potlatch.server.model.ServerUser;
+import com.pataniqa.coursera.potlatch.server.repository.UserRepository;
 
 /**
  *  Configure this web application to use OAuth 2.0.
@@ -46,7 +51,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
  */
 @Configuration
 public class OAuth2SecurityConfiguration {
-
+    
     // This first section of the configuration just makes sure that Spring Security picks
     // up the UserDetailsService that we create below. 
     @Configuration
@@ -119,6 +124,9 @@ public class OAuth2SecurityConfiguration {
 
         // A data structure used to store both a ClientDetailsService and a UserDetailsService
         private ClientAndUserDetailsService combinedService;
+        
+        @Autowired
+        private UserRepository userRepo;
 
         /**
          * 
@@ -147,12 +155,18 @@ public class OAuth2SecurityConfiguration {
                     .authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT")
                     .scopes("read","write").resourceIds("video")
                     .accessTokenValiditySeconds(3600).and().build();
+            
+            List<UserDetails> users = Arrays.asList(
+                    User.create("user0", "pass", "ADMIN", "USER"),
+                    User.create("user1", "pass", "USER"));
+            
+            for (UserDetails user : users) {
+                ServerUser u = new ServerUser(user.getUsername());
+                //userRepo.save(u);
+            }
 
             // Create a series of hard-coded users. 
-            UserDetailsService svc = new InMemoryUserDetailsManager(
-                    Arrays.asList(
-                            User.create("admin", "pass", "ADMIN", "USER"),
-                            User.create("user0", "pass", "USER")));
+            UserDetailsService svc = new InMemoryUserDetailsManager(users);
 
             // Since clients have to use BASIC authentication with the client's id/secret,
             // when sending a request for a password grant, we make each client a user

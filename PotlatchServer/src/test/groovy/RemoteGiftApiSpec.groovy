@@ -12,8 +12,7 @@ import com.pataniqa.coursera.potlatch.server.UnsafeHttpsClient
 class RemoteGiftApiSpec extends spock.lang.Specification {
 
     def TEST_URL = "https://localhost:8443"
-    def USERNAME1 = "admin"
-    def USERNAME2 = "user0"
+    def USERNAME1 = "user0"
     def PASSWORD = "pass"
     def CLIENT_ID = "mobile";
 

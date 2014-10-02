@@ -13,6 +13,21 @@ class LocalSchema {
      static final String INTEGER = "integer";
      static final String TEXT = "text";
      static final String PARENT_DATABASE = "PotlatchDatabase";
+    
+     static class User {
+         static final String TABLE_NAME = "users";
+         
+         static Map<String, String> COLUMNS = new TreeMap<String, String>() {
+             {
+                 put(Cols.ID, INTEGER);
+                 put(Cols.USER_NAME, TEXT);
+             }
+         };
+
+          static ContentValues initializeWithDefault(final ContentValues assignedValues) {
+             return initialize(COLUMNS, assignedValues);
+         }
+     }
 
      static class Gift {
          static final String TABLE_NAME = "gifts";
