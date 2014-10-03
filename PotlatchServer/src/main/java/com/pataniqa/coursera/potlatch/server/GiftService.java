@@ -150,11 +150,11 @@ public class GiftService {
     @RequestMapping(value = QUERY_BY_TITLE, method = RequestMethod.GET)
     public @ResponseBody
     List<GiftResult> queryByTitle(@RequestParam(TITLE) String title,
-            @RequestParam(ORDER) int order,
-            @RequestParam(DIRECTION) int direction,
+            @RequestParam(ORDER) ResultOrder order,
+            @RequestParam(DIRECTION) ResultOrderDirection direction,
             Principal principal) {
         Sort sort = getSort(order, direction);
-        if (title.isEmpty()) 
+        if (title.isEmpty())
             return toResult(Lists.newArrayList(gifts.findAll(sort)), principal);
         return toResult(gifts.findByTitleLike(likeTitle(title), sort), principal);
     }
@@ -163,57 +163,60 @@ public class GiftService {
     public @ResponseBody
     List<GiftResult> queryByUser(@RequestParam(TITLE) String title,
             @RequestParam(USER) long userID,
-            @RequestParam(ORDER) int order,
-            @RequestParam(DIRECTION) int direction,
+            @RequestParam(ORDER) ResultOrder order,
+            @RequestParam(DIRECTION) ResultOrderDirection direction,
             Principal principal) {
         ServerUser user = users.findOne(userID);
         Sort sort = getSort(order, direction);
-        if (title.isEmpty()) 
+        if (title.isEmpty())
             return toResult(gifts.findByUser(user, sort), principal);
         return toResult(gifts.findByUserAndTitleLike(user, likeTitle(title), sort), principal);
     }
-    
+
     private String likeTitle(String title) {
-        return "%" + title  + "%";
+        return "%" + title + "%";
     }
 
     @RequestMapping(value = QUERY_BY_GIFT_CHAIN, method = RequestMethod.GET)
     public @ResponseBody
     List<GiftResult> queryByGiftChain(@RequestParam(TITLE) String title,
             @RequestParam(GIFT_CHAIN) long giftChainID,
-            @RequestParam(ORDER) int order,
-            @RequestParam(DIRECTION) int direction,
+            @RequestParam(ORDER) ResultOrder order,
+            @RequestParam(DIRECTION) ResultOrderDirection direction,
             Principal principal) {
         ServerGiftChain giftChain = giftChains.findOne(giftChainID);
         Sort sort = getSort(order, direction);
-        if (title.isEmpty()) 
+        if (title.isEmpty())
             return toResult(gifts.findByGiftChain(giftChain, sort), principal);
-        return toResult(gifts.findByGiftChainAndTitleLike(giftChain, likeTitle(title), sort), principal);
+        return toResult(gifts.findByGiftChainAndTitleLike(giftChain, likeTitle(title), sort),
+                principal);
     }
 
     @RequestMapping(value = QUERY_BY_TOP_GIFT_GIVERS, method = RequestMethod.GET)
     public @ResponseBody
-    List<GiftResult> queryByTopGiftGivers(@RequestParam(TITLE) String title, @RequestParam(DIRECTION) int direction, Principal p) {
-        
+    List<GiftResult> queryByTopGiftGivers(@RequestParam(TITLE) String title,
+            @RequestParam(DIRECTION) ResultOrderDirection direction,
+            Principal p) {
+
         // TODO this is going to be horribly expensive
-        
+
         Sort.Direction d = getDirection(direction);
         Sort userSort = new Sort(d, "likes");
         List<GiftResult> results = new ArrayList<GiftResult>();
         ServerUser user = getUser(p);
-        
+
         // Get the top gift givers
-        
+
         Iterable<ServerUser> topUsers = users.findAll(userSort);
         String likeTitle = likeTitle(title);
-        
+
         for (ServerUser topUser : topUsers) {
-            
+
             // Get the most popular gift of each top gift giver
-            
+
             Sort giftSort = new Sort(d, "likes");
             ServerGift sg = null;
-            if (title.isEmpty()) 
+            if (title.isEmpty())
                 sg = head(gifts.findByUser(topUser, giftSort));
             else
                 sg = head(gifts.findByUserAndTitleLike(topUser, likeTitle, giftSort));
@@ -221,7 +224,7 @@ public class GiftService {
         }
         return results;
     }
-    
+
     @RequestMapping(value = GIFT_VIDEO_PATH, method = RequestMethod.POST)
     public @ResponseBody
     ResourceStatus setVideoData(@PathVariable(ID) long id,
@@ -271,16 +274,14 @@ public class GiftService {
             throw new ResourceNotFoundException();
 
     }
-    
-    private Sort.Direction getDirection(int direction) {
-        ResultOrderDirection resultDirection = ResultOrderDirection.toEnum(direction);
-        return resultDirection == ResultOrderDirection.ASCENDING ? Sort.Direction.ASC
+
+    private Sort.Direction getDirection(ResultOrderDirection direction) {
+        return direction == ResultOrderDirection.ASCENDING ? Sort.Direction.ASC
                 : Sort.Direction.DESC;
     }
 
-    private Sort getSort(int order, int direction) {
-        String col = ResultOrder.toEnum(order) == ResultOrder.LIKES ? "likes"
-                : "created";
+    private Sort getSort(ResultOrder order, ResultOrderDirection direction) {
+        String col = order == ResultOrder.LIKES ? "likes" : "created";
         return new Sort(getDirection(direction), col);
     }
 
@@ -330,7 +331,7 @@ public class GiftService {
     private ServerGiftChain getGiftChain(Gift gift) {
         return giftChains.findOne(gift.getGiftChainID());
     }
-    
+
     private <T> T head(Collection<T> collection) {
         return collection.size() > 0 ? collection.iterator().next() : null;
     }

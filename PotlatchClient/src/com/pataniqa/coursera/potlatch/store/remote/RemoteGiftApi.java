@@ -17,6 +17,8 @@ import retrofit.mime.TypedFile;
 
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
+import com.pataniqa.coursera.potlatch.store.ResultOrder;
+import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 
 public interface RemoteGiftApi {
 
@@ -61,8 +63,8 @@ public interface RemoteGiftApi {
 
     @GET(QUERY_BY_TITLE)
     List<GiftResult> queryByTitle(@Query(TITLE) String title,
-            @Query(ORDER) int order,
-            @Query(DIRECTION) int direction);
+            @Query(ORDER) ResultOrder order,
+            @Query(DIRECTION) ResultOrderDirection direction);
 
     static final String QUERY_BY_USER = "/gift/user";
 
@@ -71,14 +73,14 @@ public interface RemoteGiftApi {
     @GET(QUERY_BY_USER)
     List<GiftResult> queryByUser(@Query(TITLE) String title,
             @Query(USER) long userID,
-            @Query(ORDER) int order,
-            @Query(DIRECTION) int direction);
+            @Query(ORDER) ResultOrder order,
+            @Query(DIRECTION) ResultOrderDirection direction);
 
     static final String QUERY_BY_TOP_GIFT_GIVERS = "/gift/topGivers";
 
     @GET(QUERY_BY_TOP_GIFT_GIVERS)
     List<GiftResult> queryByTopGiftGivers(@Query(TITLE) String title,
-            @Query(DIRECTION) int direction);
+            @Query(DIRECTION) ResultOrderDirection direction);
 
     static final String QUERY_BY_GIFT_CHAIN = "/gift/giftchain";
 
@@ -87,8 +89,8 @@ public interface RemoteGiftApi {
     @GET(QUERY_BY_GIFT_CHAIN)
     List<GiftResult> queryByGiftChain(@Query(TITLE) String title,
             @Query(GIFT_CHAIN) long giftChainID,
-            @Query(ORDER) int order,
-            @Query(DIRECTION) int direction);
+            @Query(ORDER) ResultOrder order,
+            @Query(DIRECTION) ResultOrderDirection direction);
 
     static final String GIFT_IMAGE_PATH = "/{id}/image";
     static final String DATA = "data";
