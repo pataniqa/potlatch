@@ -8,6 +8,7 @@ import com.pataniqa.coursera.potlatch.model.GetId
 import com.pataniqa.coursera.potlatch.model.Gift
 import com.pataniqa.coursera.potlatch.model.GiftChain
 import com.pataniqa.coursera.potlatch.model.User
+import com.pataniqa.coursera.potlatch.store.*
 import com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi
 import com.pataniqa.coursera.potlatch.store.remote.RemoteGiftChainApi
 import com.pataniqa.coursera.potlatch.store.remote.RemoteUserApi
@@ -168,8 +169,11 @@ class ApiSpec extends spock.lang.Specification {
         
         then: "there should be one more gift"
         numberOfGifts() == numberOfGiftsBefore + 1
-        and: "we can find that gift"
+        
+        when: "we find that gift"
         def result = giftSvcUser.findOne(newGift.getId())
+        
+        then: "it should match"
         result.getTitle() == title
         result.getDescription() == description
         result.getUsername() == name
@@ -180,29 +184,37 @@ class ApiSpec extends spock.lang.Specification {
         result.getLikes() == 0
         result.getUserLikes() == 0
         
-        and: "we like the gift"
+        when: "we like the gift"
         giftSvcUser.setLike(newGift.getId(), true)
         def result2 = giftSvcUser.findOne(newGift.getId())
+        
+        then: "it should be liked"
         result2.isLike() == true
         result2.getLikes() == 1
         result2.getUserLikes() == 1
         
-        and: "we unlike the gift"
+        when: "we unlike the gift"
         giftSvcUser.setLike(newGift.getId(), false)
         def result3 = giftSvcUser.findOne(newGift.getId())
+        
+        then: "it should not liked"
         result3.isLike() == false
         result3.getLikes() == 0
         result3.getUserLikes() == 0
         
-        and: "we flag the gift"
+        when: "we flag the gift"
         giftSvcUser.setFlag(newGift.getId(), true)
         def result4 = giftSvcUser.findOne(newGift.getId())
+        
+        then: "it should be flagged"
         result4.isFlag() == true
         result4.isFlagged() == true
         
-        and: "we unflag the gift"
+        when: "we unflag the gift"
         giftSvcUser.setFlag(newGift.getId(), false)
         def result5 = giftSvcUser.findOne(newGift.getId())
+        
+        then: "it should be unflagged"
         result5.isFlag() == false
         result5.isFlagged() == false
         
@@ -212,10 +224,32 @@ class ApiSpec extends spock.lang.Specification {
        "A horse" | "A racing horse at West Derby" | "horses" | "john"
        "Temples" | "Temples in Jhubei" | "Temples" | "jenny"
        "Model T" | "A very old car" | "cars" | "fred"
+    }
+    
+    def "Query by title"() {
+        when: "query by title"
+        def query = giftSvcUser.queryByTitle("", 0, ResultOrderDirection.ASCENDING.ordinal())
         
-//        boolean setLike(long id, boolean like)
-//        boolean setFlag(long id, boolean flag)
-//        List<GiftResult> queryByTitle(String title, int order, int direction)
+        then: "there should be four results"
+        query.size() > 4
+        
+        when: "query by title"
+        def query2 = giftSvcUser.queryByTitle("car", 0, ResultOrderDirection.ASCENDING.ordinal())
+        
+        then: "there should be a result"
+        query2.size() > 0
+        
+        when: "we get the first result"
+        def result = query2.get(0)
+        
+        then: "it should match"
+        result.getTitle() == "A car"
+        result.getDescription() ==  "A fast Porsche car"
+        result.getGiftChainName() == "cars"
+        result.getUsername() == "freds"
+    }  
+    
+    def "more tests"() {
 //        List<GiftResult> queryByUser(String title, long userID, int order, int direction)
 //        List<GiftResult> queryByTopGiftGivers(String title, int direction)
 //        List<GiftResult> queryByGiftChain(String title, String giftChain, int order, int direction)

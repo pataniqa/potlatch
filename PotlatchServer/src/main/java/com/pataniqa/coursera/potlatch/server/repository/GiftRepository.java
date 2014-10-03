@@ -3,7 +3,7 @@ package com.pataniqa.coursera.potlatch.server.repository;
 import java.util.Collection;
 
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import com.pataniqa.coursera.potlatch.server.model.ServerGift;
@@ -11,7 +11,7 @@ import com.pataniqa.coursera.potlatch.server.model.ServerGiftChain;
 import com.pataniqa.coursera.potlatch.server.model.ServerUser;
 
 @Repository
-public interface GiftRepository extends CrudRepository<ServerGift, Long> {
+public interface GiftRepository extends PagingAndSortingRepository<ServerGift, Long> {
 
     Collection<ServerGift> findByTitleLike(String title, Sort sort);
 
@@ -19,5 +19,9 @@ public interface GiftRepository extends CrudRepository<ServerGift, Long> {
 
     Collection<ServerGift> findByGiftChainAndTitleLike(ServerGiftChain giftChain,
             String title, Sort sort);
+
+    Collection<ServerGift> findByUser(ServerUser user, Sort sort);
+
+    Collection<ServerGift> findByGiftChain(ServerGiftChain giftChain, Sort sort);
 
 }
