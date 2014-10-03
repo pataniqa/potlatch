@@ -153,7 +153,7 @@ public class GiftService {
             @RequestParam(ORDER) int order,
             @RequestParam(DIRECTION) int direction,
             Principal principal) {
-        Sort sort = getSort(direction, order);
+        Sort sort = getSort(order, direction);
         if (title.isEmpty()) 
             return toResult(Lists.newArrayList(gifts.findAll(sort)), principal);
         return toResult(gifts.findByTitleLike(likeTitle(title), sort), principal);
@@ -167,9 +167,9 @@ public class GiftService {
             @RequestParam(DIRECTION) int direction,
             Principal principal) {
         ServerUser user = users.findOne(userID);
-        Sort sort = getSort(direction, order);
+        Sort sort = getSort(order, direction);
         if (title.isEmpty()) 
-            return toResult(Lists.newArrayList(gifts.findByUser(user, sort)), principal);
+            return toResult(gifts.findByUser(user, sort), principal);
         return toResult(gifts.findByUserAndTitleLike(user, likeTitle(title), sort), principal);
     }
     
@@ -185,9 +185,9 @@ public class GiftService {
             @RequestParam(DIRECTION) int direction,
             Principal principal) {
         ServerGiftChain giftChain = giftChains.findOne(giftChainID);
-        Sort sort = getSort(direction, order);
+        Sort sort = getSort(order, direction);
         if (title.isEmpty()) 
-            return toResult(Lists.newArrayList(gifts.findByGiftChain(giftChain, sort)), principal);
+            return toResult(gifts.findByGiftChain(giftChain, sort), principal);
         return toResult(gifts.findByGiftChainAndTitleLike(giftChain, likeTitle(title), sort), principal);
     }
 
@@ -198,7 +198,7 @@ public class GiftService {
         // TODO this is going to be horribly expensive
         
         Sort.Direction d = getDirection(direction);
-        Sort userSort = new Sort(d, ServerUser.USER_LIKES);
+        Sort userSort = new Sort(d, "likes");
         List<GiftResult> results = new ArrayList<GiftResult>();
         ServerUser user = getUser(p);
         
@@ -279,8 +279,8 @@ public class GiftService {
     }
 
     private Sort getSort(int order, int direction) {
-        String col = ResultOrder.toEnum(order) == ResultOrder.LIKES ? ServerGift.LIKES
-                : ServerGift.CREATED;
+        String col = ResultOrder.toEnum(order) == ResultOrder.LIKES ? "likes"
+                : "created";
         return new Sort(getDirection(direction), col);
     }
 

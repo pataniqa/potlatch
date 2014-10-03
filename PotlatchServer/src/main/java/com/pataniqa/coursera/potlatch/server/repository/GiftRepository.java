@@ -17,10 +17,10 @@ public interface GiftRepository extends PagingAndSortingRepository<ServerGift, L
 
     Collection<ServerGift> findByUserAndTitleLike(ServerUser user, String title, Sort sort);
 
+    Collection<ServerGift> findByUser(ServerUser user, Sort sort);
+    
     Collection<ServerGift> findByGiftChainAndTitleLike(ServerGiftChain giftChain,
             String title, Sort sort);
-
-    Collection<ServerGift> findByUser(ServerUser user, Sort sort);
 
     Collection<ServerGift> findByGiftChain(ServerGiftChain giftChain, Sort sort);
 

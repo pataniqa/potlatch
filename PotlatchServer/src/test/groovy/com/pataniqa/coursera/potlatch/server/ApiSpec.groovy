@@ -228,13 +228,13 @@ class ApiSpec extends spock.lang.Specification {
     
     def "Query by title"() {
         when: "query by title"
-        def query = giftSvcUser.queryByTitle("", 0, ResultOrderDirection.ASCENDING.ordinal())
+        def query = giftSvcUser.queryByTitle("", ResultOrder.LIKES.ordinal(), ResultOrderDirection.ASCENDING.ordinal())
         
         then: "there should be four results"
-        query.size() > 4
+        query.size() >= 4
         
         when: "query by title"
-        def query2 = giftSvcUser.queryByTitle("car", 0, ResultOrderDirection.ASCENDING.ordinal())
+        def query2 = giftSvcUser.queryByTitle("car", ResultOrder.LIKES.ordinal(), ResultOrderDirection.ASCENDING.ordinal())
         
         then: "there should be a result"
         query2.size() > 0
@@ -248,6 +248,39 @@ class ApiSpec extends spock.lang.Specification {
         result.getGiftChainName() == "cars"
         result.getUsername() == "fred"
     }  
+    
+    def "Query by user"() {
+        when: "query by user"
+        def user = userSvcUser.insert(new User("fred"))
+        def query = giftSvcUser.queryByUser("", user.getId(), ResultOrder.TIME.ordinal(), ResultOrderDirection.ASCENDING.ordinal())
+        
+        then: "there should be two results"
+        query.size() >= 2
+        
+        when: "we get the first result"
+        def result = query.get(0)
+        
+        then: "it should match"
+        result.getTitle() == "A car"
+        result.getDescription() ==  "A fast Porsche car"
+        result.getGiftChainName() == "cars"
+        result.getUsername() == "fred"
+        
+        when: "query by time descending"
+        def query2 = giftSvcUser.queryByUser("", user.getId(), ResultOrder.TIME.ordinal(), ResultOrderDirection.DESCENDING.ordinal())
+        
+        then: "there should be two results"
+        query2.size() >= 2
+        
+        when: "we get the first result"
+        def result2 = query2.get(0)
+        
+        then: "it should match"
+        result2.getTitle() == "Model T"
+        result2.getDescription() ==  "A very old car"
+        result2.getGiftChainName() == "cars"
+        result2.getUsername() == "fred"
+    }
     
     def "more tests"() {
 //        List<GiftResult> queryByUser(String title, long userID, int order, int direction)
