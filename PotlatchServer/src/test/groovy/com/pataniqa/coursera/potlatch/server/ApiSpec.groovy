@@ -4,6 +4,8 @@ import retrofit.RestAdapter.LogLevel
 import retrofit.client.ApacheClient
 
 import org.codehaus.jackson.map.ObjectMapper
+import static com.pataniqa.coursera.potlatch.store.ResultOrder.*
+import com.pataniqa.coursera.potlatch.store.ResultOrder.Direction.*
 import com.pataniqa.coursera.potlatch.model.*
 import com.pataniqa.coursera.potlatch.store.*
 import com.pataniqa.coursera.potlatch.store.remote.*
@@ -230,13 +232,13 @@ class ApiSpec extends spock.lang.Specification {
     
     def "Query by title"() {
         when: "query by title"
-        def query = giftSvcUser.queryByTitle("", ResultOrder.LIKES.ordinal(), ResultOrderDirection.ASCENDING.ordinal())
+        def query = giftSvcUser.queryByTitle("", LIKES.ordinal(), ASCENDING.ordinal())
         
         then: "there should be four results"
         query.size() >= 4
         
         when: "query by title"
-        def query2 = giftSvcUser.queryByTitle("car", ResultOrder.LIKES.ordinal(), ResultOrderDirection.ASCENDING.ordinal())
+        def query2 = giftSvcUser.queryByTitle("car", LIKES.ordinal(), ASCENDING.ordinal())
         
         then: "there should be a result"
         query2.size() > 0
@@ -248,7 +250,7 @@ class ApiSpec extends spock.lang.Specification {
     def "Query by user"() {
         when: "query by user"
         def user = userSvcUser.insert(new User("fred"))
-        def query = giftSvcUser.queryByUser("", user.getId(), ResultOrder.TIME.ordinal(), ResultOrderDirection.ASCENDING.ordinal())
+        def query = giftSvcUser.queryByUser("", user.getId(), TIME.ordinal(), ASCENDING.ordinal())
         
         then: "there should be two results"
         query.size() >= 2
@@ -257,7 +259,7 @@ class ApiSpec extends spock.lang.Specification {
         checkGift(query.get(0), "A car", "A fast Porsche car", "cars", "fred")
         
         when: "query by time descending"
-        def query2 = giftSvcUser.queryByUser("", user.getId(), ResultOrder.TIME.ordinal(), ResultOrderDirection.DESCENDING.ordinal())
+        def query2 = giftSvcUser.queryByUser("", user.getId(), TIME.ordinal(), DESCENDING.ordinal())
         
         then: "there should be two results"
         query2.size() >= 2
@@ -269,7 +271,7 @@ class ApiSpec extends spock.lang.Specification {
     def "Query by gift chain"() {
         when: "query by gift chain"
         def chain = giftChainSvcUser.insert(new GiftChain("cars"))
-        def query = giftSvcUser.queryByGiftChain("", chain.getId(), ResultOrder.TIME.ordinal(), ResultOrderDirection.ASCENDING.ordinal())
+        def query = giftSvcUser.queryByGiftChain("", chain.getId(), TIME.ordinal(), ASCENDING.ordinal())
         
         then: "there should be two results"
         query.size() >= 2
@@ -278,7 +280,7 @@ class ApiSpec extends spock.lang.Specification {
         checkGift(query.get(0), "A car", "A fast Porsche car", "cars", "fred")
         
         when: "query by time descending"
-        def query2 = giftSvcUser.queryByGiftChain("", chain.getId(), ResultOrder.TIME.ordinal(), ResultOrderDirection.DESCENDING.ordinal())
+        def query2 = giftSvcUser.queryByGiftChain("", chain.getId(), TIME.ordinal(), DESCENDING.ordinal())
         
         then: "there should be two results"
         query2.size() >= 2
@@ -289,25 +291,26 @@ class ApiSpec extends spock.lang.Specification {
     
     def "Query by top gift givers"() {
         when: "we like every gift"
-        def query = giftSvcUser.queryByTitle("", ResultOrder.LIKES.ordinal(), ResultOrderDirection.ASCENDING.ordinal())
+        def query = giftSvcUser.queryByTitle("", LIKES.ordinal(), ASCENDING.ordinal())
         
         for (gift in query) {
             giftSvcUser.setLike(gift.getId(), true);
         }
-        def query2 = giftSvcUser.queryByTopGiftGivers("", ResultOrderDirection.DESCENDING.ordinal())
+        def query2 = giftSvcUser.queryByTopGiftGivers("", DESCENDING.ordinal())
         
         then: "fred should be the top gift giver"
         def result = query2.get(0)
         result.getUsername() == "fred"
     }
     
-    def "more tests"() {
-//        List<GiftResult> queryByTopGiftGivers(String title, int direction)
+    def "image upload"() {
 //        ResourceStatus setImageData(@Path(ID_PARAMETER) long id, @Part(DATA_PARAMETER) TypedFile imageData)
 //        Response getImageData(@Path(ID_PARAMETER) long id)
-//        ResourceStatus setVideoData(@Path(ID_PARAMETER) long id, @Part(DATA_PARAMETER) TypedFile imageData)
-//        Response getVideoData(@Path(ID_PARAMETER) long id)
-
     }
+    
+    def "video upload"() {
+    //        ResourceStatus setVideoData(@Path(ID_PARAMETER) long id, @Part(DATA_PARAMETER) TypedFile imageData)
+    //        Response getVideoData(@Path(ID_PARAMETER) long id)
+        }
 }
 
