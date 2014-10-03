@@ -1,22 +1,6 @@
 package com.pataniqa.coursera.potlatch.server;
 
-import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.DATA;
-import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.DIRECTION;
-import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.GIFT_CHAIN;
-import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.GIFT_FLAG_PATH;
-import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.GIFT_ID_PATH;
-import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.GIFT_IMAGE_PATH;
-import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.GIFT_LIKE_PATH;
-import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.GIFT_PATH;
-import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.GIFT_VIDEO_PATH;
-import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.ID;
-import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.ORDER;
-import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.QUERY_BY_GIFT_CHAIN;
-import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.QUERY_BY_TITLE;
-import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.QUERY_BY_TOP_GIFT_GIVERS;
-import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.QUERY_BY_USER;
-import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.TITLE;
-import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.USER;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.*;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -117,24 +101,25 @@ public class GiftService {
 
     @RequestMapping(value = GIFT_LIKE_PATH, method = RequestMethod.PUT)
     public @ResponseBody
-    boolean setLike(@PathVariable(ID) long id, @PathVariable boolean like, Principal p) {
+    boolean setLike(@PathVariable(ID) long id, @PathVariable(LIKE) boolean like, Principal p) {
 
         // TODO use join
 
         ServerUser user = getUser(p);
         ServerGift gift = gifts.findOne(id);
+        ServerUser creator = gift.getUser();
         ServerGiftMetadata metadata = getMetadata(user, gift);
         if (like != metadata.isLiked()) {
             if (like) {
                 gift.incrementLikes();
-                user.incrementLikes();
+                creator.incrementLikes();
             } else {
                 gift.decrementLikes();
-                user.decrementLikes();
+                creator.decrementLikes();
             }
             metadata.setLiked(like);
             giftMetadata.save(metadata);
-            users.save(user);
+            users.save(creator);
             gifts.save(gift);
         }
         return true;
@@ -142,7 +127,7 @@ public class GiftService {
 
     @RequestMapping(value = GIFT_FLAG_PATH, method = RequestMethod.PUT)
     public @ResponseBody
-    boolean setFlag(@PathVariable(ID) long id, @PathVariable boolean flag, Principal p) {
+    boolean setFlag(@PathVariable(ID) long id, @PathVariable(FLAG) boolean flag, Principal p) {
 
         // TODO use join
 
@@ -292,21 +277,22 @@ public class GiftService {
         ServerGiftMetadata metadata = getMetadata(user, gift);
         boolean like = metadata != null ? metadata.isLiked() : false;
         boolean flag = metadata != null ? metadata.isFlagged() : false;
+        ServerUser creator = gift.getUser();
         return new GiftResult(gift.getId(),
                 gift.getTitle(),
                 gift.getDescription(),
                 "",
                 "",
                 gift.getCreated(),
-                gift.getUser().getId(),
+                creator.getId(),
                 like,
                 flag,
                 gift.getLikes(),
                 gift.isFlagged(),
                 gift.getGiftChain().getId(),
                 gift.getGiftChain().getName(),
-                gift.getUser().getLikes(),
-                gift.getUser().getName());
+                creator.getLikes(),
+                creator.getName());
     }
 
     private List<GiftResult> toResult(Collection<ServerGift> query, Principal p) {

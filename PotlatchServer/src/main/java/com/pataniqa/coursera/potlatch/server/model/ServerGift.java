@@ -23,7 +23,7 @@ import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.model.Gift;
 
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = { "title", "description", "videoUri", "imageUri", "likes", "flagged", "created", "user", "giftChain" })
+@EqualsAndHashCode(exclude = { "title", "description", "likes", "flagged", "created", "user", "giftChain" })
 @ToString
 @Entity
 @Table(name = "gift")

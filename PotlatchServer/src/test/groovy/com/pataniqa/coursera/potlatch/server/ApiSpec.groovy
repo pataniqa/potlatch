@@ -174,6 +174,37 @@ class ApiSpec extends spock.lang.Specification {
         result.getDescription() == description
         result.getUsername() == name
         result.getGiftChainName() == chain
+        result.isLike() == false
+        result.isFlag() == false
+        result.isFlagged() == false
+        result.getLikes() == 0
+        result.getUserLikes() == 0
+        
+        and: "we like the gift"
+        giftSvcUser.setLike(newGift.getId(), true)
+        def result2 = giftSvcUser.findOne(newGift.getId())
+        result2.isLike() == true
+        result2.getLikes() == 1
+        result2.getUserLikes() == 1
+        
+        and: "we unlike the gift"
+        giftSvcUser.setLike(newGift.getId(), false)
+        def result3 = giftSvcUser.findOne(newGift.getId())
+        result3.isLike() == false
+        result3.getLikes() == 0
+        result3.getUserLikes() == 0
+        
+        and: "we flag the gift"
+        giftSvcUser.setFlag(newGift.getId(), true)
+        def result4 = giftSvcUser.findOne(newGift.getId())
+        result4.isFlag() == true
+        result4.isFlagged() == true
+        
+        and: "we unflag the gift"
+        giftSvcUser.setFlag(newGift.getId(), false)
+        def result5 = giftSvcUser.findOne(newGift.getId())
+        result5.isFlag() == false
+        result5.isFlagged() == false
         
         where:
         title | description | chain | name

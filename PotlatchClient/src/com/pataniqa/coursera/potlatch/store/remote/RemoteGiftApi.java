@@ -48,10 +48,11 @@ public interface RemoteGiftApi {
     @PUT(GIFT_LIKE_PATH)
     boolean setLike(@Path(ID) long id, @Path(LIKE) boolean like);
 
-    static final String GIFT_FLAG_PATH = "/gift/{id}/like/{flag}";
+    static final String GIFT_FLAG_PATH = "/gift/{id}/flag/{flag}";
+    static final String FLAG = "flag";
 
     @PUT(GIFT_FLAG_PATH)
-    boolean setFlag(@Path(ID) long id, @Path(LIKE) boolean flag);
+    boolean setFlag(@Path(ID) long id, @Path(FLAG) boolean flag);
 
     static final String QUERY_BY_TITLE = "/gift/title";
     static final String TITLE = "title";

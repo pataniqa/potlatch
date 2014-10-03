@@ -26,7 +26,7 @@ public class ServerUser {
     @Getter @Setter private String name;
 
     public static final String USER_LIKES = "user_likes";
-    @Getter @Column(name = USER_LIKES) private long likes;
+    @Getter @Column(name = USER_LIKES) private long likes = 0;
 
     public void incrementLikes() {
         this.likes += 1;
@@ -38,7 +38,6 @@ public class ServerUser {
     
     public ServerUser(String name) {
         this.name = name;
-        this.likes = 0;
     }
 
     public ServerUser(User user) {
