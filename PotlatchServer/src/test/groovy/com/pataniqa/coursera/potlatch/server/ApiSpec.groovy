@@ -21,28 +21,34 @@ class ApiSpec extends spock.lang.Specification {
     def USERNAME1 = "user0"
     def PASSWORD = "pass"
     def CLIENT_ID = "mobile"
-    
+
     def converter = new JacksonConverter(new ObjectMapper())
-    
+
     def svcUser = new SecuredRestBuilder()
-        .setClient(new ApacheClient(UnsafeHttpsClient.createUnsafeClient()))
-        .setEndpoint(TEST_URL)
-        .loginUrl(TEST_URL + RemoteGiftApi.TOKEN_PATH)
-        .setLogLevel(LogLevel.FULL)
-        .username(USERNAME1)
-        .password(PASSWORD)
-        .clientId(CLIENT_ID)
-        .setConverter(converter)
-        .build()
-        
+    .setClient(new ApacheClient(UnsafeHttpsClient.createUnsafeClient()))
+    .setEndpoint(TEST_URL)
+    .loginUrl(TEST_URL + RemoteGiftApi.TOKEN_PATH)
+    .setLogLevel(LogLevel.FULL)
+    .username(USERNAME1)
+    .password(PASSWORD)
+    .clientId(CLIENT_ID)
+    .setConverter(converter)
+    .build()
+
     def userSvcUser = svcUser.create(RemoteUserApi.class)
-    
+
     def giftChainSvcUser = svcUser.create(RemoteGiftChainApi.class)
+
+    def giftSvcUser = svcUser.create(RemoteGiftApi.class)
+
+    def numberOfGiftChains = { giftChainSvcUser.findAll().size() }
+
+    def numberOfUsers = { userSvcUser.findAll().size() }
+
+    def numberOfGifts = { giftSvcUser.findAll().size() }
     
     def "Create, retrieve, update and delete a gift chain"() {
         
-        def numberOfGiftChains = { giftChainSvcUser.findAll().size() }
-                
         when: "a gift chain is added"
         def numberOfGiftChainsBefore = numberOfGiftChains()
         def giftChain = new GiftChain("some-random-giftchain-" + new Random().nextLong())
@@ -71,8 +77,6 @@ class ApiSpec extends spock.lang.Specification {
 
     def "Create, retrieve, update and delete a user"() {
         
-        def numberOfUsers = { userSvcUser.findAll().size() }
-            
         when: "a user is added"
         def numberOfUsersBefore = numberOfUsers()
         def user = new User("some-random-user-" + new Random().nextLong())
@@ -101,15 +105,10 @@ class ApiSpec extends spock.lang.Specification {
     
     def "Create, retrieve, update and delete a gift"() {
         
-        def giftSvcUser = svcUser.create(RemoteGiftApi.class)
-    
-        def numberOfGifts = { giftSvcUser.findAll().size() }
-        
         println(giftSvcUser.findAll())
         
         when: "a gift chain is created"
-        def giftChain = new GiftChain("some-random-giftchain-" + new Random().nextLong())
-        def newGiftChain = giftChainSvcUser.insert(giftChain)
+        def giftChain = giftChainSvcUser.insert(new GiftChain("some-random-giftchain-" + new Random().nextLong()))
         
         println(numberOfGifts())
             
@@ -117,13 +116,11 @@ class ApiSpec extends spock.lang.Specification {
         def numberOfGiftsBefore = numberOfGifts()
         def title = "some-random-gift-" + new Random().nextLong()
         def description = "some-random-description-" + new Random().nextLong()
-        def videoUri = "http://www.example.com/gift/" + new Random().nextLong() + "/video"
-        def imageUri = "http://www.example.com/gift/" + new Random().nextLong() + "/image"
         def created = new Date()
         def userId = userSvcUser.findAll().get(0).getId()
-        def giftChainId = newGiftChain.getId()
+        def giftChainId = giftChain.getId()
         
-        def gift = new Gift(GetId.UNDEFINED_ID, title, description, videoUri, imageUri, created, userId, giftChainId) 
+        def gift = new Gift(GetId.UNDEFINED_ID, title, description, null, null, created, userId, giftChainId) 
         def newGift = giftSvcUser.insert(gift)
 
         then: "the new gift should have the same properties"
@@ -148,15 +145,43 @@ class ApiSpec extends spock.lang.Specification {
         then: "there should be one less gift"
         numberOfGifts() == numberOfGiftsBefore - 1
         
+        then: "a giftchain is deleted"
+        giftChainSvcUser.delete(giftChain.getId())
     }
     
-    def "The Gift API should work correctly"() {
+    def "Insert some giftchains, users and gifts"(String title, String description, String chain, String name) {
         
-//        List<GiftResult> findAll()    
-//        Gift insert(@Body Gift data)
-//        Gift update(long id, @Body Gift data)
-//        boolean delete(long id)
-//        GiftResult findOne(Long id)
+        when: "add a gift"
+        def numberOfGiftsBefore = numberOfGifts()
+        def giftChain = giftChainSvcUser.insert(new GiftChain(chain))
+        def created = new Date()
+        def user = userSvcUser.insert(new User(name))
+        def gift = new Gift(GetId.UNDEFINED_ID, 
+            title, 
+            description, 
+            null, 
+            null, 
+            created, 
+            user.getId(), 
+            giftChain.getId())
+        def newGift = giftSvcUser.insert(gift)
+        
+        then: "there should be one more gift"
+        numberOfGifts() == numberOfGiftsBefore + 1
+        and: "we can find that gift"
+        def result = giftSvcUser.findOne(newGift.getId())
+        result.getTitle() == title
+        result.getDescription() == description
+        result.getUsername() == name
+        result.getGiftChainName() == chain
+        
+        where:
+        title | description | chain | name
+       "A car" | "A fast Porsche car" | "cars" | "fred"
+       "A horse" | "A racing horse at West Derby" | "horses" | "john"
+       "Temples" | "Temples in Jhubei" | "Temples" | "jenny"
+       "Model T" | "A very old car" | "cars" | "fred"
+        
 //        boolean setLike(long id, boolean like)
 //        boolean setFlag(long id, boolean flag)
 //        List<GiftResult> queryByTitle(String title, int order, int direction)

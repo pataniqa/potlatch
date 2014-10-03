@@ -29,6 +29,8 @@ public class UserService {
     @RequestMapping(value = RemoteUserApi.USER_PATH, method = RequestMethod.POST)
     public @ResponseBody
     ServerUser insert(@RequestBody User user) {
+        if (users.findByName(user.getName()).size() > 0)
+            return users.findByName(user.getName()).get(0);
         return users.save(new ServerUser(user));
     }
 

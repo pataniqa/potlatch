@@ -32,7 +32,7 @@ abstract class GiftActivity extends Activity {
     public final static String RESULT_ORDER_TAG = "result_order_tag";
     public final static String RESULT_ORDER_DIRECTION_TAG = "result_order_direction";
     public final static String QUERY_TYPE_TAG = "query_type";
-    public final static String DEFAULT_TITLE_QUERY = "";
+    public final static String DEFAULT_QUERY = "";
     public final static String GIFT_CHAIN_NAME_TAG = "gift_chain_name";
     public final static String USER_ID_TAG = "user_id";
     public final static String USER_NAME_TAG ="user_name";

@@ -1,6 +1,25 @@
 package com.pataniqa.coursera.potlatch.server;
 
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.DATA;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.DIRECTION;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.GIFT_CHAIN;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.GIFT_FLAG_PATH;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.GIFT_ID_PATH;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.GIFT_IMAGE_PATH;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.GIFT_LIKE_PATH;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.GIFT_PATH;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.GIFT_VIDEO_PATH;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.ID;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.ORDER;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.QUERY_BY_GIFT_CHAIN;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.QUERY_BY_TITLE;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.QUERY_BY_TOP_GIFT_GIVERS;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.QUERY_BY_USER;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.TITLE;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.USER;
+
 import java.io.IOException;
+import java.nio.file.Path;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,15 +52,11 @@ import com.pataniqa.coursera.potlatch.server.repository.GiftRepository;
 import com.pataniqa.coursera.potlatch.server.repository.UserRepository;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
-import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.*;
 import com.pataniqa.coursera.potlatch.store.remote.ResourceStatus;
-
-import org.apache.log4j.Logger;
+import com.pataniqa.coursera.potlatch.store.remote.ResourceStatus.ResourceState;
 
 @Controller
 public class GiftService {
-
-    static Logger log = Logger.getLogger(GiftService.class.getName());
 
     @Autowired private GiftRepository gifts;
 
@@ -60,11 +75,8 @@ public class GiftService {
     @RequestMapping(value = GIFT_PATH, method = RequestMethod.POST)
     public @ResponseBody
     GiftResult insert(@RequestBody Gift gift) {
-        log.info("Got gift: " + gift);
         ServerGiftChain giftChain = getGiftChain(gift);
-        log.info("Got giftChain: " + giftChain);
         ServerUser user = users.findOne(gift.getUserID());
-        log.info("Got user: " + user);
         return fromGift(gifts.save(new ServerGift(gift, user, giftChain)), user);
     }
 
@@ -186,21 +198,35 @@ public class GiftService {
     @RequestMapping(value = QUERY_BY_TOP_GIFT_GIVERS, method = RequestMethod.GET)
     public @ResponseBody
     List<GiftResult> queryByTopGiftGivers(@RequestParam(TITLE) String title, @RequestParam(DIRECTION) int direction, Principal p) {
-
-        // TODO need to get a list of users ranked by the number of likes
-        // then turn that into a list of gifts
-
-        return null;
+        
+        // TODO this is going to be horribly expensive
+        
+        Sort.Direction d = getDirection(direction);
+        Sort userSort = new Sort(d, ServerUser.USER_LIKES);
+        List<GiftResult> results = new ArrayList<GiftResult>();
+        ServerUser user = getUser(p);
+        
+        // Get the top gift givers
+        
+        Iterable<ServerUser> topUsers = users.findAll(userSort);
+        
+        for (ServerUser topUser : topUsers) {
+            
+            // Get the most popular gift of each top gift giver
+            
+            Sort giftSort = new Sort(d, ServerGift.LIKES);
+            ServerGift sg = head(gifts.findByUserAndTitleLike(topUser, "", giftSort));
+            results.add(fromGift(sg, user));
+        }
+        return results;
     }
-
+    
     @RequestMapping(value = GIFT_VIDEO_PATH, method = RequestMethod.POST)
     public @ResponseBody
     ResourceStatus setVideoData(@PathVariable(ID) long id,
             @RequestParam(DATA) MultipartFile videoData) throws IOException {
-
-        // TODO need to set video field in ServerGift
-
-        return setData(id, videoData, videoManager);
+        setData(id, videoData, videoManager);
+        return new ResourceStatus(ResourceState.READY);
     }
 
     @RequestMapping(value = GIFT_VIDEO_PATH, method = RequestMethod.GET)
@@ -213,10 +239,8 @@ public class GiftService {
     public @ResponseBody
     ResourceStatus setImageData(@PathVariable(ID) long id,
             @RequestParam(DATA) MultipartFile imageData) throws IOException {
-
-        // TODO need to set image field in ServerGift
-
-        return setData(id, imageData, imageManager);
+        setData(id, imageData, imageManager);
+        return new ResourceStatus(ResourceState.READY);
     }
 
     @RequestMapping(value = GIFT_IMAGE_PATH, method = RequestMethod.GET)
@@ -225,12 +249,11 @@ public class GiftService {
         getData(id, response, imageManager);
     }
 
-    private ResourceStatus setData(long id, MultipartFile data, FileManager<ServerGift> manager)
+    private Path setData(long id, MultipartFile data, FileManager<ServerGift> manager)
             throws IOException {
         if (gifts.exists(id)) {
             ServerGift gift = gifts.findOne(id);
-            manager.saveData(gift, data.getInputStream());
-            return new ResourceStatus(ResourceStatus.ResourceState.READY);
+            return manager.saveData(gift, data.getInputStream());
         } else
             throw new ResourceNotFoundException();
     }
@@ -247,14 +270,17 @@ public class GiftService {
             throw new ResourceNotFoundException();
 
     }
+    
+    private Sort.Direction getDirection(int direction) {
+        ResultOrderDirection resultDirection = ResultOrderDirection.toEnum(direction);
+        return resultDirection == ResultOrderDirection.ASCENDING ? Sort.Direction.ASC
+                : Sort.Direction.DESC;
+    }
 
     private Sort getSort(int order, int direction) {
         String col = ResultOrder.toEnum(order) == ResultOrder.LIKES ? ServerGift.LIKES
                 : ServerGift.CREATED;
-        ResultOrderDirection resultDirection = ResultOrderDirection.toEnum(direction);
-        Sort.Direction d = resultDirection == ResultOrderDirection.ASCENDING ? Sort.Direction.ASC
-                : Sort.Direction.DESC;
-        return new Sort(d, col);
+        return new Sort(getDirection(direction), col);
     }
 
     private ServerUser getUser(Principal p) {
@@ -269,8 +295,8 @@ public class GiftService {
         return new GiftResult(gift.getId(),
                 gift.getTitle(),
                 gift.getDescription(),
-                gift.getVideoUri(),
-                gift.getImageUri(),
+                "",
+                "",
                 gift.getCreated(),
                 gift.getUser().getId(),
                 like,
@@ -299,6 +325,10 @@ public class GiftService {
 
     private ServerGiftChain getGiftChain(Gift gift) {
         return giftChains.findOne(gift.getGiftChainID());
+    }
+    
+    private <T> T head(Collection<T> collection) {
+        return collection.size() > 0 ? collection.iterator().next() : null;
     }
 
 }

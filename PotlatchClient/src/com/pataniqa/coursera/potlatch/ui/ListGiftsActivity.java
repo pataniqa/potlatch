@@ -322,7 +322,7 @@ public class ListGiftsActivity extends GiftActivity implements
 
     private String getTitleQuery() {
         String title = getIntent() != null ? getIntent().getStringExtra(TITLE_QUERY_TAG) : null;
-        return title != null ? title : "";
+        return title != null ? title : DEFAULT_QUERY;
     }
 
     private ResultOrder getResultOrder() {
@@ -345,6 +345,6 @@ public class ListGiftsActivity extends GiftActivity implements
     }
 
     private String getGiftChainName() {
-        return getIntent() != null ? getIntent().getStringExtra(GIFT_CHAIN_NAME_TAG) : "";
+        return getIntent() != null ? getIntent().getStringExtra(GIFT_CHAIN_NAME_TAG) : DEFAULT_QUERY;
     }
 }

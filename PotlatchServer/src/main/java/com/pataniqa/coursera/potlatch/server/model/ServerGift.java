@@ -34,8 +34,6 @@ public class ServerGift implements GetId {
 
     @Getter @Setter private String title;
     @Getter @Setter private String description;
-    @Getter @Setter private String videoUri;
-    @Getter @Setter private String imageUri;
 
     public static final String LIKES = "gift_likes";
     @Getter @Column(name = LIKES) private long likes = 0;
@@ -57,8 +55,6 @@ public class ServerGift implements GetId {
     public ServerGift(Gift gift, ServerUser user, ServerGiftChain giftChain) {
         this.title = gift.getTitle();
         this.description = gift.getDescription();
-        this.videoUri = gift.getVideoUri();
-        this.imageUri = gift.getImageUri();
         this.created = gift.getCreated();
         this.user = user;
         this.giftChain = giftChain;
@@ -67,8 +63,6 @@ public class ServerGift implements GetId {
     public ServerGift update(Gift gift, ServerUser user, ServerGiftChain giftChain) {
         this.title = gift.getTitle();
         this.description = gift.getDescription();
-        this.videoUri = gift.getVideoUri();
-        this.imageUri = gift.getImageUri();
         this.created = gift.getCreated();
         this.user = user;
         this.giftChain = giftChain;

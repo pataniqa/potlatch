@@ -24,8 +24,10 @@ public class GiftChainService {
 
     @RequestMapping(value = RemoteGiftChainApi.GIFT_CHAIN_PATH, method = RequestMethod.POST)
     public @ResponseBody
-    ServerGiftChain insert(@RequestBody GiftChain data) {
-        return giftChains.save(new ServerGiftChain(data));
+    ServerGiftChain insert(@RequestBody GiftChain giftChain) {
+        if (giftChains.findByName(giftChain.getName()).size() > 0)
+            return giftChains.findByName(giftChain.getName()).get(0);
+        return giftChains.save(new ServerGiftChain(giftChain));
     }
 
     @RequestMapping(value = RemoteGiftChainApi.GIFT_CHAIN_PATH, method = RequestMethod.GET)

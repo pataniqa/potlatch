@@ -49,8 +49,9 @@ public class FileManager<T extends GetId> {
         Files.copy(source, out);
     }
 
-    public void saveData(T t, InputStream giftData) throws IOException {
+    public Path saveData(T t, InputStream giftData) throws IOException {
         assert (giftData != null);
         Files.copy(giftData, getPath(t), StandardCopyOption.REPLACE_EXISTING);
+        return getPath(t);
     }
 }
