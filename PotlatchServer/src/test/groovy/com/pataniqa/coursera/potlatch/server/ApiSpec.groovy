@@ -282,15 +282,44 @@ class ApiSpec extends spock.lang.Specification {
         result2.getUsername() == "fred"
     }
     
+    def "Query by gift chain"() {
+        when: "query by gift chain"
+        def chain = giftChainSvcUser.insert(new GiftChain("cars"))
+        def query = giftSvcUser.queryByGiftChain("", chain.getId(), ResultOrder.TIME.ordinal(), ResultOrderDirection.ASCENDING.ordinal())
+        
+        then: "there should be two results"
+        query.size() >= 2
+        
+        when: "we get the first result"
+        def result = query.get(0)
+        
+        then: "it should match"
+        result.getTitle() == "A car"
+        result.getDescription() ==  "A fast Porsche car"
+        result.getGiftChainName() == "cars"
+        result.getUsername() == "fred"
+        
+        when: "query by time descending"
+        def query2 = giftSvcUser.queryByGiftChain("", chain.getId(), ResultOrder.TIME.ordinal(), ResultOrderDirection.DESCENDING.ordinal())
+        
+        then: "there should be two results"
+        query2.size() >= 2
+        
+        when: "we get the first result"
+        def result2 = query2.get(0)
+        
+        then: "it should match"
+        result2.getTitle() == "Model T"
+        result2.getDescription() ==  "A very old car"
+        result2.getGiftChainName() == "cars"
+        result2.getUsername() == "fred"
+    }
+    
     def "more tests"() {
-//        List<GiftResult> queryByUser(String title, long userID, int order, int direction)
 //        List<GiftResult> queryByTopGiftGivers(String title, int direction)
-//        List<GiftResult> queryByGiftChain(String title, String giftChain, int order, int direction)
-//        ResourceStatus setImageData(@Path(ID_PARAMETER) long id,
-//                @Part(DATA_PARAMETER) TypedFile imageData)
+//        ResourceStatus setImageData(@Path(ID_PARAMETER) long id, @Part(DATA_PARAMETER) TypedFile imageData)
 //        Response getImageData(@Path(ID_PARAMETER) long id)
-//        ResourceStatus setVideoData(@Path(ID_PARAMETER) long id,
-//                @Part(DATA_PARAMETER) TypedFile imageData)
+//        ResourceStatus setVideoData(@Path(ID_PARAMETER) long id, @Part(DATA_PARAMETER) TypedFile imageData)
 //        Response getVideoData(@Path(ID_PARAMETER) long id)
 
     }

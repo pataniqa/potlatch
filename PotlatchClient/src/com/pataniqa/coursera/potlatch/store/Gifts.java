@@ -33,7 +33,7 @@ public interface Gifts extends Query<GiftResult>, Retrieve<GiftResult, Long>, Sa
      * @return
      * @throws RemoteException
      */
-    ArrayList<GiftResult> queryByUser(String title, 
+    ArrayList<GiftResult> queryByUser(String title,
             long userID,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException;
@@ -48,8 +48,7 @@ public interface Gifts extends Query<GiftResult>, Retrieve<GiftResult, Long>, Sa
      * @throws RemoteException
      */
     ArrayList<GiftResult> queryByTopGiftGivers(String title,
-            ResultOrderDirection resultOrderDirection)
-            throws RemoteException;
+            ResultOrderDirection resultOrderDirection) throws RemoteException;
 
     /**
      * Query gift data by gift chain.
@@ -61,7 +60,8 @@ public interface Gifts extends Query<GiftResult>, Retrieve<GiftResult, Long>, Sa
      * @return
      * @throws RemoteException
      */
-    ArrayList<GiftResult> queryByGiftChain(String title, String giftChainName,
+    ArrayList<GiftResult> queryByGiftChain(String title,
+            long giftChainID,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException;
 }

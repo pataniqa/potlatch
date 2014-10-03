@@ -157,11 +157,11 @@ public class RemoteService implements Service {
 
         @Override
         public ArrayList<GiftResult> queryByGiftChain(String title,
-                String giftChainName,
+                long giftChainID,
                 ResultOrder resultOrder,
                 ResultOrderDirection resultOrderDirection) {
             return Lists.newArrayList(giftService.queryByGiftChain(title,
-                    giftChainName,
+                    giftChainID,
                     resultOrder.getVal(),
                     resultOrderDirection.getVal()));
         }

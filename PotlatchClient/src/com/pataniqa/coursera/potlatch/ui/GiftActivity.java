@@ -33,7 +33,7 @@ abstract class GiftActivity extends Activity {
     public final static String RESULT_ORDER_DIRECTION_TAG = "result_order_direction";
     public final static String QUERY_TYPE_TAG = "query_type";
     public final static String DEFAULT_QUERY = "";
-    public final static String GIFT_CHAIN_NAME_TAG = "gift_chain_name";
+    public final static String GIFT_CHAIN_ID_TAG = "gift_chain_ID";
     public final static String USER_ID_TAG = "user_id";
     public final static String USER_NAME_TAG ="user_name";
 
@@ -86,7 +86,7 @@ abstract class GiftActivity extends Activity {
         intent.putExtra(RESULT_ORDER_TAG, resultOrder);
         intent.putExtra(RESULT_ORDER_DIRECTION_TAG, resultOrderDirection);
         intent.putExtra(QUERY_TYPE_TAG, queryType);
-        intent.putExtra(GIFT_CHAIN_NAME_TAG, giftChainID);
+        intent.putExtra(GIFT_CHAIN_ID_TAG, giftChainID);
         startActivity(intent);
     }
 

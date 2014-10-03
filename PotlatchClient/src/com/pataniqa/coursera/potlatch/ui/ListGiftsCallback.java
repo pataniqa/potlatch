@@ -4,7 +4,7 @@ import com.pataniqa.coursera.potlatch.model.GiftResult;
 
 public interface ListGiftsCallback {
     
-    void showGiftChain(String giftChainName);
+    void showGiftChain(long giftChainID);
     
     void setLike(GiftResult gift);
     

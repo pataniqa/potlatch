@@ -64,11 +64,11 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
 
     @Override
     public ArrayList<GiftResult> queryByGiftChain(String title,
-            String giftChainName,
+            long giftChainID,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) throws RemoteException {
-        return query(LocalSchema.Cols.GIFT_CHAIN_NAME,
-                giftChainName,
+        return query(LocalSchema.Cols.GIFT_CHAIN_ID,
+                String.valueOf(giftChainID),
                 title,
                 resultOrder,
                 resultOrderDirection);

@@ -86,7 +86,7 @@ public interface RemoteGiftApi {
 
     @GET(QUERY_BY_GIFT_CHAIN)
     List<GiftResult> queryByGiftChain(@Query(TITLE) String title,
-            @Query(GIFT_CHAIN) String giftChain,
+            @Query(GIFT_CHAIN) long giftChainID,
             @Query(ORDER) int order,
             @Query(DIRECTION) int direction);
 
