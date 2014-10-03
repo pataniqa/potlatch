@@ -156,7 +156,7 @@ public class GiftService {
         Sort sort = getSort(direction, order);
         if (title.isEmpty()) 
             return toResult(Lists.newArrayList(gifts.findAll(sort)), principal);
-        return toResult(gifts.findByTitleLike(title, sort), principal);
+        return toResult(gifts.findByTitleLike(likeTitle(title), sort), principal);
     }
 
     @RequestMapping(value = QUERY_BY_USER, method = RequestMethod.GET)
@@ -170,7 +170,11 @@ public class GiftService {
         Sort sort = getSort(direction, order);
         if (title.isEmpty()) 
             return toResult(Lists.newArrayList(gifts.findByUser(user, sort)), principal);
-        return toResult(gifts.findByUserAndTitleLike(user, title, sort), principal);
+        return toResult(gifts.findByUserAndTitleLike(user, likeTitle(title), sort), principal);
+    }
+    
+    private String likeTitle(String title) {
+        return "%" + title  + "%";
     }
 
     @RequestMapping(value = QUERY_BY_GIFT_CHAIN, method = RequestMethod.GET)
@@ -184,7 +188,7 @@ public class GiftService {
         Sort sort = getSort(direction, order);
         if (title.isEmpty()) 
             return toResult(Lists.newArrayList(gifts.findByGiftChain(giftChain, sort)), principal);
-        return toResult(gifts.findByGiftChainAndTitleLike(giftChain, title, sort), principal);
+        return toResult(gifts.findByGiftChainAndTitleLike(giftChain, likeTitle(title), sort), principal);
     }
 
     @RequestMapping(value = QUERY_BY_TOP_GIFT_GIVERS, method = RequestMethod.GET)
@@ -201,6 +205,7 @@ public class GiftService {
         // Get the top gift givers
         
         Iterable<ServerUser> topUsers = users.findAll(userSort);
+        String likeTitle = likeTitle(title);
         
         for (ServerUser topUser : topUsers) {
             
@@ -211,7 +216,7 @@ public class GiftService {
             if (title.isEmpty()) 
                 sg = head(gifts.findByUser(topUser, giftSort));
             else
-                sg = head(gifts.findByUserAndTitleLike(topUser, title, giftSort));
+                sg = head(gifts.findByUserAndTitleLike(topUser, likeTitle, giftSort));
             results.add(fromGift(sg, user));
         }
         return results;

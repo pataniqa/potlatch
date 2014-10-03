@@ -246,7 +246,7 @@ class ApiSpec extends spock.lang.Specification {
         result.getTitle() == "A car"
         result.getDescription() ==  "A fast Porsche car"
         result.getGiftChainName() == "cars"
-        result.getUsername() == "freds"
+        result.getUsername() == "fred"
     }  
     
     def "more tests"() {
