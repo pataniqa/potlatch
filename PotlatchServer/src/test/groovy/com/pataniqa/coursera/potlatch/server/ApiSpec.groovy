@@ -240,12 +240,9 @@ class ApiSpec extends spock.lang.Specification {
         
         then: "there should be a result"
         query2.size() > 0
-        
-        when: "we get the first result"
-        def result = query2.get(0)
-        
-        then: "it should match"
-        checkGift(result, "A car", "A fast Porsche car", "cars", "fred")
+                
+        then: "the first result should match"
+        checkGift(query2.get(0), "A car", "A fast Porsche car", "cars", "fred")
     }  
     
     def "Query by user"() {
@@ -288,6 +285,20 @@ class ApiSpec extends spock.lang.Specification {
         
         and: "the first result should match"
         checkGift(query2.get(0), "Model T", "A very old car", "cars", "fred")
+    }
+    
+    def "Query by top gift givers"() {
+        when: "we like every gift"
+        def query = giftSvcUser.queryByTitle("", ResultOrder.LIKES.ordinal(), ResultOrderDirection.ASCENDING.ordinal())
+        
+        for (gift in query) {
+            giftSvcUser.setLike(gift.getId(), true);
+        }
+        def query2 = giftSvcUser.queryByTopGiftGivers("", ResultOrderDirection.DESCENDING.ordinal())
+        
+        then: "fred should be the top gift giver"
+        def result = query2.get(0)
+        result.getUsername() == "fred"
     }
     
     def "more tests"() {

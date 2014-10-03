@@ -211,7 +211,7 @@ public class GiftService {
             
             // Get the most popular gift of each top gift giver
             
-            Sort giftSort = new Sort(d, ServerGift.LIKES);
+            Sort giftSort = new Sort(d, "likes");
             ServerGift sg = null;
             if (title.isEmpty()) 
                 sg = head(gifts.findByUser(topUser, giftSort));
@@ -290,6 +290,8 @@ public class GiftService {
 
     private GiftResult fromGift(ServerGift gift, ServerUser user) {
         // TODO - do proper join!
+        if (gift == null)
+            return null;
         ServerGiftMetadata metadata = getMetadata(user, gift);
         boolean like = metadata != null ? metadata.isLiked() : false;
         boolean flag = metadata != null ? metadata.isFlagged() : false;
