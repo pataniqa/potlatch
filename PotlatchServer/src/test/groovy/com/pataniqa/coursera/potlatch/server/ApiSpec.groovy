@@ -4,15 +4,9 @@ import retrofit.RestAdapter.LogLevel
 import retrofit.client.ApacheClient
 
 import org.codehaus.jackson.map.ObjectMapper
-import com.pataniqa.coursera.potlatch.model.GetId
-import com.pataniqa.coursera.potlatch.model.Gift
-import com.pataniqa.coursera.potlatch.model.GiftChain
-import com.pataniqa.coursera.potlatch.model.User
+import com.pataniqa.coursera.potlatch.model.*
 import com.pataniqa.coursera.potlatch.store.*
-import com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi
-import com.pataniqa.coursera.potlatch.store.remote.RemoteGiftChainApi
-import com.pataniqa.coursera.potlatch.store.remote.RemoteUserApi
-import com.pataniqa.coursera.potlatch.store.remote.SecuredRestBuilder
+import com.pataniqa.coursera.potlatch.store.remote.*
 
 import com.pataniqa.coursera.potlatch.server.JacksonConverter
 
@@ -186,37 +180,27 @@ class ApiSpec extends spock.lang.Specification {
         
         when: "we like the gift"
         giftSvcUser.setLike(newGift.getId(), true)
-        def result2 = giftSvcUser.findOne(newGift.getId())
         
         then: "it should be liked"
-        result2.isLike() == true
-        result2.getLikes() == 1
-        result2.getUserLikes() == 1
+        checkLikes(giftSvcUser.findOne(newGift.getId()), true, 1, 1)
         
         when: "we unlike the gift"
         giftSvcUser.setLike(newGift.getId(), false)
-        def result3 = giftSvcUser.findOne(newGift.getId())
         
         then: "it should not liked"
-        result3.isLike() == false
-        result3.getLikes() == 0
-        result3.getUserLikes() == 0
+        checkLikes(giftSvcUser.findOne(newGift.getId()), false, 0, 0)
         
         when: "we flag the gift"
         giftSvcUser.setFlag(newGift.getId(), true)
-        def result4 = giftSvcUser.findOne(newGift.getId())
         
         then: "it should be flagged"
-        result4.isFlag() == true
-        result4.isFlagged() == true
+        checkFlagged(giftSvcUser.findOne(newGift.getId()), true, true)
         
         when: "we unflag the gift"
         giftSvcUser.setFlag(newGift.getId(), false)
-        def result5 = giftSvcUser.findOne(newGift.getId())
         
         then: "it should be unflagged"
-        result5.isFlag() == false
-        result5.isFlagged() == false
+        checkFlagged(giftSvcUser.findOne(newGift.getId()), false, false)
         
         where:
         title | description | chain | name
@@ -224,6 +208,24 @@ class ApiSpec extends spock.lang.Specification {
        "A horse" | "A racing horse at West Derby" | "horses" | "john"
        "Temples" | "Temples in Jhubei" | "Temples" | "jenny"
        "Model T" | "A very old car" | "cars" | "fred"
+    }
+    
+    def checkLikes(GiftResult result, boolean like, int likes, int userLikes) {
+        result.isLike() == like
+        result.getLikes() == likes
+        result.getUserLikes() == userLikes
+    }
+    
+    def checkFlagged(GiftResult result, boolean flag, boolean flagged) {
+        result.isFlag() == flag
+        result.isFlagged() == flagged
+    }
+    
+    def checkGift(GiftResult result, String title, String description, String chain, String name) {
+        result.getTitle() == title
+        result.getDescription() ==  title
+        result.getGiftChainName() == description
+        result.getUsername() == name
     }
     
     def "Query by title"() {
@@ -243,10 +245,7 @@ class ApiSpec extends spock.lang.Specification {
         def result = query2.get(0)
         
         then: "it should match"
-        result.getTitle() == "A car"
-        result.getDescription() ==  "A fast Porsche car"
-        result.getGiftChainName() == "cars"
-        result.getUsername() == "fred"
+        checkGift(result, "A car", "A fast Porsche car", "cars", "fred")
     }  
     
     def "Query by user"() {
@@ -257,14 +256,8 @@ class ApiSpec extends spock.lang.Specification {
         then: "there should be two results"
         query.size() >= 2
         
-        when: "we get the first result"
-        def result = query.get(0)
-        
-        then: "it should match"
-        result.getTitle() == "A car"
-        result.getDescription() ==  "A fast Porsche car"
-        result.getGiftChainName() == "cars"
-        result.getUsername() == "fred"
+        and: "the first result should match"
+        checkGift(query.get(0), "A car", "A fast Porsche car", "cars", "fred")
         
         when: "query by time descending"
         def query2 = giftSvcUser.queryByUser("", user.getId(), ResultOrder.TIME.ordinal(), ResultOrderDirection.DESCENDING.ordinal())
@@ -272,14 +265,8 @@ class ApiSpec extends spock.lang.Specification {
         then: "there should be two results"
         query2.size() >= 2
         
-        when: "we get the first result"
-        def result2 = query2.get(0)
-        
-        then: "it should match"
-        result2.getTitle() == "Model T"
-        result2.getDescription() ==  "A very old car"
-        result2.getGiftChainName() == "cars"
-        result2.getUsername() == "fred"
+        and: "the first result should match"
+        checkGift(query2.get(0), "Model T", "A very old car", "cars", "fred")
     }
     
     def "Query by gift chain"() {
@@ -290,14 +277,8 @@ class ApiSpec extends spock.lang.Specification {
         then: "there should be two results"
         query.size() >= 2
         
-        when: "we get the first result"
-        def result = query.get(0)
-        
-        then: "it should match"
-        result.getTitle() == "A car"
-        result.getDescription() ==  "A fast Porsche car"
-        result.getGiftChainName() == "cars"
-        result.getUsername() == "fred"
+        and: "the first result should match"
+        checkGift(query.get(0), "A car", "A fast Porsche car", "cars", "fred")
         
         when: "query by time descending"
         def query2 = giftSvcUser.queryByGiftChain("", chain.getId(), ResultOrder.TIME.ordinal(), ResultOrderDirection.DESCENDING.ordinal())
@@ -305,14 +286,8 @@ class ApiSpec extends spock.lang.Specification {
         then: "there should be two results"
         query2.size() >= 2
         
-        when: "we get the first result"
-        def result2 = query2.get(0)
-        
-        then: "it should match"
-        result2.getTitle() == "Model T"
-        result2.getDescription() ==  "A very old car"
-        result2.getGiftChainName() == "cars"
-        result2.getUsername() == "fred"
+        and: "the first result should match"
+        checkGift(query2.get(0), "Model T", "A very old car", "cars", "fred")
     }
     
     def "more tests"() {
