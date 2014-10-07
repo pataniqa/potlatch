@@ -27,7 +27,6 @@ import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
-import com.pataniqa.coursera.potlatch.store.Service;
 
 public class ListGiftsActivity extends GiftActivity implements
         SwipeRefreshLayout.OnRefreshListener, ListGiftsCallback {
@@ -242,37 +241,26 @@ public class ListGiftsActivity extends GiftActivity implements
         updateGifts();
     }
 
-    static Observable<ArrayList<GiftResult>> doQuery(Service service,
-            QueryType queryType,
-            String titleQuery,
-            long userID,
-            long giftChainID,
-            ResultOrder resultOrder,
-            ResultOrderDirection resultDirection) {
+    void updateGifts() {
+        Log.d(LOG_TAG, "updateGifts");
+        
+        // query the server
+        
         Observable<ArrayList<GiftResult>> results = null;
-        try {
-            if (queryType == QueryType.USER)
-                results = service.gifts().queryByUser(titleQuery,
-                        userID,
-                        resultOrder,
-                        resultDirection);
-            else if (queryType == QueryType.TOP_GIFT_GIVERS)
-                results = service.gifts().queryByTopGiftGivers(titleQuery, resultDirection);
-            else if (queryType == QueryType.CHAIN)
-                results = service.gifts().queryByGiftChain(titleQuery,
-                        giftChainID,
-                        resultOrder,
-                        resultDirection);
-            else
-                results = service.gifts().queryByTitle(titleQuery, resultOrder, resultDirection);
-        } catch (Exception e) {
-            Log.e(LOG_TAG, "Error connecting to Content Provider" + e.getMessage(), e);
-            e.printStackTrace();
-        }
-        return results;
-    }
-
-    void updateGiftData(Observable<ArrayList<GiftResult>> results) {
+        if (queryType == QueryType.USER)
+            results = service.gifts().queryByUser(titleQuery, userID, resultOrder, resultDirection);
+        else if (queryType == QueryType.TOP_GIFT_GIVERS)
+            results = service.gifts().queryByTopGiftGivers(titleQuery, resultDirection);
+        else if (queryType == QueryType.CHAIN)
+            results = service.gifts().queryByGiftChain(titleQuery,
+                    giftChainID,
+                    resultOrder,
+                    resultDirection);
+        else
+            results = service.gifts().queryByTitle(titleQuery, resultOrder, resultDirection);
+        
+        // update the display
+        
         results.forEach(new Action1<ArrayList<GiftResult>>() {
             @Override
             public void call(ArrayList<GiftResult> results) {
@@ -295,18 +283,6 @@ public class ListGiftsActivity extends GiftActivity implements
                 arrayAdapter.notifyDataSetChanged();
             }
         });
-    }
-
-    void updateGifts() {
-        Log.d(LOG_TAG, "updateGifts");
-        Observable<ArrayList<GiftResult>> results = doQuery(service,
-                queryType,
-                titleQuery,
-                userID,
-                giftChainID,
-                resultOrder,
-                resultDirection);
-        updateGiftData(results);
     }
 
     @Override
