@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -26,6 +25,7 @@ import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
+import com.pataniqa.coursera.potlatch.store.Service;
 
 public class ListGiftsActivity extends GiftActivity implements
         SwipeRefreshLayout.OnRefreshListener, ListGiftsCallback {
@@ -240,12 +240,15 @@ public class ListGiftsActivity extends GiftActivity implements
         updateGifts();
     }
 
-    void updateGifts() {
-        Log.d(LOG_TAG, "updateGifts");
+    static ArrayList<GiftResult> doQuery(Service service,
+            QueryType queryType,
+            String titleQuery,
+            long userID,
+            long giftChainID,
+            ResultOrder resultOrder,
+            ResultOrderDirection resultDirection) {
+        ArrayList<GiftResult> results = null;
         try {
-            giftData.clear();
-
-            ArrayList<GiftResult> results = null;
             if (queryType == QueryType.USER)
                 results = service.gifts().queryByUser(titleQuery,
                         userID,
@@ -260,27 +263,43 @@ public class ListGiftsActivity extends GiftActivity implements
                         resultDirection);
             else
                 results = service.gifts().queryByTitle(titleQuery, resultOrder, resultDirection);
-
-            // TODO filtering the results does not work
-
-            if (results != null) {
-                if (prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, true)) {
-                    Log.d(LOG_TAG, "filtering flagged content");
-                    for (GiftResult gift : results) {
-                        if (!gift.isFlagged())
-                            giftData.add(gift);
-                    }
-                } else {
-                    Log.d(LOG_TAG, "not filtering flagged content");
-                    giftData.addAll(results);
-                }
-            }
-            // Let the ArrayAdaptor know that we changed the data in its array.
-            arrayAdapter.notifyDataSetChanged();
         } catch (Exception e) {
             Log.e(LOG_TAG, "Error connecting to Content Provider" + e.getMessage(), e);
             e.printStackTrace();
         }
+        return results;
+    }
+
+    void updateGiftData(ArrayList<GiftResult> results) {
+        giftData.clear();
+
+        // TODO could do the filtering on the server
+
+        if (results != null) {
+            if (prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, true)) {
+                Log.d(LOG_TAG, "filtering flagged content");
+                for (GiftResult gift : results) {
+                    if (!gift.isFlagged())
+                        giftData.add(gift);
+                }
+            } else {
+                Log.d(LOG_TAG, "not filtering flagged content");
+                giftData.addAll(results);
+            }
+        }
+        arrayAdapter.notifyDataSetChanged();
+    }
+
+    void updateGifts() {
+        Log.d(LOG_TAG, "updateGifts");
+        ArrayList<GiftResult> results = doQuery(service,
+                queryType,
+                titleQuery,
+                userID,
+                giftChainID,
+                resultOrder,
+                resultDirection);
+        updateGiftData(results);
     }
 
     @Override
@@ -304,20 +323,12 @@ public class ListGiftsActivity extends GiftActivity implements
 
     @Override
     public void setLike(GiftResult gift) {
-        try {
-            service.giftMetadata().setLike(gift.getId(), gift.isLike());
-        } catch (RemoteException e) {
-            Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
-        }
+        service.giftMetadata().setLike(gift.getId(), gift.isLike());
     }
 
     @Override
     public void setFlag(GiftResult gift) {
-        try {
-            service.giftMetadata().setFlag(gift.getId(), gift.isFlag());
-        } catch (RemoteException e) {
-            Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
-        }
+        service.giftMetadata().setFlag(gift.getId(), gift.isFlag());
     }
 
     private String getTitleQuery() {
@@ -345,6 +356,6 @@ public class ListGiftsActivity extends GiftActivity implements
     }
 
     private long getGiftChainID() {
-        return getIntent().getLongExtra(GIFT_CHAIN_ID_TAG, 0);
+        return getIntent() != null ? getIntent().getLongExtra(GIFT_CHAIN_ID_TAG, 0) : 0;
     }
 }

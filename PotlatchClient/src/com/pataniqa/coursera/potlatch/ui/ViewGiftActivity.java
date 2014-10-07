@@ -3,10 +3,12 @@ package com.pataniqa.coursera.potlatch.ui;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Date;
 
+import rx.Observable;
+import rx.functions.Func1;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -14,7 +16,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.text.format.Time;
 import android.util.Log;
@@ -30,9 +31,9 @@ import android.widget.ViewSwitcher;
 import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
+import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
-import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.store.local.LocalStorageUtilities;
 
 /**
@@ -189,35 +190,25 @@ abstract class ViewGiftActivity extends GiftActivity {
         ed.commit();
     }
 
-    Gift makeGiftDataFromUI(long key) throws RemoteException {
-        String title = editTextToString(titleInput);
-        String description = editTextToString(descriptionInput);
-        String videoUri = uriToString(videoPathFinal);
-        String imageData = uriToString(imagePathFinal);
+    Observable<Gift> makeGiftDataFromUI(final long key) {
         String giftChainName = editTextToString(giftChain);
-        Time created = new Time();
-        created.setToNow();
+        GiftChain giftChain = new GiftChain(GetId.UNDEFINED_ID, giftChainName);
+        Observable<GiftChain> result = service.giftChains().save(giftChain);
+        return result.map(new Func1<GiftChain, Gift>() {
+            @Override
+            public Gift call(GiftChain result) {
+                long giftChainID = result.getId();
+                String title = editTextToString(titleInput);
+                String description = editTextToString(descriptionInput);
+                String videoUri = uriToString(videoPathFinal);
+                String imageData = uriToString(imagePathFinal);
+                Time created = new Time();
+                created.setToNow();
+                return new Gift(key, title, description, videoUri, imageData, new Date(created
+                        .toMillis(false)), userID, giftChainID);
+            }
+        });
 
-        // TODO we re-use the gift chain map here - so if someone adds a gift
-        // chain in the meantime it will not show up
-
-        long giftChainID;
-        if (giftChains.containsKey(giftChainName)) {
-            giftChainID = giftChains.get(giftChainName);
-        } else {
-            GiftChain giftChain = new GiftChain(GetId.UNDEFINED_ID, giftChainName);
-            GiftChain result = service.giftChains().save(giftChain);
-            giftChains.put(giftChainName, result.getId());
-            giftChainID = result.getId();
-        }
-        return new Gift(key,
-                title,
-                description,
-                videoUri,
-                imageData,
-                new Date(created.toMillis(false)),
-                userID,
-                giftChainID);
     }
 
     void initializeSpinner() {
@@ -225,14 +216,10 @@ abstract class ViewGiftActivity extends GiftActivity {
         // TODO this will not scale with the number of gift chains!
 
         ArrayList<String> giftChainNames = new ArrayList<String>();
-        try {
-            Collection<GiftChain> results = service.giftChains().findAll();
-            for (GiftChain result : results) {
-                giftChains.put(result.getName(), result.getId());
-                giftChainNames.add(result.getName());
-            }
-        } catch (RemoteException e) {
-            Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
+        Collection<GiftChain> results = service.giftChains().findAll();
+        for (GiftChain result : results) {
+            giftChains.put(result.getName(), result.getId());
+            giftChainNames.add(result.getName());
         }
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line,

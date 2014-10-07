@@ -9,7 +9,6 @@ import lombok.experimental.Accessors;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.RemoteException;
 
 import com.pataniqa.coursera.potlatch.store.Query;
 import com.pataniqa.coursera.potlatch.store.Retrieve;
@@ -25,7 +24,7 @@ abstract class BaseQuery<T> implements Query<T>, Retrieve<T, Long> {
     protected ArrayList<T> query(String[] projection,
             String selection,
             String[] selectionArgs,
-            String sortOrder) throws RemoteException {
+            String sortOrder) {
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor result = db.query(tableName,
                 projection,
@@ -42,12 +41,12 @@ abstract class BaseQuery<T> implements Query<T>, Retrieve<T, Long> {
     }
 
     @Override
-    public ArrayList<T> findAll() throws RemoteException {
+    public ArrayList<T> findAll() {
         return query(null, null, null, null);
     }
 
     @Override
-    public T findOne(Long rowID) throws RemoteException {
+    public T findOne(Long rowID) {
         String[] selectionArgs = { String.valueOf(rowID) };
         ArrayList<T> results = query(null, LocalSchema.Cols.ID + "= ?", selectionArgs, null);
         return results.size() > 0 ? results.get(0) : null;

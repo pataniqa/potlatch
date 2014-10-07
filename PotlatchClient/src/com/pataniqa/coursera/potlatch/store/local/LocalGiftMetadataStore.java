@@ -2,7 +2,6 @@ package com.pataniqa.coursera.potlatch.store.local;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.RemoteException;
 
 import com.pataniqa.coursera.potlatch.model.GiftResult;
 import com.pataniqa.coursera.potlatch.store.GiftMetadata;
@@ -19,7 +18,7 @@ public class LocalGiftMetadataStore implements GiftMetadata {
     }
 
     @Override
-    public void setLike(long giftID, boolean like) throws RemoteException {
+    public void setLike(long giftID, boolean like) {
         GiftResult gift = localGiftStore.findOne(giftID);
         gift.setLike(like);
         gift.setLikes(gift.isLike() ? 1 : 0);
@@ -27,7 +26,7 @@ public class LocalGiftMetadataStore implements GiftMetadata {
     }
 
     @Override
-    public void setFlag(long giftID, boolean flag) throws RemoteException {
+    public void setFlag(long giftID, boolean flag) {
         GiftResult gift = localGiftStore.findOne(giftID);
         gift.setFlag(flag);
         gift.setFlagged(flag);

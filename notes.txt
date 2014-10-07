@@ -64,5 +64,6 @@ https://github.com/alexbbb/android-upload-service
 
 'com.fasterxml.jackson.core:jackson-core:2.4.3'
 'com.fasterxml.jackson.core:jackson-databind:2.4.3'
+'com.netflix.rxjava:rxjava-android:0.20.5'
 
 

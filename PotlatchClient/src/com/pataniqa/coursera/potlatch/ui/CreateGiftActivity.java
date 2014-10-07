@@ -1,15 +1,16 @@
 package com.pataniqa.coursera.potlatch.ui;
 
+import rx.Observable;
+import rx.functions.Action1;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import butterknife.ButterKnife;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GetId;
+import com.pataniqa.coursera.potlatch.model.Gift;
 
 /**
  * The activity that allows a user to create and save a Gift.
@@ -28,19 +29,20 @@ public class CreateGiftActivity extends ViewGiftActivity {
         getActionBar().hide();
         setContentView(R.layout.create_gift_activity);
         ButterKnife.inject(this);
-        
+
         initializeSpinner();
     }
-    
+
     public void createButtonClicked(View v) {
         Log.d(LOG_TAG, "createButtonClicked");
-        try {
-            Gift gift = makeGiftDataFromUI(GetId.UNDEFINED_ID);
-            Log.d(LOG_TAG, "newGiftData:" + gift);
-            service.gifts().save(gift);
-        } catch (RemoteException e) {
-            Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
-        }
+        Observable<Gift> gift = makeGiftDataFromUI(GetId.UNDEFINED_ID);
+        gift.forEach(new Action1<Gift>() {
+            @Override
+            public void call(Gift gift) {
+                Log.d(LOG_TAG, "newGiftData:" + gift);
+                service.gifts().save(gift);
+            }
+        });
         finish();
     }
 }

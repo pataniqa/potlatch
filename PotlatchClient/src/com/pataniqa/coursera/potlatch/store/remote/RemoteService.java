@@ -6,6 +6,7 @@ import java.util.Collection;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import retrofit.RestAdapter;
+import rx.Observable;
 
 import com.google.common.collect.Lists;
 import com.pataniqa.coursera.potlatch.model.GetId;
@@ -52,12 +53,12 @@ public class RemoteService implements Service {
         }
 
         @Override
-        public User save(User data) {
+        public Observable<User> save(User data) {
             if (data.getId() == GetId.UNDEFINED_ID)
                 data = userService.insert(data);
             else
                 userService.update(data.getId(), data);
-            return data;
+            return Observable.just(data);
         }
 
         @Override
@@ -74,12 +75,12 @@ public class RemoteService implements Service {
         }
 
         @Override
-        public GiftChain save(GiftChain data) {
+        public Observable<GiftChain> save(GiftChain data) {
             if (data.getId() == GetId.UNDEFINED_ID)
                 data = giftChainService.insert(data);
             else
                 giftChainService.update(data.getId(), data);
-            return data;
+            return Observable.just(data);
         }
 
         @Override
@@ -105,12 +106,12 @@ public class RemoteService implements Service {
     class RemoteGiftQueryService implements Gifts {
         
         @Override
-        public Gift save(Gift data) {
+        public Observable<Gift> save(Gift data) {
             if (data.getId() == GetId.UNDEFINED_ID)
                 data = giftService.insert(data);
             else
                 giftService.update(data.getId(), data);
-            return data;
+            return Observable.just(data);
         }
 
         @Override

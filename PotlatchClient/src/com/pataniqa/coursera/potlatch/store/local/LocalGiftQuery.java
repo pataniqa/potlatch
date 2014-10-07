@@ -3,9 +3,9 @@ package com.pataniqa.coursera.potlatch.store.local;
 import java.util.ArrayList;
 import java.util.Date;
 
+import rx.Observable;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.os.RemoteException;
 
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
@@ -28,7 +28,7 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
     @Override
     public ArrayList<GiftResult> queryByTitle(String title,
             ResultOrder resultOrder,
-            ResultOrderDirection resultOrderDirection) throws RemoteException {
+            ResultOrderDirection resultOrderDirection) {
         String sortOrder = sortOrder(resultOrder, resultOrderDirection);
         if (title == null || title.isEmpty())
             return query(null, null, null, sortOrder);
@@ -42,7 +42,7 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
     public ArrayList<GiftResult> queryByUser(String title,
             long userID,
             ResultOrder resultOrder,
-            ResultOrderDirection resultOrderDirection) throws RemoteException {
+            ResultOrderDirection resultOrderDirection) {
         return query(LocalSchema.Cols.USER_ID,
                 String.valueOf(userID),
                 title,
@@ -52,7 +52,7 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
 
     @Override
     public ArrayList<GiftResult> queryByTopGiftGivers(String title,
-            ResultOrderDirection resultOrderDirection) throws RemoteException {
+            ResultOrderDirection resultOrderDirection) {
         String sortOrder = LocalSchema.Cols.USER_LIKES + " " + direction(resultOrderDirection);
         if (title == null || title.isEmpty())
             return query(null, null, null, sortOrder);
@@ -66,7 +66,7 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
     public ArrayList<GiftResult> queryByGiftChain(String title,
             long giftChainID,
             ResultOrder resultOrder,
-            ResultOrderDirection resultOrderDirection) throws RemoteException {
+            ResultOrderDirection resultOrderDirection) {
         return query(LocalSchema.Cols.GIFT_CHAIN_ID,
                 String.valueOf(giftChainID),
                 title,
@@ -78,7 +78,7 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
             String queryValue,
             String title,
             ResultOrder resultOrder,
-            ResultOrderDirection resultOrderDirection) throws RemoteException {
+            ResultOrderDirection resultOrderDirection) {
         String sortOrder = sortOrder(resultOrder, resultOrderDirection);
         if (title == null || title.isEmpty()) {
             String[] selectionArgs = { queryValue };
@@ -90,12 +90,12 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
     }
 
     @Override
-    public <S extends Gift> S save(S data) throws RemoteException {
+    public <S extends Gift> Observable<S> save(S data) {
         return store.save(data);
     }
 
     @Override
-    public void delete(long id) throws RemoteException {
+    public void delete(long id) {
         store.delete(id);
     }
 

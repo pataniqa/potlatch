@@ -2,8 +2,6 @@ package com.pataniqa.coursera.potlatch.store;
 
 import java.util.ArrayList;
 
-import android.os.RemoteException;
-
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
 
@@ -16,12 +14,11 @@ public interface Gifts extends Query<GiftResult>, Retrieve<GiftResult, Long>, Sa
      * @param resultOrder
      * @param resultOrderDirection
      * @return an ArrayList of GiftData objects
-     * @throws RemoteException
      */
 
     ArrayList<GiftResult> queryByTitle(String title,
             ResultOrder resultOrder,
-            ResultOrderDirection resultOrderDirection) throws RemoteException;
+            ResultOrderDirection resultOrderDirection);
 
     /**
      * Query gift data by user - corresponds to QueryType.USER
@@ -31,12 +28,11 @@ public interface Gifts extends Query<GiftResult>, Retrieve<GiftResult, Long>, Sa
      * @param resultOrder
      * @param resultOrderDirection
      * @return
-     * @throws RemoteException
      */
     ArrayList<GiftResult> queryByUser(String title,
             long userID,
             ResultOrder resultOrder,
-            ResultOrderDirection resultOrderDirection) throws RemoteException;
+            ResultOrderDirection resultOrderDirection);
 
     /**
      * Query gift data by top gift givers - corresponds to
@@ -45,10 +41,9 @@ public interface Gifts extends Query<GiftResult>, Retrieve<GiftResult, Long>, Sa
      * @param title
      * @param resultOrderDirection
      * @return
-     * @throws RemoteException
      */
     ArrayList<GiftResult> queryByTopGiftGivers(String title,
-            ResultOrderDirection resultOrderDirection) throws RemoteException;
+            ResultOrderDirection resultOrderDirection);
 
     /**
      * Query gift data by gift chain.
@@ -58,10 +53,9 @@ public interface Gifts extends Query<GiftResult>, Retrieve<GiftResult, Long>, Sa
      * @param resultOrder
      * @param resultOrderDirection
      * @return
-     * @throws RemoteException
      */
     ArrayList<GiftResult> queryByGiftChain(String title,
             long giftChainID,
             ResultOrder resultOrder,
-            ResultOrderDirection resultOrderDirection) throws RemoteException;
+            ResultOrderDirection resultOrderDirection);
 }

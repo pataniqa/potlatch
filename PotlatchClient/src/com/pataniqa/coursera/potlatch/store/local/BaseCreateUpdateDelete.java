@@ -1,9 +1,9 @@
 package com.pataniqa.coursera.potlatch.store.local;
 
+import rx.Observable;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.RemoteException;
 
 import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.model.SetId;
@@ -19,7 +19,7 @@ abstract class BaseCreateUpdateDelete<T extends SetId> extends BaseQuery<T> impl
     }
     
     @Override
-    public <S extends T> S save(S data) throws RemoteException {
+    public <S extends T> Observable<S> save(S data) {
         if (data.getId() == GetId.UNDEFINED_ID) {
             ContentValues tempCV = creator().getCV(data);
             tempCV.remove(LocalSchema.Cols.ID);
@@ -33,11 +33,11 @@ abstract class BaseCreateUpdateDelete<T extends SetId> extends BaseQuery<T> impl
             db.update(tableName(), creator().getCV(data), selection, selectionArgs);
             db.close();
         }
-        return data;
+        return Observable.just(data);
     }
 
     @Override
-    public void delete(long rowID) throws RemoteException {
+    public void delete(long rowID) {
         String[] selectionArgs = { String.valueOf(rowID) };
         SQLiteDatabase db = helper().getWritableDatabase();
         db.delete(tableName(), selection, selectionArgs);

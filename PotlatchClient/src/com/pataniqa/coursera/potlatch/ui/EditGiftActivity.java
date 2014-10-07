@@ -1,8 +1,9 @@
 package com.pataniqa.coursera.potlatch.ui;
 
+import rx.Observable;
+import rx.functions.Action1;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -37,67 +38,61 @@ public class EditGiftActivity extends ViewGiftActivity {
 
     boolean setValuesToDefault() {
         Log.d(LOG_TAG, "setValuesToDefault");
-        try {
-            GiftResult gift = service.gifts().findOne(getRowIdentifier());
-            Log.d(LOG_TAG, "setValuesToDefault :" + gift);
-            if (gift != null) {
-                // set the EditTexts to the current values
-                titleInput.setText(gift.getTitle());
-                descriptionInput.setText(gift.getDescription());
-                
-                if (gift.getVideoUri() != null && !gift.getVideoUri().isEmpty()) {
-                    if (viewSwitcher.getCurrentView() != video)
-                        viewSwitcher.showNext();
-                    MediaController mediaController = new MediaController(this);
-                    mediaController.setAnchorView(video);
-                    video.setMediaController(mediaController);
-                    video.setVideoURI(Uri.parse(gift.getVideoUri()));
-                } else {
-                    if (viewSwitcher.getCurrentView() != image)
-                        viewSwitcher.showPrevious();
-                    image.setImageURI(Uri.parse(gift.getImageUri()));
-                    image.setVisibility(View.VISIBLE);
-                    image.setScaleType(ScaleType.FIT_CENTER);
-                }
-                
-                if (gift.getGiftChainName() != null && !gift.getGiftChainName().isEmpty()) 
-                    giftChain.setText(gift.getGiftChainName());
-                
-                // TODO clicking the image should display a higher resolution version
+        GiftResult gift = service.gifts().findOne(getRowIdentifier());
+        Log.d(LOG_TAG, "setValuesToDefault :" + gift);
+        if (gift != null) {
+            // set the EditTexts to the current values
+            titleInput.setText(gift.getTitle());
+            descriptionInput.setText(gift.getDescription());
 
-                // TODO or in the case of a video play the video
-
-                imagePathFinal = stringToUri(gift.getImageUri());
-                videoPathFinal = stringToUri(gift.getVideoUri());
-                return true;
+            if (gift.getVideoUri() != null && !gift.getVideoUri().isEmpty()) {
+                if (viewSwitcher.getCurrentView() != video)
+                    viewSwitcher.showNext();
+                MediaController mediaController = new MediaController(this);
+                mediaController.setAnchorView(video);
+                video.setMediaController(mediaController);
+                video.setVideoURI(Uri.parse(gift.getVideoUri()));
+            } else {
+                if (viewSwitcher.getCurrentView() != image)
+                    viewSwitcher.showPrevious();
+                image.setImageURI(Uri.parse(gift.getImageUri()));
+                image.setVisibility(View.VISIBLE);
+                image.setScaleType(ScaleType.FIT_CENTER);
             }
-        } catch (RemoteException e) {
-            Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
+
+            if (gift.getGiftChainName() != null && !gift.getGiftChainName().isEmpty())
+                giftChain.setText(gift.getGiftChainName());
+
+            // TODO clicking the image should display a higher resolution
+            // version
+
+            // TODO or in the case of a video play the video
+
+            imagePathFinal = stringToUri(gift.getImageUri());
+            videoPathFinal = stringToUri(gift.getVideoUri());
+            return true;
         }
         return false;
     }
 
     public void saveButtonClicked(View v) {
         Log.d(LOG_TAG, "saveButtonClicked");
-        try {
-            Gift gift = makeGiftDataFromUI(getRowIdentifier());
-            Log.d(LOG_TAG, "newGiftData:" + gift);
-            service.gifts().save(gift);
-        } catch (RemoteException e) {
-            Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
-        }
+        Observable<Gift> gift = makeGiftDataFromUI(getRowIdentifier());
+        gift.forEach(new Action1<Gift>() {
+            @Override
+            public void call(Gift gift) {
+                Log.d(LOG_TAG, "newGiftData:" + gift);
+                service.gifts().save(gift);
+            }
+        });
         finish();
     }
 
     public void deleteButtonClicked(View v) {
         Log.d(LOG_TAG, "deleteButtonClicked");
-        try {
-            long identifier = getRowIdentifier();
-            Log.d(LOG_TAG, "Deleting gift with " + identifier);
-            service.gifts().delete(identifier);
-        } catch (RemoteException e) {
-            Log.e(LOG_TAG, "Caught RemoteException => " + e.getMessage(), e);
-        }
+        long identifier = getRowIdentifier();
+        Log.d(LOG_TAG, "Deleting gift with " + identifier);
+        service.gifts().delete(identifier);
         finish();
     }
 }
