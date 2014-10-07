@@ -61,11 +61,13 @@ public interface RemoteGiftApi {
     static final String TITLE = "title";
     static final String ORDER = "order";
     static final String DIRECTION = "direction";
+    static final String HIDE = "hideFlagged";
 
     @GET(QUERY_BY_TITLE)
     Observable<ArrayList<GiftResult>> queryByTitle(@Query(TITLE) String title,
             @Query(ORDER) ResultOrder order,
-            @Query(DIRECTION) ResultOrderDirection direction);
+            @Query(DIRECTION) ResultOrderDirection direction,
+            @Query(HIDE) boolean hide);
 
     static final String QUERY_BY_USER = "/gift/user";
 
@@ -75,13 +77,15 @@ public interface RemoteGiftApi {
     Observable<ArrayList<GiftResult>> queryByUser(@Query(TITLE) String title,
             @Query(USER) long userID,
             @Query(ORDER) ResultOrder order,
-            @Query(DIRECTION) ResultOrderDirection direction);
+            @Query(DIRECTION) ResultOrderDirection direction,
+            @Query(HIDE) boolean hide);
 
     static final String QUERY_BY_TOP_GIFT_GIVERS = "/gift/topGivers";
 
     @GET(QUERY_BY_TOP_GIFT_GIVERS)
     Observable<ArrayList<GiftResult>> queryByTopGiftGivers(@Query(TITLE) String title,
-            @Query(DIRECTION) ResultOrderDirection direction);
+            @Query(DIRECTION) ResultOrderDirection direction,
+            @Query(HIDE) boolean hide);
 
     static final String QUERY_BY_GIFT_CHAIN = "/gift/giftchain";
 
@@ -91,7 +95,8 @@ public interface RemoteGiftApi {
     Observable<ArrayList<GiftResult>> queryByGiftChain(@Query(TITLE) String title,
             @Query(GIFT_CHAIN) long giftChainID,
             @Query(ORDER) ResultOrder order,
-            @Query(DIRECTION) ResultOrderDirection direction);
+            @Query(DIRECTION) ResultOrderDirection direction,
+            @Query(HIDE) boolean hide);
 
     static final String GIFT_IMAGE_PATH = "/{id}/image";
     static final String DATA = "data";

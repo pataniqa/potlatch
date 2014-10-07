@@ -253,19 +253,24 @@ public class ListGiftsActivity extends GiftActivity implements
         // query the server
 
         Gifts gifts = service.gifts();
+        boolean hide = prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, true);
         Observable<ArrayList<GiftResult>> results = null;
         switch (queryType) {
         case USER:
-            results = gifts.queryByUser(titleQuery, userID, resultOrder, resultDirection);
+            results = gifts.queryByUser(titleQuery, userID, resultOrder, resultDirection, hide);
             break;
         case TOP_GIFT_GIVERS:
-            results = gifts.queryByTopGiftGivers(titleQuery, resultDirection);
+            results = gifts.queryByTopGiftGivers(titleQuery, resultDirection, hide);
             break;
         case CHAIN:
-            results = gifts.queryByGiftChain(titleQuery, giftChainID, resultOrder, resultDirection);
+            results = gifts.queryByGiftChain(titleQuery,
+                    giftChainID,
+                    resultOrder,
+                    resultDirection,
+                    hide);
             break;
         default:
-            results = gifts.queryByTitle(titleQuery, resultOrder, resultDirection);
+            results = gifts.queryByTitle(titleQuery, resultOrder, resultDirection, hide);
             break;
         }
 
@@ -275,20 +280,9 @@ public class ListGiftsActivity extends GiftActivity implements
             @Override
             public void call(ArrayList<GiftResult> results) {
                 giftData.clear();
-
-                // TODO could do the filtering on the server
-
                 if (results != null) {
-                    if (prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, true)) {
-                        Log.d(LOG_TAG, "filtering flagged content");
-                        for (GiftResult gift : results) {
-                            if (!gift.isFlagged())
-                                giftData.add(gift);
-                        }
-                    } else {
-                        Log.d(LOG_TAG, "not filtering flagged content");
-                        giftData.addAll(results);
-                    }
+                    Log.d(LOG_TAG, "not filtering flagged content");
+                    giftData.addAll(results);
                 }
                 arrayAdapter.notifyDataSetChanged();
             }

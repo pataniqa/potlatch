@@ -127,33 +127,37 @@ public class RemoteService implements Service {
         @Override
         public Observable<ArrayList<GiftResult>> queryByTitle(String title,
                 ResultOrder resultOrder,
-                ResultOrderDirection resultOrderDirection) {
-            return giftService.queryByTitle(title, resultOrder, resultOrderDirection);
+                ResultOrderDirection resultOrderDirection, boolean hide) {
+            return giftService.queryByTitle(title, resultOrder, resultOrderDirection, hide);
         }
 
         @Override
         public Observable<ArrayList<GiftResult>> queryByUser(String title,
                 long userID,
                 ResultOrder resultOrder,
-                ResultOrderDirection resultOrderDirection) {
-            return giftService.queryByUser(title, userID, resultOrder, resultOrderDirection);
+                ResultOrderDirection resultOrderDirection,
+                boolean hide) {
+            return giftService.queryByUser(title, userID, resultOrder, resultOrderDirection, hide);
         }
 
         @Override
         public Observable<ArrayList<GiftResult>> queryByTopGiftGivers(String title,
-                ResultOrderDirection resultOrderDirection) {
-            return giftService.queryByTopGiftGivers(title, resultOrderDirection);
+                ResultOrderDirection resultOrderDirection,
+                boolean hide) {
+            return giftService.queryByTopGiftGivers(title, resultOrderDirection, hide);
         }
 
         @Override
         public Observable<ArrayList<GiftResult>> queryByGiftChain(String title,
                 long giftChainID,
                 ResultOrder resultOrder,
-                ResultOrderDirection resultOrderDirection) {
+                ResultOrderDirection resultOrderDirection,
+                boolean hide) {
             return giftService.queryByGiftChain(title,
                     giftChainID,
                     resultOrder,
-                    resultOrderDirection);
+                    resultOrderDirection,
+                    hide);
         }
 
     }

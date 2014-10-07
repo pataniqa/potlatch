@@ -152,11 +152,12 @@ public class GiftService {
     List<GiftResult> queryByTitle(@RequestParam(TITLE) String title,
             @RequestParam(ORDER) ResultOrder order,
             @RequestParam(DIRECTION) ResultOrderDirection direction,
+            @RequestParam(HIDE) boolean hide,
             Principal principal) {
         Sort sort = getSort(order, direction);
         if (title.isEmpty())
-            return toResult(Lists.newArrayList(gifts.findAll(sort)), principal);
-        return toResult(gifts.findByTitleLike(likeTitle(title), sort), principal);
+            return toResult(Lists.newArrayList(gifts.findAll(sort)), principal, hide);
+        return toResult(gifts.findByTitleLike(likeTitle(title), sort), principal, hide);
     }
 
     @RequestMapping(value = QUERY_BY_USER, method = RequestMethod.GET)
@@ -165,12 +166,13 @@ public class GiftService {
             @RequestParam(USER) long userID,
             @RequestParam(ORDER) ResultOrder order,
             @RequestParam(DIRECTION) ResultOrderDirection direction,
+            @RequestParam(HIDE) boolean hide,
             Principal principal) {
         ServerUser user = users.findOne(userID);
         Sort sort = getSort(order, direction);
         if (title.isEmpty())
-            return toResult(gifts.findByUser(user, sort), principal);
-        return toResult(gifts.findByUserAndTitleLike(user, likeTitle(title), sort), principal);
+            return toResult(gifts.findByUser(user, sort), principal, hide);
+        return toResult(gifts.findByUserAndTitleLike(user, likeTitle(title), sort), principal, hide);
     }
 
     private String likeTitle(String title) {
@@ -183,19 +185,22 @@ public class GiftService {
             @RequestParam(GIFT_CHAIN) long giftChainID,
             @RequestParam(ORDER) ResultOrder order,
             @RequestParam(DIRECTION) ResultOrderDirection direction,
+            @RequestParam(HIDE) boolean hide,
             Principal principal) {
         ServerGiftChain giftChain = giftChains.findOne(giftChainID);
         Sort sort = getSort(order, direction);
         if (title.isEmpty())
-            return toResult(gifts.findByGiftChain(giftChain, sort), principal);
+            return toResult(gifts.findByGiftChain(giftChain, sort), principal, hide);
         return toResult(gifts.findByGiftChainAndTitleLike(giftChain, likeTitle(title), sort),
-                principal);
+                principal,
+                hide);
     }
 
     @RequestMapping(value = QUERY_BY_TOP_GIFT_GIVERS, method = RequestMethod.GET)
     public @ResponseBody
     List<GiftResult> queryByTopGiftGivers(@RequestParam(TITLE) String title,
             @RequestParam(DIRECTION) ResultOrderDirection direction,
+            @RequestParam(HIDE) boolean hide,
             Principal p) {
 
         // TODO this is going to be horribly expensive
@@ -220,7 +225,9 @@ public class GiftService {
                 sg = head(gifts.findByUser(topUser, giftSort));
             else
                 sg = head(gifts.findByUserAndTitleLike(topUser, likeTitle, giftSort));
-            results.add(fromGift(sg, user));
+            GiftResult result = fromGift(sg, user);
+            if (result != null && (!result.isFlagged() || !hide))
+                results.add(fromGift(sg, user));
         }
         return results;
     }
@@ -314,11 +321,13 @@ public class GiftService {
                 creator.getName());
     }
 
-    private List<GiftResult> toResult(Collection<ServerGift> query, Principal p) {
+    private List<GiftResult> toResult(Collection<ServerGift> query, Principal p, boolean hide) {
         ServerUser user = getUser(p);
         List<GiftResult> results = new ArrayList<GiftResult>();
         for (ServerGift gift : query) {
-            results.add(fromGift(gift, user));
+            GiftResult result = fromGift(gift, user);
+            if (!gift.isFlagged() || !hide)
+                results.add(result);
         }
         return results;
     }

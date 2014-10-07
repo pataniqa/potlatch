@@ -1,5 +1,7 @@
 package com.pataniqa.coursera.potlatch.store.local;
 
+import static com.pataniqa.coursera.potlatch.store.GiftResults.hideFlaggedContent;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -28,13 +30,14 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
     @Override
     public Observable<ArrayList<GiftResult>> queryByTitle(String title,
             ResultOrder resultOrder,
-            ResultOrderDirection resultOrderDirection) {
+            ResultOrderDirection resultOrderDirection,
+            boolean hide) {
         String sortOrder = sortOrder(resultOrder, resultOrderDirection);
         if (title == null || title.isEmpty())
-            return query(null, null, null, sortOrder);
+            return hideFlaggedContent(query(null, null, null, sortOrder), hide);
         else {
             String[] selectionArgs = new String[] { "%" + title + "%" };
-            return query(null, LIKE_QUERY, selectionArgs, sortOrder);
+            return hideFlaggedContent(query(null, LIKE_QUERY, selectionArgs, sortOrder), hide);
         }
     }
 
@@ -42,23 +45,24 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
     public Observable<ArrayList<GiftResult>> queryByUser(String title,
             long userID,
             ResultOrder resultOrder,
-            ResultOrderDirection resultOrderDirection) {
-        return query(LocalSchema.Cols.USER_ID,
+            ResultOrderDirection resultOrderDirection,
+            boolean hide) {
+        return hideFlaggedContent(query(LocalSchema.Cols.USER_ID,
                 String.valueOf(userID),
                 title,
                 resultOrder,
-                resultOrderDirection);
+                resultOrderDirection), hide);
     }
 
     @Override
     public Observable<ArrayList<GiftResult>> queryByTopGiftGivers(String title,
-            ResultOrderDirection resultOrderDirection) {
+            ResultOrderDirection resultOrderDirection, boolean hide) {
         String sortOrder = LocalSchema.Cols.USER_LIKES + " " + direction(resultOrderDirection);
         if (title == null || title.isEmpty())
-            return query(null, null, null, sortOrder);
+            return hideFlaggedContent(query(null, null, null, sortOrder), hide);
         else {
             String[] selectionArgs = new String[] { "%" + title + "%" };
-            return query(null, LIKE_QUERY, selectionArgs, sortOrder);
+            return hideFlaggedContent(query(null, LIKE_QUERY, selectionArgs, sortOrder), hide);
         }
     }
 
@@ -66,12 +70,13 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
     public Observable<ArrayList<GiftResult>> queryByGiftChain(String title,
             long giftChainID,
             ResultOrder resultOrder,
-            ResultOrderDirection resultOrderDirection) {
-        return query(LocalSchema.Cols.GIFT_CHAIN_ID,
+            ResultOrderDirection resultOrderDirection,
+            boolean hide) {
+        return hideFlaggedContent(query(LocalSchema.Cols.GIFT_CHAIN_ID,
                 String.valueOf(giftChainID),
                 title,
                 resultOrder,
-                resultOrderDirection);
+                resultOrderDirection), hide);
     }
 
     private Observable<ArrayList<GiftResult>> query(String queryProperty,

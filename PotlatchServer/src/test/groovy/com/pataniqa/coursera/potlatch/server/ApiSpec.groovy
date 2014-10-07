@@ -244,13 +244,13 @@ class ApiSpec extends spock.lang.Specification {
     
     def "Query by title"() {
         when: "query by title"
-        def query = giftSvcUser.queryByTitle("", ResultOrder.LIKES, ResultOrderDirection.ASCENDING).toBlocking().last()
+        def query = giftSvcUser.queryByTitle("", ResultOrder.LIKES, ResultOrderDirection.ASCENDING, false).toBlocking().last()
         
         then: "there should be four results"
         query.size() >= 4
         
         when: "query by title"
-        def query2 = giftSvcUser.queryByTitle("car", ResultOrder.LIKES, ResultOrderDirection.ASCENDING).toBlocking().last()
+        def query2 = giftSvcUser.queryByTitle("car", ResultOrder.LIKES, ResultOrderDirection.ASCENDING, false).toBlocking().last()
         
         then: "there should be a result"
         query2.size() > 0
@@ -262,7 +262,7 @@ class ApiSpec extends spock.lang.Specification {
     def "Query by user"() {
         when: "query by user"
         def user = insertUser(new User("fred"))
-        def query = giftSvcUser.queryByUser("", user.getId(), ResultOrder.TIME, ResultOrderDirection.ASCENDING).toBlocking().last()
+        def query = giftSvcUser.queryByUser("", user.getId(), ResultOrder.TIME, ResultOrderDirection.ASCENDING, false).toBlocking().last()
         
         then: "there should be two results"
         query.size() >= 2
@@ -271,7 +271,7 @@ class ApiSpec extends spock.lang.Specification {
         checkGift(query.get(0), "A car", "A fast Porsche car", "cars", "fred")
         
         when: "query by time descending"
-        def query2 = giftSvcUser.queryByUser("", user.getId(), ResultOrder.TIME, ResultOrderDirection.DESCENDING).toBlocking().last()
+        def query2 = giftSvcUser.queryByUser("", user.getId(), ResultOrder.TIME, ResultOrderDirection.DESCENDING, false).toBlocking().last()
         
         then: "there should be two results"
         query2.size() >= 2
@@ -283,7 +283,7 @@ class ApiSpec extends spock.lang.Specification {
     def "Query by gift chain"() {
         when: "query by gift chain"
         def chain = insertChain(new GiftChain("cars"))
-        def query = giftSvcUser.queryByGiftChain("", chain.getId(), ResultOrder.TIME, ResultOrderDirection.ASCENDING).toBlocking().last()
+        def query = giftSvcUser.queryByGiftChain("", chain.getId(), ResultOrder.TIME, ResultOrderDirection.ASCENDING, false).toBlocking().last()
         
         then: "there should be two results"
         query.size() >= 2
@@ -292,7 +292,7 @@ class ApiSpec extends spock.lang.Specification {
         checkGift(query.get(0), "A car", "A fast Porsche car", "cars", "fred")
         
         when: "query by time descending"
-        def query2 = giftSvcUser.queryByGiftChain("", chain.getId(), ResultOrder.TIME, ResultOrderDirection.DESCENDING).toBlocking().last()
+        def query2 = giftSvcUser.queryByGiftChain("", chain.getId(), ResultOrder.TIME, ResultOrderDirection.DESCENDING, false).toBlocking().last()
         
         then: "there should be two results"
         query2.size() >= 2
@@ -303,12 +303,12 @@ class ApiSpec extends spock.lang.Specification {
     
     def "Query by top gift givers"() {
         when: "we like every gift"
-        def query = giftSvcUser.queryByTitle("", ResultOrder.LIKES, ResultOrderDirection.ASCENDING).toBlocking().last()
+        def query = giftSvcUser.queryByTitle("", ResultOrder.LIKES, ResultOrderDirection.ASCENDING, false).toBlocking().last()
         
         for (gift in query) {
             setLike(gift, true);
         }
-        def query2 = giftSvcUser.queryByTopGiftGivers("", ResultOrderDirection.DESCENDING).toBlocking().last()
+        def query2 = giftSvcUser.queryByTopGiftGivers("", ResultOrderDirection.DESCENDING, false).toBlocking().last()
         
         then: "fred should be the top gift giver"
         def result = query2.get(0)
