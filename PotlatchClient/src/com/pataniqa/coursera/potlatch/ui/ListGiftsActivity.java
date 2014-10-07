@@ -25,6 +25,7 @@ import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
+import com.pataniqa.coursera.potlatch.store.Gifts;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 
@@ -177,19 +178,24 @@ public class ListGiftsActivity extends GiftActivity implements
     }
 
     void updateQueryType(MenuItem item) {
-
         // TODO because there are four options
         // this would be better as a spinner
         // http://developer.android.com/guide/topics/ui/actionbar.html#Dropdown
 
-        if (queryType == QueryType.USER)
+        switch (queryType) {
+        case USER:
             item.setIcon(R.drawable.ic_action_person);
-        else if (queryType == QueryType.TOP_GIFT_GIVERS)
+            break;
+        case TOP_GIFT_GIVERS:
             item.setIcon(R.drawable.ic_fa_trophy);
-        else if (queryType == QueryType.ALL)
+            break;
+        case CHAIN:
             item.setIcon(R.drawable.ic_fa_group);
-        else
+            break;
+        default:
             item.setIcon(R.drawable.ic_fa_link);
+            break;
+        }
     }
 
     void updateResultOrder(MenuItem item) {
@@ -243,24 +249,28 @@ public class ListGiftsActivity extends GiftActivity implements
 
     void updateGifts() {
         Log.d(LOG_TAG, "updateGifts");
-        
+
         // query the server
-        
+
+        Gifts gifts = service.gifts();
         Observable<ArrayList<GiftResult>> results = null;
-        if (queryType == QueryType.USER)
-            results = service.gifts().queryByUser(titleQuery, userID, resultOrder, resultDirection);
-        else if (queryType == QueryType.TOP_GIFT_GIVERS)
-            results = service.gifts().queryByTopGiftGivers(titleQuery, resultDirection);
-        else if (queryType == QueryType.CHAIN)
-            results = service.gifts().queryByGiftChain(titleQuery,
-                    giftChainID,
-                    resultOrder,
-                    resultDirection);
-        else
-            results = service.gifts().queryByTitle(titleQuery, resultOrder, resultDirection);
-        
+        switch (queryType) {
+        case USER:
+            results = gifts.queryByUser(titleQuery, userID, resultOrder, resultDirection);
+            break;
+        case TOP_GIFT_GIVERS:
+            results = gifts.queryByTopGiftGivers(titleQuery, resultDirection);
+            break;
+        case CHAIN:
+            results = gifts.queryByGiftChain(titleQuery, giftChainID, resultOrder, resultDirection);
+            break;
+        default:
+            results = gifts.queryByTitle(titleQuery, resultOrder, resultDirection);
+            break;
+        }
+
         // update the display
-        
+
         results.forEach(new Action1<ArrayList<GiftResult>>() {
             @Override
             public void call(ArrayList<GiftResult> results) {
