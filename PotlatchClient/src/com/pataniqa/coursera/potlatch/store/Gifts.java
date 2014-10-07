@@ -2,6 +2,8 @@ package com.pataniqa.coursera.potlatch.store;
 
 import java.util.ArrayList;
 
+import rx.Observable;
+
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
 
@@ -16,7 +18,7 @@ public interface Gifts extends Query<GiftResult>, Retrieve<GiftResult, Long>, Sa
      * @return an ArrayList of GiftData objects
      */
 
-    ArrayList<GiftResult> queryByTitle(String title,
+    Observable<ArrayList<GiftResult>> queryByTitle(String title,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection);
 
@@ -29,7 +31,7 @@ public interface Gifts extends Query<GiftResult>, Retrieve<GiftResult, Long>, Sa
      * @param resultOrderDirection
      * @return
      */
-    ArrayList<GiftResult> queryByUser(String title,
+    Observable<ArrayList<GiftResult>> queryByUser(String title,
             long userID,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection);
@@ -42,7 +44,7 @@ public interface Gifts extends Query<GiftResult>, Retrieve<GiftResult, Long>, Sa
      * @param resultOrderDirection
      * @return
      */
-    ArrayList<GiftResult> queryByTopGiftGivers(String title,
+    Observable<ArrayList<GiftResult>> queryByTopGiftGivers(String title,
             ResultOrderDirection resultOrderDirection);
 
     /**
@@ -54,7 +56,7 @@ public interface Gifts extends Query<GiftResult>, Retrieve<GiftResult, Long>, Sa
      * @param resultOrderDirection
      * @return
      */
-    ArrayList<GiftResult> queryByGiftChain(String title,
+    Observable<ArrayList<GiftResult>> queryByGiftChain(String title,
             long giftChainID,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection);

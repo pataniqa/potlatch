@@ -11,7 +11,7 @@ public interface SaveDelete <T extends GetId> {
      * 
      * @param id
      */
-    void delete(long id);
+    Observable<Boolean> delete(long id);
     
     /**
      * Save the <T> object.

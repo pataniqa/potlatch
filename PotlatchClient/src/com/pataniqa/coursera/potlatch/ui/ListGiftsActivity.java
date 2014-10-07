@@ -2,6 +2,8 @@ package com.pataniqa.coursera.potlatch.ui;
 
 import java.util.ArrayList;
 
+import rx.Observable;
+import rx.functions.Action1;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -240,14 +242,14 @@ public class ListGiftsActivity extends GiftActivity implements
         updateGifts();
     }
 
-    static ArrayList<GiftResult> doQuery(Service service,
+    static Observable<ArrayList<GiftResult>> doQuery(Service service,
             QueryType queryType,
             String titleQuery,
             long userID,
             long giftChainID,
             ResultOrder resultOrder,
             ResultOrderDirection resultDirection) {
-        ArrayList<GiftResult> results = null;
+        Observable<ArrayList<GiftResult>> results = null;
         try {
             if (queryType == QueryType.USER)
                 results = service.gifts().queryByUser(titleQuery,
@@ -270,29 +272,34 @@ public class ListGiftsActivity extends GiftActivity implements
         return results;
     }
 
-    void updateGiftData(ArrayList<GiftResult> results) {
-        giftData.clear();
+    void updateGiftData(Observable<ArrayList<GiftResult>> results) {
+        results.forEach(new Action1<ArrayList<GiftResult>>() {
+            @Override
+            public void call(ArrayList<GiftResult> results) {
+                giftData.clear();
 
-        // TODO could do the filtering on the server
+                // TODO could do the filtering on the server
 
-        if (results != null) {
-            if (prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, true)) {
-                Log.d(LOG_TAG, "filtering flagged content");
-                for (GiftResult gift : results) {
-                    if (!gift.isFlagged())
-                        giftData.add(gift);
+                if (results != null) {
+                    if (prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, true)) {
+                        Log.d(LOG_TAG, "filtering flagged content");
+                        for (GiftResult gift : results) {
+                            if (!gift.isFlagged())
+                                giftData.add(gift);
+                        }
+                    } else {
+                        Log.d(LOG_TAG, "not filtering flagged content");
+                        giftData.addAll(results);
+                    }
                 }
-            } else {
-                Log.d(LOG_TAG, "not filtering flagged content");
-                giftData.addAll(results);
+                arrayAdapter.notifyDataSetChanged();
             }
-        }
-        arrayAdapter.notifyDataSetChanged();
+        });
     }
 
     void updateGifts() {
         Log.d(LOG_TAG, "updateGifts");
-        ArrayList<GiftResult> results = doQuery(service,
+        Observable<ArrayList<GiftResult>> results = doQuery(service,
                 queryType,
                 titleQuery,
                 userID,

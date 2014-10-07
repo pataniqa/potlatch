@@ -2,13 +2,14 @@ package com.pataniqa.coursera.potlatch.ui;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import rx.Observable;
+import rx.functions.Action1;
 import rx.functions.Func1;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -215,16 +216,23 @@ abstract class ViewGiftActivity extends GiftActivity {
 
         // TODO this will not scale with the number of gift chains!
 
-        ArrayList<String> giftChainNames = new ArrayList<String>();
-        Collection<GiftChain> results = service.giftChains().findAll();
-        for (GiftChain result : results) {
-            giftChains.put(result.getName(), result.getId());
-            giftChainNames.add(result.getName());
-        }
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line,
-                giftChainNames);
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        giftChain.setAdapter(spinnerArrayAdapter);
+        final Context context = this;
+        Observable<ArrayList<GiftChain>> results = service.giftChains().findAll();
+        results.forEach(new Action1<ArrayList<GiftChain>>() {
+            @Override
+            public void call(ArrayList<GiftChain> results) {
+                ArrayList<String> giftChainNames = new ArrayList<String>();
+                for (GiftChain result : results) {
+                    giftChains.put(result.getName(), result.getId());
+                    giftChainNames.add(result.getName());
+                }
+                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(context,
+                        android.R.layout.simple_dropdown_item_1line,
+                        giftChainNames);
+                spinnerArrayAdapter
+                        .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                giftChain.setAdapter(spinnerArrayAdapter);
+            }
+        });
     }
 }

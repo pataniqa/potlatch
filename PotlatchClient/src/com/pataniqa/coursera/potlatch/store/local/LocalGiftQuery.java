@@ -26,7 +26,7 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
     }
 
     @Override
-    public ArrayList<GiftResult> queryByTitle(String title,
+    public Observable<ArrayList<GiftResult>> queryByTitle(String title,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) {
         String sortOrder = sortOrder(resultOrder, resultOrderDirection);
@@ -39,7 +39,7 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
     }
 
     @Override
-    public ArrayList<GiftResult> queryByUser(String title,
+    public Observable<ArrayList<GiftResult>> queryByUser(String title,
             long userID,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) {
@@ -51,7 +51,7 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
     }
 
     @Override
-    public ArrayList<GiftResult> queryByTopGiftGivers(String title,
+    public Observable<ArrayList<GiftResult>> queryByTopGiftGivers(String title,
             ResultOrderDirection resultOrderDirection) {
         String sortOrder = LocalSchema.Cols.USER_LIKES + " " + direction(resultOrderDirection);
         if (title == null || title.isEmpty())
@@ -63,7 +63,7 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
     }
 
     @Override
-    public ArrayList<GiftResult> queryByGiftChain(String title,
+    public Observable<ArrayList<GiftResult>> queryByGiftChain(String title,
             long giftChainID,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection) {
@@ -74,7 +74,7 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
                 resultOrderDirection);
     }
 
-    private ArrayList<GiftResult> query(String queryProperty,
+    private Observable<ArrayList<GiftResult>> query(String queryProperty,
             String queryValue,
             String title,
             ResultOrder resultOrder,
@@ -95,8 +95,8 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
     }
 
     @Override
-    public void delete(long id) {
-        store.delete(id);
+    public Observable<Boolean> delete(long id) {
+        return store.delete(id);
     }
 
     private String sortOrder(ResultOrder resultOrder, ResultOrderDirection resultOrderDirection) {

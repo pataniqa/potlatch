@@ -2,6 +2,8 @@ package com.pataniqa.coursera.potlatch.ui;
 
 import rx.Observable;
 import rx.functions.Action1;
+import rx.functions.Func1;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,43 +38,51 @@ public class EditGiftActivity extends ViewGiftActivity {
         setValuesToDefault();
     }
 
-    boolean setValuesToDefault() {
+    Observable<Boolean> setValuesToDefault() {
         Log.d(LOG_TAG, "setValuesToDefault");
-        GiftResult gift = service.gifts().findOne(getRowIdentifier());
-        Log.d(LOG_TAG, "setValuesToDefault :" + gift);
-        if (gift != null) {
-            // set the EditTexts to the current values
-            titleInput.setText(gift.getTitle());
-            descriptionInput.setText(gift.getDescription());
+        Observable<GiftResult> gift = service.gifts().findOne(getRowIdentifier());
+        final Context context = this;
+        return gift.map(new Func1<GiftResult, Boolean>() {
 
-            if (gift.getVideoUri() != null && !gift.getVideoUri().isEmpty()) {
-                if (viewSwitcher.getCurrentView() != video)
-                    viewSwitcher.showNext();
-                MediaController mediaController = new MediaController(this);
-                mediaController.setAnchorView(video);
-                video.setMediaController(mediaController);
-                video.setVideoURI(Uri.parse(gift.getVideoUri()));
-            } else {
-                if (viewSwitcher.getCurrentView() != image)
-                    viewSwitcher.showPrevious();
-                image.setImageURI(Uri.parse(gift.getImageUri()));
-                image.setVisibility(View.VISIBLE);
-                image.setScaleType(ScaleType.FIT_CENTER);
+            @Override
+            public Boolean call(GiftResult gift) {
+                Log.d(LOG_TAG, "setValuesToDefault :" + gift);
+                if (gift != null) {
+                    // set the EditTexts to the current values
+                    titleInput.setText(gift.getTitle());
+                    descriptionInput.setText(gift.getDescription());
+
+                    if (gift.getVideoUri() != null && !gift.getVideoUri().isEmpty()) {
+                        if (viewSwitcher.getCurrentView() != video)
+                            viewSwitcher.showNext();
+                        MediaController mediaController = new MediaController(context);
+                        mediaController.setAnchorView(video);
+                        video.setMediaController(mediaController);
+                        video.setVideoURI(Uri.parse(gift.getVideoUri()));
+                    } else {
+                        if (viewSwitcher.getCurrentView() != image)
+                            viewSwitcher.showPrevious();
+                        image.setImageURI(Uri.parse(gift.getImageUri()));
+                        image.setVisibility(View.VISIBLE);
+                        image.setScaleType(ScaleType.FIT_CENTER);
+                    }
+
+                    if (gift.getGiftChainName() != null && !gift.getGiftChainName().isEmpty())
+                        giftChain.setText(gift.getGiftChainName());
+
+                    // TODO clicking the image should display a higher
+                    // resolution version
+
+                    // TODO or in the case of a video play the video
+
+                    imagePathFinal = stringToUri(gift.getImageUri());
+                    videoPathFinal = stringToUri(gift.getVideoUri());
+                    return true;
+                }
+                return false;
             }
 
-            if (gift.getGiftChainName() != null && !gift.getGiftChainName().isEmpty())
-                giftChain.setText(gift.getGiftChainName());
-
-            // TODO clicking the image should display a higher resolution
-            // version
-
-            // TODO or in the case of a video play the video
-
-            imagePathFinal = stringToUri(gift.getImageUri());
-            videoPathFinal = stringToUri(gift.getVideoUri());
-            return true;
-        }
-        return false;
+        });
     }
 
     public void saveButtonClicked(View v) {

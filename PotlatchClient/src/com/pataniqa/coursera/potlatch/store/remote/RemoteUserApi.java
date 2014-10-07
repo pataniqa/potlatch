@@ -2,7 +2,7 @@ package com.pataniqa.coursera.potlatch.store.remote;
 
 import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.ID;
 
-import java.util.Collection;
+import java.util.ArrayList;
 
 import retrofit.http.Body;
 import retrofit.http.DELETE;
@@ -10,6 +10,7 @@ import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.PUT;
 import retrofit.http.Path;
+import rx.Observable;
 
 import com.pataniqa.coursera.potlatch.model.User;
 
@@ -20,14 +21,14 @@ public interface RemoteUserApi {
     static final String USER_ID_PATH = "/user/{id}";
     
     @POST(USER_PATH)
-    User insert(@Body User data);
+    Observable<User> insert(@Body User data);
     
     @GET(USER_PATH)
-    Collection<User> findAll();
+    Observable<ArrayList<User>> findAll();
 
     @PUT(USER_ID_PATH)
-    User update(@Path(ID) long id, @Body User user);
+    Observable<User> update(@Path(ID) long id, @Body User user);
 
     @DELETE(USER_ID_PATH)
-    boolean delete(@Path(ID) long id);
+    Observable<Boolean> delete(@Path(ID) long id);
 }

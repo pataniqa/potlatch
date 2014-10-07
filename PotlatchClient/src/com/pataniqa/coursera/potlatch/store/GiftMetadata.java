@@ -1,9 +1,11 @@
 package com.pataniqa.coursera.potlatch.store;
 
+import rx.Observable;
+
 public interface GiftMetadata {
 
-    void setLike(long giftID, boolean like);
+    Observable<Boolean> setLike(long giftID, boolean like);
 
-    void setFlag(long giftID, boolean flag);
+    Observable<Boolean> setFlag(long giftID, boolean flag);
 
 }

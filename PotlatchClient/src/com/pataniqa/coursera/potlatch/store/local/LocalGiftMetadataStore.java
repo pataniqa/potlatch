@@ -1,5 +1,7 @@
 package com.pataniqa.coursera.potlatch.store.local;
 
+import rx.Observable;
+import rx.functions.Func1;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -18,21 +20,32 @@ public class LocalGiftMetadataStore implements GiftMetadata {
     }
 
     @Override
-    public void setLike(long giftID, boolean like) {
-        GiftResult gift = localGiftStore.findOne(giftID);
-        gift.setLike(like);
-        gift.setLikes(gift.isLike() ? 1 : 0);
-        update(gift);
+    public Observable<Boolean> setLike(final long giftID, final boolean like) {
+        Observable<GiftResult> gift = localGiftStore.findOne(giftID);
+        return gift.map(new Func1<GiftResult, Boolean>() {
+            @Override
+            public Boolean call(GiftResult gift) {
+                gift.setLike(like);
+                gift.setLikes(gift.isLike() ? 1 : 0);
+                update(gift);
+                return true;
+            }
+        });
     }
 
     @Override
-    public void setFlag(long giftID, boolean flag) {
-        GiftResult gift = localGiftStore.findOne(giftID);
-        gift.setFlag(flag);
-        gift.setFlagged(flag);
-        update(gift);
+    public Observable<Boolean> setFlag(final long giftID, final boolean flag) {
+        Observable<GiftResult> gift = localGiftStore.findOne(giftID);
+        return gift.map(new Func1<GiftResult, Boolean>() {
+            @Override
+            public Boolean call(GiftResult gift) {
+                gift.setFlag(flag);
+                gift.setFlagged(flag);
+                update(gift);
+                return true;
+            }});
     }
-    
+
     private void update(GiftResult gift) {
         String selection = LocalSchema.Cols.ID + " = ? ";
         String[] selectionArgs = { String.valueOf(gift.getId()) };

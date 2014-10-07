@@ -6,6 +6,9 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import rx.Observable;
+import rx.Subscriber;
+import rx.functions.Func1;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -20,38 +23,53 @@ abstract class BaseQuery<T> implements Query<T>, Retrieve<T, Long> {
     @Getter private final Creator<T> creator;
     @Getter private final String tableName;
     @Getter private final SQLiteOpenHelper helper;
-    
-    protected ArrayList<T> query(String[] projection,
-            String selection,
-            String[] selectionArgs,
-            String sortOrder) {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor result = db.query(tableName,
-                projection,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                sortOrder);
-        ArrayList<T> rValue = new ArrayList<T>();
-        rValue.addAll(creator.getListFromCursor(result));
-        result.close();
-        db.close();
-        return rValue;
+
+    protected Observable<ArrayList<T>> query(final String[] projection,
+            final String selection,
+            final String[] selectionArgs,
+            final String sortOrder) {
+        return Observable.create(new Observable.OnSubscribe<ArrayList<T>>() {
+            @Override
+            public void call(Subscriber<? super ArrayList<T>> subscriber) {
+                SQLiteDatabase db = helper.getReadableDatabase();
+                Cursor result = db.query(tableName,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                ArrayList<T> rValue = new ArrayList<T>();
+                rValue.addAll(creator.getListFromCursor(result));
+                result.close();
+                db.close();
+                subscriber.onNext(rValue);
+                subscriber.onCompleted();
+            }
+        });
     }
 
     @Override
-    public ArrayList<T> findAll() {
+    public Observable<ArrayList<T>> findAll() {
         return query(null, null, null, null);
     }
 
     @Override
-    public T findOne(Long rowID) {
+    public Observable<T> findOne(Long rowID) {
         String[] selectionArgs = { String.valueOf(rowID) };
-        ArrayList<T> results = query(null, LocalSchema.Cols.ID + "= ?", selectionArgs, null);
-        return results.size() > 0 ? results.get(0) : null;
+        Observable<ArrayList<T>> results = query(null,
+                LocalSchema.Cols.ID + "= ?",
+                selectionArgs,
+                null);
+        return results.map(new Func1<ArrayList<T>, T>() {
+            @Override
+            public T call(ArrayList<T> results) {
+                return results.size() > 0 ? results.iterator().next() : null;
+            }
+        });
+
     }
-    
+
     @Override
     public void finalize() {
         if (helper != null)

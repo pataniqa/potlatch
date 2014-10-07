@@ -1,14 +1,12 @@
 package com.pataniqa.coursera.potlatch.store.remote;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import retrofit.RestAdapter;
 import rx.Observable;
 
-import com.google.common.collect.Lists;
 import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
@@ -22,9 +20,9 @@ import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 import com.pataniqa.coursera.potlatch.store.Service;
 import com.pataniqa.coursera.potlatch.store.Users;
 
-@Accessors(fluent=true)
+@Accessors(fluent = true)
 public class RemoteService implements Service {
-    
+
     @Getter private final Gifts gifts;
     @Getter private final GiftChains giftChains;
     @Getter private final GiftMetadata giftMetadata;
@@ -44,48 +42,46 @@ public class RemoteService implements Service {
         giftMetadata = new RemoteGiftMetadataService();
         users = new RemoteUserService();
     }
-    
+
     class RemoteUserService implements Users {
-        
+
         @Override
-        public Collection<User> findAll() {
+        public Observable<ArrayList<User>> findAll() {
             return userService.findAll();
         }
 
         @Override
         public Observable<User> save(User data) {
             if (data.getId() == GetId.UNDEFINED_ID)
-                data = userService.insert(data);
+                return userService.insert(data);
             else
-                userService.update(data.getId(), data);
-            return Observable.just(data);
+                return userService.update(data.getId(), data);
         }
 
         @Override
-        public void delete(long id) {
-            userService.delete(id);
+        public Observable<Boolean> delete(long id) {
+            return userService.delete(id);
         }
     }
 
     class RemoteGiftChainService implements GiftChains {
 
         @Override
-        public Collection<GiftChain> findAll() {
+        public Observable<ArrayList<GiftChain>> findAll() {
             return giftChainService.findAll();
         }
 
         @Override
         public Observable<GiftChain> save(GiftChain data) {
             if (data.getId() == GetId.UNDEFINED_ID)
-                data = giftChainService.insert(data);
+                return giftChainService.insert(data);
             else
-                giftChainService.update(data.getId(), data);
-            return Observable.just(data);
+                return giftChainService.update(data.getId(), data);
         }
 
         @Override
-        public void delete(long id) {
-            giftChainService.delete(id);
+        public Observable<Boolean> delete(long id) {
+            return giftChainService.delete(id);
         }
 
     }
@@ -93,78 +89,71 @@ public class RemoteService implements Service {
     class RemoteGiftMetadataService implements GiftMetadata {
 
         @Override
-        public void setLike(long giftID, boolean like) {
-            giftService.setLike(giftID, like);
+        public Observable<Boolean> setLike(long giftID, boolean like) {
+            return giftService.setLike(giftID, like);
         }
 
         @Override
-        public void setFlag(long giftID, boolean flag) {
-            giftService.setFlag(giftID, flag);
+        public Observable<Boolean> setFlag(long giftID, boolean flag) {
+            return giftService.setFlag(giftID, flag);
         }
     }
 
     class RemoteGiftQueryService implements Gifts {
-        
+
         @Override
         public Observable<Gift> save(Gift data) {
             if (data.getId() == GetId.UNDEFINED_ID)
-                data = giftService.insert(data);
+                return giftService.insert(data);
             else
-                giftService.update(data.getId(), data);
-            return Observable.just(data);
+                return giftService.update(data.getId(), data);
         }
 
         @Override
-        public void delete(long id) {
-            giftService.delete(id);
+        public Observable<Boolean> delete(long id) {
+            return giftService.delete(id);
         }
 
         @Override
-        public Collection<GiftResult> findAll() {
+        public Observable<ArrayList<GiftResult>> findAll() {
             return giftService.findAll();
         }
 
         @Override
-        public GiftResult findOne(Long id) {
+        public Observable<GiftResult> findOne(Long id) {
             return giftService.findOne(id);
         }
 
         @Override
-        public ArrayList<GiftResult> queryByTitle(String title,
+        public Observable<ArrayList<GiftResult>> queryByTitle(String title,
                 ResultOrder resultOrder,
                 ResultOrderDirection resultOrderDirection) {
-            return Lists.newArrayList(giftService.queryByTitle(title,
-                    resultOrder,
-                    resultOrderDirection));
+            return giftService.queryByTitle(title, resultOrder, resultOrderDirection);
         }
 
         @Override
-        public ArrayList<GiftResult> queryByUser(String title,
+        public Observable<ArrayList<GiftResult>> queryByUser(String title,
                 long userID,
                 ResultOrder resultOrder,
                 ResultOrderDirection resultOrderDirection) {
-            return Lists.newArrayList(giftService.queryByUser(title,
-                    userID,
-                    resultOrder,
-                    resultOrderDirection));
+            return giftService.queryByUser(title, userID, resultOrder, resultOrderDirection);
         }
 
         @Override
-        public ArrayList<GiftResult> queryByTopGiftGivers(String title,
+        public Observable<ArrayList<GiftResult>> queryByTopGiftGivers(String title,
                 ResultOrderDirection resultOrderDirection) {
-            return Lists
-                    .newArrayList(giftService.queryByTopGiftGivers(title, resultOrderDirection));
+            return giftService.queryByTopGiftGivers(title, resultOrderDirection);
         }
 
         @Override
-        public ArrayList<GiftResult> queryByGiftChain(String title,
+        public Observable<ArrayList<GiftResult>> queryByGiftChain(String title,
                 long giftChainID,
                 ResultOrder resultOrder,
                 ResultOrderDirection resultOrderDirection) {
-            return Lists.newArrayList(giftService.queryByGiftChain(title,
+            return giftService.queryByGiftChain(title,
                     giftChainID,
                     resultOrder,
-                    resultOrderDirection));
+                    resultOrderDirection);
         }
 
     }

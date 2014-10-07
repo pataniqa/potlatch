@@ -1,5 +1,7 @@
 package com.pataniqa.coursera.potlatch.store;
 
+import rx.Observable;
+
 public interface Retrieve<T, ID> {
     /**
      * Retrieve a <T> object with a specific rowID.
@@ -7,5 +9,5 @@ public interface Retrieve<T, ID> {
      * @param id
      * @return GiftData at the given rowID
      */
-    T findOne(ID id);
+    Observable<T> findOne(ID id);
 }
