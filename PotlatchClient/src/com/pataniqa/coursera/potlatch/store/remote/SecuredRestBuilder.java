@@ -2,7 +2,6 @@ package com.pataniqa.coursera.potlatch.store.remote;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Executor;
 
 import lombok.Setter;
@@ -25,10 +24,10 @@ import retrofit.client.Request;
 import retrofit.client.Response;
 import retrofit.converter.Converter;
 import retrofit.mime.FormUrlEncodedTypedOutput;
-import android.util.Base64;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.io.BaseEncoding;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 /**
  * A Builder class for a Retrofit REST Adapter. Extends the default implementation by providing logic to
@@ -114,8 +113,7 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
                     // the "Authorization" header and the value is set to "Basic " 
                     // concatenated with the Base64 client_id:client_secret value described
                     // above.
-                    String base64Auth = Base64.encodeToString(new String(clientId + ":"
-                            + clientSecret).getBytes(), Base64.DEFAULT);
+                    String base64Auth = BaseEncoding.base64().encode(new String(clientId + ":" + clientSecret).getBytes());
                     // Add the basic authorization header
                     List<Header> headers = new ArrayList<Header>();
                     headers.add(new Header("Authorization", "Basic " + base64Auth));
@@ -137,11 +135,7 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
                         
                         // Extract the access_token (bearer token) from the response so that we
                         // can add it to future requests.
-                        ObjectMapper mapper = new ObjectMapper();
-                        Map<String, Object> map = mapper.readValue(body,
-                                new TypeReference<Map<String, Object>>() {
-                                });
-                        accessToken = (String) map.get("access_token");
+                        accessToken = new Gson().fromJson(body, JsonObject.class).get("access_token").getAsString();
                         
                         // Add the access_token to this request as the "Authorization"
                         // header.

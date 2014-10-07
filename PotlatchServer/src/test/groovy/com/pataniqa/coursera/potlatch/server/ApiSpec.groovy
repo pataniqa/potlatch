@@ -8,6 +8,7 @@ import com.pataniqa.coursera.potlatch.model.*
 import com.pataniqa.coursera.potlatch.store.*
 import com.pataniqa.coursera.potlatch.store.remote.*
 
+import rx.Observable
 
 class ApiSpec extends spock.lang.Specification {
     
@@ -40,25 +41,25 @@ class ApiSpec extends spock.lang.Specification {
     
     def numberOfUsers = { userSvcUser.findAll().toBlocking().last().size() }
     def insertUser(User user) { userSvcUser.insert(user).toBlocking().last() }
-    def updateUser(User user) { userSvcUser.update(user.getId(), newUser).toBlocking().last() }
+    def updateUser(User user) { userSvcUser.update(user.getId(), user).toBlocking().last() }
     def deleteUser(User user) { userSvcUser.delete(user.getId()).toBlocking().last() }
     def findAllUser() { userSvcUser.findAll().toBlocking().last() }
 
     def numberOfGifts = { giftSvcUser.findAll().toBlocking().last().size() }
     def findAllGift() { giftSvcUser.findAll().toBlocking().last() }
     def insertGift(Gift gift) { giftSvcUser.insert(gift).toBlocking().last() }
-    def updateGift(Gift gift) { giftSvcUser.update(newGift.getId(), newGift).toBlocking.last() }
-    def deleteGift(Gift gift) { giftSvcUser.delete(newGift.getId()).toBlocking().last() }
-    def findOneGift(long giftId) { giftSvcUser.findOne(newGift.getId()).toBlocking().last() }
-    def setLike(Gift gift, boolean like) { giftSvcUser.setLike(newGift.getId(), true).toBlocking().last() }
-    def setFlag(Gift gift, boolean flag) { giftSvcUser.setFlag(newGift.getId(), true).toBlocking().last() }
+    def updateGift(Gift gift) { giftSvcUser.update(gift.getId(), gift).toBlocking().last() }
+    def deleteGift(Gift gift) { giftSvcUser.delete(gift.getId()).toBlocking().last() }
+    def findOneGift(Gift gift) { giftSvcUser.findOne(gift.getId()).toBlocking().last() }
+    def setLike(Gift gift, boolean like) { giftSvcUser.setLike(gift.getId(), like).toBlocking().last() }
+    def setFlag(Gift gift, boolean flag) { giftSvcUser.setFlag(gift.getId(), flag).toBlocking().last() }
     
     def "Create, retrieve, update and delete a gift chain"() {
         
         when: "a gift chain is added"
         def numberOfGiftChainsBefore = numberOfGiftChains()
         def giftChain = new GiftChain("some-random-giftchain-" + new Random().nextLong())
-        def newGiftChain = insertGiftChain(giftChain)
+        def newGiftChain = insertChain(giftChain)
 
         then: "the new gift chain should have the same name"
         giftChain.getName() == newGiftChain.getName()
@@ -95,14 +96,14 @@ class ApiSpec extends spock.lang.Specification {
 
         when: "a user is updated"
         numberOfUsersBefore = numberOfUsers()
-        updateUser(newUser.getId(), newUser)
+        updateUser(newUser)
 
         then: "there should be the same number of users"
         numberOfUsers() == numberOfUsersBefore
 
         when: "a user is deleted"
         numberOfUsersBefore = numberOfUsers()
-        deleteUser(newUser.getId()).toBlocking().last()
+        deleteUser(newUser)
 
         then: "there should be one less user"
         numberOfUsers() == numberOfUsersBefore - 1
@@ -139,20 +140,20 @@ class ApiSpec extends spock.lang.Specification {
 
         when: "a gift is updated"
         numberOfGiftsBefore = numberOfGifts()
-        updateGift(newGift.getId(), newGift)
+        updateGift(newGift)
 
         then: "there should be the same number of gifts"
         numberOfGifts() == numberOfGiftsBefore
 
         when: "a gift is deleted"
         numberOfGiftsBefore = numberOfGifts()
-        deleteGift(newGift.getId())
+        deleteGift(newGift)
 
         then: "there should be one less gift"
         numberOfGifts() == numberOfGiftsBefore - 1
         
         then: "a giftchain is deleted"
-        deleteChain(giftChain.getId())
+        deleteChain(giftChain)
     }
     
     def "Insert some giftchains, users and gifts"(String title, String description, String chain, String name) {
@@ -176,7 +177,7 @@ class ApiSpec extends spock.lang.Specification {
         numberOfGifts() == numberOfGiftsBefore + 1
         
         when: "we find that gift"
-        def result = findOneGift(newGift.getId())
+        def result = findOneGift(newGift)
         
         then: "it should match"
         result.getTitle() == title
@@ -190,28 +191,28 @@ class ApiSpec extends spock.lang.Specification {
         result.getUserLikes() == 0
         
         when: "we like the gift"
-        setLike(newGift.getId(), true)
+        setLike(newGift, true)
         
         then: "it should be liked"
-        checkLikes(findOneGift(newGift.getId()), true, 1, 1)
+        checkLikes(newGift, true, 1, 1)
         
         when: "we unlike the gift"
-        setLike(newGift.getId(), false)
+        setLike(newGift, false)
         
         then: "it should not liked"
-        checkLikes(findOneGift(newGift.getId()), false, 0, 0)
+        checkLikes(newGift, false, 0, 0)
         
         when: "we flag the gift"
-        setFlag(newGift.getId(), true)
+        setFlag(newGift, true)
         
         then: "it should be flagged"
-        checkFlagged(findOneGift(newGift.getId()), true, true)
+        checkFlagged(newGift, true, true)
         
         when: "we unflag the gift"
-        giftSvcUser.setFlag(newGift.getId(), false).toBlocking().last()
+        setFlag(newGift, false)
         
         then: "it should be unflagged"
-        checkFlagged(giftSvcUser.findOne(newGift.getId()).toBlocking().last(), false, false)
+        checkFlagged(newGift, false, false)
         
         where:
         title | description | chain | name
@@ -221,13 +222,15 @@ class ApiSpec extends spock.lang.Specification {
        "Model T" | "A very old car" | "cars" | "fred"
     }
     
-    def checkLikes(GiftResult result, boolean like, int likes, int userLikes) {
+    def checkLikes(Gift gift, boolean like, int likes, int userLikes) {
+        def result = findOneGift(gift)
         result.isLike() == like
         result.getLikes() == likes
         result.getUserLikes() == userLikes
     }
     
-    def checkFlagged(GiftResult result, boolean flag, boolean flagged) {
+    def checkFlagged(Gift gift, boolean flag, boolean flagged) {
+        def result = findOneGift(gift)
         result.isFlag() == flag
         result.isFlagged() == flagged
     }
@@ -303,7 +306,7 @@ class ApiSpec extends spock.lang.Specification {
         def query = giftSvcUser.queryByTitle("", ResultOrder.LIKES, ResultOrderDirection.ASCENDING).toBlocking().last()
         
         for (gift in query) {
-            giftSvcUser.setLike(gift.getId(), true);
+            setLike(gift, true);
         }
         def query2 = giftSvcUser.queryByTopGiftGivers("", ResultOrderDirection.DESCENDING).toBlocking().last()
         
