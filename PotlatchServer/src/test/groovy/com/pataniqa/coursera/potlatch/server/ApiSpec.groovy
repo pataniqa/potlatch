@@ -30,23 +30,35 @@ class ApiSpec extends spock.lang.Specification {
     .build()
 
     def userSvcUser = svcUser.create(RemoteUserApi.class)
-
     def giftChainSvcUser = svcUser.create(RemoteGiftChainApi.class)
-
     def giftSvcUser = svcUser.create(RemoteGiftApi.class)
 
-    def numberOfGiftChains = { giftChainSvcUser.findAll().size() }
+    def numberOfGiftChains = { giftChainSvcUser.findAll().toBlocking().last().size() }
+    def insertChain(GiftChain chain) { giftChainSvcUser.insert(chain).toBlocking().last() }
+    def updateChain(GiftChain chain) { giftChainSvcUser.update(chain.getId(), chain).toBlocking().last() }
+    def deleteChain(GiftChain chain) { giftChainSvcUser.delete(chain.getId()).toBlocking().last() }
+    
+    def numberOfUsers = { userSvcUser.findAll().toBlocking().last().size() }
+    def insertUser(User user) { userSvcUser.insert(user).toBlocking().last() }
+    def updateUser(User user) { userSvcUser.update(user.getId(), newUser).toBlocking().last() }
+    def deleteUser(User user) { userSvcUser.delete(user.getId()).toBlocking().last() }
+    def findAllUser() { userSvcUser.findAll().toBlocking().last() }
 
-    def numberOfUsers = { userSvcUser.findAll().size() }
-
-    def numberOfGifts = { giftSvcUser.findAll().size() }
+    def numberOfGifts = { giftSvcUser.findAll().toBlocking().last().size() }
+    def findAllGift() { giftSvcUser.findAll().toBlocking().last() }
+    def insertGift(Gift gift) { giftSvcUser.insert(gift).toBlocking().last() }
+    def updateGift(Gift gift) { giftSvcUser.update(newGift.getId(), newGift).toBlocking.last() }
+    def deleteGift(Gift gift) { giftSvcUser.delete(newGift.getId()).toBlocking().last() }
+    def findOneGift(long giftId) { giftSvcUser.findOne(newGift.getId()).toBlocking().last() }
+    def setLike(Gift gift, boolean like) { giftSvcUser.setLike(newGift.getId(), true).toBlocking().last() }
+    def setFlag(Gift gift, boolean flag) { giftSvcUser.setFlag(newGift.getId(), true).toBlocking().last() }
     
     def "Create, retrieve, update and delete a gift chain"() {
         
         when: "a gift chain is added"
         def numberOfGiftChainsBefore = numberOfGiftChains()
         def giftChain = new GiftChain("some-random-giftchain-" + new Random().nextLong())
-        def newGiftChain = giftChainSvcUser.insert(giftChain)
+        def newGiftChain = insertGiftChain(giftChain)
 
         then: "the new gift chain should have the same name"
         giftChain.getName() == newGiftChain.getName()
@@ -55,14 +67,14 @@ class ApiSpec extends spock.lang.Specification {
 
         when: "a gift chain is updated"
         numberOfGiftChainsBefore = numberOfGiftChains()
-        giftChainSvcUser.update(newGiftChain.getId(), newGiftChain)
+        updateChain(newGiftChain)
 
         then: "there should be the same number of gift chains"
         numberOfGiftChains() == numberOfGiftChainsBefore
 
         when: "a gift chain is deleted"
         numberOfGiftChainsBefore = numberOfGiftChains()
-        giftChainSvcUser.delete(newGiftChain.getId())
+        deleteChain(newGiftChain)
 
         then: "there should be one less gift chain"
         numberOfGiftChains() == numberOfGiftChainsBefore - 1
@@ -74,7 +86,7 @@ class ApiSpec extends spock.lang.Specification {
         when: "a user is added"
         def numberOfUsersBefore = numberOfUsers()
         def user = new User("some-random-user-" + new Random().nextLong())
-        def newUser = userSvcUser.insert(user)
+        def newUser = insertUser(user)
 
         then: "the new user should have the same name"
         user.getName() == newUser.getName()
@@ -83,14 +95,14 @@ class ApiSpec extends spock.lang.Specification {
 
         when: "a user is updated"
         numberOfUsersBefore = numberOfUsers()
-        userSvcUser.update(newUser.getId(), newUser)
+        updateUser(newUser.getId(), newUser)
 
         then: "there should be the same number of users"
         numberOfUsers() == numberOfUsersBefore
 
         when: "a user is deleted"
         numberOfUsersBefore = numberOfUsers()
-        userSvcUser.delete(newUser.getId())
+        deleteUser(newUser.getId()).toBlocking().last()
 
         then: "there should be one less user"
         numberOfUsers() == numberOfUsersBefore - 1
@@ -99,10 +111,10 @@ class ApiSpec extends spock.lang.Specification {
     
     def "Create, retrieve, update and delete a gift"() {
         
-        println(giftSvcUser.findAll())
+        println(findAllGift())
         
         when: "a gift chain is created"
-        def giftChain = giftChainSvcUser.insert(new GiftChain("some-random-giftchain-" + new Random().nextLong()))
+        def giftChain = insertChain(new GiftChain("some-random-giftchain-" + new Random().nextLong()))
         
         println(numberOfGifts())
             
@@ -111,11 +123,11 @@ class ApiSpec extends spock.lang.Specification {
         def title = "some-random-gift-" + new Random().nextLong()
         def description = "some-random-description-" + new Random().nextLong()
         def created = new Date()
-        def userId = userSvcUser.findAll().get(0).getId()
+        def userId = findAllUser().get(0).getId()
         def giftChainId = giftChain.getId()
         
         def gift = new Gift(GetId.UNDEFINED_ID, title, description, null, null, created, userId, giftChainId) 
-        def newGift = giftSvcUser.insert(gift)
+        def newGift = insertGift(gift)
 
         then: "the new gift should have the same properties"
         gift.getTitle() == newGift.getTitle()
@@ -127,29 +139,29 @@ class ApiSpec extends spock.lang.Specification {
 
         when: "a gift is updated"
         numberOfGiftsBefore = numberOfGifts()
-        giftSvcUser.update(newGift.getId(), newGift)
+        updateGift(newGift.getId(), newGift)
 
         then: "there should be the same number of gifts"
         numberOfGifts() == numberOfGiftsBefore
 
         when: "a gift is deleted"
         numberOfGiftsBefore = numberOfGifts()
-        giftSvcUser.delete(newGift.getId())
+        deleteGift(newGift.getId())
 
         then: "there should be one less gift"
         numberOfGifts() == numberOfGiftsBefore - 1
         
         then: "a giftchain is deleted"
-        giftChainSvcUser.delete(giftChain.getId())
+        deleteChain(giftChain.getId())
     }
     
     def "Insert some giftchains, users and gifts"(String title, String description, String chain, String name) {
         
         when: "add a gift"
         def numberOfGiftsBefore = numberOfGifts()
-        def giftChain = giftChainSvcUser.insert(new GiftChain(chain))
+        def giftChain = insertChain(new GiftChain(chain))
         def created = new Date()
-        def user = userSvcUser.insert(new User(name))
+        def user = insertUser(new User(name))
         def gift = new Gift(GetId.UNDEFINED_ID, 
             title, 
             description, 
@@ -158,13 +170,13 @@ class ApiSpec extends spock.lang.Specification {
             created, 
             user.getId(), 
             giftChain.getId())
-        def newGift = giftSvcUser.insert(gift)
+        def newGift = insertGift(gift)
         
         then: "there should be one more gift"
         numberOfGifts() == numberOfGiftsBefore + 1
         
         when: "we find that gift"
-        def result = giftSvcUser.findOne(newGift.getId())
+        def result = findOneGift(newGift.getId())
         
         then: "it should match"
         result.getTitle() == title
@@ -178,28 +190,28 @@ class ApiSpec extends spock.lang.Specification {
         result.getUserLikes() == 0
         
         when: "we like the gift"
-        giftSvcUser.setLike(newGift.getId(), true)
+        setLike(newGift.getId(), true)
         
         then: "it should be liked"
-        checkLikes(giftSvcUser.findOne(newGift.getId()), true, 1, 1)
+        checkLikes(findOneGift(newGift.getId()), true, 1, 1)
         
         when: "we unlike the gift"
-        giftSvcUser.setLike(newGift.getId(), false)
+        setLike(newGift.getId(), false)
         
         then: "it should not liked"
-        checkLikes(giftSvcUser.findOne(newGift.getId()), false, 0, 0)
+        checkLikes(findOneGift(newGift.getId()), false, 0, 0)
         
         when: "we flag the gift"
-        giftSvcUser.setFlag(newGift.getId(), true)
+        setFlag(newGift.getId(), true)
         
         then: "it should be flagged"
-        checkFlagged(giftSvcUser.findOne(newGift.getId()), true, true)
+        checkFlagged(findOneGift(newGift.getId()), true, true)
         
         when: "we unflag the gift"
-        giftSvcUser.setFlag(newGift.getId(), false)
+        giftSvcUser.setFlag(newGift.getId(), false).toBlocking().last()
         
         then: "it should be unflagged"
-        checkFlagged(giftSvcUser.findOne(newGift.getId()), false, false)
+        checkFlagged(giftSvcUser.findOne(newGift.getId()).toBlocking().last(), false, false)
         
         where:
         title | description | chain | name
@@ -229,13 +241,13 @@ class ApiSpec extends spock.lang.Specification {
     
     def "Query by title"() {
         when: "query by title"
-        def query = giftSvcUser.queryByTitle("", ResultOrder.LIKES, ResultOrderDirection.ASCENDING)
+        def query = giftSvcUser.queryByTitle("", ResultOrder.LIKES, ResultOrderDirection.ASCENDING).toBlocking().last()
         
         then: "there should be four results"
         query.size() >= 4
         
         when: "query by title"
-        def query2 = giftSvcUser.queryByTitle("car", ResultOrder.LIKES, ResultOrderDirection.ASCENDING)
+        def query2 = giftSvcUser.queryByTitle("car", ResultOrder.LIKES, ResultOrderDirection.ASCENDING).toBlocking().last()
         
         then: "there should be a result"
         query2.size() > 0
@@ -246,8 +258,8 @@ class ApiSpec extends spock.lang.Specification {
     
     def "Query by user"() {
         when: "query by user"
-        def user = userSvcUser.insert(new User("fred"))
-        def query = giftSvcUser.queryByUser("", user.getId(), ResultOrder.TIME, ResultOrderDirection.ASCENDING)
+        def user = insertUser(new User("fred"))
+        def query = giftSvcUser.queryByUser("", user.getId(), ResultOrder.TIME, ResultOrderDirection.ASCENDING).toBlocking().last()
         
         then: "there should be two results"
         query.size() >= 2
@@ -256,7 +268,7 @@ class ApiSpec extends spock.lang.Specification {
         checkGift(query.get(0), "A car", "A fast Porsche car", "cars", "fred")
         
         when: "query by time descending"
-        def query2 = giftSvcUser.queryByUser("", user.getId(), ResultOrder.TIME, ResultOrderDirection.DESCENDING)
+        def query2 = giftSvcUser.queryByUser("", user.getId(), ResultOrder.TIME, ResultOrderDirection.DESCENDING).toBlocking().last()
         
         then: "there should be two results"
         query2.size() >= 2
@@ -267,8 +279,8 @@ class ApiSpec extends spock.lang.Specification {
     
     def "Query by gift chain"() {
         when: "query by gift chain"
-        def chain = giftChainSvcUser.insert(new GiftChain("cars"))
-        def query = giftSvcUser.queryByGiftChain("", chain.getId(), ResultOrder.TIME, ResultOrderDirection.ASCENDING)
+        def chain = insertChain(new GiftChain("cars"))
+        def query = giftSvcUser.queryByGiftChain("", chain.getId(), ResultOrder.TIME, ResultOrderDirection.ASCENDING).toBlocking().last()
         
         then: "there should be two results"
         query.size() >= 2
@@ -277,7 +289,7 @@ class ApiSpec extends spock.lang.Specification {
         checkGift(query.get(0), "A car", "A fast Porsche car", "cars", "fred")
         
         when: "query by time descending"
-        def query2 = giftSvcUser.queryByGiftChain("", chain.getId(), ResultOrder.TIME, ResultOrderDirection.DESCENDING)
+        def query2 = giftSvcUser.queryByGiftChain("", chain.getId(), ResultOrder.TIME, ResultOrderDirection.DESCENDING).toBlocking().last()
         
         then: "there should be two results"
         query2.size() >= 2
@@ -288,12 +300,12 @@ class ApiSpec extends spock.lang.Specification {
     
     def "Query by top gift givers"() {
         when: "we like every gift"
-        def query = giftSvcUser.queryByTitle("", ResultOrder.LIKES, ResultOrderDirection.ASCENDING)
+        def query = giftSvcUser.queryByTitle("", ResultOrder.LIKES, ResultOrderDirection.ASCENDING).toBlocking().last()
         
         for (gift in query) {
             giftSvcUser.setLike(gift.getId(), true);
         }
-        def query2 = giftSvcUser.queryByTopGiftGivers("", ResultOrderDirection.DESCENDING)
+        def query2 = giftSvcUser.queryByTopGiftGivers("", ResultOrderDirection.DESCENDING).toBlocking().last()
         
         then: "fred should be the top gift giver"
         def result = query2.get(0)
