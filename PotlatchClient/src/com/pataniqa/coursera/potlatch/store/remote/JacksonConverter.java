@@ -1,12 +1,10 @@
-package com.pataniqa.coursera.potlatch.server;
+package com.pataniqa.coursera.potlatch.store.remote;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.JavaType;
+import com.fasterxml.jackson.databind.*;
 
 import retrofit.converter.ConversionException;
 import retrofit.converter.Converter;
@@ -16,10 +14,12 @@ import retrofit.mime.TypedOutput;
 /**
  * This code was copied from
  * 
- * https://github.com/kdubb1337/retrofit-examples/tree/master/src/main/java/com/kdubb/retrofitexamples/converter 
+ * https://github.com/kdubb1337/retrofit-examples/tree/master/src/main/java/com/
+ * kdubb/retrofitexamples/converter
  * 
- * It makes it possible to use a Jackson converter in Retrofit rather than a GSON converter.
- * This solves problems when round tripping dates between Retrofit and Spring.
+ * It makes it possible to use a Jackson converter in Retrofit rather than a
+ * GSON converter. This solves problems when round tripping dates between
+ * Retrofit and Spring.
  * 
  * See
  * 
@@ -31,7 +31,7 @@ public class JacksonConverter implements Converter {
     private final ObjectMapper objectMapper;
 
     public JacksonConverter(ObjectMapper objectMapper) {
-        objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         this.objectMapper = objectMapper;
     }
 

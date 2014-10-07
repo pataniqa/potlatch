@@ -43,3 +43,26 @@ https://github.com/ReactiveX/RxJava/wiki/The-RxJava-Android-Module
 https://github.com/kdubb1337/retrofit-examples
 https://github.com/spring-projects/spring-data-jpa-examples/tree/master/spring-data-jpa-example/src
 http://www.node.mu/2014/07/02/using-retrofit-and-rxjava-to-interact-with-web-services-on-android/
+
+SDK manager plugin for Gradle! Cool
+
+https://github.com/JakeWharton/sdk-manager-plugin
+
+JavaRX
+
+http://www.node.mu/2014/07/02/using-retrofit-and-rxjava-to-interact-with-web-services-on-android/
+
+https://github.com/ReactiveX/RxJava/wiki/The-RxJava-Android-Module
+
+https://github.com/kaushikgopal/Android-RxJava
+
+Upload libraries
+
+https://github.com/loopj/android-async-http
+https://github.com/alexbbb/android-upload-service
+
+
+'com.fasterxml.jackson.core:jackson-core:2.4.3'
+'com.fasterxml.jackson.core:jackson-databind:2.4.3'
+
+

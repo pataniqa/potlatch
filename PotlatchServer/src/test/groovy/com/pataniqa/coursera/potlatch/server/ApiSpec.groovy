@@ -3,12 +3,11 @@ package com.pataniqa.coursera.potlatch.server
 import retrofit.RestAdapter.LogLevel
 import retrofit.client.ApacheClient
 
-import org.codehaus.jackson.map.ObjectMapper
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.pataniqa.coursera.potlatch.model.*
 import com.pataniqa.coursera.potlatch.store.*
 import com.pataniqa.coursera.potlatch.store.remote.*
 
-import com.pataniqa.coursera.potlatch.server.JacksonConverter
 
 class ApiSpec extends spock.lang.Specification {
     
