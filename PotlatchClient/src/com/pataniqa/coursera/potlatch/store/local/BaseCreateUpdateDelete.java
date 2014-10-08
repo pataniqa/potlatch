@@ -5,14 +5,18 @@ import rx.Subscriber;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.model.SetId;
 import com.pataniqa.coursera.potlatch.store.SaveDelete;
+import com.pataniqa.coursera.potlatch.ui.CreateGiftActivity;
 
 abstract class BaseCreateUpdateDelete<T extends SetId> extends BaseQuery<T> implements
         SaveDelete<T> {
 
+    private final static String LOG_TAG = BaseCreateUpdateDelete.class.getCanonicalName();
+    
     private static String selection = LocalSchema.Cols.ID + " = ?";
 
     protected BaseCreateUpdateDelete(Creator<T> creator, String tableName, SQLiteOpenHelper helper) {
@@ -24,19 +28,17 @@ abstract class BaseCreateUpdateDelete<T extends SetId> extends BaseQuery<T> impl
         return Observable.create(new Observable.OnSubscribe<S>() {
             @Override
             public void call(Subscriber<? super S> subscriber) {
+                SQLiteDatabase db = helper().getWritableDatabase();
                 if (data.getId() == GetId.UNDEFINED_ID) {
                     ContentValues tempCV = creator().getCV(data);
                     tempCV.remove(LocalSchema.Cols.ID);
-                    SQLiteDatabase db = helper().getWritableDatabase();
-                    long res = db.insert(tableName(), null, tempCV);
-                    db.close();
-                    data.setId(res);
+                    data.setId(db.insert(tableName(), null, tempCV));
                 } else {
                     String[] selectionArgs = { String.valueOf(data.getId()) };
-                    SQLiteDatabase db = helper().getWritableDatabase();
                     db.update(tableName(), creator().getCV(data), selection, selectionArgs);
-                    db.close();
                 }
+                Log.i(LOG_TAG, "Stored: " + data);
+                db.close();
                 subscriber.onNext(data);
                 subscriber.onCompleted();
             }

@@ -2,6 +2,7 @@ package com.pataniqa.coursera.potlatch.ui;
 
 import rx.Observable;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,14 +36,19 @@ public class CreateGiftActivity extends ViewGiftActivity {
 
     public void createButtonClicked(View v) {
         Log.d(LOG_TAG, "createButtonClicked");
-        Observable<Gift> gift = makeGiftDataFromUI(GetId.UNDEFINED_ID);
+        Observable<Gift> gift = makeGiftDataFromUI(GetId.UNDEFINED_ID)
+                .flatMap(new Func1<Gift, Observable<Gift>>() {
+                    @Override
+                    public Observable<Gift> call(Gift gift) {
+                        Log.d(LOG_TAG, "newGiftData: " + gift);
+                        return service.gifts().save(gift);
+                    }
+                });
         gift.forEach(new Action1<Gift>() {
             @Override
-            public void call(Gift gift) {
-                Log.d(LOG_TAG, "newGiftData:" + gift);
-                service.gifts().save(gift);
+            public void call(Gift arg0) {
+                finish();
             }
         });
-        finish();
     }
 }

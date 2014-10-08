@@ -87,15 +87,20 @@ public class EditGiftActivity extends ViewGiftActivity {
 
     public void saveButtonClicked(View v) {
         Log.d(LOG_TAG, "saveButtonClicked");
-        Observable<Gift> gift = makeGiftDataFromUI(getRowIdentifier());
+        Observable<Gift> gift = makeGiftDataFromUI(getRowIdentifier())
+                .flatMap(new Func1<Gift, Observable<Gift>>() {
+                    @Override
+                    public Observable<Gift> call(Gift gift) {
+                        Log.d(LOG_TAG, "newGiftData:" + gift);
+                        return service.gifts().save(gift);
+                    }
+                });
         gift.forEach(new Action1<Gift>() {
             @Override
-            public void call(Gift gift) {
-                Log.d(LOG_TAG, "newGiftData:" + gift);
-                service.gifts().save(gift);
+            public void call(Gift arg0) {
+                finish();
             }
         });
-        finish();
     }
 
     public void deleteButtonClicked(View v) {

@@ -190,10 +190,10 @@ public class ListGiftsActivity extends GiftActivity implements
             item.setIcon(R.drawable.ic_fa_trophy);
             break;
         case CHAIN:
-            item.setIcon(R.drawable.ic_fa_group);
+            item.setIcon(R.drawable.ic_fa_link);
             break;
         default:
-            item.setIcon(R.drawable.ic_fa_link);
+            item.setIcon(R.drawable.ic_fa_group);
             break;
         }
     }
@@ -281,7 +281,6 @@ public class ListGiftsActivity extends GiftActivity implements
             public void call(ArrayList<GiftResult> results) {
                 giftData.clear();
                 if (results != null) {
-                    Log.d(LOG_TAG, "not filtering flagged content");
                     giftData.addAll(results);
                 }
                 arrayAdapter.notifyDataSetChanged();

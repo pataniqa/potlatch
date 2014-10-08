@@ -193,12 +193,19 @@ abstract class ViewGiftActivity extends GiftActivity {
 
     Observable<Gift> makeGiftDataFromUI(final long key) {
         String giftChainName = editTextToString(giftChain);
-        GiftChain giftChain = new GiftChain(GetId.UNDEFINED_ID, giftChainName);
-        Observable<GiftChain> result = service.giftChains().save(giftChain);
+        Observable<GiftChain> result = null;
+        if (giftChains.containsKey(giftChainName)) {
+            GiftChain giftChain = new GiftChain(giftChains.get(giftChainName), giftChainName);
+            result = Observable.just(giftChain);
+        } else {
+            GiftChain giftChain = new GiftChain(GetId.UNDEFINED_ID, giftChainName);
+            result = service.giftChains().save(giftChain);
+        }
         return result.map(new Func1<GiftChain, Gift>() {
             @Override
             public Gift call(GiftChain result) {
                 long giftChainID = result.getId();
+                Log.d(LOG_TAG, "Creating gift");
                 String title = editTextToString(titleInput);
                 String description = editTextToString(descriptionInput);
                 String videoUri = uriToString(videoPathFinal);
