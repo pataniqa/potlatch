@@ -35,7 +35,12 @@ public class EditGiftActivity extends ViewGiftActivity {
         initializeSpinner();
 
         // set the EditTexts to this Gift's Values
-        setValuesToDefault();
+        Observable<Boolean> set = setValuesToDefault();
+        set.forEach(new Action1<Boolean>() {
+            @Override
+            public void call(Boolean arg0) {
+                Log.d(LOG_TAG, "Finished setting up item");
+            }});
     }
 
     Observable<Boolean> setValuesToDefault() {
