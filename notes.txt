@@ -67,3 +67,6 @@ https://github.com/alexbbb/android-upload-service
 'com.netflix.rxjava:rxjava-android:0.20.5'
 
 
+Integration testing with Spock and Spring Boot
+
+http://stackoverflow.com/questions/24405727/integration-test-with-spring-boot-and-spock

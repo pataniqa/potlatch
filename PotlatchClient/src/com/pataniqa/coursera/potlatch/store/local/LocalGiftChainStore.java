@@ -18,6 +18,7 @@ public class LocalGiftChainStore extends BaseCreateUpdateDelete<GiftChain> imple
         @Override
         public ContentValues getCV(GiftChain data) {
             ContentValues rValue = new ContentValues();
+            rValue.put(LocalSchema.Cols.ID, data.getId());
             rValue.put(LocalSchema.Cols.GIFT_CHAIN_NAME, data.getName());
             return rValue;
         }

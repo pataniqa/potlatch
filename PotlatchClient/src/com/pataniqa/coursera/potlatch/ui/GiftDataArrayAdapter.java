@@ -3,7 +3,10 @@ package com.pataniqa.coursera.potlatch.ui;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +16,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-import android.widget.MediaController;
 import android.widget.TextView;
-import android.widget.VideoView;
-import android.widget.ViewSwitcher;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -44,7 +44,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
         inflater = LayoutInflater.from(context);
         this.giftChainCallback = giftChainCallback;
     }
-
+    
     /**
      * Returns a View that represents an ArrayList of GiftData.
      * 
@@ -69,6 +69,17 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
         } catch (Exception e) {
             Log.e(LOG_TAG, e.getMessage(), e);
         }
+        
+        // TODO use Picasso to cache image loading
+        
+//        Picasso.with(this.getContext())
+//        .load(url)
+//        .placeholder(R.drawable.placeholder)
+//        .error(R.drawable.error)
+//        .resizeDimen(R.dimen.list_detail_image_size, R.dimen.list_detail_image_size)
+//        .centerInside()
+//        .tag(context)
+//        .into(holder.image);
 
         return convertView;
     }
@@ -88,10 +99,6 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
         ImageButton flagButton;
         @InjectView(R.id.gift_listview_custom_row_link)
         Button giftChainButton;
-        @InjectView(R.id.gift_listview_custom_row_viewswitcher)
-        ViewSwitcher viewSwitcher;
-        @InjectView(R.id.gift_listview_custom_row_video)
-        VideoView video;
 
         View view;
         private final ListGiftsCallback giftChainCallback;
@@ -103,21 +110,17 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
         }
 
         public void setGiftData(final GiftResult gift) {
+           Log.i(LOG_TAG, gift.getVideoUri() + " " + gift.getImageUri() + " " + gift.getGiftChainName());
 
             if (gift.getVideoUri() != null && !gift.getVideoUri().isEmpty()) {
-                if (viewSwitcher.getCurrentView() != video)
-                    viewSwitcher.showNext();
-                MediaController mediaController = new MediaController(view.getContext());
-                mediaController.setAnchorView(video);
-                video.setMediaController(mediaController);
-                video.setVideoURI(Uri.parse(gift.getVideoUri()));
+                Bitmap thumb = ThumbnailUtils.createVideoThumbnail(gift.getVideoUri(),
+                        MediaStore.Images.Thumbnails.MICRO_KIND);
+                image.setImageBitmap(thumb);
             } else {
-                if (viewSwitcher.getCurrentView() != image)
-                    viewSwitcher.showPrevious();
                 image.setImageURI(Uri.parse(gift.getImageUri()));
-                image.setVisibility(View.VISIBLE);
-                image.setScaleType(ScaleType.FIT_CENTER);
             }
+            image.setVisibility(View.VISIBLE);
+            image.setScaleType(ScaleType.FIT_CENTER);
 
             if (gift.getGiftChainName() != null && !gift.getGiftChainName().isEmpty()) {
                 giftChainButton.setText(gift.getGiftChainName());

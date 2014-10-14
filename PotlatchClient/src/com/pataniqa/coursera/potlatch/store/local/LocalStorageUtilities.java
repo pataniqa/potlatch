@@ -88,8 +88,8 @@ public class LocalStorageUtilities {
         if (storageDir != null) {
             if (name != null) {
                 outputFile = new File(storageDir.getPath() + File.separator + name);
-            } else if (MEDIA_TYPES.containsKey(type)) {
-                outputFile = new File(storageDir.getPath() + File.separator + MEDIA_TYPES.get(type)
+            } else if (MEDIA_TYPES.containsKey(type.ordinal())) {
+                outputFile = new File(storageDir.getPath() + File.separator + MEDIA_TYPES.get(type.ordinal())
                         + timeStamp);
             }
         }

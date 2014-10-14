@@ -10,7 +10,6 @@ import android.util.Log;
 import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.model.SetId;
 import com.pataniqa.coursera.potlatch.store.SaveDelete;
-import com.pataniqa.coursera.potlatch.ui.CreateGiftActivity;
 
 abstract class BaseCreateUpdateDelete<T extends SetId> extends BaseQuery<T> implements
         SaveDelete<T> {
@@ -28,17 +27,19 @@ abstract class BaseCreateUpdateDelete<T extends SetId> extends BaseQuery<T> impl
         return Observable.create(new Observable.OnSubscribe<S>() {
             @Override
             public void call(Subscriber<? super S> subscriber) {
-                SQLiteDatabase db = helper().getWritableDatabase();
                 if (data.getId() == GetId.UNDEFINED_ID) {
                     ContentValues tempCV = creator().getCV(data);
                     tempCV.remove(LocalSchema.Cols.ID);
+                    SQLiteDatabase db = helper().getWritableDatabase();
                     data.setId(db.insert(tableName(), null, tempCV));
+                    db.close();
                 } else {
                     String[] selectionArgs = { String.valueOf(data.getId()) };
+                    SQLiteDatabase db = helper().getWritableDatabase();
                     db.update(tableName(), creator().getCV(data), selection, selectionArgs);
+                    db.close();
                 }
                 Log.i(LOG_TAG, "Stored: " + data);
-                db.close();
                 subscriber.onNext(data);
                 subscriber.onCompleted();
             }

@@ -1,5 +1,10 @@
 package com.pataniqa.coursera.potlatch.ui;
 
+import java.util.Arrays;
+
+import rx.Observable;
+import rx.functions.Action1;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -11,6 +16,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
+import com.pataniqa.coursera.potlatch.model.GetId;
+import com.pataniqa.coursera.potlatch.model.User;
 
 /**
  * The activity that allows the user to provide login information.
@@ -48,15 +55,15 @@ public class LoginActivity extends GiftActivity {
     @Override
     protected void onPause() {
         Log.d(LOG_TAG, "onPause");
-        super.onPause();
         savePreferences();
+        super.onPause();
     }
 
     @Override
     protected void onStop() {
         Log.d(LOG_TAG, "onStop");
-        super.onStop();
         savePreferences();
+        super.onStop();
     }
 
     private void loadPreferences() {
@@ -68,13 +75,29 @@ public class LoginActivity extends GiftActivity {
     }
 
     private void savePreferences() {
-        Log.d(LOG_TAG, "savePreferences");
         String username = editTextToString(usernameET);
+        long userID = getUserID();
+        Log.d(LOG_TAG, "savePreferences: username " + username + " " + userID);
+        final Context context = this;
         if (username != null && !username.isEmpty()) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor ed = prefs.edit();
             ed.putString(USER_NAME_TAG, username);
             ed.commit();
+        }
+        if (userID == GetId.UNDEFINED_ID) {
+            Observable<User> userResult = service.users().save(new User(userID, username));
+            userResult.forEach(new Action1<User>() {
+                @Override
+                public void call(User user) {
+                    SharedPreferences prefs = PreferenceManager
+                            .getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor ed = prefs.edit();
+                    ed.putLong(USER_ID_TAG, user.getId());
+                    ed.commit();
+                    Log.i(LOG_TAG, Arrays.toString(service.users().findAll().toBlocking().first().toArray()));
+                }
+            });
         }
     }
 }

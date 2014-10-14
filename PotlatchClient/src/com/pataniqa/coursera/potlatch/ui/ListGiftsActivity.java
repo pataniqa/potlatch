@@ -46,7 +46,6 @@ public class ListGiftsActivity extends GiftActivity implements
     private ResultOrder resultOrder = getResultOrder();
     private ResultOrderDirection resultDirection = getResultOrderDirection();
     private long giftChainID = getGiftChainID();
-    private long userID = 0; // FIXME
 
     private SharedPreferences prefs;
 
@@ -257,7 +256,7 @@ public class ListGiftsActivity extends GiftActivity implements
         Observable<ArrayList<GiftResult>> results = null;
         switch (queryType) {
         case USER:
-            results = gifts.queryByUser(titleQuery, userID, resultOrder, resultDirection, hide);
+            results = gifts.queryByUser(titleQuery, getUserID(), resultOrder, resultDirection, hide);
             break;
         case TOP_GIFT_GIVERS:
             results = gifts.queryByTopGiftGivers(titleQuery, resultDirection, hide);

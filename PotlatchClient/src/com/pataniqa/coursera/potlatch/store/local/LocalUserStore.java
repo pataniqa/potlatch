@@ -17,7 +17,8 @@ public class LocalUserStore extends BaseCreateUpdateDelete<User> implements User
         @Override
         public ContentValues getCV(User data) {
             ContentValues rValue = new ContentValues();
-            rValue.put(LocalSchema.Cols.GIFT_CHAIN_NAME, data.getName());
+            rValue.put(LocalSchema.Cols.ID, data.getId());
+            rValue.put(LocalSchema.Cols.USER_NAME, data.getName());
             return rValue;
         }
 

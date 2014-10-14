@@ -66,26 +66,22 @@ abstract class ViewGiftActivity extends GiftActivity {
     private static Uri imagePath = null;
     private static Uri videoPath = null;
     private SharedPreferences prefs;
-    private long userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadPreferences();
     }
 
     @Override
     protected void onPause() {
         Log.d(LOG_TAG, "onPause");
         super.onPause();
-        savePreferences();
     }
 
     @Override
     protected void onStop() {
         Log.d(LOG_TAG, "onStop");
         super.onStop();
-        savePreferences();
     }
 
     public void selectPhotoButtonClicked(View view) {
@@ -177,22 +173,8 @@ abstract class ViewGiftActivity extends GiftActivity {
         }
     }
 
-    void loadPreferences() {
-        Log.d(LOG_TAG, "loadPreferences");
-        prefs = this.getPreferences(MODE_PRIVATE);
-        if (prefs.contains(USER_ID_TAG))
-            userID = prefs.getLong(USER_ID_TAG, 0);
-    }
-
-    void savePreferences() {
-        Log.d(LOG_TAG, "savePreferences");
-        SharedPreferences.Editor ed = prefs.edit();
-        ed.putLong(USER_ID_TAG, 0);
-        ed.commit();
-    }
-
     Observable<Gift> makeGiftDataFromUI(final long key) {
-        String giftChainName = editTextToString(giftChain);
+        final String giftChainName = editTextToString(giftChain);
         Observable<GiftChain> result = null;
         if (giftChains.containsKey(giftChainName)) {
             GiftChain giftChain = new GiftChain(giftChains.get(giftChainName), giftChainName);
@@ -205,7 +187,7 @@ abstract class ViewGiftActivity extends GiftActivity {
             @Override
             public Gift call(GiftChain result) {
                 long giftChainID = result.getId();
-                Log.d(LOG_TAG, "Creating gift");
+                Log.d(LOG_TAG, "Creating gift for giftchain " + result);
                 String title = editTextToString(titleInput);
                 String description = editTextToString(descriptionInput);
                 String videoUri = uriToString(videoPathFinal);
@@ -213,7 +195,7 @@ abstract class ViewGiftActivity extends GiftActivity {
                 Time created = new Time();
                 created.setToNow();
                 return new Gift(key, title, description, videoUri, imageData, new Date(created
-                        .toMillis(false)), userID, giftChainID);
+                        .toMillis(false)), getUserID(), giftChainID);
             }
         });
 

@@ -14,11 +14,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.pataniqa.coursera.potlatch.store.Query;
-import com.pataniqa.coursera.potlatch.store.Retrieve;
 
 @Accessors(fluent = true)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-abstract class BaseQuery<T> implements Query<T>, Retrieve<T, Long> {
+abstract class BaseQuery<T> implements Query<T> {
 
     @Getter private final Creator<T> creator;
     @Getter private final String tableName;
@@ -55,7 +54,7 @@ abstract class BaseQuery<T> implements Query<T>, Retrieve<T, Long> {
     }
 
     @Override
-    public Observable<T> findOne(Long rowID) {
+    public Observable<T> findOne(long rowID) {
         String[] selectionArgs = { String.valueOf(rowID) };
         Observable<ArrayList<T>> results = query(null,
                 LocalSchema.Cols.ID + "= ?",

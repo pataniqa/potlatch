@@ -25,6 +25,9 @@ public interface RemoteUserApi {
     
     @GET(USER_PATH)
     Observable<ArrayList<User>> findAll();
+    
+    @GET(USER_ID_PATH)
+    Observable<User> findOne(@Path(ID) long id);
 
     @PUT(USER_ID_PATH)
     Observable<User> update(@Path(ID) long id, @Body User user);

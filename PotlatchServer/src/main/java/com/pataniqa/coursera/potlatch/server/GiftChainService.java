@@ -35,6 +35,12 @@ public class GiftChainService {
     Collection<ServerGiftChain> findAll() {
         return Lists.newArrayList(giftChains.findAll());
     }
+    
+    @RequestMapping(value = RemoteGiftChainApi.GIFT_CHAIN_ID_PATH, method = RequestMethod.GET)
+    public @ResponseBody
+    ServerGiftChain findOne(@PathVariable(RemoteGiftApi.ID) long id) {
+        return giftChains.findOne(id);
+    }
 
     @RequestMapping(value = RemoteGiftChainApi.GIFT_CHAIN_ID_PATH, method = RequestMethod.PUT)
     public @ResponseBody

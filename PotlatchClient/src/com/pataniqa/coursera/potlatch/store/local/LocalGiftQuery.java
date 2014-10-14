@@ -12,9 +12,11 @@ import android.database.Cursor;
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
 import com.pataniqa.coursera.potlatch.model.TimeUtils;
+import com.pataniqa.coursera.potlatch.store.GiftChains;
 import com.pataniqa.coursera.potlatch.store.Gifts;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
+import com.pataniqa.coursera.potlatch.store.Users;
 
 public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
 
@@ -22,9 +24,9 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
 
     private final LocalGiftStore store;
 
-    public LocalGiftQuery(LocalDatabase helper) {
-        super(new ClientGiftCreator(), LocalSchema.Gift.TABLE_NAME, helper);
-        store = new LocalGiftStore(helper);
+    public LocalGiftQuery(LocalDatabase helper, Users users, GiftChains chains, LocalGiftStore store) {
+        super(new GiftResultCreator(), LocalSchema.Gift.TABLE_NAME, helper);
+        this.store = store;
     }
 
     @Override
@@ -120,12 +122,13 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
         return resultOrderDirection == ResultOrderDirection.ASCENDING ? "ASC" : "DESC";
     }
 
-    private static class ClientGiftCreator extends BaseCreator<GiftResult> implements
+    private static class GiftResultCreator extends BaseCreator<GiftResult> implements
             Creator<GiftResult> {
 
         @Override
         public ContentValues getCV(GiftResult data) {
             ContentValues rValue = new ContentValues();
+            rValue.put(LocalSchema.Cols.ID, data.getId());
             rValue.put(LocalSchema.Cols.TITLE, data.getTitle());
             rValue.put(LocalSchema.Cols.DESCRIPTION, data.getDescription());
             rValue.put(LocalSchema.Cols.VIDEO_URI, data.getVideoUri());

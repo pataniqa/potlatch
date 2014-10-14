@@ -17,11 +17,11 @@ import com.pataniqa.coursera.potlatch.store.GiftMetadata;
 import com.pataniqa.coursera.potlatch.store.Gifts;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
-import com.pataniqa.coursera.potlatch.store.Service;
+import com.pataniqa.coursera.potlatch.store.DataService;
 import com.pataniqa.coursera.potlatch.store.Users;
 
 @Accessors(fluent = true)
-public class RemoteService implements Service {
+public class RemoteService implements DataService {
 
     @Getter private final Gifts gifts;
     @Getter private final GiftChains giftChains;
@@ -62,6 +62,11 @@ public class RemoteService implements Service {
         public Observable<Boolean> delete(long id) {
             return userService.delete(id);
         }
+        
+        @Override
+        public Observable<User> findOne(long id) {
+            return userService.findOne(id);
+        }
     }
 
     class RemoteGiftChainService implements GiftChains {
@@ -82,6 +87,11 @@ public class RemoteService implements Service {
         @Override
         public Observable<Boolean> delete(long id) {
             return giftChainService.delete(id);
+        }
+        
+        @Override
+        public Observable<GiftChain> findOne(long id) {
+            return giftChainService.findOne(id);
         }
 
     }
@@ -120,7 +130,7 @@ public class RemoteService implements Service {
         }
 
         @Override
-        public Observable<GiftResult> findOne(Long id) {
+        public Observable<GiftResult> findOne(long id) {
             return giftService.findOne(id);
         }
 

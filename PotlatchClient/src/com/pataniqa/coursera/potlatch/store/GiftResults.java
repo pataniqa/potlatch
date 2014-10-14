@@ -19,15 +19,14 @@ public class GiftResults {
         return results.map(new Func1<ArrayList<GiftResult>, ArrayList<GiftResult>>() {
             @Override
             public ArrayList<GiftResult> call(ArrayList<GiftResult> results) {
-                //if (!hide)
+                if (!hide)
                 Log.i(LOG_TAG, Arrays.toString(results.toArray()));
-                    return results;
-//                ArrayList<GiftResult> out = new ArrayList<GiftResult>();
-//                for (GiftResult gift : results) {
-//                    if (!gift.isFlagged())
-//                        out.add(gift);
-//                }
-//                return out;
+                ArrayList<GiftResult> out = new ArrayList<GiftResult>();
+                for (GiftResult gift : results) {
+                    if (!gift.isFlagged())
+                        out.add(gift);
+                }
+                return out;
             }
         });
     }

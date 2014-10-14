@@ -39,6 +39,12 @@ public class UserService {
     Collection<ServerUser> findAll() {
         return Lists.newArrayList(users.findAll());
     }
+    
+    @RequestMapping(value = RemoteUserApi.USER_ID_PATH, method = RequestMethod.GET)
+    public @ResponseBody
+    ServerUser findOne(@PathVariable(ID) long id) {
+        return users.findOne(id);
+    }
 
     @RequestMapping(value = RemoteUserApi.USER_ID_PATH, method = RequestMethod.PUT)
     public @ResponseBody

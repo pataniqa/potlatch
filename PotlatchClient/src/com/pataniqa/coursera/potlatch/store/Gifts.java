@@ -7,7 +7,7 @@ import rx.Observable;
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
 
-public interface Gifts extends Query<GiftResult>, Retrieve<GiftResult, Long>, SaveDelete<Gift> {
+public interface Gifts extends Query<GiftResult>, SaveDelete<Gift> {
 
     Observable<ArrayList<GiftResult>> queryByTitle(String title,
             ResultOrder resultOrder,

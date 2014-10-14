@@ -10,26 +10,26 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.pataniqa.coursera.potlatch.store.DataService;
 import com.pataniqa.coursera.potlatch.store.GiftChains;
 import com.pataniqa.coursera.potlatch.store.GiftMetadata;
-import com.pataniqa.coursera.potlatch.store.Gifts;
-import com.pataniqa.coursera.potlatch.store.Service;
 import com.pataniqa.coursera.potlatch.store.Users;
 
 @Accessors(fluent=true)
-public class LocalService implements Service {
+public class LocalService implements DataService {
     
-    @Getter private final Gifts gifts;
+    @Getter private final LocalGiftQuery gifts;
     @Getter private final GiftChains giftChains;
     @Getter private final GiftMetadata giftMetadata;
     @Getter private final Users users;
 
     public LocalService(Context context) {
         LocalDatabase helper = new LocalDatabase(context);
-        gifts = new LocalGiftQuery(helper);
-        giftChains = new LocalGiftChainStore(helper);
-        giftMetadata = new LocalGiftMetadataStore(helper);
         users = new LocalUserStore(helper);
+        giftChains = new LocalGiftChainStore(helper);
+        LocalGiftStore store = new LocalGiftStore(helper, users, giftChains);
+        gifts = new LocalGiftQuery(helper, users, giftChains, store);
+        giftMetadata = new LocalGiftMetadataStore(helper, gifts);
     }
 }
 
@@ -51,6 +51,10 @@ class LocalDatabase extends SQLiteOpenHelper {
                 LocalSchema.GiftChain.TABLE_NAME,
                 LocalSchema.Cols.ID,
                 LocalSchema.GiftChain.COLUMNS);
+        createDatabase(db,
+                LocalSchema.User.TABLE_NAME,
+                LocalSchema.Cols.ID,
+                LocalSchema.User.COLUMNS);
     }
 
     @Override

@@ -14,9 +14,9 @@ public class LocalGiftMetadataStore implements GiftMetadata {
     private final SQLiteOpenHelper helper;
     private final LocalGiftQuery localGiftStore;
 
-    public LocalGiftMetadataStore(LocalDatabase helper) {
+    public LocalGiftMetadataStore(LocalDatabase helper, LocalGiftQuery localGiftStore) {
         this.helper = helper;
-        localGiftStore = new LocalGiftQuery(helper);
+        this.localGiftStore = localGiftStore; 
     }
 
     @Override

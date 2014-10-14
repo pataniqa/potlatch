@@ -3,14 +3,17 @@ package com.pataniqa.coursera.potlatch.ui;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.EditText;
 
+import com.pataniqa.coursera.potlatch.model.GetId;
+import com.pataniqa.coursera.potlatch.store.DataService;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
-import com.pataniqa.coursera.potlatch.store.Service;
 import com.pataniqa.coursera.potlatch.store.local.LocalService;
 
 /**
@@ -39,7 +42,7 @@ abstract class GiftActivity extends Activity {
 
     private static final String LOG_TAG = GiftActivity.class.getCanonicalName();
 
-    Service service;
+    protected DataService service;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,5 +109,10 @@ abstract class GiftActivity extends Activity {
 
     static Uri stringToUri(String s) {
         return !s.isEmpty() ? Uri.parse(s) : null;
+    }
+    
+    protected long getUserID() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        return prefs.getLong(USER_ID_TAG, GetId.UNDEFINED_ID);
     }
 }

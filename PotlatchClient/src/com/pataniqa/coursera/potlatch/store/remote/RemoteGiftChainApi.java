@@ -25,6 +25,9 @@ public interface RemoteGiftChainApi {
 
     @GET(GIFT_CHAIN_PATH)
     Observable<ArrayList<GiftChain>> findAll();
+    
+    @GET(GIFT_CHAIN_ID_PATH)
+    Observable<GiftChain> findOne(@Path(ID) long id);
 
     @PUT(GIFT_CHAIN_ID_PATH)
     Observable<GiftChain> update(@Path(ID) long id, @Body GiftChain data);
