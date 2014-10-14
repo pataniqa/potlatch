@@ -1,9 +1,13 @@
+// http://tools.android.com/tech-docs/new-build-system/version-compatibility
+println GradleVersion.current().prettyPrint()
+assert gradle.gradleVersion >= "1.10" // android plugin 0.10 requires Gradle 1.10, 1.11, 1.12
+
 buildscript {
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.8.+'
+        classpath 'com.android.tools.build:gradle:0.12+'
     }
 }
 
@@ -13,36 +17,49 @@ apply plugin: 'eclipse'
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
+configurations {
+    lombok
+}
+
+// Add the lombok configuration to all of the compile classpaths
+sourceSets.each{ sourceSet -> 
+    sourceSet.compileClasspath += configurations.lombok
+    sourceSet.ext.delombok = new File(buildDir, "generated-src/delombok/" + sourceSet.name);
+}
+
 repositories {
     mavenCentral()
+    flatDir {
+       dirs 'libs'
+    }
 }
 
 android {
+  buildToolsVersion "19.1.0"
 	compileSdkVersion 19
-	buildToolsVersion "19.0.0"
 
-sourceSets {
-		main {
-			manifest {
-				srcFile 'AndroidManifest.xml'
-			}
-			java {
-				srcDir 'src'
-			}
-			res {
-				srcDir 'res'
-			}
-			assets {
-				srcDir 'assets'
-			}
-			resources {
-				srcDir 'src'
-			}
-			aidl {
-				srcDir 'src'
-			}
-		}
-	}
+  sourceSets {
+		  main {
+			  manifest {
+				  srcFile 'AndroidManifest.xml'
+			  }
+			  java {
+				  srcDir 'src'
+			  }
+			  res {
+				  srcDir 'res'
+			  }
+			  assets {
+				  srcDir 'assets'
+			  }
+			  resources {
+				  srcDir 'src'
+			  }
+			  aidl {
+				  srcDir 'src'
+			  }
+		  }
+	  }
 
     defaultConfig {
         minSdkVersion 14
@@ -51,19 +68,33 @@ sourceSets {
         versionName "1.0"
     }
 
-      lintOptions {
-          abortOnError false
-      }
+    lintOptions {
+        disable 'InvalidPackage'
+    }
 
+    packagingOptions {
+      exclude 'META-INF/services/javax.annotation.processing.Processor' 
+	    exclude 'META-INF/LICENSE'
+      exclude 'META-INF/LICENSE.txt'
+      exclude 'META-INF/NOTICE.txt'
+      exclude 'META-INF/NOTICE'
+    }
 }
 
+evaluationDependsOn(":PotlatchCommon")
+
 dependencies {
+    compile project(":PotlatchCommon")
+
     compile files("libs/android-support-v4.jar")
-    compile 'com.google.guava:guava:17.0'
-    compile 'com.squareup.retrofit:retrofit:1.6.0'
-    compile 'com.jakewharton:butterknife:5.1.2'
-    compile 'org.slf4j:slf4j-log4j12:1.7.5'
-    compile 'commons-io:commons-io:2.4'
-    compile 'com.google.code.gson:gson:2.3'
     compile("com.netflix.rxjava:rxjava-android:0.20.5")
+    compile 'com.jakewharton:butterknife:5.1.2'
+
+    provided 'org.projectlombok:lombok:+'
+
+    //compile 'com.google.guava:guava:17.0'
+    //compile 'com.squareup.retrofit:retrofit:1.6.0'
+    //compile 'org.slf4j:slf4j-log4j12:1.7.5'
+    //compile 'commons-io:commons-io:2.4'
+    //compile 'com.google.code.gson:gson:2.3'
 }

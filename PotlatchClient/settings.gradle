@@ -1,0 +1,2 @@
+include ':PotlatchCommon'
+project(':PotlatchCommon').projectDir = new File(settingsDir, '../PotlatchCommon')

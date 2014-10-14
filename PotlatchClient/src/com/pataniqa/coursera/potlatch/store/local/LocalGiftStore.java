@@ -1,11 +1,9 @@
 package com.pataniqa.coursera.potlatch.store.local;
 
-import java.util.Arrays;
 import java.util.Date;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.util.Log;
 
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.TimeUtils;
