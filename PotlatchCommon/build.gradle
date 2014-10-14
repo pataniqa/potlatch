@@ -1,0 +1,56 @@
+configurations {
+    lombok
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'maven-publish'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+sourceSets {
+    main {
+        compileClasspath += configurations.lombok
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url "http://repo.spring.io/libs-snapshot" }
+    maven { url "http://maven.springframework.org/milestone" }
+    
+    flatDir {
+    	dirs 'lib'
+    }
+}
+
+dependencies {
+    
+    compile("org.apache.commons:commons-lang3:3.3.2")
+    compile("org.apache.httpcomponents:httpclient:4.3.4")
+    compile("com.squareup.retrofit:retrofit:1.6.0")
+    compile("commons-io:commons-io:2.4")
+    compile("com.netflix.rxjava:rxjava-android:0.20.5")
+    compile('com.fasterxml.jackson.core:jackson-core:2.4.3')
+    compile('com.fasterxml.jackson.core:jackson-databind:2.4.3')
+    
+    lombok 'org.projectlombok:lombok:+'
+}
+
+publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId 'org.pataniqa.coursera'
+                artifactId 'potlatch-common'
+                version '1.0'
+
+                from components.java
+            }
+        }
+    }
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.11'
+}
