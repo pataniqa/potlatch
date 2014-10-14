@@ -5,19 +5,22 @@ import java.util.ArrayList;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import retrofit.RestAdapter;
+import retrofit.RestAdapter.LogLevel;
+import retrofit.client.ApacheClient;
 import rx.Observable;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
 import com.pataniqa.coursera.potlatch.model.User;
+import com.pataniqa.coursera.potlatch.store.DataService;
 import com.pataniqa.coursera.potlatch.store.GiftChains;
 import com.pataniqa.coursera.potlatch.store.GiftMetadata;
 import com.pataniqa.coursera.potlatch.store.Gifts;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
-import com.pataniqa.coursera.potlatch.store.DataService;
 import com.pataniqa.coursera.potlatch.store.Users;
 
 @Accessors(fluent = true)
@@ -32,8 +35,20 @@ public class RemoteService implements DataService {
     private final RemoteGiftChainApi giftChainService;
     private final RemoteUserApi userService;
 
-    public RemoteService(String endpoint) {
-        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(endpoint).build();
+    public RemoteService(String endpoint, String username, String password, String clientId) {
+        JacksonConverter converter = new JacksonConverter(new ObjectMapper());
+        
+        RestAdapter restAdapter = new SecuredRestBuilder()
+        .setClient(new ApacheClient(UnsafeHttpsClient.createUnsafeClient()))
+        .setEndpoint(endpoint)
+        .loginUrl(endpoint + RemoteGiftApi.TOKEN_PATH)
+        .setLogLevel(LogLevel.FULL)
+        .username(username)
+        .password(password)
+        .clientId(clientId)
+        .setConverter(converter)
+        .build();
+
         giftService = restAdapter.create(RemoteGiftApi.class);
         giftChainService = restAdapter.create(RemoteGiftChainApi.class);
         userService = restAdapter.create(RemoteUserApi.class);

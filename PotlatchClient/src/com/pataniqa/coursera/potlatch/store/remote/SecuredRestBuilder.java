@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
@@ -51,29 +52,21 @@ import com.google.gson.JsonObject;
  */
 @Accessors(fluent = true)
 public class SecuredRestBuilder extends RestAdapter.Builder {
+    
+    @Setter private String username;
+    @Setter private String password;
+    @Setter private String loginUrl;
+    @Setter private String clientId;
+    @Setter private String clientSecret = "";
+    private Client client;
 
+    @RequiredArgsConstructor
     private class OAuthHandler implements RequestInterceptor {
 
-        private boolean loggedIn;
-        private Client client;
-        private String tokenIssuingEndpoint;
-        private String username;
-        private String password;
-        private String clientId;
-        private String clientSecret;
+        private final String tokenIssuingEndpoint;
         private String accessToken;
-
-        public OAuthHandler(Client client, String tokenIssuingEndpoint, String username,
-                String password, String clientId, String clientSecret) {
-            super();
-            this.client = client;
-            this.tokenIssuingEndpoint = tokenIssuingEndpoint;
-            this.username = username;
-            this.password = password;
-            this.clientId = clientId;
-            this.clientSecret = clientSecret;
-        }
-
+        private boolean loggedIn;
+        
         /**
          * Every time a method on the client interface is invoked, this method is
          * going to get called. The method checks if the client has previously obtained
@@ -154,15 +147,7 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
                 request.addHeader("Authorization", "Bearer " + accessToken );
             }
         }
-
     }
-
-    @Setter private String username;
-    @Setter private String password;
-    @Setter private String loginUrl;
-    @Setter private String clientId;
-    @Setter private String clientSecret = "";
-    private Client client;
     
     @Override
     public SecuredRestBuilder setEndpoint(String endpoint) {
@@ -237,7 +222,7 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
         if (client == null) {
             client = new OkClient();
         }
-        OAuthHandler hdlr = new OAuthHandler(client, loginUrl, username, password, clientId, clientSecret);
+        OAuthHandler hdlr = new OAuthHandler(loginUrl);
         setRequestInterceptor(hdlr);
 
         return super.build();

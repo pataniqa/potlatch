@@ -1,4 +1,4 @@
-package com.pataniqa.coursera.potlatch.server;
+package com.pataniqa.coursera.potlatch.store.remote;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;

@@ -48,7 +48,7 @@ public class LoginActivity extends GiftActivity {
         String username = editTextToString(usernameET);
         String password = editTextToString(passwordET);
         savePreferences();
-        if (!username.isEmpty())
+        if (!username.isEmpty() && !password.isEmpty())
             openListGiftActivity();
     }
 
