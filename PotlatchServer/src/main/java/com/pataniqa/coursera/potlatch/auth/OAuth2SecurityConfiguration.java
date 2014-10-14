@@ -72,7 +72,7 @@ public class OAuth2SecurityConfiguration {
     
     /**
      *  This method is used to configure who is allowed to access which parts of our
-     *  resource server (i.e. the "/video" endpoint) 
+     *  resource server
      */
     @Configuration
     @EnableResourceServer
@@ -86,10 +86,7 @@ public class OAuth2SecurityConfiguration {
             
             http.csrf().disable();
             
-            http
-            .authorizeRequests()
-                .antMatchers("/oauth/token").anonymous();
-            
+            http.authorizeRequests().antMatchers("/oauth/token").anonymous();
             
             // If you were going to reuse this class in another
             // application, this is one of the key sections that you
@@ -131,8 +128,10 @@ public class OAuth2SecurityConfiguration {
         private UserRepository userRepo;
         
         private final List<UserDetails> users = Arrays.asList(
-                User.create("user0", "pass", "ADMIN", "USER"),
-                User.create("user1", "pass", "USER"));
+                User.create("mark", "one", "USER"),
+                User.create("john", "two", "USER"),
+                User.create("sarah", "three", "USER"),
+                User.create("oliva", "four", "USER"));
 
         /**
          * 
@@ -151,7 +150,6 @@ public class OAuth2SecurityConfiguration {
             // If you were going to reuse this class in another
             // application, this is one of the key sections that you
             // would want to change
-            
             
             // Create a service that has the credentials for all our clients
             ClientDetailsService csvc = new InMemoryClientDetailsServiceBuilder()

@@ -7,14 +7,24 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.pataniqa.coursera.potlatch.model.*
 import com.pataniqa.coursera.potlatch.store.*
 import com.pataniqa.coursera.potlatch.store.remote.*
+import retrofit.mime.TypedFile
+import org.apache.commons.io.*
+import spock.lang.Specification
+import org.springframework.test.context.web.*
+import org.springframework.boot.test.*
+import org.springframework.test.context.*
 
 import rx.Observable
 
-class ApiSpec extends spock.lang.Specification {
+@ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = Application.class)
+@SpringApplicationConfiguration(classes = Application.class)
+@WebAppConfiguration
+@IntegrationTest
+class ApiSpec extends Specification {
     
     def TEST_URL = "https://localhost:8443"
-    def USERNAME1 = "user0"
-    def PASSWORD = "pass"
+    def USERNAME1 = "mark"
+    def PASSWORD = "one"
     def CLIENT_ID = "mobile"
 
     def converter = new JacksonConverter(new ObjectMapper())
@@ -23,7 +33,7 @@ class ApiSpec extends spock.lang.Specification {
     .setClient(new ApacheClient(UnsafeHttpsClient.createUnsafeClient()))
     .setEndpoint(TEST_URL)
     .loginUrl(TEST_URL + RemoteGiftApi.TOKEN_PATH)
-    .setLogLevel(LogLevel.FULL)
+    .setLogLevel(LogLevel.NONE)
     .username(USERNAME1)
     .password(PASSWORD)
     .clientId(CLIENT_ID)
@@ -107,18 +117,13 @@ class ApiSpec extends spock.lang.Specification {
 
         then: "there should be one less user"
         numberOfUsers() == numberOfUsersBefore - 1
-        
     }
-    
+
     def "Create, retrieve, update and delete a gift"() {
-        
-        println(findAllGift())
         
         when: "a gift chain is created"
         def giftChain = insertChain(new GiftChain("some-random-giftchain-" + new Random().nextLong()))
         
-        println(numberOfGifts())
-            
         and: "a gift is created"
         def numberOfGiftsBefore = numberOfGifts()
         def title = "some-random-gift-" + new Random().nextLong()
@@ -316,13 +321,79 @@ class ApiSpec extends spock.lang.Specification {
     }
     
     def "image upload"() {
-//        ResourceStatus setImageData(@Path(ID_PARAMETER) long id, @Part(DATA_PARAMETER) TypedFile imageData)
-//        Response getImageData(@Path(ID_PARAMETER) long id)
+        when: "a gift chain is created"
+        def giftChain = insertChain(new GiftChain("some-random-giftchain-" + new Random().nextLong()))
+        
+        and: "a gift is created"
+        def numberOfGiftsBefore = numberOfGifts()
+        def title = "some-random-gift-" + new Random().nextLong()
+        def description = "some-random-description-" + new Random().nextLong()
+        def created = new Date()
+        def userId = findAllUser().get(0).getId()
+        def giftChainId = giftChain.getId()
+        
+        def gift = new Gift(GetId.UNDEFINED_ID, title, description, null, null, created, userId, giftChainId)
+        def newGift = insertGift(gift)
+        
+        and: "an image is uploaded"
+        def file = new File("src/test/resources/background.jpg")
+        def imageData = new TypedFile("image/jpg", file)
+        def expected = FileUtils.readFileToByteArray(file)
+        
+        and: "the image is downloaded"
+        def setResponse = giftSvcUser.setImageData(newGift.getId(), imageData).toBlocking().last()
+        def getResponse = IOUtils.toByteArray(giftSvcUser.getImageData(newGift.getId()).toBlocking().last().getBody().in())
+        
+        then: "they should match"
+        Arrays.equals(expected, getResponse)
+        
+        when: "a gift is deleted"
+        numberOfGiftsBefore = numberOfGifts()
+        deleteGift(newGift)
+
+        then: "there should be one less gift"
+        numberOfGifts() == numberOfGiftsBefore - 1
+        
+        then: "a giftchain is deleted"
+        deleteChain(giftChain)
     }
     
     def "video upload"() {
-    //        ResourceStatus setVideoData(@Path(ID_PARAMETER) long id, @Part(DATA_PARAMETER) TypedFile imageData)
-    //        Response getVideoData(@Path(ID_PARAMETER) long id)
+        when: "a gift chain is created"
+        def giftChain = insertChain(new GiftChain("some-random-giftchain-" + new Random().nextLong()))
+        
+        and: "a gift is created"
+        def numberOfGiftsBefore = numberOfGifts()
+        def title = "some-random-gift-" + new Random().nextLong()
+        def description = "some-random-description-" + new Random().nextLong()
+        def created = new Date()
+        def userId = findAllUser().get(0).getId()
+        def giftChainId = giftChain.getId()
+        
+        def gift = new Gift(GetId.UNDEFINED_ID, title, description, null, null, created, userId, giftChainId)
+        def newGift = insertGift(gift)
+        
+        and: "an image is uploaded"
+        def file = new File("src/test/resources/background.jpg")
+        def imageData = new TypedFile("image/jpg", file)
+        def expected = FileUtils.readFileToByteArray(file)
+        
+        and: "the image is downloaded"
+        def setResponse = giftSvcUser.setVideoData(newGift.getId(), imageData).toBlocking().last()
+        def getResponse = IOUtils.toByteArray(giftSvcUser.getVideoData(newGift.getId()).toBlocking().last().getBody().in())
+        
+        then: "they should match"
+        Arrays.equals(expected, getResponse)
+        
+        when: "a gift is deleted"
+        numberOfGiftsBefore = numberOfGifts()
+        deleteGift(newGift)
+
+        then: "there should be one less gift"
+        numberOfGifts() == numberOfGiftsBefore - 1
+        
+        then: "a giftchain is deleted"
+        deleteChain(giftChain)
         }
 }
 

@@ -3,7 +3,6 @@ package com.pataniqa.coursera.potlatch.server;
 import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.*;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,8 +36,6 @@ import com.pataniqa.coursera.potlatch.server.repository.GiftRepository;
 import com.pataniqa.coursera.potlatch.server.repository.UserRepository;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
-import com.pataniqa.coursera.potlatch.store.remote.ResourceStatus;
-import com.pataniqa.coursera.potlatch.store.remote.ResourceStatus.ResourceState;
 
 @Controller
 public class GiftService {
@@ -50,12 +47,6 @@ public class GiftService {
     @Autowired private GiftChainRepository giftChains;
 
     @Autowired private GiftMetadataRepository giftMetadata;
-
-    // TODO - should be injected
-    private FileManager<ServerGift> imageManager = new FileManager<ServerGift>("image", "jpg");
-
-    // TODO - should be injected
-    private FileManager<ServerGift> videoManager = new FileManager<ServerGift>("video", "mpg");
 
     @RequestMapping(value = GIFT_PATH, method = RequestMethod.POST)
     public @ResponseBody
@@ -234,47 +225,45 @@ public class GiftService {
 
     @RequestMapping(value = GIFT_VIDEO_PATH, method = RequestMethod.POST)
     public @ResponseBody
-    ResourceStatus setVideoData(@PathVariable(ID) long id,
+    boolean setVideoData(@PathVariable(ID) long id,
             @RequestParam(DATA) MultipartFile videoData) throws IOException {
-        setData(id, videoData, videoManager);
-        return new ResourceStatus(ResourceState.READY);
+        setData("video", "mp4", id, videoData);
+        return true;
     }
 
     @RequestMapping(value = GIFT_VIDEO_PATH, method = RequestMethod.GET)
     public void getVideoData(@PathVariable(ID) long id, HttpServletResponse response)
             throws IOException {
-        getData(id, response, videoManager);
+        getData("video", "mp4", id, response);
     }
 
     @RequestMapping(value = GIFT_IMAGE_PATH, method = RequestMethod.POST)
     public @ResponseBody
-    ResourceStatus setImageData(@PathVariable(ID) long id,
+    boolean setImageData(@PathVariable(ID) long id,
             @RequestParam(DATA) MultipartFile imageData) throws IOException {
-        setData(id, imageData, imageManager);
-        return new ResourceStatus(ResourceState.READY);
+        setData("image", "png", id, imageData);
+        return true;
     }
 
     @RequestMapping(value = GIFT_IMAGE_PATH, method = RequestMethod.GET)
     public void getImageData(@PathVariable(ID) long id, HttpServletResponse response)
             throws IOException {
-        getData(id, response, imageManager);
+        getData("image", "png", id, response);
     }
 
-    private Path setData(long id, MultipartFile data, FileManager<ServerGift> manager)
+    private void setData(String dir, String extension, long id, MultipartFile data)
             throws IOException {
         if (gifts.exists(id)) {
-            ServerGift gift = gifts.findOne(id);
-            return manager.saveData(gift, data.getInputStream());
+            ServerFileManager.saveData(dir, extension, id, data.getInputStream());
         } else
             throw new ResourceNotFoundException();
     }
 
-    private void getData(long id, HttpServletResponse response, FileManager<ServerGift> manager)
+    private void getData(String dir, String extension, long id, HttpServletResponse response)
             throws IOException {
         if (gifts.exists(id)) {
-            ServerGift gift = gifts.findOne(id);
-            if (manager.hasData(gift)) {
-                manager.getData(gift, response.getOutputStream());
+            if (ServerFileManager.hasData(dir, extension, id)) {
+                ServerFileManager.getData(dir, extension, id, response.getOutputStream());
             } else
                 throw new ResourceNotFoundException();
         } else

@@ -98,12 +98,12 @@ public interface RemoteGiftApi {
             @Query(DIRECTION) ResultOrderDirection direction,
             @Query(HIDE) boolean hide);
 
-    static final String GIFT_IMAGE_PATH = "/{id}/image";
+    static final String GIFT_IMAGE_PATH = "/gift/{id}/image";
     static final String DATA = "data";
 
     @Multipart
     @POST(GIFT_IMAGE_PATH)
-    Observable<ResourceStatus> setImageData(@Path(ID) long id,
+    Observable<Boolean> setImageData(@Path(ID) long id,
             @Part(DATA) TypedFile imageData);
 
     @Streaming
@@ -114,7 +114,7 @@ public interface RemoteGiftApi {
 
     @Multipart
     @POST(GIFT_VIDEO_PATH)
-    Observable<ResourceStatus> setVideoData(@Path(ID) long id,
+    Observable<Boolean> setVideoData(@Path(ID) long id,
             @Part(DATA) TypedFile imageData);
 
     @Streaming
