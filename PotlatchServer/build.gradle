@@ -20,6 +20,7 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 apply plugin: 'war'
+apply plugin:'groovy'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -35,6 +36,8 @@ sourceSets {
     }
 }
 
+evaluationDependsOn(":PotlatchCommon")
+
 repositories {
     mavenCentral()
     maven { url "http://repo.spring.io/libs-snapshot" }
@@ -46,6 +49,7 @@ repositories {
 }
 
 dependencies {
+    compile project(":PotlatchCommon")
 
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     
@@ -64,18 +68,13 @@ dependencies {
     
     compile("org.hsqldb:hsqldb")
     
-    compile("org.apache.commons:commons-lang3:3.3.2")
-    compile("org.apache.httpcomponents:httpclient:4.3.4")
-    compile("com.squareup.retrofit:retrofit:1.6.0")
-    compile("commons-io:commons-io:2.4")
-    
     compile("com.github.davidmarquis:fluent-interface-proxy:1.3.0")
+    compile('com.google.guava:guava:18.0')
+
     
     testCompile("junit:junit")
     testCompile("org.spockframework:spock-core:0.7-groovy-2.0")
     testCompile("org.spockframework:spock-spring:0.7-groovy-2.0")
-
-    compile("org.pataniqa.coursera:potlatch-common:+")
 
     lombok 'org.projectlombok:lombok:+'
 }
