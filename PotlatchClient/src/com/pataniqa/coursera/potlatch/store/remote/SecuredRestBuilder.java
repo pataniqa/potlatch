@@ -1,6 +1,7 @@
 package com.pataniqa.coursera.potlatch.store.remote;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -26,9 +27,10 @@ import retrofit.client.Response;
 import retrofit.converter.Converter;
 import retrofit.mime.FormUrlEncodedTypedOutput;
 
-import com.google.common.io.BaseEncoding;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.apache.commons.codec.binary.Base64;
 
 /**
  * A Builder class for a Retrofit REST Adapter. Extends the default implementation by providing logic to
@@ -106,7 +108,8 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
                     // the "Authorization" header and the value is set to "Basic " 
                     // concatenated with the Base64 client_id:client_secret value described
                     // above.
-                    String base64Auth = BaseEncoding.base64().encode(new String(clientId + ":" + clientSecret).getBytes());
+                    String clientString = clientId + ":" + clientSecret;
+                    String base64Auth = new String(Base64.encodeBase64(clientString.getBytes()));
                     // Add the basic authorization header
                     List<Header> headers = new ArrayList<Header>();
                     headers.add(new Header("Authorization", "Basic " + base64Auth));
@@ -128,7 +131,11 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
                         
                         // Extract the access_token (bearer token) from the response so that we
                         // can add it to future requests.
-                        accessToken = new Gson().fromJson(body, JsonObject.class).get("access_token").getAsString();
+                        ObjectMapper mapper = new ObjectMapper();
+                        TypeReference<HashMap<String, String>> typeRef = new TypeReference<HashMap<String, String>>() {
+                        };
+                        HashMap<String, String> o = mapper.readValue(body, typeRef);
+                        accessToken = o.get("access_token");
                         
                         // Add the access_token to this request as the "Authorization"
                         // header.
