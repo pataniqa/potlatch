@@ -75,6 +75,7 @@ dependencies {
     testCompile("junit:junit")
     testCompile("org.spockframework:spock-core:0.7-groovy-2.0")
     testCompile("org.spockframework:spock-spring:0.7-groovy-2.0")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
 
     lombok 'org.projectlombok:lombok:+'
 }
@@ -82,3 +83,10 @@ dependencies {
 task wrapper(type: Wrapper) {
     gradleVersion = '1.11'
 }
+
+task integration(type: Test) {
+    testClassesDir = sourceSets.test.output.classesDir
+    classpath = sourceSets.test.runtimeClasspath
+}
+
+check.dependsOn integration
