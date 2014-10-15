@@ -1,5 +1,6 @@
 package com.pataniqa.coursera.potlatch.ui;
 
+import java.io.File;
 import java.util.List;
 
 import android.content.Context;
@@ -113,11 +114,15 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
            Log.i(LOG_TAG, gift.getVideoUri() + " " + gift.getImageUri() + " " + gift.getGiftChainName());
 
             if (gift.getVideoUri() != null && !gift.getVideoUri().isEmpty()) {
-                Bitmap thumb = ThumbnailUtils.createVideoThumbnail(gift.getVideoUri(),
+                File videoFile = new File (Uri.parse(gift.getVideoUri()).getPath());
+                Bitmap thumb = ThumbnailUtils.createVideoThumbnail(videoFile.getAbsolutePath(),
                         MediaStore.Images.Thumbnails.MICRO_KIND);
                 image.setImageBitmap(thumb);
             } else {
                 image.setImageURI(Uri.parse(gift.getImageUri()));
+                File imageFile = new File( Uri.parse(gift.getImageUri()).getPath());
+                float rotation = ImageUtils.getPhotoOrientation(view.getContext(), imageFile);
+                image.setRotation(rotation);
             }
             image.setVisibility(View.VISIBLE);
             image.setScaleType(ScaleType.FIT_CENTER);

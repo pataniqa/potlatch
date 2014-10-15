@@ -28,7 +28,7 @@ public class CreateGiftActivity extends ViewGiftActivity {
         // Setup the UI
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getActionBar().hide();
-        setContentView(R.layout.create_gift_activity);
+        setContentView(R.layout.view_gift);
         ButterKnife.inject(this);
 
         initializeSpinner();

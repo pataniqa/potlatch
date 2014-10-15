@@ -1,107 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/gift_create_relative_layout2"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gift_create_scroll_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal" >
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"
+    android:layout_margin="10dp" >
 
-    <ViewSwitcher
-        android:id="@+id/view_gift_viewswitcher"
+    <RelativeLayout
+        android:id="@+id/gift_create_relative_layout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true" >
-
-        <ImageView
-            android:id="@+id/gift_create_img"
-            android:layout_width="250dp"
-            android:layout_height="150dp"
-            android:layout_margin="20dp"
-            android:background="#80ffffff"
-            android:contentDescription="@string/gift_image_description"
-            android:scaleType="center"
-            android:src="@drawable/ic_fa_image" />
-
-        <VideoView
-            android:id="@+id/gift_create_video"
-            android:layout_width="250dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="20dp"
-            android:contentDescription="@string/gift_video_description"
-            android:scaleType="center" />
-    </ViewSwitcher>
-
-    <LinearLayout
-        android:id="@+id/gift_create_linear_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/view_gift_viewswitcher"
-        android:layout_centerHorizontal="true"
         android:orientation="horizontal" >
 
-        <ImageButton
-            android:id="@+id/gift_create_select_image_button"
+        <ViewSwitcher
+            android:id="@+id/view_gift_viewswitcher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" >
+
+            <ImageView
+                android:id="@+id/gift_create_img"
+                android:layout_width="250dp"
+                android:layout_height="150dp"
+                android:layout_margin="20dp"
+                android:background="#80ffffff"
+                android:contentDescription="@string/gift_image_description"
+                android:scaleType="center"
+                android:src="@drawable/ic_fa_image" />
+
+            <VideoView
+                android:id="@+id/gift_create_video"
+                android:layout_width="250dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="20dp"
+                android:contentDescription="@string/gift_video_description"
+                android:scaleType="center" />
+        </ViewSwitcher>
+
+        <LinearLayout
+            android:id="@+id/gift_create_linear_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/select_photo"
-            android:onClick="selectPhotoButtonClicked"
-            android:src="@drawable/ic_fa_folder" />
+            android:layout_below="@id/view_gift_viewswitcher"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal" >
 
-        <ImageButton
-            android:id="@+id/gift_new_image_button"
-            android:layout_width="wrap_content"
+            <ImageButton
+                android:id="@+id/gift_create_select_image_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/select_photo"
+                android:onClick="selectPhotoButtonClicked"
+                android:src="@drawable/ic_fa_folder" />
+
+            <ImageButton
+                android:id="@+id/gift_new_image_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/add_photo"
+                android:onClick="addPhotoButtonClicked"
+                android:src="@drawable/ic_action_camera" />
+
+            <ImageButton
+                android:id="@+id/gift_new_video_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/add_video"
+                android:onClick="addVideoButtonClicked"
+                android:src="@drawable/ic_action_video" />
+
+            <ImageButton
+                android:id="@+id/gift_create_save_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/create"
+                android:onClick="createButtonClicked"
+                android:src="@drawable/ic_action_accept"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/gift_edit_delete_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/delete"
+                android:onClick="deleteButtonClicked"
+                android:src="@drawable/ic_action_discard"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <AutoCompleteTextView
+            android:id="@+id/gift_create_gift_chain"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/add_photo"
-            android:onClick="addPhotoButtonClicked"
-            android:src="@drawable/ic_action_camera" />
+            android:layout_below="@+id/gift_create_linear_layout"
+            android:hint="@string/gift_chain_name_hint" />
 
-        <ImageButton
-            android:id="@+id/gift_new_video_button"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/gift_create_title"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/add_video"
-            android:onClick="addVideoButtonClicked"
-            android:src="@drawable/ic_action_video" />
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/gift_create_gift_chain"
+            android:hint="@string/title"
+            android:inputType="text"
+            android:text="@string/empty_default_value" />
 
-        <ImageButton
-            android:id="@+id/gift_create_save_button"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/gift_create_description"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/create"
-            android:onClick="createButtonClicked"
-            android:src="@drawable/ic_action_accept" />
-    </LinearLayout>
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/gift_create_title"
+            android:gravity="top|left"
+            android:hint="@string/description"
+            android:inputType="textMultiLine"
+            android:lines="2"
+            android:maxLines="10"
+            android:minLines="1"
+            android:scrollbars="vertical"
+            android:text="@string/empty_default_value" />
+    </RelativeLayout>
 
-    <AutoCompleteTextView
-        android:id="@+id/gift_create_gift_chain"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/gift_create_linear_layout"
-        android:hint="@string/gift_chain_name_hint" />
-
-    <EditText
-        android:id="@+id/gift_create_title"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/gift_create_gift_chain"
-        android:hint="@string/title"
-        android:inputType="text"
-        android:text="@string/empty_default_value" />
-
-    <EditText
-        android:id="@+id/gift_create_description"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/gift_create_title"
-        android:gravity="top|left"
-        android:hint="@string/description"
-        android:inputType="textMultiLine"
-        android:lines="2"
-        android:maxLines="10"
-        android:minLines="1"
-        android:scrollbars="vertical"
-        android:text="@string/empty_default_value" />
-
-</RelativeLayout>
+</ScrollView>

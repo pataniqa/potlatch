@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.MediaController;
@@ -57,6 +58,8 @@ abstract class ViewGiftActivity extends GiftActivity {
     @InjectView(R.id.view_gift_viewswitcher) ViewSwitcher viewSwitcher;
     @InjectView(R.id.gift_create_video) VideoView video;
     @InjectView(R.id.gift_create_gift_chain) AutoCompleteTextView giftChain;
+    @InjectView(R.id.gift_create_save_button) ImageButton saveButton;
+    @InjectView(R.id.gift_edit_delete_button) ImageButton deleteButton;
 
     protected Uri imagePathFinal = null;
     protected Uri videoPathFinal = null;
@@ -131,6 +134,9 @@ abstract class ViewGiftActivity extends GiftActivity {
                     image.setVisibility(View.VISIBLE);
                     image.setImageBitmap(bmp);
                     image.setScaleType(ScaleType.FIT_CENTER);
+                    float rotation = ImageUtils.getPhotoOrientation(this, imageFile);
+                    image.setRotation(rotation);
+                    saveButton.setVisibility(View.VISIBLE);
                 } else if (resultCode != CreateGiftActivity.RESULT_CANCELED) {
                     Log.e(LOG_TAG, "Image capture failed.");
                 }
@@ -145,11 +151,15 @@ abstract class ViewGiftActivity extends GiftActivity {
             cursor.moveToFirst();
             String picturePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
             cursor.close();
-            imagePathFinal = Uri.fromFile(new File(picturePath));
+            File imageFile = new File(picturePath);
+            imagePathFinal = Uri.fromFile(imageFile);
             Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
             image.setVisibility(View.VISIBLE);
             image.setImageBitmap(thumbnail);
             image.setScaleType(ScaleType.FIT_CENTER);
+            float rotation = ImageUtils.getPhotoOrientation(this, imageFile);
+            image.setRotation(rotation);
+            saveButton.setVisibility(View.VISIBLE);
             break;
         case CAMERA_VIDEO:
             if (resultCode == Activity.RESULT_OK) {
@@ -161,6 +171,7 @@ abstract class ViewGiftActivity extends GiftActivity {
                 mediaController.setAnchorView(video);
                 video.setMediaController(mediaController);
                 video.setVideoURI(videoPathFinal);
+                saveButton.setVisibility(View.VISIBLE);
             } else if (resultCode != CreateGiftActivity.RESULT_CANCELED) {
                 Log.e(LOG_TAG, "Video capture failed.");
             }

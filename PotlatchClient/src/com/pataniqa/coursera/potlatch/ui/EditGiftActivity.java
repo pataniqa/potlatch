@@ -1,5 +1,7 @@
 package com.pataniqa.coursera.potlatch.ui;
 
+import java.io.File;
+
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -29,10 +31,12 @@ public class EditGiftActivity extends ViewGiftActivity {
         // Setup the UI
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getActionBar().hide();
-        setContentView(R.layout.edit_gift_activity);
+        setContentView(R.layout.view_gift);
         ButterKnife.inject(this);
 
         initializeSpinner();
+        saveButton.setVisibility(View.VISIBLE);
+        deleteButton.setVisibility(View.VISIBLE);
 
         // set the EditTexts to this Gift's Values
         Observable<Boolean> set = setValuesToDefault();
@@ -70,6 +74,9 @@ public class EditGiftActivity extends ViewGiftActivity {
                         image.setImageURI(Uri.parse(gift.getImageUri()));
                         image.setVisibility(View.VISIBLE);
                         image.setScaleType(ScaleType.FIT_CENTER);
+                        File imageFile = new File( Uri.parse(gift.getImageUri()).getPath());
+                        float rotation = ImageUtils.getPhotoOrientation(context, imageFile);
+                        image.setRotation(rotation);
                     }
 
                     if (gift.getGiftChainName() != null && !gift.getGiftChainName().isEmpty())
