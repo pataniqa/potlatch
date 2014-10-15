@@ -38,7 +38,7 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
         if (title == null || title.isEmpty())
             return hideFlaggedContent(query(null, null, null, sortOrder), hide);
         else {
-            String[] selectionArgs = new String[] { "%" + title + "%" };
+            String[] selectionArgs = new String[] { toLike(title) };
             return hideFlaggedContent(query(null, LIKE_QUERY, selectionArgs, sortOrder), hide);
         }
     }
@@ -53,19 +53,17 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
                 String.valueOf(userID),
                 title,
                 resultOrder,
-                resultOrderDirection), hide);
+                resultOrderDirection),
+                hide);
     }
 
     @Override
     public Observable<ArrayList<GiftResult>> queryByTopGiftGivers(String title,
-            ResultOrderDirection resultOrderDirection, boolean hide) {
-        String sortOrder = LocalSchema.Cols.USER_LIKES + " " + direction(resultOrderDirection);
-        if (title == null || title.isEmpty())
-            return hideFlaggedContent(query(null, null, null, sortOrder), hide);
-        else {
-            String[] selectionArgs = new String[] { "%" + title + "%" };
-            return hideFlaggedContent(query(null, LIKE_QUERY, selectionArgs, sortOrder), hide);
-        }
+            ResultOrderDirection resultOrderDirection,
+            boolean hide) {
+        // don't implement this locally as there is only one user
+        // just fake it for now
+        return queryByTitle(title, ResultOrder.LIKES, resultOrderDirection, hide);
     }
 
     @Override
@@ -78,7 +76,18 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
                 String.valueOf(giftChainID),
                 title,
                 resultOrder,
-                resultOrderDirection), hide);
+                resultOrderDirection),
+                hide);
+    }
+
+    @Override
+    public <S extends Gift> Observable<S> save(S data) {
+        return store.save(data);
+    }
+
+    @Override
+    public Observable<Boolean> delete(long id) {
+        return store.delete(id);
     }
 
     private Observable<ArrayList<GiftResult>> query(String queryProperty,
@@ -91,19 +100,9 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
             String[] selectionArgs = { queryValue };
             return query(null, queryProperty + "= ?", selectionArgs, sortOrder);
         } else {
-            String[] selectionArgs = { queryValue, title };
+            String[] selectionArgs = { queryValue, toLike(title) };
             return query(null, queryProperty + "= ? AND " + LIKE_QUERY, selectionArgs, sortOrder);
         }
-    }
-
-    @Override
-    public <S extends Gift> Observable<S> save(S data) {
-        return store.save(data);
-    }
-
-    @Override
-    public Observable<Boolean> delete(long id) {
-        return store.delete(id);
     }
 
     private String sortOrder(ResultOrder resultOrder, ResultOrderDirection resultOrderDirection) {
@@ -120,6 +119,10 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
 
     private String direction(ResultOrderDirection resultOrderDirection) {
         return resultOrderDirection == ResultOrderDirection.ASCENDING ? "ASC" : "DESC";
+    }
+
+    private String toLike(String s) {
+        return "%" + s + "%";
     }
 
     private static class GiftResultCreator extends BaseCreator<GiftResult> implements
