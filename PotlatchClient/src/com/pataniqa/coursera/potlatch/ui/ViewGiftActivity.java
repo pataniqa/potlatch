@@ -1,6 +1,7 @@
 package com.pataniqa.coursera.potlatch.ui;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.Map;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -135,37 +137,17 @@ abstract class ViewGiftActivity extends GiftActivity {
         switch (Request.values()[requestCode]) {
         case CAMERA_PHOTO:
             if (resultCode == Activity.RESULT_OK) {
-                imagePathFinal = imagePath;
-                File imageFile = new File(imagePathFinal.getPath());
-                if (imageFile != null && imageFile.exists()) {
-                    Log.d(LOG_TAG, "image URI is valid");
-                    Bitmap bmp = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-                    image.setVisibility(View.VISIBLE);
-                    image.setImageBitmap(bmp);
-                    image.setScaleType(ScaleType.FIT_CENTER);
-                    float rotation = ImageUtils.getPhotoOrientation(this, imageFile);
-                    image.setRotation(rotation);
-                    updateButtonsAfterCreate();
-                } else if (resultCode != CreateGiftActivity.RESULT_CANCELED) {
-                    Log.e(LOG_TAG, "Image capture failed.");
-                }
+                this.imagePathFinal = imagePath;
+                displayBitmap(imagePathFinal.getPath());
+                updateButtonsAfterCreate();
+            } else {
+                Log.e(LOG_TAG, "Image capture failed.");
             }
             break;
         case GALLERY_PHOTO:
-            Uri selectedImage = data.getData();
-            String[] filePath = { MediaStore.Images.Media.DATA };
-            Cursor cursor = getContentResolver().query(selectedImage, filePath, null, null, null);
-            cursor.moveToFirst();
-            String picturePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
-            cursor.close();
-            File imageFile = new File(picturePath);
-            imagePathFinal = Uri.fromFile(imageFile);
-            Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-            image.setVisibility(View.VISIBLE);
-            image.setImageBitmap(thumbnail);
-            image.setScaleType(ScaleType.FIT_CENTER);
-            float rotation = ImageUtils.getPhotoOrientation(this, imageFile);
-            image.setRotation(rotation);
+            String picturePath = getImageUriFromGallery(data);
+            displayBitmap(picturePath);
+            this.imagePathFinal = Uri.fromFile(new File(picturePath));
             updateButtonsAfterCreate();
             break;
         case CAMERA_VIDEO:
@@ -173,9 +155,8 @@ abstract class ViewGiftActivity extends GiftActivity {
                 Log.d(LOG_TAG, "Video capture completed: " + videoPath);
                 videoPathFinal = videoPath;
                 File videoFile = new File(videoPathFinal.getPath());
-                Bitmap thumb = ThumbnailUtils.createVideoThumbnail(videoFile.getAbsolutePath(),
-                        MediaStore.Images.Thumbnails.MINI_KIND);
-                image.setImageBitmap(thumb);
+                this.imagePathFinal = createVideoThumbnail(videoFile);
+                displayBitmap(imagePathFinal.getPath());
                 updateButtonsAfterCreate();
             } else if (resultCode != CreateGiftActivity.RESULT_CANCELED) {
                 Log.e(LOG_TAG, "Video capture failed.");
@@ -183,12 +164,56 @@ abstract class ViewGiftActivity extends GiftActivity {
             break;
         }
     }
-    
+
+    Uri createVideoThumbnail(File videoFile) {
+        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(videoFile.getAbsolutePath(),
+                MediaStore.Images.Thumbnails.MINI_KIND);
+        Uri thumbnailImagePath = LocalStorageUtilities.getOutputMediaFileUri(this,
+                LocalStorageUtilities.MediaType.IMAGE,
+                LocalStorageUtilities.Security.PUBLIC,
+                null);
+        File file = new File(thumbnailImagePath.getPath());
+        try {
+            FileOutputStream fOut = new FileOutputStream(file);
+            thumb.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+            fOut.flush();
+            fOut.close();
+            Log.d(LOG_TAG, "Created new thumbnail image: " + thumbnailImagePath.getPath());
+        } catch (Exception e) {
+            Log.e(LOG_TAG, e.getMessage(), e);
+        }
+        return thumbnailImagePath;
+    }
+
+    String getImageUriFromGallery(Intent data) {
+        String[] filePath = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(data.getData(), filePath, null, null, null);
+        cursor.moveToFirst();
+        String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
+        cursor.close();
+        return imagePath;
+    }
+
+    void displayBitmap(String path) {
+        File imageFile = new File(path);
+        if (imageFile != null && imageFile.exists()) {
+            Bitmap thumbnail = (BitmapFactory.decodeFile(path));
+            image.setVisibility(View.VISIBLE);
+            image.setImageBitmap(thumbnail);
+            image.setScaleType(ScaleType.FIT_CENTER);
+            float rotation = ImageUtils.getPhotoOrientation(this, imageFile);
+            image.setRotation(rotation);
+        } else {
+            Log.e(LOG_TAG, "Failed to find image.");
+        }
+    }
+
     void updateButtonsAfterCreate() {
         saveButton.setVisibility(View.VISIBLE);
         selectImageButton.setVisibility(View.GONE);
         newImageButton.setVisibility(View.GONE);
         newVideoButton.setVisibility(View.GONE);
+        image.setBackgroundColor(0x00000000);
     }
 
     Observable<Gift> makeGiftDataFromUI(final long key) {

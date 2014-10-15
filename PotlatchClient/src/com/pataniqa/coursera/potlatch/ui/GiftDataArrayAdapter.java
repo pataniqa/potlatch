@@ -45,7 +45,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
         inflater = LayoutInflater.from(context);
         this.listGiftsCallback = listGiftsCallback;
     }
-    
+
     /**
      * Returns a View that represents an ArrayList of GiftData.
      * 
@@ -70,38 +70,31 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
         } catch (Exception e) {
             Log.e(LOG_TAG, e.getMessage(), e);
         }
-        
+
         // TODO use Picasso to cache image loading
-        
-//        Picasso.with(this.getContext())
-//        .load(url)
-//        .placeholder(R.drawable.placeholder)
-//        .error(R.drawable.error)
-//        .resizeDimen(R.dimen.list_detail_image_size, R.dimen.list_detail_image_size)
-//        .centerInside()
-//        .tag(context)
-//        .into(holder.image);
+
+        // Picasso.with(this.getContext())
+        // .load(url)
+        // .placeholder(R.drawable.placeholder)
+        // .error(R.drawable.error)
+        // .resizeDimen(R.dimen.list_detail_image_size,
+        // R.dimen.list_detail_image_size)
+        // .centerInside()
+        // .tag(context)
+        // .into(holder.image);
 
         return convertView;
     }
 
     static class ViewHolder {
-        @InjectView(R.id.gift_listview_custom_row_img)
-        ImageView image;
-        @InjectView(R.id.gift_listview_custom_row_title_textView)
-        TextView title;
-        @InjectView(R.id.gift_listview_custom_row_description_textView)
-        TextView description;
-        @InjectView(R.id.gift_listview_custom_row_like)
-        ImageButton likeButton;
-        @InjectView(R.id.gift_listview_custom_row_num_Likes_textView)
-        TextView likes;
-        @InjectView(R.id.gift_listview_custom_row_warning)
-        ImageButton flagButton;
-        @InjectView(R.id.gift_listview_custom_row_link)
-        ImageButton giftChainButton;
-        @InjectView(R.id.gift_listview_custom_row_user)
-        ImageButton moreFromThisUserButton;
+        @InjectView(R.id.gift_listview_custom_row_img) ImageView image;
+        @InjectView(R.id.gift_listview_custom_row_title_textView) TextView title;
+        @InjectView(R.id.gift_listview_custom_row_description_textView) TextView description;
+        @InjectView(R.id.gift_listview_custom_row_like) ImageButton likeButton;
+        @InjectView(R.id.gift_listview_custom_row_num_Likes_textView) TextView likes;
+        @InjectView(R.id.gift_listview_custom_row_warning) ImageButton flagButton;
+        @InjectView(R.id.gift_listview_custom_row_link) ImageButton giftChainButton;
+        @InjectView(R.id.gift_listview_custom_row_user) ImageButton moreFromThisUserButton;
 
         View view;
         private final ListGiftsCallback listGiftsCallback;
@@ -113,16 +106,17 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
         }
 
         public void setGiftData(final GiftResult gift) {
-           Log.d(LOG_TAG, gift.getVideoUri() + " " + gift.getImageUri() + " " + gift.getGiftChainName());
+            Log.d(LOG_TAG,
+                    gift.getVideoUri() + " " + gift.getImageUri() + " " + gift.getGiftChainName());
 
             if (gift.getVideoUri() != null && !gift.getVideoUri().isEmpty()) {
-                File videoFile = new File (Uri.parse(gift.getVideoUri()).getPath());
+                File videoFile = new File(Uri.parse(gift.getVideoUri()).getPath());
                 Bitmap thumb = ThumbnailUtils.createVideoThumbnail(videoFile.getAbsolutePath(),
                         MediaStore.Images.Thumbnails.MINI_KIND);
                 image.setImageBitmap(thumb);
             } else {
                 image.setImageURI(Uri.parse(gift.getImageUri()));
-                File imageFile = new File( Uri.parse(gift.getImageUri()).getPath());
+                File imageFile = new File(Uri.parse(gift.getImageUri()).getPath());
                 float rotation = ImageUtils.getPhotoOrientation(view.getContext(), imageFile);
                 image.setRotation(rotation);
             }
@@ -130,7 +124,6 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
             image.setScaleType(ScaleType.FIT_CENTER);
 
             if (gift.getGiftChainName() != null && !gift.getGiftChainName().isEmpty()) {
-                //giftChainButton.setText(gift.getGiftChainName());
                 giftChainButton.setVisibility(Button.VISIBLE);
             } else {
                 giftChainButton.setVisibility(Button.INVISIBLE);
@@ -138,8 +131,8 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
 
             likeButton.setImageResource(gift.isLike() ? R.drawable.ic_fa_heart
                     : R.drawable.ic_fa_heart_o);
-            flagButton
-                    .setImageResource(gift.isFlag() ? R.drawable.ic_fa_flag : R.drawable.ic_fa_flag_o);
+            flagButton.setImageResource(gift.isFlag() ? R.drawable.ic_fa_flag
+                    : R.drawable.ic_fa_flag_o);
 
             title.setText(gift.getTitle());
             description.setText(gift.getDescription());
@@ -149,7 +142,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
                 @Override
                 public void onClick(View v) {
                     gift.setLike(!gift.isLike());
-                    gift.setLikes(gift.getLikes() + (gift.isLike() ? 1 : 0)) ;
+                    gift.setLikes(gift.getLikes() + (gift.isLike() ? 1 : 0));
                     listGiftsCallback.setLike(gift);
                     likeButton.setImageResource(gift.isLike() ? R.drawable.ic_fa_heart
                             : R.drawable.ic_fa_heart_o);
@@ -160,7 +153,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
             flagButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    gift.setFlag(!gift.isFlag());                    
+                    gift.setFlag(!gift.isFlag());
                     listGiftsCallback.setFlag(gift);
                     flagButton.setImageResource(gift.isFlag() ? R.drawable.ic_fa_flag
                             : R.drawable.ic_fa_flag_o);
@@ -170,10 +163,11 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
             giftChainButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listGiftsCallback.createGiftChainQuery(gift.getGiftChainID(), gift.getGiftChainName());
+                    listGiftsCallback.createGiftChainQuery(gift.getGiftChainID(),
+                            gift.getGiftChainName());
                 }
             });
-            
+
             moreFromThisUserButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -3,10 +3,7 @@ package com.pataniqa.coursera.potlatch.ui;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.Scheduler;
 import rx.Subscription;
-import rx.android.concurrency.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -47,9 +44,7 @@ public class ListGiftsActivity extends GiftActivity implements
     private GiftDataArrayAdapter arrayAdapter;
 
     @InjectView(R.id.list_gifts_swipe_container) SwipeRefreshLayout swipeLayout;
-
     @InjectView(R.id.list_gifts_list_view) ListView listView;
-
     @InjectView(R.id.query_description) TextView queryDescription;
 
     private GiftQuery query;
@@ -98,11 +93,16 @@ public class ListGiftsActivity extends GiftActivity implements
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Log.d(LOG_TAG, "onListItemClick");
-                Log.d(LOG_TAG, "position: " + position + "id = " + (giftData.get(position)).getId());
+                GiftResult gift = giftData.get(position);
+                Log.d(LOG_TAG, "position: " + position + "id = " + gift.getId());
 
                 // When an item is clicked, open the ViewGiftActivity so the
                 // user can view it in full screen
-                openEditGiftActivity((giftData.get(position)).getId());
+                if (gift.getUserID() == getUserID()) {
+                    openEditGiftActivity((giftData.get(position)).getId());
+                } else {
+                    Log.d(LOG_TAG, "cannot edit this gift - not created by this user");
+                }
             }
         });
     }
