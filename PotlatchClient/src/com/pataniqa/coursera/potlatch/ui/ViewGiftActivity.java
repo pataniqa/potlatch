@@ -56,6 +56,9 @@ abstract class ViewGiftActivity extends GiftActivity {
     @InjectView(R.id.gift_create_gift_chain) AutoCompleteTextView giftChain;
     @InjectView(R.id.gift_create_save_button) ImageButton saveButton;
     @InjectView(R.id.gift_edit_delete_button) ImageButton deleteButton;
+    @InjectView(R.id.gift_select_image_button) ImageButton selectImageButton;
+    @InjectView(R.id.gift_new_image_button) ImageButton newImageButton;
+    @InjectView(R.id.gift_new_video_button) ImageButton newVideoButton;
 
     protected Uri imagePathFinal = null;
     protected Uri videoPathFinal = null;
@@ -142,7 +145,7 @@ abstract class ViewGiftActivity extends GiftActivity {
                     image.setScaleType(ScaleType.FIT_CENTER);
                     float rotation = ImageUtils.getPhotoOrientation(this, imageFile);
                     image.setRotation(rotation);
-                    saveButton.setVisibility(View.VISIBLE);
+                    updateButtonsAfterCreate();
                 } else if (resultCode != CreateGiftActivity.RESULT_CANCELED) {
                     Log.e(LOG_TAG, "Image capture failed.");
                 }
@@ -163,7 +166,7 @@ abstract class ViewGiftActivity extends GiftActivity {
             image.setScaleType(ScaleType.FIT_CENTER);
             float rotation = ImageUtils.getPhotoOrientation(this, imageFile);
             image.setRotation(rotation);
-            saveButton.setVisibility(View.VISIBLE);
+            updateButtonsAfterCreate();
             break;
         case CAMERA_VIDEO:
             if (resultCode == Activity.RESULT_OK) {
@@ -173,12 +176,19 @@ abstract class ViewGiftActivity extends GiftActivity {
                 Bitmap thumb = ThumbnailUtils.createVideoThumbnail(videoFile.getAbsolutePath(),
                         MediaStore.Images.Thumbnails.MINI_KIND);
                 image.setImageBitmap(thumb);
-                saveButton.setVisibility(View.VISIBLE);
+                updateButtonsAfterCreate();
             } else if (resultCode != CreateGiftActivity.RESULT_CANCELED) {
                 Log.e(LOG_TAG, "Video capture failed.");
             }
             break;
         }
+    }
+    
+    void updateButtonsAfterCreate() {
+        saveButton.setVisibility(View.VISIBLE);
+        selectImageButton.setVisibility(View.GONE);
+        newImageButton.setVisibility(View.GONE);
+        newVideoButton.setVisibility(View.GONE);
     }
 
     Observable<Gift> makeGiftDataFromUI(final long key) {

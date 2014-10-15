@@ -4,7 +4,12 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
+import rx.Scheduler;
+import rx.Subscription;
+import rx.android.concurrency.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -20,6 +25,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.SearchView.OnCloseListener;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import butterknife.ButterKnife;
@@ -32,7 +38,7 @@ import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 
 public class ListGiftsActivity extends GiftActivity implements
         SwipeRefreshLayout.OnRefreshListener, ListGiftsCallback {
-    
+
     private static int UNDEFINED = -1;
 
     private static final String LOG_TAG = ListGiftsActivity.class.getCanonicalName();
@@ -50,7 +56,7 @@ public class ListGiftsActivity extends GiftActivity implements
     private Menu menu;
     private SharedPreferences prefs;
     private int updateFrequency = UNDEFINED;
-    private Observable<Long> timer;
+    private Subscription subscription = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +87,9 @@ public class ListGiftsActivity extends GiftActivity implements
                 this);
 
         loadPreferences();
+        setUpdateFrequency();
         query = new GiftQuery(getUserID(), getUserName(), prefs);
         updateGifts();
-        setUpdate();
 
         // Tell the ListView which adapter to use to display the data.
         listView.setAdapter(arrayAdapter);
@@ -100,7 +106,7 @@ public class ListGiftsActivity extends GiftActivity implements
             }
         });
     }
-    
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(LOG_TAG, "onCreateOptionsMenu");
@@ -116,9 +122,6 @@ public class ListGiftsActivity extends GiftActivity implements
         search.setOnQueryTextListener(new OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String title) {
-                Log.d(LOG_TAG, "onQueryTextChange: " + title);
-                query.setTitle(title);
-                updateGifts();
                 return true;
             }
 
@@ -132,6 +135,13 @@ public class ListGiftsActivity extends GiftActivity implements
             }
 
         });
+        search.setOnCloseListener(new OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                query.clearTitle();
+                updateGifts();
+                return false;
+            }});
 
         return true;
     }
@@ -141,7 +151,7 @@ public class ListGiftsActivity extends GiftActivity implements
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
-    void setUpdate() {
+    void setUpdateFrequency() {
         String updates = prefs.getString(SettingsActivity.UPDATE_FREQUENCY, "1");
         try {
             updateFrequency = Integer.parseInt(updates);
@@ -149,15 +159,25 @@ public class ListGiftsActivity extends GiftActivity implements
             Log.e(LOG_TAG, e.getMessage(), e);
         }
         Log.d(LOG_TAG, "Update frequency is: " + updateFrequency);
+        finishSubscription();
         if (updateFrequency != UNDEFINED) {
-            timer = Observable.timer(updateFrequency, updateFrequency, TimeUnit.SECONDS);
-            timer.subscribe(new Action1<Long>() {
-                @Override
-                public void call(Long arg0) {
-                    Log.d(LOG_TAG, "Updating results");
-                    updateGifts();
-                }
-            });
+            Log.d(LOG_TAG, "Creating new timer subscription");
+            subscription = Schedulers.newThread().createWorker()
+                    .schedulePeriodically(new Action0() {
+                        @Override
+                        public void call() {
+                            Log.d(LOG_TAG, "Updating results due to timer");
+                            updateGifts();
+                        }
+                    }, updateFrequency, updateFrequency, TimeUnit.SECONDS);
+        }
+    }
+
+    void finishSubscription() {
+        if (subscription != null) {
+            Log.d(LOG_TAG, "Unsubscribing from timer");
+            subscription.unsubscribe();
+            subscription = null;
         }
     }
 
@@ -171,6 +191,7 @@ public class ListGiftsActivity extends GiftActivity implements
         Log.d(LOG_TAG, "onResume");
         super.onResume();
         updateGifts();
+        setUpdateFrequency();
     }
 
     @Override
@@ -178,6 +199,7 @@ public class ListGiftsActivity extends GiftActivity implements
         Log.d(LOG_TAG, "onPause");
         super.onPause();
         savePreferences();
+        finishSubscription();
     }
 
     @Override
@@ -185,6 +207,7 @@ public class ListGiftsActivity extends GiftActivity implements
         Log.d(LOG_TAG, "onStop");
         super.onStop();
         savePreferences();
+        finishSubscription();
     }
 
     @Override
@@ -216,7 +239,7 @@ public class ListGiftsActivity extends GiftActivity implements
 
         return true;
     }
-    
+
     void update() {
         updateGifts();
         updateMenu();
@@ -242,34 +265,29 @@ public class ListGiftsActivity extends GiftActivity implements
         queryTypeMenu.setIcon(icon);
 
         menu.findItem(R.id.action_result_order)
-                .setIcon(query.getResultOrder() == ResultOrder.LIKES ? 
-                        R.drawable.ic_fa_heart
+                .setIcon(query.getResultOrder() == ResultOrder.LIKES ? R.drawable.ic_fa_heart
                         : R.drawable.ic_fa_clock_o);
 
         menu.findItem(R.id.action_result_order_direction)
-                .setIcon(query.getResultDirection() == ResultOrderDirection.DESCENDING ? 
-                        R.drawable.ic_fa_sort_amount_desc
+                .setIcon(query.getResultDirection() == ResultOrderDirection.DESCENDING ? R.drawable.ic_fa_sort_amount_desc
                         : R.drawable.ic_fa_sort_amount_asc);
-    }
-
-    void processResults(Observable<ArrayList<GiftResult>> results) {
-        results.forEach(new Action1<ArrayList<GiftResult>>() {
-            @Override
-            public void call(ArrayList<GiftResult> results) {
-                giftData.clear();
-                if (results != null)
-                    giftData.addAll(results);
-                swipeLayout.setRefreshing(false);
-                arrayAdapter.notifyDataSetChanged();
-            }
-        });
     }
 
     void updateGifts() {
         Log.d(LOG_TAG, "updateGifts");
         swipeLayout.setRefreshing(true);
-        processResults(query.query(service.gifts()));
-        queryDescription.setText(query.getDescription());
+        query.query(service.gifts()).observeOn(Schedulers.newThread())
+                .forEach(new Action1<ArrayList<GiftResult>>() {
+                    @Override
+                    public void call(ArrayList<GiftResult> results) {
+                        giftData.clear();
+                        if (results != null)
+                            giftData.addAll(results);
+                        swipeLayout.setRefreshing(false);
+                        queryDescription.setText(query.getDescription());
+                        arrayAdapter.notifyDataSetChanged();
+                    }
+                });
     }
 
     @Override

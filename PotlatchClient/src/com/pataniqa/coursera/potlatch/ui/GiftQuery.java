@@ -54,6 +54,10 @@ class GiftQuery {
             setQueryType(QueryType.values()[prefs.getInt(QUERY_TYPE_TAG, getQueryType().ordinal())]);
         hide = prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, true);
     }
+    
+    void clearTitle() {
+        title = DEFAULT_QUERY;
+    }
 
     void setChainQuery(long giftChainID, String giftChainName) {
         this.queryType = QueryType.CHAIN;
@@ -94,7 +98,10 @@ class GiftQuery {
         case CHAIN:
             return "Gift chain: " + giftChainName;
         default:
-            return "All gifts";
+            if (title.isEmpty())
+                return "All gifts";
+            else
+                return "Title query: " + title;
         }
     }
 

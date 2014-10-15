@@ -37,6 +37,9 @@ public class EditGiftActivity extends ViewGiftActivity {
         ButterKnife.inject(this);
 
         initializeSpinner();
+        selectImageButton.setVisibility(View.GONE);
+        newImageButton.setVisibility(View.GONE);
+        newVideoButton.setVisibility(View.GONE);
         saveButton.setVisibility(View.VISIBLE);
         deleteButton.setVisibility(View.VISIBLE);
         image.setBackgroundColor(0x00000000);
