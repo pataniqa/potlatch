@@ -13,39 +13,22 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
-        <ViewSwitcher
-            android:id="@+id/view_gift_viewswitcher"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true" >
-
-            <ImageView
-                android:id="@+id/gift_create_img"
-                android:layout_width="250dp"
-                android:layout_height="150dp"
-                android:layout_margin="20dp"
-                android:background="#80ffffff"
-                android:contentDescription="@string/gift_image_description"
-                android:scaleType="center"
-                android:onClick="imageDetailClicked"
-                android:src="@drawable/ic_fa_image" />
-
-            <VideoView
-                android:id="@+id/gift_create_video"
-                android:layout_width="250dp"
-                android:layout_height="150dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="20dp"
-                android:contentDescription="@string/gift_video_description"
-                android:onClick="videoDetailClicked"
-                android:scaleType="center" />
-        </ViewSwitcher>
+        <ImageView
+            android:id="@+id/gift_create_img"
+            android:layout_width="250dp"
+            android:layout_height="150dp"
+            android:layout_margin="20dp"
+            android:background="#80ffffff"
+            android:contentDescription="@string/gift_image_description"
+            android:onClick="detailButtonClicked"
+            android:scaleType="center"
+            android:src="@drawable/ic_fa_image" />
 
         <LinearLayout
             android:id="@+id/gift_create_linear_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/view_gift_viewswitcher"
+            android:layout_below="@id/gift_create_img"
             android:layout_centerHorizontal="true"
             android:orientation="horizontal" >
 

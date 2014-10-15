@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -27,9 +28,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-import android.widget.MediaController;
-import android.widget.VideoView;
-import android.widget.ViewSwitcher;
 import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
@@ -55,8 +53,6 @@ abstract class ViewGiftActivity extends GiftActivity {
     @InjectView(R.id.gift_create_title) EditText titleInput;
     @InjectView(R.id.gift_create_description) EditText descriptionInput;
     @InjectView(R.id.gift_create_img) ImageView image;
-    @InjectView(R.id.view_gift_viewswitcher) ViewSwitcher viewSwitcher;
-    @InjectView(R.id.gift_create_video) VideoView video;
     @InjectView(R.id.gift_create_gift_chain) AutoCompleteTextView giftChain;
     @InjectView(R.id.gift_create_save_button) ImageButton saveButton;
     @InjectView(R.id.gift_edit_delete_button) ImageButton deleteButton;
@@ -115,17 +111,17 @@ abstract class ViewGiftActivity extends GiftActivity {
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
         startActivityForResult(intent, Request.CAMERA_VIDEO.ordinal());
     }
-    
-    public void imageDetailClicked(View v) {
-        Intent intent = new Intent(this, ImageDetailActivity.class);
-        intent.putExtra(IMAGE_URL_TAG, uriToString(imagePathFinal));
-        startActivity(intent);
-    }
-    
-    public void videoDetailClicked(View v) {
-        Intent intent = new Intent(this, VideoDetailActivity.class);
-        intent.putExtra(VIDEO_URL_TAG, uriToString(videoPathFinal));
-        startActivity(intent);
+
+    public void detailButtonClicked(View v) {
+        if (videoPathFinal != null) {
+            Intent intent = new Intent(this, VideoDetailActivity.class);
+            intent.putExtra(VIDEO_URL_TAG, uriToString(videoPathFinal));
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(this, ImageDetailActivity.class);
+            intent.putExtra(IMAGE_URL_TAG, uriToString(imagePathFinal));
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -136,8 +132,6 @@ abstract class ViewGiftActivity extends GiftActivity {
         switch (Request.values()[requestCode]) {
         case CAMERA_PHOTO:
             if (resultCode == Activity.RESULT_OK) {
-                if (viewSwitcher.getCurrentView() != image)
-                    viewSwitcher.showPrevious();
                 imagePathFinal = imagePath;
                 File imageFile = new File(imagePathFinal.getPath());
                 if (imageFile != null && imageFile.exists()) {
@@ -155,8 +149,6 @@ abstract class ViewGiftActivity extends GiftActivity {
             }
             break;
         case GALLERY_PHOTO:
-            if (viewSwitcher.getCurrentView() != image)
-                viewSwitcher.showPrevious();
             Uri selectedImage = data.getData();
             String[] filePath = { MediaStore.Images.Media.DATA };
             Cursor cursor = getContentResolver().query(selectedImage, filePath, null, null, null);
@@ -176,13 +168,11 @@ abstract class ViewGiftActivity extends GiftActivity {
         case CAMERA_VIDEO:
             if (resultCode == Activity.RESULT_OK) {
                 Log.i(LOG_TAG, "Video capture completed: " + videoPath);
-                if (viewSwitcher.getCurrentView() != video)
-                    viewSwitcher.showNext();
                 videoPathFinal = videoPath;
-                MediaController mediaController = new MediaController(this);
-                mediaController.setAnchorView(video);
-                video.setMediaController(mediaController);
-                video.setVideoURI(videoPathFinal);
+                File videoFile = new File(videoPathFinal.getPath());
+                Bitmap thumb = ThumbnailUtils.createVideoThumbnail(videoFile.getAbsolutePath(),
+                        MediaStore.Images.Thumbnails.MINI_KIND);
+                image.setImageBitmap(thumb);
                 saveButton.setVisibility(View.VISIBLE);
             } else if (resultCode != CreateGiftActivity.RESULT_CANCELED) {
                 Log.e(LOG_TAG, "Video capture failed.");

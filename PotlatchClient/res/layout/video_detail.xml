@@ -7,8 +7,8 @@
 
     <VideoView
         android:id="@+id/gift_video_detail"
-        android:layout_width="250dp"
-        android:layout_height="150dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         android:layout_margin="20dp"
         android:contentDescription="@string/gift_video_description"

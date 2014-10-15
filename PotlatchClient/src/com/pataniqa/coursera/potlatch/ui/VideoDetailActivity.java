@@ -39,6 +39,8 @@ public class VideoDetailActivity extends GiftActivity {
             mediaController.setAnchorView(video);
             video.setMediaController(mediaController);
             video.setVideoURI(Uri.parse(videoUrl));
+            video.requestFocus();
+            video.start();
         }
     }
 }

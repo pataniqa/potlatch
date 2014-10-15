@@ -6,13 +6,15 @@ import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView.ScaleType;
-import android.widget.MediaController;
 import butterknife.ButterKnife;
 
 import com.pataniqa.coursera.potlatch.R;
@@ -63,15 +65,11 @@ public class EditGiftActivity extends ViewGiftActivity {
                     descriptionInput.setText(gift.getDescription());
 
                     if (gift.getVideoUri() != null && !gift.getVideoUri().isEmpty()) {
-                        if (viewSwitcher.getCurrentView() != video)
-                            viewSwitcher.showNext();
-                        MediaController mediaController = new MediaController(context);
-                        mediaController.setAnchorView(video);
-                        video.setMediaController(mediaController);
-                        video.setVideoURI(Uri.parse(gift.getVideoUri()));
+                        File videoFile = new File (Uri.parse(gift.getVideoUri()).getPath());
+                        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(videoFile.getAbsolutePath(),
+                                MediaStore.Images.Thumbnails.MINI_KIND);
+                        image.setImageBitmap(thumb);
                     } else {
-                        if (viewSwitcher.getCurrentView() != image)
-                            viewSwitcher.showPrevious();
                         image.setImageURI(Uri.parse(gift.getImageUri()));
                         image.setVisibility(View.VISIBLE);
                         image.setScaleType(ScaleType.FIT_CENTER);

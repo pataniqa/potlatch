@@ -116,7 +116,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
             if (gift.getVideoUri() != null && !gift.getVideoUri().isEmpty()) {
                 File videoFile = new File (Uri.parse(gift.getVideoUri()).getPath());
                 Bitmap thumb = ThumbnailUtils.createVideoThumbnail(videoFile.getAbsolutePath(),
-                        MediaStore.Images.Thumbnails.MICRO_KIND);
+                        MediaStore.Images.Thumbnails.MINI_KIND);
                 image.setImageBitmap(thumb);
             } else {
                 image.setImageURI(Uri.parse(gift.getImageUri()));
