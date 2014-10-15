@@ -6,18 +6,20 @@
     android:orientation="vertical"
     android:padding="5dp" >
 
+    <TextView
+        android:id="@+id/query_description"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/empty_default_value"
+        android:textSize="32sp"
+        android:textStyle="bold" />
+
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/list_gifts_swipe_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/query_description"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/empty_default_value" />
 
         <ListView
             android:id="@+id/list_gifts_list_view"

@@ -44,9 +44,8 @@ public class ListGiftsActivity extends GiftActivity implements
 
     @InjectView(R.id.query_description) TextView queryDescription;
 
-    private GiftQuery query = new GiftQuery();
+    private GiftQuery query;
     private Menu menu;
-
     private SharedPreferences prefs;
 
     @Override
@@ -77,7 +76,8 @@ public class ListGiftsActivity extends GiftActivity implements
                 giftData,
                 this);
 
-        loadPreferences();
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        query = new GiftQuery(getUserID(), getUserName(), prefs);
         updateGifts();
 
         // Tell the ListView which adapter to use to display the data.
@@ -96,15 +96,9 @@ public class ListGiftsActivity extends GiftActivity implements
         });
     }
 
-    void loadPreferences() {
-        Log.d(LOG_TAG, "loadPreferences");
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        this.query = GiftQuery.fromSharedPreferences(query, prefs);
-    }
-
     void savePreferences() {
         Log.d(LOG_TAG, "savePreferences");
-        GiftQuery.saveToSharedPreferences(query, prefs);
+        query.saveToSharedPreferences(prefs);
     }
 
     @Override

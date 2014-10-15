@@ -90,8 +90,13 @@ abstract class GiftActivity extends Activity {
         return !s.isEmpty() ? Uri.parse(s) : null;
     }
     
-    protected long getUserID() {
+    long getUserID() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         return prefs.getLong(USER_ID_TAG, GetId.UNDEFINED_ID);
+    }
+    
+    String getUserName() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        return prefs.getString(USER_NAME_TAG, "Unknown");
     }
 }
