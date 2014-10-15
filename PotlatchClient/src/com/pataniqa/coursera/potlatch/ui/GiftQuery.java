@@ -35,6 +35,7 @@ class GiftQuery {
     private String queryUsername;
     private long userID;
     private String username;
+    private boolean hide;
 
     GiftQuery(long userID, String username, SharedPreferences prefs) {
         this.userID = userID;
@@ -51,6 +52,7 @@ class GiftQuery {
                     .getInt(RESULT_ORDER_DIRECTION_TAG, resultDirection.ordinal())];
         if (prefs.contains(QUERY_TYPE_TAG))
             setQueryType(QueryType.values()[prefs.getInt(QUERY_TYPE_TAG, getQueryType().ordinal())]);
+        hide = prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, true);
     }
 
     void setChainQuery(long giftChainID, String giftChainName) {
@@ -96,7 +98,7 @@ class GiftQuery {
         }
     }
 
-    Observable<ArrayList<GiftResult>> query(Gifts gifts, boolean hide) {
+    Observable<ArrayList<GiftResult>> query(Gifts gifts) {
         switch (queryType) {
         case USER:
             return gifts.queryByUser(title, queryUserID, resultOrder, resultDirection, hide);

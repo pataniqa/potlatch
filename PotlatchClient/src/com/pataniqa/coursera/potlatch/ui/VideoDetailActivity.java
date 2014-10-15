@@ -33,7 +33,7 @@ public class VideoDetailActivity extends GiftActivity {
         Intent intent = getIntent();
 
         String videoUrl = intent.getStringExtra(VIDEO_URL_TAG);
-        Log.i(LOG_TAG, "Displaying image " + videoUrl);
+        Log.d(LOG_TAG, "Displaying image " + videoUrl);
         if (!videoUrl.isEmpty()) {
             MediaController mediaController = new MediaController(this);
             mediaController.setAnchorView(video);

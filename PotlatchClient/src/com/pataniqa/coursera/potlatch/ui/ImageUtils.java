@@ -33,8 +33,8 @@ public class ImageUtils {
                 break;
             }
 
-            Log.i(LOG_TAG, "Exif orientation: " + orientation);
-            Log.i(LOG_TAG, "Rotate value: " + rotate);
+            Log.d(LOG_TAG, "Exif orientation: " + orientation);
+            Log.d(LOG_TAG, "Rotate value: " + rotate);
 
         } catch (Exception e) {
             Log.e(LOG_TAG, e.getMessage(), e);

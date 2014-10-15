@@ -167,7 +167,7 @@ abstract class ViewGiftActivity extends GiftActivity {
             break;
         case CAMERA_VIDEO:
             if (resultCode == Activity.RESULT_OK) {
-                Log.i(LOG_TAG, "Video capture completed: " + videoPath);
+                Log.d(LOG_TAG, "Video capture completed: " + videoPath);
                 videoPathFinal = videoPath;
                 File videoFile = new File(videoPathFinal.getPath());
                 Bitmap thumb = ThumbnailUtils.createVideoThumbnail(videoFile.getAbsolutePath(),

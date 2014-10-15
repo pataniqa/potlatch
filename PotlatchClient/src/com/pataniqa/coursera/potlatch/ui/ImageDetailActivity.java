@@ -34,7 +34,7 @@ public class ImageDetailActivity extends GiftActivity {
 
         Intent intent = getIntent();
         String imageUrl = intent.getStringExtra(IMAGE_URL_TAG);
-        Log.i(LOG_TAG, "Displaying image " + imageUrl);
+        Log.d(LOG_TAG, "Displaying image " + imageUrl);
         if (!imageUrl.isEmpty()) {
             Uri url = Uri.parse(imageUrl);
 

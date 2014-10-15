@@ -113,7 +113,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
         }
 
         public void setGiftData(final GiftResult gift) {
-           Log.i(LOG_TAG, gift.getVideoUri() + " " + gift.getImageUri() + " " + gift.getGiftChainName());
+           Log.d(LOG_TAG, gift.getVideoUri() + " " + gift.getImageUri() + " " + gift.getGiftChainName());
 
             if (gift.getVideoUri() != null && !gift.getVideoUri().isEmpty()) {
                 File videoFile = new File (Uri.parse(gift.getVideoUri()).getPath());

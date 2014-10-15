@@ -1,6 +1,7 @@
 package com.pataniqa.coursera.potlatch.ui;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.functions.Action1;
@@ -26,12 +27,13 @@ import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
-import com.pataniqa.coursera.potlatch.store.Gifts;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 
 public class ListGiftsActivity extends GiftActivity implements
         SwipeRefreshLayout.OnRefreshListener, ListGiftsCallback {
+    
+    private static int UNDEFINED = -1;
 
     private static final String LOG_TAG = ListGiftsActivity.class.getCanonicalName();
 
@@ -47,6 +49,8 @@ public class ListGiftsActivity extends GiftActivity implements
     private GiftQuery query;
     private Menu menu;
     private SharedPreferences prefs;
+    private int updateFrequency = UNDEFINED;
+    private Observable<Long> timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +80,10 @@ public class ListGiftsActivity extends GiftActivity implements
                 giftData,
                 this);
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        loadPreferences();
         query = new GiftQuery(getUserID(), getUserName(), prefs);
         updateGifts();
+        setUpdate();
 
         // Tell the ListView which adapter to use to display the data.
         listView.setAdapter(arrayAdapter);
@@ -94,6 +99,66 @@ public class ListGiftsActivity extends GiftActivity implements
                 openEditGiftActivity((giftData.get(position)).getId());
             }
         });
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(LOG_TAG, "onCreateOptionsMenu");
+        super.onCreateOptionsMenu(menu);
+        this.menu = menu;
+        getMenuInflater().inflate(R.menu.list_gifts_activity_actions, menu);
+
+        updateMenu();
+
+        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        final SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+        search.setOnQueryTextListener(new OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String title) {
+                Log.d(LOG_TAG, "onQueryTextChange: " + title);
+                query.setTitle(title);
+                updateGifts();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String title) {
+                Log.d(LOG_TAG, "onQueryTextSubmit: " + title);
+                query.setTitle(title);
+                updateGifts();
+                search.clearFocus();
+                return false;
+            }
+
+        });
+
+        return true;
+    }
+
+    void loadPreferences() {
+        Log.d(LOG_TAG, "loadPreferences");
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+    }
+
+    void setUpdate() {
+        String updates = prefs.getString(SettingsActivity.UPDATE_FREQUENCY, "1");
+        try {
+            updateFrequency = Integer.parseInt(updates);
+        } catch (Exception e) {
+            Log.e(LOG_TAG, e.getMessage(), e);
+        }
+        Log.d(LOG_TAG, "Update frequency is: " + updateFrequency);
+        if (updateFrequency != UNDEFINED) {
+            timer = Observable.timer(updateFrequency, updateFrequency, TimeUnit.SECONDS);
+            timer.subscribe(new Action1<Long>() {
+                @Override
+                public void call(Long arg0) {
+                    Log.d(LOG_TAG, "Updating results");
+                    updateGifts();
+                }
+            });
+        }
     }
 
     void savePreferences() {
@@ -132,15 +197,15 @@ public class ListGiftsActivity extends GiftActivity implements
             break;
         case R.id.action_query_type:
             query.rotateQueryType();
-            updateGifts();
+            update();
             break;
         case R.id.action_result_order:
             query.changeResultOrder();
-            updateGifts();
+            update();
             break;
         case R.id.action_result_order_direction:
             query.changeResultDirection();
-            updateGifts();
+            update();
             break;
         case R.id.action_settings:
             openPreferenceActivity();
@@ -148,70 +213,43 @@ public class ListGiftsActivity extends GiftActivity implements
         default:
             break;
         }
-        updateMenu();
 
         return true;
+    }
+    
+    void update() {
+        updateGifts();
+        updateMenu();
     }
 
     void updateMenu() {
         MenuItem queryTypeMenu = menu.findItem(R.id.action_query_type);
+        int icon;
         switch (query.getQueryType()) {
         case USER:
-            queryTypeMenu.setIcon(R.drawable.ic_action_person);
+            icon = R.drawable.ic_action_person;
             break;
         case TOP_GIFT_GIVERS:
-            queryTypeMenu.setIcon(R.drawable.ic_fa_trophy);
+            icon = R.drawable.ic_fa_trophy;
             break;
         case CHAIN:
-            queryTypeMenu.setIcon(R.drawable.ic_fa_link);
+            icon = R.drawable.ic_fa_link;
             break;
         default:
-            queryTypeMenu.setIcon(R.drawable.ic_fa_group);
+            icon = R.drawable.ic_fa_group;
             break;
         }
+        queryTypeMenu.setIcon(icon);
 
         menu.findItem(R.id.action_result_order)
-                .setIcon(query.getResultOrder() == ResultOrder.LIKES ? R.drawable.ic_fa_heart
+                .setIcon(query.getResultOrder() == ResultOrder.LIKES ? 
+                        R.drawable.ic_fa_heart
                         : R.drawable.ic_fa_clock_o);
 
         menu.findItem(R.id.action_result_order_direction)
-                .setIcon(query.getResultDirection() == ResultOrderDirection.DESCENDING ? R.drawable.ic_fa_sort_amount_desc
+                .setIcon(query.getResultDirection() == ResultOrderDirection.DESCENDING ? 
+                        R.drawable.ic_fa_sort_amount_desc
                         : R.drawable.ic_fa_sort_amount_asc);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d(LOG_TAG, "onCreateOptionsMenu");
-        super.onCreateOptionsMenu(menu);
-        this.menu = menu;
-        getMenuInflater().inflate(R.menu.list_gifts_activity_actions, menu);
-
-        updateMenu();
-
-        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        final SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
-        search.setOnQueryTextListener(new OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextChange(String title) {
-                Log.d(LOG_TAG, "onQueryTextChange: " + title);
-                query.setTitle(title);
-                updateGifts();
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextSubmit(String title) {
-                Log.d(LOG_TAG, "onQueryTextSubmit: " + title);
-                query.setTitle(title);
-                updateGifts();
-                search.clearFocus();
-                return false;
-            }
-
-        });
-
-        return true;
     }
 
     void processResults(Observable<ArrayList<GiftResult>> results) {
@@ -221,6 +259,7 @@ public class ListGiftsActivity extends GiftActivity implements
                 giftData.clear();
                 if (results != null)
                     giftData.addAll(results);
+                swipeLayout.setRefreshing(false);
                 arrayAdapter.notifyDataSetChanged();
             }
         });
@@ -228,24 +267,21 @@ public class ListGiftsActivity extends GiftActivity implements
 
     void updateGifts() {
         Log.d(LOG_TAG, "updateGifts");
-        Gifts gifts = service.gifts();
-        boolean hide = prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, true);
-        processResults(query.query(gifts, hide));
+        swipeLayout.setRefreshing(true);
+        processResults(query.query(service.gifts()));
         queryDescription.setText(query.getDescription());
     }
 
     @Override
     public void createGiftChainQuery(long giftChainID, String giftChainName) {
         query.setChainQuery(giftChainID, giftChainName);
-        updateGifts();
-        updateMenu();
+        update();
     }
 
     @Override
     public void createUserQuery(long queryUserID, String queryUserName) {
         query.setUserQuery(queryUserID, queryUserName);
-        updateGifts();
-        updateMenu();
+        update();
     }
 
     @Override
@@ -254,7 +290,6 @@ public class ListGiftsActivity extends GiftActivity implements
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                swipeLayout.setRefreshing(false);
                 updateGifts();
             }
         });

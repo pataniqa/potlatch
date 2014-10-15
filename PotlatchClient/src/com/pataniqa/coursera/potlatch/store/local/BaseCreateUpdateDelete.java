@@ -40,7 +40,7 @@ abstract class BaseCreateUpdateDelete<T extends SetId> extends BaseQuery<T> impl
                     db.update(tableName(), creator, selection, selectionArgs);
                     db.close();
                 }
-                Log.i(LOG_TAG, "Stored: " + data);
+                Log.d(LOG_TAG, "Stored: " + data);
                 subscriber.onNext(data);
                 subscriber.onCompleted();
             }

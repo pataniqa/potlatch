@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/gift_listview_custom_row_img"
-        android:layout_width="250dp"
-        android:layout_height="150dp"
+        android:layout_width="440dp"
+        android:layout_height="264dp"
         android:layout_gravity="center_horizontal"
         android:layout_margin="20dp"
         android:contentDescription="@string/gift_image_description"
@@ -18,19 +18,21 @@
         android:id="@+id/gift_listview_custom_row_title_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:gravity="center"
         android:text="@string/title"
-        android:textSize="16sp" />
+        android:textStyle="bold"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/gift_listview_custom_row_description_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
         android:text="@string/description"
-        android:textSize="12sp" />
+        android:textSize="16sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,7 +55,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:focusable="false"
+            android:paddingLeft="0dp"
+            android:paddingStart="0dp"
             android:paddingRight="20dp"
+            android:paddingEnd="20dp"
             android:text="@string/zero_default_value"
             android:textSize="16sp" />
 
@@ -62,6 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="40dp"
+            android:layout_marginEnd="40dp"
             android:contentDescription="@string/flag"
             android:focusable="false"
             android:src="@drawable/ic_fa_flag_o" />

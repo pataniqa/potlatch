@@ -95,7 +95,7 @@ public class LoginActivity extends GiftActivity {
                     SharedPreferences.Editor ed = prefs.edit();
                     ed.putLong(USER_ID_TAG, user.getId());
                     ed.commit();
-                    Log.i(LOG_TAG, Arrays.toString(service.users().findAll().toBlocking().first().toArray()));
+                    Log.d(LOG_TAG, Arrays.toString(service.users().findAll().toBlocking().first().toArray()));
                 }
             });
         }
