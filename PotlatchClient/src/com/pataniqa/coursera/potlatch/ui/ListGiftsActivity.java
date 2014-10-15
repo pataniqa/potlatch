@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
+import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -41,11 +42,10 @@ public class ListGiftsActivity extends GiftActivity implements
 
     @InjectView(R.id.list_gifts_list_view) ListView listView;
 
-    private String titleQuery = getTitleQuery();
-    private QueryType queryType = getQueryType();
-    private ResultOrder resultOrder = getResultOrder();
-    private ResultOrderDirection resultDirection = getResultOrderDirection();
-    private long giftChainID = getGiftChainID();
+    @InjectView(R.id.query_description) TextView queryDescription;
+
+    private GiftQuery query = new GiftQuery();
+    private Menu menu;
 
     private SharedPreferences prefs;
 
@@ -99,26 +99,12 @@ public class ListGiftsActivity extends GiftActivity implements
     void loadPreferences() {
         Log.d(LOG_TAG, "loadPreferences");
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.contains(TITLE_QUERY_TAG))
-            titleQuery = prefs.getString(TITLE_QUERY_TAG, titleQuery);
-        if (prefs.contains(RESULT_ORDER_TAG))
-            resultOrder = ResultOrder.values()[prefs
-                    .getInt(RESULT_ORDER_TAG, resultOrder.ordinal())];
-        if (prefs.contains(RESULT_ORDER_DIRECTION_TAG))
-            resultDirection = ResultOrderDirection.values()[prefs
-                    .getInt(RESULT_ORDER_DIRECTION_TAG, resultDirection.ordinal())];
-        if (prefs.contains(QUERY_TYPE_TAG))
-            queryType = QueryType.values()[prefs.getInt(QUERY_TYPE_TAG, queryType.ordinal())];
+        this.query = GiftQuery.fromSharedPreferences(query, prefs);
     }
 
     void savePreferences() {
         Log.d(LOG_TAG, "savePreferences");
-        SharedPreferences.Editor ed = prefs.edit();
-        ed.putString(TITLE_QUERY_TAG, titleQuery);
-        ed.putInt(RESULT_ORDER_TAG, resultOrder.ordinal());
-        ed.putInt(RESULT_ORDER_DIRECTION_TAG, resultDirection.ordinal());
-        ed.putInt(QUERY_TYPE_TAG, queryType.ordinal());
-        ed.commit();
+        GiftQuery.saveToSharedPreferences(query, prefs);
     }
 
     @Override
@@ -151,19 +137,15 @@ public class ListGiftsActivity extends GiftActivity implements
             openCreateGiftActivity();
             break;
         case R.id.action_query_type:
-            queryType = QueryType.values()[(queryType.ordinal() + 1) % 3];
-            updateQueryType(item);
+            query.rotateQueryType();
             updateGifts();
             break;
         case R.id.action_result_order:
-            resultOrder = resultOrder == ResultOrder.LIKES ? ResultOrder.TIME : ResultOrder.LIKES;
-            updateResultOrder(item);
+            query.changeResultOrder();
             updateGifts();
             break;
         case R.id.action_result_order_direction:
-            resultDirection = resultDirection == ResultOrderDirection.DESCENDING ? ResultOrderDirection.ASCENDING
-                    : ResultOrderDirection.DESCENDING;
-            updateResultOrderDirection(item);
+            query.changeResultDirection();
             updateGifts();
             break;
         case R.id.action_settings:
@@ -172,66 +154,63 @@ public class ListGiftsActivity extends GiftActivity implements
         default:
             break;
         }
+        updateMenu();
 
         return true;
     }
 
-    void updateQueryType(MenuItem item) {
-        // TODO because there are four options
-        // this would be better as a spinner
-        // http://developer.android.com/guide/topics/ui/actionbar.html#Dropdown
-
-        switch (queryType) {
+    void updateMenu() {
+        MenuItem queryTypeMenu = menu.findItem(R.id.action_query_type);
+        switch (query.getQueryType()) {
         case USER:
-            item.setIcon(R.drawable.ic_action_person);
+            queryTypeMenu.setIcon(R.drawable.ic_action_person);
             break;
         case TOP_GIFT_GIVERS:
-            item.setIcon(R.drawable.ic_fa_trophy);
+            queryTypeMenu.setIcon(R.drawable.ic_fa_trophy);
             break;
         case CHAIN:
-            item.setIcon(R.drawable.ic_fa_link);
+            queryTypeMenu.setIcon(R.drawable.ic_fa_link);
             break;
         default:
-            item.setIcon(R.drawable.ic_fa_group);
+            queryTypeMenu.setIcon(R.drawable.ic_fa_group);
             break;
         }
-    }
 
-    void updateResultOrder(MenuItem item) {
-        item.setIcon(resultOrder == ResultOrder.LIKES ? R.drawable.ic_fa_heart
-                : R.drawable.ic_fa_clock_o);
-    }
+        menu.findItem(R.id.action_result_order)
+                .setIcon(query.getResultOrder() == ResultOrder.LIKES ? R.drawable.ic_fa_heart
+                        : R.drawable.ic_fa_clock_o);
 
-    void updateResultOrderDirection(MenuItem item) {
-        item.setIcon(resultDirection == ResultOrderDirection.DESCENDING ? R.drawable.ic_fa_sort_amount_desc
-                : R.drawable.ic_fa_sort_amount_asc);
+        menu.findItem(R.id.action_result_order_direction)
+                .setIcon(query.getResultDirection() == ResultOrderDirection.DESCENDING ? R.drawable.ic_fa_sort_amount_desc
+                        : R.drawable.ic_fa_sort_amount_asc);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(LOG_TAG, "onCreateOptionsMenu");
         super.onCreateOptionsMenu(menu);
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.list_gifts_activity_actions, menu);
 
-        updateQueryType(menu.findItem(R.id.action_query_type));
-        updateResultOrder(menu.findItem(R.id.action_result_order));
-        updateResultOrderDirection(menu.findItem(R.id.action_result_order_direction));
+        updateMenu();
 
         SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         final SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
         search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
         search.setOnQueryTextListener(new OnQueryTextListener() {
             @Override
-            public boolean onQueryTextChange(String query) {
-                Log.d(LOG_TAG, "onQueryTextChange: " + query);
-                updateGifts(query);
+            public boolean onQueryTextChange(String title) {
+                Log.d(LOG_TAG, "onQueryTextChange: " + title);
+                query.setTitle(title);
+                updateGifts();
                 return true;
             }
 
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                Log.d(LOG_TAG, "onQueryTextSubmit: " + query);
-                updateGifts(query);
+            public boolean onQueryTextSubmit(String title) {
+                Log.d(LOG_TAG, "onQueryTextSubmit: " + title);
+                query.setTitle(title);
+                updateGifts();
                 search.clearFocus();
                 return false;
             }
@@ -241,57 +220,38 @@ public class ListGiftsActivity extends GiftActivity implements
         return true;
     }
 
-    void updateGifts(String query) {
-        titleQuery = query;
-        updateGifts();
-    }
-
-    void updateGifts() {
-        Log.d(LOG_TAG, "updateGifts");
-
-        // query the server
-
-        Gifts gifts = service.gifts();
-        boolean hide = prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, true);
-        Observable<ArrayList<GiftResult>> results = null;
-        switch (queryType) {
-        case USER:
-            results = gifts.queryByUser(titleQuery, getUserID(), resultOrder, resultDirection, hide);
-            break;
-        case TOP_GIFT_GIVERS:
-            results = gifts.queryByTopGiftGivers(titleQuery, resultDirection, hide);
-            break;
-        case CHAIN:
-            results = gifts.queryByGiftChain(titleQuery,
-                    giftChainID,
-                    resultOrder,
-                    resultDirection,
-                    hide);
-            break;
-        default:
-            results = gifts.queryByTitle(titleQuery, resultOrder, resultDirection, hide);
-            break;
-        }
-
-        // update the display
-
+    void processResults(Observable<ArrayList<GiftResult>> results) {
         results.forEach(new Action1<ArrayList<GiftResult>>() {
             @Override
             public void call(ArrayList<GiftResult> results) {
                 giftData.clear();
-                if (results != null) {
+                if (results != null)
                     giftData.addAll(results);
-                }
                 arrayAdapter.notifyDataSetChanged();
             }
         });
     }
 
+    void updateGifts() {
+        Log.d(LOG_TAG, "updateGifts");
+        Gifts gifts = service.gifts();
+        boolean hide = prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, true);
+        processResults(query.query(gifts, hide));
+        queryDescription.setText(query.getDescription());
+    }
+
     @Override
-    public void showGiftChain(long giftChainID) {
-        queryType = QueryType.CHAIN;
-        this.giftChainID = giftChainID;
+    public void createGiftChainQuery(long giftChainID, String giftChainName) {
+        query.setChainQuery(giftChainID, giftChainName);
         updateGifts();
+        updateMenu();
+    }
+
+    @Override
+    public void createUserQuery(long queryUserID, String queryUserName) {
+        query.setUserQuery(queryUserID, queryUserName);
+        updateGifts();
+        updateMenu();
     }
 
     @Override
@@ -314,33 +274,5 @@ public class ListGiftsActivity extends GiftActivity implements
     @Override
     public void setFlag(GiftResult gift) {
         service.giftMetadata().setFlag(gift.getId(), gift.isFlag());
-    }
-
-    private String getTitleQuery() {
-        String title = getIntent() != null ? getIntent().getStringExtra(TITLE_QUERY_TAG) : null;
-        return title != null ? title : DEFAULT_QUERY;
-    }
-
-    private ResultOrder getResultOrder() {
-        ResultOrder resultOrder = getIntent() != null ? (ResultOrder) getIntent()
-                .getSerializableExtra(RESULT_ORDER_TAG) : null;
-        return resultOrder != null ? resultOrder : ResultOrder.TIME;
-    }
-
-    private ResultOrderDirection getResultOrderDirection() {
-        ResultOrderDirection resultOrderDirection = getIntent() != null ? (ResultOrderDirection) getIntent()
-                .getSerializableExtra(RESULT_ORDER_DIRECTION_TAG) : null;
-        return resultOrderDirection != null ? resultOrderDirection
-                : ResultOrderDirection.DESCENDING;
-    }
-
-    private QueryType getQueryType() {
-        QueryType queryType = getIntent() != null ? (QueryType) getIntent()
-                .getSerializableExtra(QUERY_TYPE_TAG) : null;
-        return queryType != null ? queryType : QueryType.ALL;
-    }
-
-    private long getGiftChainID() {
-        return getIntent() != null ? getIntent().getLongExtra(GIFT_CHAIN_ID_TAG, 0) : 0;
     }
 }

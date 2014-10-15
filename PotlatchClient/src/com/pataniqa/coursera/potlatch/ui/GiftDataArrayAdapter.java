@@ -32,18 +32,18 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
     private static final String LOG_TAG = GiftDataArrayAdapter.class.getCanonicalName();
 
     private final LayoutInflater inflater;
-    private final ListGiftsCallback giftChainCallback;
+    private final ListGiftsCallback listGiftsCallback;
     private int resource;
 
     public GiftDataArrayAdapter(Context context,
             int resource,
             List<GiftResult> items,
-            ListGiftsCallback giftChainCallback) {
+            ListGiftsCallback listGiftsCallback) {
         super(context, resource, items);
         Log.v(LOG_TAG, "constructor");
         this.resource = resource;
         inflater = LayoutInflater.from(context);
-        this.giftChainCallback = giftChainCallback;
+        this.listGiftsCallback = listGiftsCallback;
     }
     
     /**
@@ -63,7 +63,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
                 holder = (ViewHolder) convertView.getTag();
             } else {
                 convertView = inflater.inflate(resource, parent, false);
-                holder = new ViewHolder(convertView, giftChainCallback);
+                holder = new ViewHolder(convertView, listGiftsCallback);
                 convertView.setTag(holder);
             }
             holder.setGiftData(getItem(position));
@@ -99,15 +99,17 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
         @InjectView(R.id.gift_listview_custom_row_warning)
         ImageButton flagButton;
         @InjectView(R.id.gift_listview_custom_row_link)
-        Button giftChainButton;
+        ImageButton giftChainButton;
+        @InjectView(R.id.gift_listview_custom_row_user)
+        ImageButton moreFromThisUserButton;
 
         View view;
-        private final ListGiftsCallback giftChainCallback;
+        private final ListGiftsCallback listGiftsCallback;
 
-        public ViewHolder(View view, ListGiftsCallback giftChainCallback) {
+        public ViewHolder(View view, ListGiftsCallback listGiftsCallback) {
             ButterKnife.inject(this, view);
             this.view = view;
-            this.giftChainCallback = giftChainCallback;
+            this.listGiftsCallback = listGiftsCallback;
         }
 
         public void setGiftData(final GiftResult gift) {
@@ -128,7 +130,8 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
             image.setScaleType(ScaleType.FIT_CENTER);
 
             if (gift.getGiftChainName() != null && !gift.getGiftChainName().isEmpty()) {
-                giftChainButton.setText(gift.getGiftChainName());
+                //giftChainButton.setText(gift.getGiftChainName());
+                giftChainButton.setVisibility(Button.VISIBLE);
             } else {
                 giftChainButton.setVisibility(Button.INVISIBLE);
             }
@@ -147,7 +150,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
                 public void onClick(View v) {
                     gift.setLike(!gift.isLike());
                     gift.setLikes(gift.getLikes() + (gift.isLike() ? 1 : 0)) ;
-                    giftChainCallback.setLike(gift);
+                    listGiftsCallback.setLike(gift);
                     likeButton.setImageResource(gift.isLike() ? R.drawable.ic_fa_heart
                             : R.drawable.ic_fa_heart_o);
                     likes.setText("" + gift.getLikes());
@@ -158,7 +161,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
                 @Override
                 public void onClick(View v) {
                     gift.setFlag(!gift.isFlag());                    
-                    giftChainCallback.setFlag(gift);
+                    listGiftsCallback.setFlag(gift);
                     flagButton.setImageResource(gift.isFlag() ? R.drawable.ic_fa_flag
                             : R.drawable.ic_fa_flag_o);
                 }
@@ -167,7 +170,14 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
             giftChainButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    giftChainCallback.showGiftChain(gift.getGiftChainID());
+                    listGiftsCallback.createGiftChainQuery(gift.getGiftChainID(), gift.getGiftChainName());
+                }
+            });
+            
+            moreFromThisUserButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listGiftsCallback.createUserQuery(gift.getUserID(), gift.getUsername());
                 }
             });
         }

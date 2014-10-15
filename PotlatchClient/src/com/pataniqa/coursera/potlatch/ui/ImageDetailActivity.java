@@ -51,7 +51,6 @@ public class ImageDetailActivity extends GiftActivity {
                 .load(url)
                 .resize(maxsize, maxsize)
                 .placeholder(R.drawable.ic_fa_image)
-                //.centerCrop()
                 .centerInside()
                 .into(image);
 

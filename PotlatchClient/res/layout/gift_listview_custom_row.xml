@@ -19,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:text="@string/title"
         android:textSize="16sp" />
 
@@ -27,6 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:text="@string/description"
         android:textSize="12sp" />
 
@@ -64,12 +66,21 @@
             android:focusable="false"
             android:src="@drawable/ic_fa_flag_o" />
 
-        <Button
+        <ImageButton
             android:id="@+id/gift_listview_custom_row_link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/chain"
-            android:focusable="false" />
+            android:focusable="false"
+            android:src="@drawable/ic_fa_link" />
+        
+          <ImageButton
+            android:id="@+id/gift_listview_custom_row_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/more_from_this_user"
+            android:focusable="false"
+            android:src="@drawable/ic_action_person" />
     </LinearLayout>
 
 </LinearLayout>
