@@ -9,9 +9,9 @@ import java.util.Map;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -47,7 +47,7 @@ abstract class ViewGiftActivity extends GiftActivity {
 
     // Used as the request codes in startActivityForResult().
     enum Request {
-        CAMERA_PIC_REQUEST, GALLERY_PIC_REQUEST, CAMERA_VIDEO_REQUEST
+        CAMERA_PHOTO, GALLERY_PHOTO, CAMERA_VIDEO
     };
 
     // The various UI elements we use
@@ -65,7 +65,6 @@ abstract class ViewGiftActivity extends GiftActivity {
     // Making this static keeps it from getting GC'd when we take pictures
     private static Uri imagePath = null;
     private static Uri videoPath = null;
-    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +87,7 @@ abstract class ViewGiftActivity extends GiftActivity {
         Log.v(LOG_TAG, "selectPhotoClicked");
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent, Request.GALLERY_PIC_REQUEST.ordinal());
+        startActivityForResult(galleryIntent, Request.GALLERY_PHOTO.ordinal());
     }
 
     public void addPhotoButtonClicked(View aView) {
@@ -99,7 +98,7 @@ abstract class ViewGiftActivity extends GiftActivity {
                 LocalStorageUtilities.Security.PUBLIC,
                 null);
         cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imagePath);
-        startActivityForResult(cameraIntent, Request.CAMERA_PIC_REQUEST.ordinal());
+        startActivityForResult(cameraIntent, Request.CAMERA_PHOTO.ordinal());
     }
 
     public void addVideoButtonClicked(View v) {
@@ -111,12 +110,7 @@ abstract class ViewGiftActivity extends GiftActivity {
                 null);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, videoPath);
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-        startActivityForResult(intent, Request.CAMERA_VIDEO_REQUEST.ordinal());
-    }
-
-    public void cancelButtonClicked(View v) {
-        Log.d(LOG_TAG, "cancelButtonClicked");
-        finish();
+        startActivityForResult(intent, Request.CAMERA_VIDEO.ordinal());
     }
 
     @Override
@@ -125,8 +119,8 @@ abstract class ViewGiftActivity extends GiftActivity {
                 + "data:" + data);
 
         switch (Request.values()[requestCode]) {
-        case CAMERA_PIC_REQUEST:
-            if (resultCode == CreateGiftActivity.RESULT_OK) {
+        case CAMERA_PHOTO:
+            if (resultCode == Activity.RESULT_OK) {
                 if (viewSwitcher.getCurrentView() != image)
                     viewSwitcher.showPrevious();
                 imagePathFinal = imagePath;
@@ -142,7 +136,7 @@ abstract class ViewGiftActivity extends GiftActivity {
                 }
             }
             break;
-        case GALLERY_PIC_REQUEST:
+        case GALLERY_PHOTO:
             if (viewSwitcher.getCurrentView() != image)
                 viewSwitcher.showPrevious();
             Uri selectedImage = data.getData();
@@ -157,8 +151,9 @@ abstract class ViewGiftActivity extends GiftActivity {
             image.setImageBitmap(thumbnail);
             image.setScaleType(ScaleType.FIT_CENTER);
             break;
-        case CAMERA_VIDEO_REQUEST:
-            if (resultCode == CreateGiftActivity.RESULT_OK) {
+        case CAMERA_VIDEO:
+            if (resultCode == Activity.RESULT_OK) {
+                Log.i(LOG_TAG, "Video capture completed: " + videoPath);
                 if (viewSwitcher.getCurrentView() != video)
                     viewSwitcher.showNext();
                 videoPathFinal = videoPath;

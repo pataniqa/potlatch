@@ -62,6 +62,14 @@
             android:contentDescription="@string/add_video"
             android:onClick="addVideoButtonClicked"
             android:src="@drawable/ic_action_video" />
+
+        <ImageButton
+            android:id="@+id/gift_create_save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/create"
+            android:onClick="createButtonClicked"
+            android:src="@drawable/ic_action_accept" />
     </LinearLayout>
 
     <AutoCompleteTextView
