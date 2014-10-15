@@ -50,7 +50,8 @@ public class EditGiftActivity extends ViewGiftActivity {
             @Override
             public void call(Boolean arg0) {
                 Log.d(LOG_TAG, "Finished setting up item");
-            }});
+            }
+        });
     }
 
     Observable<Boolean> setValuesToDefault() {
@@ -68,15 +69,15 @@ public class EditGiftActivity extends ViewGiftActivity {
                     descriptionInput.setText(gift.getDescription());
 
                     if (gift.getVideoUri() != null && !gift.getVideoUri().isEmpty()) {
-                        File videoFile = new File (Uri.parse(gift.getVideoUri()).getPath());
-                        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(videoFile.getAbsolutePath(),
-                                MediaStore.Images.Thumbnails.MINI_KIND);
+                        File videoFile = new File(Uri.parse(gift.getVideoUri()).getPath());
+                        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(videoFile
+                                .getAbsolutePath(), MediaStore.Images.Thumbnails.MINI_KIND);
                         image.setImageBitmap(thumb);
                     } else {
                         image.setImageURI(Uri.parse(gift.getImageUri()));
                         image.setVisibility(View.VISIBLE);
                         image.setScaleType(ScaleType.FIT_CENTER);
-                        File imageFile = new File( Uri.parse(gift.getImageUri()).getPath());
+                        File imageFile = new File(Uri.parse(gift.getImageUri()).getPath());
                         float rotation = ImageUtils.getPhotoOrientation(context, imageFile);
                         image.setRotation(rotation);
                     }
@@ -115,9 +116,13 @@ public class EditGiftActivity extends ViewGiftActivity {
 
     public void deleteButtonClicked(View v) {
         Log.d(LOG_TAG, "deleteButtonClicked");
-        long identifier = getRowIdentifier();
+        final long identifier = getRowIdentifier();
         Log.d(LOG_TAG, "Deleting gift with " + identifier);
-        service.gifts().delete(identifier);
-        finish();
+        service.gifts().delete(identifier).forEach(new Action1<Boolean>() {
+            @Override
+            public void call(Boolean arg0) {
+                finish();
+            }
+        });
     }
 }

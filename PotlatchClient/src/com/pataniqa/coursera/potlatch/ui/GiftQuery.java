@@ -61,8 +61,8 @@ class GiftQuery {
         if (prefs.contains(QUERY_USER_ID_TAG))
             queryUserID = prefs.getLong(QUERY_USER_ID_TAG, 0);
         hide = prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, true);
-        if ((queryType == QueryType.USER && queryUsername.isEmpty())
-                || (queryType == QueryType.CHAIN && giftChainName.isEmpty()))
+        if ((queryType == QueryType.USER && queryUsername == null)
+                || (queryType == QueryType.CHAIN && giftChainName == null))
             queryType = QueryType.ALL;
 
     }
