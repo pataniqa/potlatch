@@ -35,8 +35,9 @@ abstract class BaseCreateUpdateDelete<T extends SetId> extends BaseQuery<T> impl
                     db.close();
                 } else {
                     String[] selectionArgs = { String.valueOf(data.getId()) };
+                    ContentValues creator = creator().getCV(data);
                     SQLiteDatabase db = helper().getWritableDatabase();
-                    db.update(tableName(), creator().getCV(data), selection, selectionArgs);
+                    db.update(tableName(), creator, selection, selectionArgs);
                     db.close();
                 }
                 Log.i(LOG_TAG, "Stored: " + data);

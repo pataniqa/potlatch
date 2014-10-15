@@ -34,7 +34,7 @@ public class CreateGiftActivity extends ViewGiftActivity {
         initializeSpinner();
     }
 
-    public void createButtonClicked(View v) {
+    public void saveButtonClicked(View v) {
         Log.d(LOG_TAG, "createButtonClicked");
         Observable<Gift> gift = makeGiftDataFromUI(GetId.UNDEFINED_ID)
                 .flatMap(new Func1<Gift, Observable<Gift>>() {

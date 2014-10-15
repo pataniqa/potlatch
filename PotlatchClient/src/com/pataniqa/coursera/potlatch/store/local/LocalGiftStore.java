@@ -4,17 +4,21 @@ import java.util.Date;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.TimeUtils;
 import com.pataniqa.coursera.potlatch.store.GiftChains;
 import com.pataniqa.coursera.potlatch.store.SaveDelete;
 import com.pataniqa.coursera.potlatch.store.Users;
+import com.pataniqa.coursera.potlatch.ui.EditGiftActivity;
 
 /**
  * Stores GiftData in a local SQLite Database that is hosted by the device.
  */
 public class LocalGiftStore extends BaseCreateUpdateDelete<Gift> implements SaveDelete<Gift> {
+    
+    private final static String LOG_TAG = EditGiftActivity.class.getCanonicalName();
 
     public LocalGiftStore(LocalDatabase helper, Users users, GiftChains chains) {
         super(new GiftCreator(users, chains),
@@ -35,6 +39,7 @@ public class LocalGiftStore extends BaseCreateUpdateDelete<Gift> implements Save
         @Override
         public ContentValues getCV(Gift data) {
             ContentValues rValue = new ContentValues();
+            try {
             rValue.put(LocalSchema.Cols.TITLE, data.getTitle());
             rValue.put(LocalSchema.Cols.DESCRIPTION, data.getDescription());
             rValue.put(LocalSchema.Cols.VIDEO_URI, data.getVideoUri());
@@ -51,6 +56,9 @@ public class LocalGiftStore extends BaseCreateUpdateDelete<Gift> implements Save
             rValue.put(LocalSchema.Cols.USER_LIKES, 0);
             String user = users.findOne(data.getUserID()).toBlocking().first().getName();
             rValue.put(LocalSchema.Cols.USER_NAME, user);
+            } catch (Exception e) {
+                Log.e(LOG_TAG, e.getMessage(), e);
+            }
             return rValue;
         }
 

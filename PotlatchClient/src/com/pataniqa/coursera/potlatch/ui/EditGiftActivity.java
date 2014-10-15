@@ -83,6 +83,7 @@ public class EditGiftActivity extends ViewGiftActivity {
 
                     imagePathFinal = stringToUri(gift.getImageUri());
                     videoPathFinal = stringToUri(gift.getVideoUri());
+                    image.requestFocus();
                     return true;
                 }
                 return false;
