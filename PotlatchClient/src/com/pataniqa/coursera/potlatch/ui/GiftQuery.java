@@ -51,10 +51,22 @@ class GiftQuery {
             resultDirection = ResultOrderDirection.values()[prefs
                     .getInt(RESULT_ORDER_DIRECTION_TAG, resultDirection.ordinal())];
         if (prefs.contains(QUERY_TYPE_TAG))
-            setQueryType(QueryType.values()[prefs.getInt(QUERY_TYPE_TAG, getQueryType().ordinal())]);
+            queryType = QueryType.values()[prefs.getInt(QUERY_TYPE_TAG, getQueryType().ordinal())];
+        if (prefs.contains(GIFT_CHAIN_NAME_TAG)) 
+            giftChainName = prefs.getString(GIFT_CHAIN_NAME_TAG, null);
+        if (prefs.contains(GIFT_CHAIN_ID_TAG))
+            giftChainID = prefs.getLong(GIFT_CHAIN_ID_TAG, 0);
+        if (prefs.contains(QUERY_USER_NAME_TAG))
+            queryUsername = prefs.getString(QUERY_USER_NAME_TAG, null);
+        if (prefs.contains(QUERY_USER_ID_TAG))
+            queryUserID = prefs.getLong(QUERY_USER_ID_TAG, 0);
         hide = prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, true);
+        if ((queryType == QueryType.USER && queryUsername.isEmpty())
+                || (queryType == QueryType.CHAIN && giftChainName.isEmpty()))
+            queryType = QueryType.ALL;
+
     }
-    
+
     void clearTitle() {
         title = DEFAULT_QUERY;
     }
@@ -124,6 +136,10 @@ class GiftQuery {
         ed.putInt(RESULT_ORDER_TAG, resultOrder.ordinal());
         ed.putInt(RESULT_ORDER_DIRECTION_TAG, resultDirection.ordinal());
         ed.putInt(QUERY_TYPE_TAG, getQueryType().ordinal());
+        ed.putString(GIFT_CHAIN_NAME_TAG, giftChainName);
+        ed.putLong(GIFT_CHAIN_ID_TAG, giftChainID);
+        ed.putString(QUERY_USER_NAME_TAG, queryUsername);
+        ed.putLong(QUERY_USER_ID_TAG, queryUserID);
         ed.commit();
     }
 
