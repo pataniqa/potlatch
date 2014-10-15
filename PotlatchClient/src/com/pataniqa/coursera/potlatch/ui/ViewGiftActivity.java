@@ -10,7 +10,6 @@ import java.util.Map;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -145,10 +144,14 @@ abstract class ViewGiftActivity extends GiftActivity {
             }
             break;
         case GALLERY_PHOTO:
-            String picturePath = getImageUriFromGallery(data);
-            displayBitmap(picturePath);
-            this.imagePathFinal = Uri.fromFile(new File(picturePath));
-            updateButtonsAfterCreate();
+            if (resultCode == Activity.RESULT_OK) {
+                String picturePath = getImageUriFromGallery(data);
+                displayBitmap(picturePath);
+                this.imagePathFinal = Uri.fromFile(new File(picturePath));
+                updateButtonsAfterCreate();
+            } else {
+                Log.e(LOG_TAG, "Image selection failed.");
+            }
             break;
         case CAMERA_VIDEO:
             if (resultCode == Activity.RESULT_OK) {
@@ -241,13 +244,9 @@ abstract class ViewGiftActivity extends GiftActivity {
                         .toMillis(false)), getUserID(), giftChainID);
             }
         });
-
     }
 
     void initializeSpinner() {
-
-        // TODO this will not scale with the number of gift chains!
-
         final Context context = this;
         Observable<ArrayList<GiftChain>> results = service.giftChains().findAll();
         results.forEach(new Action1<ArrayList<GiftChain>>() {
