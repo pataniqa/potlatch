@@ -8,6 +8,7 @@
     android:layout_margin="10dp" >
 
     <RelativeLayout
+        android:focusable="true" android:focusableInTouchMode="true"
         android:id="@+id/gift_create_relative_layout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -77,6 +78,7 @@
 
         <AutoCompleteTextView
             android:id="@+id/gift_create_gift_chain"
+             android:nextFocusUp="@id/gift_create_gift_chain" android:nextFocusLeft="@id/gift_create_gift_chain"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/gift_create_linear_layout"
@@ -87,6 +89,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_below="@+id/gift_create_gift_chain"
             android:hint="@string/title"
             android:inputType="text"
@@ -97,8 +100,9 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_below="@+id/gift_create_title"
-            android:gravity="top|left"
+            android:gravity="top|start"
             android:hint="@string/description"
             android:inputType="textMultiLine"
             android:lines="2"
