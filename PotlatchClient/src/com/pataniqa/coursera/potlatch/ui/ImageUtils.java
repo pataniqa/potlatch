@@ -4,7 +4,6 @@ import java.io.File;
 
 import android.content.Context;
 import android.media.ExifInterface;
-import android.net.Uri;
 import android.util.Log;
 
 public class ImageUtils {
@@ -12,11 +11,12 @@ public class ImageUtils {
 
     /**
      * Find out the correction orientation of the image.
+     * See
+     * http://stackoverflow.com/questions/12726860/android-how-to-detect-the-image-orientation-portrait-or-landscape-picked-fro
      */
     public static float getPhotoOrientation(Context context, File imageFile) {
         float rotate = 0;
         try {
-            //File imageFile = new File( Uri.parse(imageUri).getPath());
             ExifInterface exif = new ExifInterface(imageFile.getAbsolutePath());
             int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,
                     ExifInterface.ORIENTATION_NORMAL);

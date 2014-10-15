@@ -115,6 +115,18 @@ abstract class ViewGiftActivity extends GiftActivity {
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
         startActivityForResult(intent, Request.CAMERA_VIDEO.ordinal());
     }
+    
+    public void imageDetailClicked(View v) {
+        Intent intent = new Intent(this, ImageDetailActivity.class);
+        intent.putExtra(IMAGE_URL_TAG, uriToString(imagePathFinal));
+        startActivity(intent);
+    }
+    
+    public void videoDetailClicked(View v) {
+        Intent intent = new Intent(this, VideoDetailActivity.class);
+        intent.putExtra(VIDEO_URL_TAG, uriToString(videoPathFinal));
+        startActivity(intent);
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

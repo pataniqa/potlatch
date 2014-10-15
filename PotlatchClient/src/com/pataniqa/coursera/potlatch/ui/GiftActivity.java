@@ -39,6 +39,8 @@ abstract class GiftActivity extends Activity {
     public final static String GIFT_CHAIN_ID_TAG = "gift_chain_ID";
     public final static String USER_ID_TAG = "user_id";
     public final static String USER_NAME_TAG ="user_name";
+    public final static String IMAGE_URL_TAG = "image_url";
+    public final static String VIDEO_URL_TAG = "video_url";
 
     private static final String LOG_TAG = GiftActivity.class.getCanonicalName();
 

@@ -27,6 +27,7 @@
                 android:background="#80ffffff"
                 android:contentDescription="@string/gift_image_description"
                 android:scaleType="center"
+                android:onClick="imageDetailClicked"
                 android:src="@drawable/ic_fa_image" />
 
             <VideoView
@@ -36,6 +37,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="20dp"
                 android:contentDescription="@string/gift_video_description"
+                android:onClick="videoDetailClicked"
                 android:scaleType="center" />
         </ViewSwitcher>
 

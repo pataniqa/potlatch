@@ -37,6 +37,7 @@ public class EditGiftActivity extends ViewGiftActivity {
         initializeSpinner();
         saveButton.setVisibility(View.VISIBLE);
         deleteButton.setVisibility(View.VISIBLE);
+        image.setBackgroundColor(0x00000000);
 
         // set the EditTexts to this Gift's Values
         Observable<Boolean> set = setValuesToDefault();
@@ -81,11 +82,6 @@ public class EditGiftActivity extends ViewGiftActivity {
 
                     if (gift.getGiftChainName() != null && !gift.getGiftChainName().isEmpty())
                         giftChain.setText(gift.getGiftChainName());
-
-                    // TODO clicking the image should display a higher
-                    // resolution version
-
-                    // TODO or in the case of a video play the video
 
                     imagePathFinal = stringToUri(gift.getImageUri());
                     videoPathFinal = stringToUri(gift.getVideoUri());
