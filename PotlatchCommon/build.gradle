@@ -4,26 +4,12 @@ configurations {
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'maven-publish'
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
-sourceSets {
-    main {
-        compileClasspath += configurations.lombok
-    }
-}
-
 repositories {
     mavenCentral()
-    maven { url "http://repo.spring.io/libs-snapshot" }
-    maven { url "http://maven.springframework.org/milestone" }
-    
-    flatDir {
-    	dirs 'lib'
-    }
 }
 
 dependencies {
@@ -39,18 +25,8 @@ dependencies {
     lombok 'org.projectlombok:lombok:+'
 }
 
-publishing {
-        publications {
-            maven(MavenPublication) {
-                groupId 'org.pataniqa.coursera'
-                artifactId 'potlatch-common'
-                version '1.0'
-
-                from components.java
-            }
-        }
-    }
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '1.11'
+// Add the lombok configuration to all of the compile classpaths
+sourceSets.each{ sourceSet -> 
+    sourceSet.compileClasspath += configurations.lombok
+    sourceSet.ext.delombok = new File(buildDir, "generated-src/delombok/" + sourceSet.name);
 }
