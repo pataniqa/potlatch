@@ -8,8 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -96,24 +98,25 @@ abstract class ViewGiftActivity extends GiftActivity {
     public void addPhotoButtonClicked(View aView) {
         Log.v(LOG_TAG, "addPhotoClicked");
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        imagePath = LocalStorageUtilities.getOutputMediaFileUri(this,
-                LocalStorageUtilities.MediaType.IMAGE,
-                LocalStorageUtilities.Security.PUBLIC,
-                null);
-        cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imagePath);
+        imagePath = getNewFile(LocalStorageUtilities.MediaType.IMAGE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imagePath);
         startActivityForResult(cameraIntent, Request.CAMERA_PHOTO.ordinal());
     }
 
     public void addVideoButtonClicked(View v) {
         Log.v(LOG_TAG, "addVideoClicked(View) called.");
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        videoPath = LocalStorageUtilities.getOutputMediaFileUri(this,
-                LocalStorageUtilities.MediaType.VIDEO,
-                LocalStorageUtilities.Security.PUBLIC,
-                null);
+        videoPath = getNewFile(LocalStorageUtilities.MediaType.VIDEO);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, videoPath);
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
         startActivityForResult(intent, Request.CAMERA_VIDEO.ordinal());
+    }
+
+    private Uri getNewFile(LocalStorageUtilities.MediaType type) {
+        return LocalStorageUtilities.getOutputMediaFileUri(this,
+                type,
+                LocalStorageUtilities.Security.PUBLIC,
+                null);
     }
 
     public void detailButtonClicked(View v) {
@@ -146,8 +149,8 @@ abstract class ViewGiftActivity extends GiftActivity {
         case GALLERY_PHOTO:
             if (resultCode == Activity.RESULT_OK) {
                 String picturePath = getImageUriFromGallery(data);
-                displayBitmap(picturePath);
                 this.imagePathFinal = Uri.fromFile(new File(picturePath));
+                displayBitmap(imagePathFinal.getPath());
                 updateButtonsAfterCreate();
             } else {
                 Log.e(LOG_TAG, "Image selection failed.");
@@ -157,8 +160,7 @@ abstract class ViewGiftActivity extends GiftActivity {
             if (resultCode == Activity.RESULT_OK) {
                 Log.d(LOG_TAG, "Video capture completed: " + videoPath);
                 videoPathFinal = videoPath;
-                File videoFile = new File(videoPathFinal.getPath());
-                this.imagePathFinal = createVideoThumbnail(videoFile);
+                this.imagePathFinal = createVideoThumbnail(new File(videoPathFinal.getPath()));
                 displayBitmap(imagePathFinal.getPath());
                 updateButtonsAfterCreate();
             } else if (resultCode != CreateGiftActivity.RESULT_CANCELED) {
@@ -171,10 +173,7 @@ abstract class ViewGiftActivity extends GiftActivity {
     Uri createVideoThumbnail(File videoFile) {
         Bitmap thumb = ThumbnailUtils.createVideoThumbnail(videoFile.getAbsolutePath(),
                 MediaStore.Images.Thumbnails.MINI_KIND);
-        Uri thumbnailImagePath = LocalStorageUtilities.getOutputMediaFileUri(this,
-                LocalStorageUtilities.MediaType.IMAGE,
-                LocalStorageUtilities.Security.PUBLIC,
-                null);
+        Uri thumbnailImagePath = getNewFile(LocalStorageUtilities.MediaType.IMAGE);
         File file = new File(thumbnailImagePath.getPath());
         try {
             FileOutputStream fOut = new FileOutputStream(file);
@@ -227,7 +226,9 @@ abstract class ViewGiftActivity extends GiftActivity {
             result = Observable.just(giftChain);
         } else {
             GiftChain giftChain = new GiftChain(GetId.UNDEFINED_ID, giftChainName);
-            result = service.giftChains().save(giftChain);
+            result = service.giftChains().save(giftChain)
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread());
         }
         return result.map(new Func1<GiftChain, Gift>() {
             @Override
@@ -248,22 +249,23 @@ abstract class ViewGiftActivity extends GiftActivity {
 
     void initializeSpinner() {
         final Context context = this;
-        Observable<ArrayList<GiftChain>> results = service.giftChains().findAll();
-        results.forEach(new Action1<ArrayList<GiftChain>>() {
-            @Override
-            public void call(ArrayList<GiftChain> results) {
-                ArrayList<String> giftChainNames = new ArrayList<String>();
-                for (GiftChain result : results) {
-                    giftChains.put(result.getName(), result.getId());
-                    giftChainNames.add(result.getName());
-                }
-                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(context,
-                        android.R.layout.simple_dropdown_item_1line,
-                        giftChainNames);
-                spinnerArrayAdapter
-                        .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                giftChain.setAdapter(spinnerArrayAdapter);
-            }
-        });
+        service.giftChains().findAll()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .forEach(new Action1<ArrayList<GiftChain>>() {
+                    @Override
+                    public void call(ArrayList<GiftChain> results) {
+                        ArrayList<String> giftChainNames = new ArrayList<String>();
+                        for (GiftChain result : results) {
+                            giftChains.put(result.getName(), result.getId());
+                            giftChainNames.add(result.getName());
+                        }
+                        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(context,
+                                android.R.layout.simple_dropdown_item_1line,
+                                giftChainNames);
+                        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        giftChain.setAdapter(spinnerArrayAdapter);
+                    }
+                });
     }
 }

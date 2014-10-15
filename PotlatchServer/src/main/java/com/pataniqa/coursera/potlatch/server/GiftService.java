@@ -39,7 +39,7 @@ import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 
 @Controller
 public class GiftService {
-
+    
     @Autowired private GiftRepository gifts;
 
     @Autowired private UserRepository users;
@@ -255,6 +255,10 @@ public class GiftService {
             throws IOException {
         if (gifts.exists(id)) {
             ServerFileManager.saveData(dir, extension, id, data.getInputStream());
+            if (dir.equals("video"))
+                gifts.findOne(id).setVideoUri("/gift/" + id + "/video");
+            else 
+                gifts.findOne(id).setImageUri("/gift/" + id + "/image");
         } else
             throw new ResourceNotFoundException();
     }
@@ -296,8 +300,8 @@ public class GiftService {
         return new GiftResult(gift.getId(),
                 gift.getTitle(),
                 gift.getDescription(),
-                "",
-                "",
+                gift.getImageUri(),
+                gift.getVideoUri(),
                 gift.getCreated(),
                 creator.getId(),
                 like,

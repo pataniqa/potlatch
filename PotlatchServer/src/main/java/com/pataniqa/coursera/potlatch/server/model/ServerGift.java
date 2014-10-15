@@ -34,6 +34,8 @@ public class ServerGift implements GetId {
 
     @Getter @Setter private String title;
     @Getter @Setter private String description;
+    @Getter @Setter private String videoUri;
+    @Getter @Setter private String imageUri;
 
     public static final String LIKES = "gift_likes";
     @Getter @Column(name = LIKES) private long likes = 0;

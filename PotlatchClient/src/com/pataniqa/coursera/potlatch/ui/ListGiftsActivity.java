@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import rx.Subscription;
-import rx.android.concurrency.AndroidSchedulers;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -280,8 +280,6 @@ public class ListGiftsActivity extends GiftActivity implements
         query.query(service.gifts())
         .subscribeOn(Schedulers.newThread())
         .observeOn(AndroidSchedulers.mainThread())
-        //.observeOn(Schedulers.newThread())
-        //.subscribeOn(AndroidSchedulers.mainThread())
                 .forEach(new Action1<ArrayList<GiftResult>>() {
                     @Override
                     public void call(ArrayList<GiftResult> results) {

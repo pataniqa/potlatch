@@ -3,8 +3,10 @@ package com.pataniqa.coursera.potlatch.ui;
 import java.io.File;
 
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
@@ -56,10 +58,11 @@ public class EditGiftActivity extends ViewGiftActivity {
 
     Observable<Boolean> setValuesToDefault() {
         Log.d(LOG_TAG, "setValuesToDefault");
-        Observable<GiftResult> gift = service.gifts().findOne(getRowIdentifier());
         final Context context = this;
-        return gift.map(new Func1<GiftResult, Boolean>() {
-
+        return service.gifts().findOne(getRowIdentifier())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Func1<GiftResult, Boolean>() {
             @Override
             public Boolean call(GiftResult gift) {
                 Log.d(LOG_TAG, "setValuesToDefault :" + gift);
