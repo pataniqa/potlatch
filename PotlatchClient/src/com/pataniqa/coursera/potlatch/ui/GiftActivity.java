@@ -2,6 +2,7 @@ package com.pataniqa.coursera.potlatch.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.store.DataService;
 import com.pataniqa.coursera.potlatch.store.local.LocalService;
+import com.squareup.picasso.Picasso;
 
 /**
  * Base class for all GiftData UI activities.
@@ -109,5 +111,9 @@ abstract class GiftActivity extends Activity {
     
     DataService getDataService() {
         return new LocalService(this);
+    }
+    
+    Picasso customPicasso(Context context) {
+        return Picasso.with(context);
     }
 }

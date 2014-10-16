@@ -59,7 +59,8 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
                 holder = (ViewHolder) convertView.getTag();
             } else {
                 convertView = inflater.inflate(resource, parent, false);
-                holder = new ViewHolder(convertView, listGiftsCallback);
+                holder = new ViewHolder(convertView, listGiftsCallback, Picasso.with(convertView
+                        .getContext()));
                 convertView.setTag(holder);
             }
             holder.setGiftData(getItem(position));
@@ -80,26 +81,22 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
         @InjectView(R.id.gift_listview_custom_row_link) ImageButton giftChainButton;
         @InjectView(R.id.gift_listview_custom_row_user) ImageButton moreFromThisUserButton;
 
-        View view;
         private final ListGiftsCallback listGiftsCallback;
+        private final Picasso picasso;
 
-        public ViewHolder(View view, ListGiftsCallback listGiftsCallback) {
+        public ViewHolder(View view, ListGiftsCallback listGiftsCallback, Picasso picasso) {
             ButterKnife.inject(this, view);
-            this.view = view;
             this.listGiftsCallback = listGiftsCallback;
+            this.picasso = picasso;
         }
 
         public void setGiftData(final GiftResult gift) {
             Log.d(LOG_TAG,
                     gift.getVideoUri() + " " + gift.getImageUri() + " " + gift.getGiftChainName());
-            
+
             image.setVisibility(View.VISIBLE);
-            Picasso.with(view.getContext())
-            .load(Uri.parse(gift.getImageUri()))
-            .resize(image.getWidth(), image.getHeight())
-            .placeholder(R.drawable.ic_fa_image)
-            .centerInside()
-            .into(image);
+            picasso.load(Uri.parse(gift.getImageUri())).resize(image.getWidth(), image.getHeight())
+                    .placeholder(R.drawable.ic_fa_image).centerInside().into(image);
 
             if (gift.getGiftChainName() != null && !gift.getGiftChainName().isEmpty()) {
                 giftChainButton.setVisibility(Button.VISIBLE);

@@ -12,7 +12,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.squareup.picasso.Picasso;
 
 public class ImageDetailActivity extends GiftActivity {
 
@@ -46,7 +45,7 @@ public class ImageDetailActivity extends GiftActivity {
             display.getSize(size);
             int maxsize = Math.min(size.x, size.y);
 
-            Picasso.with(this)
+            customPicasso(this)
                 .load(Uri.parse(imageUrl))
                 .resize(maxsize, maxsize)
                 .placeholder(R.drawable.ic_fa_image)
@@ -60,14 +59,7 @@ public class ImageDetailActivity extends GiftActivity {
     protected void onPause() {
         super.onPause();
         if (isFinishing()) {
-            // Always cancel the request here, this is safe to call even if the
-            // image has been loaded.
-            // This ensures that the anonymous callback we have does not prevent
-            // the activity from
-            // being garbage collected. It also prevents our callback from
-            // getting invoked even after the
-            // activity has finished.
-            Picasso.with(this).cancelRequest(image);
+            customPicasso(this).cancelRequest(image);
         }
     }
 

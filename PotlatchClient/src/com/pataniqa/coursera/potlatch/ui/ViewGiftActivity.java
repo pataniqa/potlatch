@@ -79,6 +79,9 @@ abstract class ViewGiftActivity extends GiftActivity {
     protected void onPause() {
         Log.d(LOG_TAG, "onPause");
         super.onPause();
+        if (isFinishing()) {
+            customPicasso(this).cancelRequest(image);
+        }
     }
 
     @Override
@@ -139,7 +142,7 @@ abstract class ViewGiftActivity extends GiftActivity {
         case CAMERA_PHOTO:
             if (resultCode == Activity.RESULT_OK) {
                 this.imagePathFinal = imagePath;
-                displayBitmap(imagePathFinal.getPath());
+                displayImage(imagePathFinal.getPath());
                 readyToSave();
             } else {
                 Log.e(LOG_TAG, "Image capture failed.");
@@ -149,7 +152,7 @@ abstract class ViewGiftActivity extends GiftActivity {
             if (resultCode == Activity.RESULT_OK) {
                 String picturePath = getImageUriFromGallery(data);
                 this.imagePathFinal = Uri.fromFile(new File(picturePath));
-                displayBitmap(imagePathFinal.getPath());
+                displayImage(imagePathFinal.getPath());
                 readyToSave();
             } else {
                 Log.e(LOG_TAG, "Image selection failed.");
@@ -160,7 +163,7 @@ abstract class ViewGiftActivity extends GiftActivity {
                 Log.d(LOG_TAG, "Video capture completed: " + videoPath);
                 videoPathFinal = videoPath;
                 this.imagePathFinal = createVideoThumbnail(new File(videoPathFinal.getPath()));
-                displayBitmap(imagePathFinal.getPath());
+                displayImage(imagePathFinal.getPath());
                 readyToSave();
             } else if (resultCode != CreateGiftActivity.RESULT_CANCELED) {
                 Log.e(LOG_TAG, "Video capture failed.");
@@ -195,20 +198,17 @@ abstract class ViewGiftActivity extends GiftActivity {
         return imagePath;
     }
 
-    void displayBitmap(String path) {
+    void displayImage(String path) {
         File imageFile = new File(path);
         if (imageFile != null && imageFile.exists()) {
             image.setVisibility(View.VISIBLE);
-            Picasso.with(this)
-            .load(Uri.fromFile(imageFile))
-            .resize(image.getWidth(), image.getHeight())
-            .placeholder(R.drawable.ic_fa_image)
-            .centerInside()
-            .into(image);
+            customPicasso(this).load(Uri.fromFile(imageFile))
+                    .resize(image.getWidth(), image.getHeight())
+                    .placeholder(R.drawable.ic_fa_image).centerInside().into(image);
         } else {
             Log.e(LOG_TAG, "Failed to find image.");
         }
-       
+
     }
 
     void readyToSave() {
@@ -227,8 +227,8 @@ abstract class ViewGiftActivity extends GiftActivity {
             result = Observable.just(giftChain);
         } else {
             GiftChain giftChain = new GiftChain(GetId.UNDEFINED_ID, giftChainName);
-            result = getDataService().giftChains().save(giftChain).subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread());
+            result = getDataService().giftChains().save(giftChain)
+                    .subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread());
         }
         return result.map(new Func1<GiftChain, Gift>() {
             @Override

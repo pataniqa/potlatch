@@ -51,7 +51,7 @@ public class EditGiftActivity extends ViewGiftActivity {
                             titleInput.setText(gift.getTitle());
                             descriptionInput.setText(gift.getDescription());
 
-                            displayBitmap(Uri.parse(gift.getImageUri()).getPath());
+                            displayImage(Uri.parse(gift.getImageUri()).getPath());
 
                             if (gift.getGiftChainName() != null
                                     && !gift.getGiftChainName().isEmpty())
