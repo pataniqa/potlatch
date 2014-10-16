@@ -2,7 +2,6 @@ package com.pataniqa.coursera.potlatch.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
@@ -18,8 +17,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.util.Log;
 
 import com.pataniqa.coursera.potlatch.store.Media;
@@ -75,7 +72,7 @@ public class UploadService extends IntentService {
         final String path = intent.getStringExtra(FILE_TAG);
         final String username = intent.getStringExtra(USER_NAME_TAG);
         final String password = intent.getStringExtra(PASSWORD_TAG);
-        final String endpoint =  intent.getStringExtra(ENDPOINT_TAG);
+        final String endpoint = intent.getStringExtra(ENDPOINT_TAG);
         final String client = intent.getStringExtra(CLIENT_TAG);
 
         final Media media = new RemoteService(new UnsafeHttpClient(),
@@ -97,7 +94,16 @@ public class UploadService extends IntentService {
                             @Override
                             public void call(Subscriber<? super TypedFile> subscriber) {
                                 try {
-                                    scaleAndResizeBitmap(context, path, outputFile);
+                                    int imageWidth = 440;
+                                    int imageHeight = 440;
+                                    int imageQuality = 80;
+
+                                    Bitmap resizedBitmap = ImageUtils.fileToBitmap(path,
+                                            imageWidth,
+                                            imageHeight);
+                                    final ByteArrayOutputStream bao = new ByteArrayOutputStream();
+                                    resizedBitmap.compress(CompressFormat.PNG, imageQuality, bao);
+                                    FileUtils.writeByteArrayToFile(outputFile, bao.toByteArray());
                                 } catch (Exception e) {
                                     subscriber.onError(e);
                                 }
@@ -129,41 +135,6 @@ public class UploadService extends IntentService {
         } catch (Exception e) {
             Log.e(LOG_TAG, e.getMessage(), e);
         }
-    }
-
-    private void scaleAndResizeBitmap(Context context, String path, File outputFile)
-            throws IOException {
-        Bitmap bitmap = BitmapFactory.decodeFile(path);
-        File file = new File(path);
-        float rotation = ImageUtils.getPhotoOrientation(context, file);
-
-        float desiredImageWidth = 440;
-        float ratio = desiredImageWidth / bitmap.getWidth();
-        int desiredImageHeight = (int) (ratio * bitmap.getHeight());
-
-        float scaleWidth = ((float) desiredImageWidth) / bitmap.getWidth();
-        float scaleHeight = ((float) desiredImageHeight) / bitmap.getHeight();
-
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-        matrix.postRotate(rotation);
-        Log.d(LOG_TAG, "Image resize: width " + bitmap.getWidth() + " height " + bitmap.getHeight()
-                + " scaleWidth " + scaleWidth + " scaleHeight " + scaleHeight + " rotation "
-                + rotation);
-
-        Bitmap resizedBitmap = Bitmap.createBitmap(bitmap,
-                0,
-                0,
-                bitmap.getWidth(),
-                bitmap.getHeight(),
-                matrix,
-                true);
-
-        int imageQuality = 80;
-        final ByteArrayOutputStream bao = new ByteArrayOutputStream();
-        resizedBitmap.compress(CompressFormat.PNG, imageQuality, bao);
-        FileUtils.writeByteArrayToFile(outputFile, bao.toByteArray());
-
     }
 
 }

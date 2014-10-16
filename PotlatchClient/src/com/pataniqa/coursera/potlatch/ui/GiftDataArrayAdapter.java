@@ -118,7 +118,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
             } else {
                 image.setImageURI(Uri.parse(gift.getImageUri()));
                 File imageFile = new File(Uri.parse(gift.getImageUri()).getPath());
-                float rotation = ImageUtils.getPhotoOrientation(view.getContext(), imageFile);
+                float rotation = ImageUtils.getPhotoOrientation(imageFile);
                 image.setRotation(rotation);
             }
             image.setVisibility(View.VISIBLE);

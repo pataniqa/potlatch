@@ -17,7 +17,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
@@ -200,12 +199,10 @@ abstract class ViewGiftActivity extends GiftActivity {
     void displayBitmap(String path) {
         File imageFile = new File(path);
         if (imageFile != null && imageFile.exists()) {
-            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            Bitmap bitmap = ImageUtils.fileToBitmap(path, image.getWidth(), image.getHeight());
             image.setVisibility(View.VISIBLE);
             image.setImageBitmap(bitmap);
             image.setScaleType(ScaleType.FIT_CENTER);
-            float rotation = ImageUtils.getPhotoOrientation(this, imageFile);
-            image.setRotation(rotation);
         } else {
             Log.e(LOG_TAG, "Failed to find image.");
         }
@@ -227,8 +224,7 @@ abstract class ViewGiftActivity extends GiftActivity {
             result = Observable.just(giftChain);
         } else {
             GiftChain giftChain = new GiftChain(GetId.UNDEFINED_ID, giftChainName);
-            result = service.giftChains().save(giftChain)
-                    .subscribeOn(Schedulers.newThread())
+            result = service.giftChains().save(giftChain).subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread());
         }
         return result.map(new Func1<GiftChain, Gift>() {
@@ -250,8 +246,7 @@ abstract class ViewGiftActivity extends GiftActivity {
 
     void initializeSpinner() {
         final Context context = this;
-        service.giftChains().findAll()
-                .subscribeOn(Schedulers.newThread())
+        service.giftChains().findAll().subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .forEach(new Action1<ArrayList<GiftChain>>() {
                     @Override
