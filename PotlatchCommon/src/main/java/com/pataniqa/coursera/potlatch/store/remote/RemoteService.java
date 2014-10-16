@@ -11,7 +11,6 @@ import retrofit.RestAdapter;
 import retrofit.RestAdapter.LogLevel;
 import retrofit.client.ApacheClient;
 import retrofit.client.Response;
-import retrofit.mime.TypedByteArray;
 import retrofit.mime.TypedFile;
 import rx.Observable;
 

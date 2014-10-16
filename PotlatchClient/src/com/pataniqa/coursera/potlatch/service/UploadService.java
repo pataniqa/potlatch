@@ -1,7 +1,8 @@
-package com.pataniqa.coursera.potlatch.ui;
+package com.pataniqa.coursera.potlatch.service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
@@ -23,6 +24,8 @@ import android.util.Log;
 
 import com.pataniqa.coursera.potlatch.store.Media;
 import com.pataniqa.coursera.potlatch.store.remote.RemoteService;
+import com.pataniqa.coursera.potlatch.ui.ImageUtils;
+import com.pataniqa.coursera.potlatch.unsafe.EasyHttpClient;
 
 public class UploadService extends IntentService {
 
@@ -34,6 +37,8 @@ public class UploadService extends IntentService {
     private static final String FILE_TAG = "file";
     private static final String ENDPOINT_TAG = "endpoint";
     private static final String CLIENT_TAG = "client";
+    public final static String USER_NAME_TAG = "user_name";
+    public final static String PASSWORD_TAG = "password";
 
     public UploadService() {
         super(SERVICE_NAME);
@@ -52,8 +57,8 @@ public class UploadService extends IntentService {
         intent.putExtra(ID_TAG, id);
         intent.putExtra(IS_IMAGE_TAG, isImage);
         intent.putExtra(FILE_TAG, file.getAbsolutePath());
-        intent.putExtra(GiftActivity.USER_NAME_TAG, username);
-        intent.putExtra(GiftActivity.PASSWORD_TAG, password);
+        intent.putExtra(USER_NAME_TAG, username);
+        intent.putExtra(PASSWORD_TAG, password);
         intent.putExtra(ENDPOINT_TAG, endpoint);
         intent.putExtra(CLIENT_TAG, client);
         context.startService(intent);
@@ -70,17 +75,16 @@ public class UploadService extends IntentService {
         final long id = intent.getLongExtra(ID_TAG, 0);
         final boolean isImage = intent.getBooleanExtra(IS_IMAGE_TAG, true);
         final String path = intent.getStringExtra(FILE_TAG);
-        final String username = intent.getStringExtra(GiftActivity.USER_NAME_TAG);
-        final String password = intent.getStringExtra(GiftActivity.PASSWORD_TAG);
-        final String endpoint = "https://192.168.1.71:8443"; // intent.getStringExtra(ENDPOINT_TAG);
-        final String client = "mobile"; // intent.getStringExtra(CLIENT_TAG);
+        final String username = intent.getStringExtra(USER_NAME_TAG);
+        final String password = intent.getStringExtra(PASSWORD_TAG);
+        final String endpoint =  intent.getStringExtra(ENDPOINT_TAG);
+        final String client = intent.getStringExtra(CLIENT_TAG);
 
-        RemoteService remoteService = new RemoteService(new EasyHttpClient(),
+        final Media media = new RemoteService(new EasyHttpClient(),
                 endpoint,
                 username,
                 password,
-                client);
-        final Media media = remoteService.media();
+                client).media();
         final File file = new File(path);
         final Context context = this;
         final File outputDir = context.getCacheDir();
@@ -94,42 +98,11 @@ public class UploadService extends IntentService {
                         .create(new Observable.OnSubscribe<TypedFile>() {
                             @Override
                             public void call(Subscriber<? super TypedFile> subscriber) {
-                                Bitmap bitmap = BitmapFactory.decodeFile(path);
-                                float rotation = ImageUtils.getPhotoOrientation(context, file);
-
-                                float desiredImageWidth = 440;
-                                float ratio = desiredImageWidth / bitmap.getWidth();
-                                int desiredImageHeight = (int) (ratio * bitmap.getHeight());
-
-                                float scaleWidth = ((float) desiredImageWidth) / bitmap.getWidth();
-                                float scaleHeight = ((float) desiredImageHeight)
-                                        / bitmap.getHeight();
-
-                                Matrix matrix = new Matrix();
-                                matrix.postScale(scaleWidth, scaleHeight);
-                                matrix.postRotate(rotation);
-                                Log.d(LOG_TAG, "Image resize: width " + bitmap.getWidth()
-                                        + " height " + bitmap.getHeight() + " scaleWidth "
-                                        + scaleWidth + " scaleHeight " + scaleHeight + " rotation "
-                                        + rotation);
-
-                                Bitmap resizedBitmap = Bitmap.createBitmap(bitmap,
-                                        0,
-                                        0,
-                                        bitmap.getWidth(),
-                                        bitmap.getHeight(),
-                                        matrix,
-                                        true);
-
-                                int imageQuality = 80;
-                                final ByteArrayOutputStream bao = new ByteArrayOutputStream();
-                                resizedBitmap.compress(CompressFormat.PNG, imageQuality, bao);
                                 try {
-                                    FileUtils.writeByteArrayToFile(outputFile, bao.toByteArray());
+                                    scaleAndResizeBitmap(context, path, outputFile);
                                 } catch (Exception e) {
                                     subscriber.onError(e);
                                 }
-
                                 TypedFile imageData = new TypedFile("image/png", outputFile);
                                 Log.d(LOG_TAG, "Uploading image");
                                 subscriber.onNext(imageData);
@@ -158,6 +131,41 @@ public class UploadService extends IntentService {
         } catch (Exception e) {
             Log.e(LOG_TAG, e.getMessage(), e);
         }
+    }
+
+    private void scaleAndResizeBitmap(Context context, String path, File outputFile)
+            throws IOException {
+        Bitmap bitmap = BitmapFactory.decodeFile(path);
+        File file = new File(path);
+        float rotation = ImageUtils.getPhotoOrientation(context, file);
+
+        float desiredImageWidth = 440;
+        float ratio = desiredImageWidth / bitmap.getWidth();
+        int desiredImageHeight = (int) (ratio * bitmap.getHeight());
+
+        float scaleWidth = ((float) desiredImageWidth) / bitmap.getWidth();
+        float scaleHeight = ((float) desiredImageHeight) / bitmap.getHeight();
+
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        matrix.postRotate(rotation);
+        Log.d(LOG_TAG, "Image resize: width " + bitmap.getWidth() + " height " + bitmap.getHeight()
+                + " scaleWidth " + scaleWidth + " scaleHeight " + scaleHeight + " rotation "
+                + rotation);
+
+        Bitmap resizedBitmap = Bitmap.createBitmap(bitmap,
+                0,
+                0,
+                bitmap.getWidth(),
+                bitmap.getHeight(),
+                matrix,
+                true);
+
+        int imageQuality = 80;
+        final ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        resizedBitmap.compress(CompressFormat.PNG, imageQuality, bao);
+        FileUtils.writeByteArrayToFile(outputFile, bao.toByteArray());
+
     }
 
 }

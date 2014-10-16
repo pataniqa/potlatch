@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.model.Gift;
+import com.pataniqa.coursera.potlatch.service.UploadService;
 
 /**
  * The activity that allows a user to create and save a Gift.
@@ -56,8 +57,8 @@ public class CreateGiftActivity extends ViewGiftActivity {
             @Override
             public void call(Gift gift) {
                 File imageFile = new File(Uri.parse(gift.getImageUri()).getPath());
-                String endpoint = "";
-                String client = "";
+                String endpoint = "https://192.168.1.71:8443";
+                String client = "mobile";
                 UploadService.startUpload(context,
                         gift.getId(),
                         true,

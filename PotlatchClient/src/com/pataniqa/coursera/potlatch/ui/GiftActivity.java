@@ -13,7 +13,6 @@ import android.widget.EditText;
 import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.store.DataService;
 import com.pataniqa.coursera.potlatch.store.local.LocalService;
-import com.pataniqa.coursera.potlatch.store.remote.RemoteService;
 
 /**
  * Base class for all GiftData UI activities.
