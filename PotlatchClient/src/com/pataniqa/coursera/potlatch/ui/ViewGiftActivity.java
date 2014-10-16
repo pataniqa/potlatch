@@ -224,7 +224,7 @@ abstract class ViewGiftActivity extends GiftActivity {
             result = Observable.just(giftChain);
         } else {
             GiftChain giftChain = new GiftChain(GetId.UNDEFINED_ID, giftChainName);
-            result = service.giftChains().save(giftChain).subscribeOn(Schedulers.newThread())
+            result = getDataService().giftChains().save(giftChain).subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread());
         }
         return result.map(new Func1<GiftChain, Gift>() {
@@ -246,7 +246,7 @@ abstract class ViewGiftActivity extends GiftActivity {
 
     void initializeSpinner() {
         final Context context = this;
-        service.giftChains().findAll().subscribeOn(Schedulers.newThread())
+        getDataService().giftChains().findAll().subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .forEach(new Action1<ArrayList<GiftChain>>() {
                     @Override

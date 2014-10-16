@@ -41,7 +41,7 @@ public class EditGiftActivity extends ViewGiftActivity {
 
     void setValuesToDefault() {
         Log.d(LOG_TAG, "setValuesToDefault");
-        service.gifts().findOne(getRowIdentifier()).subscribeOn(Schedulers.newThread())
+        getDataService().gifts().findOne(getRowIdentifier()).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread()).map(new Func1<GiftResult, Boolean>() {
                     @Override
                     public Boolean call(GiftResult gift) {
@@ -81,7 +81,7 @@ public class EditGiftActivity extends ViewGiftActivity {
                     @Override
                     public Observable<Gift> call(Gift gift) {
                         Log.d(LOG_TAG, "newGiftData:" + gift);
-                        return service.gifts().save(gift);
+                        return getDataService().gifts().save(gift);
                     }
                 }).forEach(new Action1<Gift>() {
                     @Override
@@ -95,7 +95,7 @@ public class EditGiftActivity extends ViewGiftActivity {
         Log.d(LOG_TAG, "deleteButtonClicked");
         final long identifier = getRowIdentifier();
         Log.d(LOG_TAG, "Deleting gift with " + identifier);
-        service.gifts().delete(identifier).subscribeOn(Schedulers.newThread())
+        getDataService().gifts().delete(identifier).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread()).forEach(new Action1<Boolean>() {
                     @Override
                     public void call(Boolean arg0) {

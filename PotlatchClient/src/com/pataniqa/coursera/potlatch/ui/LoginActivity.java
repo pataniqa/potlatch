@@ -88,7 +88,7 @@ public class LoginActivity extends GiftActivity {
             ed.commit();
         }
         if (userID == GetId.UNDEFINED_ID) {
-            service.users().save(new User(userID, username)).subscribeOn(Schedulers.newThread())
+            getDataService().users().save(new User(userID, username)).subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread()).forEach(new Action1<User>() {
                         @Override
                         public void call(User user) {
@@ -97,7 +97,7 @@ public class LoginActivity extends GiftActivity {
                             ed.putLong(USER_ID_TAG, user.getId());
                             ed.commit();
                             Log.d(LOG_TAG,
-                                    Arrays.toString(service.users().findAll().toBlocking().first()
+                                    Arrays.toString(getDataService().users().findAll().toBlocking().first()
                                             .toArray()));
                         }
                     });

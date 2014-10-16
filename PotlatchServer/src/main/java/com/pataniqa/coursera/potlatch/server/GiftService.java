@@ -40,6 +40,8 @@ import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 @Controller
 public class GiftService {
     
+    private static final String ENDPOINT = "https://192.168.1.71:8443";
+    
     @Autowired private GiftRepository gifts;
 
     @Autowired private UserRepository users;
@@ -85,18 +87,12 @@ public class GiftService {
     @RequestMapping(value = GIFT_ID_PATH, method = RequestMethod.GET)
     public @ResponseBody
     GiftResult findOne(@PathVariable(ID) Long id, Principal p) {
-
-        // TODO use join
-
         return fromGift(gifts.findOne(id), getUser(p));
     }
 
     @RequestMapping(value = GIFT_LIKE_PATH, method = RequestMethod.PUT)
     public @ResponseBody
     boolean setLike(@PathVariable(ID) long id, @PathVariable(LIKE) boolean like, Principal p) {
-
-        // TODO use join
-
         ServerUser user = getUser(p);
         ServerGift gift = gifts.findOne(id);
         ServerUser creator = gift.getUser();
@@ -120,9 +116,6 @@ public class GiftService {
     @RequestMapping(value = GIFT_FLAG_PATH, method = RequestMethod.PUT)
     public @ResponseBody
     boolean setFlag(@PathVariable(ID) long id, @PathVariable(FLAG) boolean flag, Principal p) {
-
-        // TODO use join
-
         ServerUser user = getUser(p);
         ServerGift gift = gifts.findOne(id);
         ServerGiftMetadata metadata = getMetadata(user, gift);
@@ -193,9 +186,6 @@ public class GiftService {
             @RequestParam(DIRECTION) ResultOrderDirection direction,
             @RequestParam(HIDE) boolean hide,
             Principal p) {
-
-        // TODO this is going to be horribly expensive
-
         Sort.Direction d = getDirection(direction);
         Sort userSort = new Sort(d, "likes");
         List<GiftResult> results = new ArrayList<GiftResult>();
@@ -253,14 +243,14 @@ public class GiftService {
 
     private void setData(String dir, String extension, long id, MultipartFile data)
             throws IOException {
-        //if (gifts.exists(id)) {
+        if (gifts.exists(id)) {
             ServerFileManager.saveData(dir, extension, id, data.getInputStream());
-//            if (dir.equals("video"))
-//                gifts.findOne(id).setVideoUri("/gift/" + id + "/video");
-//            else 
-//                gifts.findOne(id).setImageUri("/gift/" + id + "/image");
-//        } else
-//            throw new ResourceNotFoundException();
+            if (dir.equals("video"))
+                gifts.findOne(id).setVideoUri(ENDPOINT + "/gift/" + id + "/video");
+            else 
+                gifts.findOne(id).setImageUri(ENDPOINT + "/gift/" + id + "/image");
+        } else
+            throw new ResourceNotFoundException();
     }
 
     private void getData(String dir, String extension, long id, HttpServletResponse response)

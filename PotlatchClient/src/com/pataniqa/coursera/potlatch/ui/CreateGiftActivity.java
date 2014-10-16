@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.model.Gift;
+import com.pataniqa.coursera.potlatch.store.DataService;
 import com.pataniqa.coursera.potlatch.utils.UploadService;
 
 /**
@@ -50,22 +51,20 @@ public class CreateGiftActivity extends ViewGiftActivity {
                     @Override
                     public Observable<Gift> call(Gift gift) {
                         Log.d(LOG_TAG, "newGiftData: " + gift);
-                        return service.gifts().save(gift);
+                        return getDataService().gifts().save(gift);
                     }
                 }).forEach(new Action1<Gift>() {
                     @Override
                     public void call(Gift gift) {
                         File imageFile = new File(Uri.parse(gift.getImageUri()).getPath());
-                        String endpoint = "https://192.168.1.71:8443";
-                        String client = "mobile";
                         UploadService.startUpload(context,
                                 gift.getId(),
                                 true,
                                 imageFile,
-                                endpoint,
+                                getEndpoint(),
                                 getUserName(),
                                 getPassword(),
-                                client);
+                                getClient());
                         finish();
                     }
                 });

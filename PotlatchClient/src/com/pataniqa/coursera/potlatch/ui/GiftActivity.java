@@ -33,13 +33,10 @@ abstract class GiftActivity extends Activity {
 
     private static final String LOG_TAG = GiftActivity.class.getCanonicalName();
 
-    protected DataService service;
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOG_TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        service = new LocalService(this);
     }
 
     void openLoginActivity() {
@@ -101,5 +98,17 @@ abstract class GiftActivity extends Activity {
     String getPassword() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         return prefs.getString(PASSWORD_TAG, "Unknown");
+    }
+    
+    String getEndpoint() {
+      return "https://192.168.1.71:8443";
+    }
+    
+    String getClient() {
+        return "mobile";
+    }
+    
+    DataService getDataService() {
+        return new LocalService(this);
     }
 }

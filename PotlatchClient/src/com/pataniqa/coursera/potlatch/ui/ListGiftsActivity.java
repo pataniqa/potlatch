@@ -279,7 +279,7 @@ public class ListGiftsActivity extends GiftActivity implements
     void updateGifts() {
         Log.d(LOG_TAG, "updateGifts");
         swipeLayout.setRefreshing(true);
-        query.query(service.gifts()).subscribeOn(Schedulers.newThread())
+        query.query(getDataService().gifts()).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .forEach(new Action1<ArrayList<GiftResult>>() {
                     @Override
@@ -320,7 +320,7 @@ public class ListGiftsActivity extends GiftActivity implements
     @Override
     public void setLike(final GiftResult gift) {
         Log.d(LOG_TAG, "Setting like for gift " + gift.getId());
-        service.giftMetadata().setLike(gift.getId(), gift.isLike())
+        getDataService().giftMetadata().setLike(gift.getId(), gift.isLike())
                 .subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
                 .forEach(new Action1<Boolean>() {
                     @Override
@@ -333,7 +333,7 @@ public class ListGiftsActivity extends GiftActivity implements
     @Override
     public void setFlag(final GiftResult gift) {
         Log.d(LOG_TAG, "Setting flag for gift " + gift.getId());
-        service.giftMetadata().setFlag(gift.getId(), gift.isFlag())
+        getDataService().giftMetadata().setFlag(gift.getId(), gift.isFlag())
                 .subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
                 .forEach(new Action1<Boolean>() {
                     @Override
