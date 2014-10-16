@@ -200,7 +200,7 @@ abstract class ViewGiftActivity extends GiftActivity {
     void displayBitmap(String path) {
         File imageFile = new File(path);
         if (imageFile != null && imageFile.exists()) {
-            Bitmap bitmap = (BitmapFactory.decodeFile(path));
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
             image.setVisibility(View.VISIBLE);
             image.setImageBitmap(bitmap);
             image.setScaleType(ScaleType.FIT_CENTER);

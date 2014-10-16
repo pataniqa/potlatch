@@ -5,6 +5,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -56,7 +57,7 @@ public class EditGiftActivity extends ViewGiftActivity {
                             titleInput.setText(gift.getTitle());
                             descriptionInput.setText(gift.getDescription());
                             
-                            displayBitmap(gift.getImageUri());
+                            displayBitmap(Uri.parse(gift.getImageUri()).getPath());
 
                             if (gift.getGiftChainName() != null
                                     && !gift.getGiftChainName().isEmpty())
