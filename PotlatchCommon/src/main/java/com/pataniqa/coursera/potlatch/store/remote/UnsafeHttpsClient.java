@@ -11,7 +11,7 @@ import org.apache.http.impl.client.HttpClients;
  * This is an example of an HTTP client that does not properly
  * validate SSL certificates that are used for HTTPS. You should
  * NEVER use a client like this in a production application. Self-signed
- * certificates are ususally only OK for testing purposes, such as
+ * certificates are usually only OK for testing purposes, such as
  * this use case. 
  * 
  * @author jules

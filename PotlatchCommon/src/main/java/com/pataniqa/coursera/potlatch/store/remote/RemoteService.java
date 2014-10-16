@@ -4,9 +4,15 @@ import java.util.ArrayList;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
+
+import org.apache.http.client.HttpClient;
+
 import retrofit.RestAdapter;
 import retrofit.RestAdapter.LogLevel;
 import retrofit.client.ApacheClient;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
+import retrofit.mime.TypedFile;
 import rx.Observable;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +25,7 @@ import com.pataniqa.coursera.potlatch.store.DataService;
 import com.pataniqa.coursera.potlatch.store.GiftChains;
 import com.pataniqa.coursera.potlatch.store.GiftMetadata;
 import com.pataniqa.coursera.potlatch.store.Gifts;
+import com.pataniqa.coursera.potlatch.store.Media;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 import com.pataniqa.coursera.potlatch.store.Users;
@@ -30,16 +37,18 @@ public class RemoteService implements DataService {
     @Getter private final GiftChains giftChains;
     @Getter private final GiftMetadata giftMetadata;
     @Getter private final Users users;
+    @Getter private final Media media;
 
     private final RemoteGiftApi giftService;
     private final RemoteGiftChainApi giftChainService;
     private final RemoteUserApi userService;
 
-    public RemoteService(String endpoint, String username, String password, String clientId) {
+    public RemoteService(HttpClient httpClient, String endpoint, String username, String password, String clientId) {
         JacksonConverter converter = new JacksonConverter(new ObjectMapper());
         
         RestAdapter restAdapter = new SecuredRestBuilder()
-        .setClient(new ApacheClient(UnsafeHttpsClient.createUnsafeClient()))
+        //.setClient(new ApacheClient(UnsafeHttpsClient.createUnsafeClient()))
+        .setClient(new ApacheClient(httpClient))
         .setEndpoint(endpoint)
         .loginUrl(endpoint + RemoteGiftApi.TOKEN_PATH)
         .setLogLevel(LogLevel.FULL)
@@ -56,6 +65,31 @@ public class RemoteService implements DataService {
         giftChains = new RemoteGiftChainService();
         giftMetadata = new RemoteGiftMetadataService();
         users = new RemoteUserService();
+        media = new RemoteMediaService();
+    }
+    
+    class RemoteMediaService implements Media {
+
+        @Override
+        public Observable<Boolean> setImageData(long id, TypedFile imageData) {
+            return giftService.setImageData(id, imageData);
+        }
+
+        @Override
+        public Observable<Response> getImageData(long id) {
+            return giftService.getImageData(id);
+        }
+
+        @Override
+        public Observable<Boolean> setVideoData(long id, TypedFile videoData) {
+            return giftService.setVideoData(id, videoData);
+        }
+
+        @Override
+        public Observable<Response> getVideoData(long id) {
+            return giftService.getVideoData(id);
+        }
+        
     }
 
     class RemoteUserService implements Users {

@@ -253,14 +253,14 @@ public class GiftService {
 
     private void setData(String dir, String extension, long id, MultipartFile data)
             throws IOException {
-        if (gifts.exists(id)) {
+        //if (gifts.exists(id)) {
             ServerFileManager.saveData(dir, extension, id, data.getInputStream());
-            if (dir.equals("video"))
-                gifts.findOne(id).setVideoUri("/gift/" + id + "/video");
-            else 
-                gifts.findOne(id).setImageUri("/gift/" + id + "/image");
-        } else
-            throw new ResourceNotFoundException();
+//            if (dir.equals("video"))
+//                gifts.findOne(id).setVideoUri("/gift/" + id + "/video");
+//            else 
+//                gifts.findOne(id).setImageUri("/gift/" + id + "/image");
+//        } else
+//            throw new ResourceNotFoundException();
     }
 
     private void getData(String dir, String extension, long id, HttpServletResponse response)

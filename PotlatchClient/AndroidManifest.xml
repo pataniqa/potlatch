@@ -54,6 +54,10 @@
         <activity
             android:name="com.pataniqa.coursera.potlatch.ui.VideoDetailActivity"
             android:screenOrientation="portrait" />
+         <service
+            android:name="com.pataniqa.coursera.potlatch.ui.UploadService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

@@ -7,11 +7,11 @@ import rx.Observable;
 public interface Media {
 
     Observable<Boolean> setImageData(long id, TypedFile imageData);
-
+    
     Observable<Response> getImageData(long id);
 
-    Observable<Boolean> setVideoData(long id, TypedFile imageData);
-
+    Observable<Boolean> setVideoData(long id, TypedFile videoData);
+    
     Observable<Response> getVideoData(long id);
 
 }

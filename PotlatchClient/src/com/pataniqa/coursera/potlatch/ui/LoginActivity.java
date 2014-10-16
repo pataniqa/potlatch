@@ -83,6 +83,7 @@ public class LoginActivity extends GiftActivity {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor ed = prefs.edit();
             ed.putString(USER_NAME_TAG, username);
+            ed.putString(PASSWORD_TAG, editTextToString(passwordET));
             ed.commit();
         }
         if (userID == GetId.UNDEFINED_ID) {

@@ -13,6 +13,7 @@ import retrofit.http.Part;
 import retrofit.http.Path;
 import retrofit.http.Query;
 import retrofit.http.Streaming;
+import retrofit.mime.TypedByteArray;
 import retrofit.mime.TypedFile;
 import rx.Observable;
 
@@ -105,6 +106,11 @@ public interface RemoteGiftApi {
     @POST(GIFT_IMAGE_PATH)
     Observable<Boolean> setImageData(@Path(ID) long id,
             @Part(DATA) TypedFile imageData);
+    
+    @Multipart
+    @POST(GIFT_IMAGE_PATH)
+    Observable<Boolean> setImageData(@Path(ID) long id,
+            @Part(DATA) TypedByteArray imageData);
 
     @Streaming
     @GET(GIFT_IMAGE_PATH)
@@ -117,6 +123,11 @@ public interface RemoteGiftApi {
     Observable<Boolean> setVideoData(@Path(ID) long id,
             @Part(DATA) TypedFile imageData);
 
+    @Multipart
+    @POST(GIFT_VIDEO_PATH)
+    Observable<Boolean> setVideoData(@Path(ID) long id,
+            @Part(DATA) TypedByteArray imageData);
+    
     @Streaming
     @GET(GIFT_VIDEO_PATH)
     Observable<Response> getVideoData(@Path(ID) long id);

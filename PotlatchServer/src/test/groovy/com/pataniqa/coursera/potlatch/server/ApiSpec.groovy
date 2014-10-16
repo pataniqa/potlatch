@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.pataniqa.coursera.potlatch.model.*
 import com.pataniqa.coursera.potlatch.store.*
 import com.pataniqa.coursera.potlatch.store.remote.*
-import retrofit.mime.TypedFile
+import retrofit.mime.*
 import org.apache.commons.io.*
 import spock.lang.Specification
 import org.springframework.test.context.web.*
@@ -375,7 +375,10 @@ class ApiSpec extends Specification {
         
         and: "an image is uploaded"
         def file = new File("src/test/resources/background.jpg")
-        def imageData = new TypedFile("image/jpg", file)
+        def ba = FileUtils.readFileToByteArray(file)
+        def tmpFile = new File("/tmp/tmpfile")
+        FileUtils.writeByteArrayToFile(tmpFile, ba)
+        def imageData = new TypedFile("image/jpg", tmpFile)
         def expected = FileUtils.readFileToByteArray(file)
         
         and: "the image is downloaded"

@@ -5,6 +5,7 @@ import java.io.File;
 import android.content.Context;
 import android.media.ExifInterface;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
 
 public class ImageUtils {
     private final static String LOG_TAG = ImageUtils.class.getCanonicalName();
@@ -40,5 +41,16 @@ public class ImageUtils {
             Log.e(LOG_TAG, e.getMessage(), e);
         }
         return rotate;
+    }
+    
+    public static String getMimeType(String url)
+    {
+        String type = null;
+        String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+        if (extension != null) {
+            MimeTypeMap mime = MimeTypeMap.getSingleton();
+            type = mime.getMimeTypeFromExtension(extension);
+        }
+        return type;
     }
 }

@@ -1,8 +1,14 @@
 package com.pataniqa.coursera.potlatch.ui;
 
+import java.io.File;
+
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,7 +42,9 @@ public class CreateGiftActivity extends ViewGiftActivity {
 
     public void saveButtonClicked(View v) {
         Log.d(LOG_TAG, "createButtonClicked");
+        final Context context = this;
         Observable<Gift> gift = makeGiftDataFromUI(GetId.UNDEFINED_ID)
+                .subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
                 .flatMap(new Func1<Gift, Observable<Gift>>() {
                     @Override
                     public Observable<Gift> call(Gift gift) {
@@ -46,7 +54,18 @@ public class CreateGiftActivity extends ViewGiftActivity {
                 });
         gift.forEach(new Action1<Gift>() {
             @Override
-            public void call(Gift arg0) {
+            public void call(Gift gift) {
+                File imageFile = new File(Uri.parse(gift.getImageUri()).getPath());
+                String endpoint = "";
+                String client = "";
+                UploadService.startUpload(context,
+                        gift.getId(),
+                        true,
+                        imageFile,
+                        endpoint,
+                        getUserName(),
+                        getPassword(),
+                        client);
                 finish();
             }
         });

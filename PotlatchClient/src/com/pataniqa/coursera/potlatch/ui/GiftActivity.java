@@ -13,6 +13,7 @@ import android.widget.EditText;
 import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.store.DataService;
 import com.pataniqa.coursera.potlatch.store.local.LocalService;
+import com.pataniqa.coursera.potlatch.store.remote.RemoteService;
 
 /**
  * Base class for all GiftData UI activities.
@@ -31,6 +32,7 @@ abstract class GiftActivity extends Activity {
     public final static String VIEW_MODE_TAG = "view_mode";
     public final static String USER_ID_TAG = "user_id";
     public final static String USER_NAME_TAG ="user_name";
+    public final static String PASSWORD_TAG = "password";
     public final static String IMAGE_URL_TAG = "image_url";
     public final static String VIDEO_URL_TAG = "video_url";
 
@@ -43,6 +45,7 @@ abstract class GiftActivity extends Activity {
         Log.d(LOG_TAG, "onCreate");
         super.onCreate(savedInstanceState);
         service = new LocalService(this);
+        
     }
 
     void openLoginActivity() {
@@ -98,5 +101,11 @@ abstract class GiftActivity extends Activity {
     String getUserName() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         return prefs.getString(USER_NAME_TAG, "Unknown");
+    }
+    
+    // FIXME
+    String getPassword() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        return prefs.getString(PASSWORD_TAG, "Unknown");
     }
 }
