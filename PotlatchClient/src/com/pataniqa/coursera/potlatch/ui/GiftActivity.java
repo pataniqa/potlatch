@@ -94,7 +94,6 @@ abstract class GiftActivity extends Activity {
         return prefs.getString(USER_NAME_TAG, "Unknown");
     }
     
-    // FIXME
     String getPassword() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         return prefs.getString(PASSWORD_TAG, "Unknown");

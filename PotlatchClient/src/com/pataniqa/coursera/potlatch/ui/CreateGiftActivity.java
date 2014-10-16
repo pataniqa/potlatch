@@ -18,7 +18,6 @@ import butterknife.ButterKnife;
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.model.Gift;
-import com.pataniqa.coursera.potlatch.store.DataService;
 import com.pataniqa.coursera.potlatch.utils.UploadService;
 
 /**

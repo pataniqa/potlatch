@@ -36,7 +36,6 @@ public class ImageDetailActivity extends GiftActivity {
         String imageUrl = intent.getStringExtra(IMAGE_URL_TAG);
         Log.d(LOG_TAG, "Displaying image " + imageUrl);
         if (!imageUrl.isEmpty()) {
-            Uri url = Uri.parse(imageUrl);
 
             // Keep getting out of memory errors so scale the image to
             // 50% of displays width / height
@@ -48,7 +47,7 @@ public class ImageDetailActivity extends GiftActivity {
             int maxsize = Math.min(size.x, size.y);
 
             Picasso.with(this)
-                .load(url)
+                .load(Uri.parse(imageUrl))
                 .resize(maxsize, maxsize)
                 .placeholder(R.drawable.ic_fa_image)
                 .centerInside()

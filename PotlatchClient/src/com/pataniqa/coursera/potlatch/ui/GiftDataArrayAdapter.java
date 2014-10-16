@@ -3,7 +3,6 @@ package com.pataniqa.coursera.potlatch.ui;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,14 +12,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
-import com.pataniqa.coursera.potlatch.utils.ImageUtils;
+import com.squareup.picasso.Picasso;
 
 /**
  * This is an ArrayAdapter for an array of GiftData.
@@ -69,18 +67,6 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
             Log.e(LOG_TAG, e.getMessage(), e);
         }
 
-        // TODO use Picasso to cache image loading
-
-        // Picasso.with(this.getContext())
-        // .load(url)
-        // .placeholder(R.drawable.placeholder)
-        // .error(R.drawable.error)
-        // .resizeDimen(R.dimen.list_detail_image_size,
-        // R.dimen.list_detail_image_size)
-        // .centerInside()
-        // .tag(context)
-        // .into(holder.image);
-
         return convertView;
     }
 
@@ -107,11 +93,13 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
             Log.d(LOG_TAG,
                     gift.getVideoUri() + " " + gift.getImageUri() + " " + gift.getGiftChainName());
             
-            String path = Uri.parse(gift.getImageUri()).getPath();
-            Bitmap bitmap = ImageUtils.fileToBitmap(path, image.getWidth(), image.getHeight());
             image.setVisibility(View.VISIBLE);
-            image.setImageBitmap(bitmap);
-            image.setScaleType(ScaleType.FIT_CENTER);
+            Picasso.with(view.getContext())
+            .load(Uri.parse(gift.getImageUri()))
+            .resize(image.getWidth(), image.getHeight())
+            .placeholder(R.drawable.ic_fa_image)
+            .centerInside()
+            .into(image);
 
             if (gift.getGiftChainName() != null && !gift.getGiftChainName().isEmpty()) {
                 giftChainButton.setVisibility(Button.VISIBLE);

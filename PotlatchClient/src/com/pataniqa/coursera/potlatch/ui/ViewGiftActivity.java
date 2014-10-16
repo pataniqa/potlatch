@@ -29,7 +29,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
@@ -37,7 +36,7 @@ import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.store.local.LocalStorageUtilities;
-import com.pataniqa.coursera.potlatch.utils.ImageUtils;
+import com.squareup.picasso.Picasso;
 
 /**
  * Abstract class that forms the basis of the CreateGiftActivity and
@@ -199,13 +198,17 @@ abstract class ViewGiftActivity extends GiftActivity {
     void displayBitmap(String path) {
         File imageFile = new File(path);
         if (imageFile != null && imageFile.exists()) {
-            Bitmap bitmap = ImageUtils.fileToBitmap(path, image.getWidth(), image.getHeight());
             image.setVisibility(View.VISIBLE);
-            image.setImageBitmap(bitmap);
-            image.setScaleType(ScaleType.FIT_CENTER);
+            Picasso.with(this)
+            .load(Uri.fromFile(imageFile))
+            .resize(image.getWidth(), image.getHeight())
+            .placeholder(R.drawable.ic_fa_image)
+            .centerInside()
+            .into(image);
         } else {
             Log.e(LOG_TAG, "Failed to find image.");
         }
+       
     }
 
     void readyToSave() {
