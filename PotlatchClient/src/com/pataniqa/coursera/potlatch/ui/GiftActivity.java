@@ -1,5 +1,7 @@
 package com.pataniqa.coursera.potlatch.ui;
 
+import org.apache.http.client.HttpClient;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -14,6 +16,11 @@ import android.widget.EditText;
 import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.store.DataService;
 import com.pataniqa.coursera.potlatch.store.local.LocalService;
+import com.pataniqa.coursera.potlatch.store.remote.RemoteService;
+import com.pataniqa.coursera.potlatch.store.remote.RemoteUtils;
+import com.pataniqa.coursera.potlatch.store.remote.UnsafeHttpsClient;
+import com.pataniqa.coursera.potlatch.utils.OAuthPicassoClient;
+import com.pataniqa.coursera.potlatch.utils.PicassoFactory;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -24,11 +31,11 @@ import com.squareup.picasso.Picasso;
  */
 @SuppressLint("Registered")
 abstract class GiftActivity extends Activity {
-    
+
     public final static String ROW_IDENTIFIER_TAG = "row_index";
     public final static String VIEW_MODE_TAG = "view_mode";
     public final static String USER_ID_TAG = "user_id";
-    public final static String USER_NAME_TAG ="user_name";
+    public final static String USER_NAME_TAG = "user_name";
     public final static String PASSWORD_TAG = "password";
     public final static String IMAGE_URL_TAG = "image_url";
     public final static String VIDEO_URL_TAG = "video_url";
@@ -85,35 +92,72 @@ abstract class GiftActivity extends Activity {
     static Uri stringToUri(String s) {
         return !s.isEmpty() ? Uri.parse(s) : null;
     }
-    
+
     long getUserID() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         return prefs.getLong(USER_ID_TAG, GetId.UNDEFINED_ID);
     }
-    
+
     String getUserName() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         return prefs.getString(USER_NAME_TAG, "Unknown");
     }
-    
+
     String getPassword() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         return prefs.getString(PASSWORD_TAG, "Unknown");
     }
-    
-    String getEndpoint() {
-      return "https://192.168.1.71:8443";
-    }
-    
-    String getClient() {
+
+    String getClientId() {
         return "mobile";
     }
-    
+
+    String getSecret() {
+        return "";
+    }
+
     DataService getDataService() {
+        return localDataService();
+    }
+
+    PicassoFactory getPicasso() {
+        return localPicasso();
+    }
+
+    DataService localDataService() {
         return new LocalService(this);
     }
-    
-    Picasso customPicasso(Context context) {
-        return Picasso.with(context);
+
+    DataService remoteDataService() {
+        HttpClient httpClient = UnsafeHttpsClient.createUnsafeClient();
+        return new RemoteService(httpClient,
+                getEndpoint(),
+                getUserName(),
+                getPassword(),
+                getClientId());
+    }
+
+    PicassoFactory localPicasso() {
+        return new PicassoFactory() {
+            @Override
+            public Picasso with(Context context) {
+                return Picasso.with(context);
+            }
+        };
+    }
+
+    PicassoFactory remotePicasso() {
+        return new OAuthPicassoClient(getUserName(),
+                getPassword(),
+                RemoteUtils.getLoginUrl(getEndpoint()),
+                getClientId(),
+                getSecret());
+    }
+
+    String getEndpoint() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String host = prefs.getString(SettingsActivity.SERVER_ADDRESS, "192.168.1.71");
+        String port = prefs.getString(SettingsActivity.SERVER_PORT, "8443");
+        return "https://" + host + ":" + port;
     }
 }

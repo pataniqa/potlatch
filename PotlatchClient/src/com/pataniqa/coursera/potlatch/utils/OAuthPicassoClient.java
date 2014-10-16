@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 
 import retrofit.client.Client;
-
+import retrofit.client.OkClient;
 import android.content.Context;
 import android.net.Uri;
 
@@ -12,23 +12,31 @@ import com.pataniqa.coursera.potlatch.store.remote.OAuthUtils;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
-public class CustomPicasso {
+public class OAuthPicassoClient implements PicassoFactory {
+    private final String accessToken;
+    private Picasso picasso;
 
-    private static Picasso sPicasso;
-
-    public static Picasso getImageLoader(final Context context, Client client,
-            String username,
+    public OAuthPicassoClient(String username,
             String password,
             String loginUrl,
             String clientId,
             String clientSecret) {
-        if (sPicasso == null) {
+        Client client = new OkClient();
+        accessToken = OAuthUtils.getAccessToken(client,
+                username,
+                password,
+                loginUrl,
+                clientId,
+                clientSecret);
+    }
+
+    public Picasso with(final Context context) {
+        if (picasso == null) {
             Picasso.Builder builder = new Picasso.Builder(context);
-            String accessToken = OAuthUtils.getAccessToken(client, username, password, loginUrl, clientId, clientSecret);
             builder.downloader(new CustomOkHttpDownloader(context, accessToken));
-            sPicasso = builder.build();
+            picasso = builder.build();
         }
-        return sPicasso;
+        return picasso;
     }
 
     static class CustomOkHttpDownloader extends OkHttpDownloader {

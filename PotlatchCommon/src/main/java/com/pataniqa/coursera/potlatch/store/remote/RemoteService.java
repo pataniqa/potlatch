@@ -48,7 +48,7 @@ public class RemoteService implements DataService {
         RestAdapter restAdapter = new SecuredRestBuilder()
         .setClient(new ApacheClient(httpClient))
         .setEndpoint(endpoint)
-        .loginUrl(endpoint + RemoteGiftApi.TOKEN_PATH)
+        .loginUrl(RemoteUtils.getLoginUrl(endpoint))
         .setLogLevel(LogLevel.FULL)
         .username(username)
         .password(password)

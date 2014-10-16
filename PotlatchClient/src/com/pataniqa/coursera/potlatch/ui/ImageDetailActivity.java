@@ -1,17 +1,16 @@
 package com.pataniqa.coursera.potlatch.ui;
 
 import android.content.Intent;
-import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.Window;
 import android.widget.ImageView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
+import com.pataniqa.coursera.potlatch.utils.ImageUtils;
 
 public class ImageDetailActivity extends GiftActivity {
 
@@ -36,21 +35,9 @@ public class ImageDetailActivity extends GiftActivity {
         Log.d(LOG_TAG, "Displaying image " + imageUrl);
         if (!imageUrl.isEmpty()) {
 
-            // Keep getting out of memory errors so scale the image to
-            // 50% of displays width / height
-            // this looks ugly but works for now
-
-            Display display = getWindowManager().getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            int maxsize = Math.min(size.x, size.y);
-
-            customPicasso(this)
-                .load(Uri.parse(imageUrl))
-                .resize(maxsize, maxsize)
-                .placeholder(R.drawable.ic_fa_image)
-                .centerInside()
-                .into(image);
+            int maxsize = ImageUtils.getMaxSize(getWindowManager());
+            getPicasso().with(this).load(Uri.parse(imageUrl)).resize(maxsize, maxsize)
+                    .placeholder(R.drawable.ic_fa_image).centerInside().into(image);
 
         }
     }
@@ -59,7 +46,7 @@ public class ImageDetailActivity extends GiftActivity {
     protected void onPause() {
         super.onPause();
         if (isFinishing()) {
-            customPicasso(this).cancelRequest(image);
+            getPicasso().with(this).cancelRequest(image);
         }
     }
 

@@ -16,8 +16,8 @@
 
         <ImageView
             android:id="@+id/gift_create_img"
-            android:layout_width="250dp"
-            android:layout_height="150dp"
+	        android:layout_width="440dp"
+	        android:layout_height="264dp"
             android:layout_margin="20dp"
             android:background="#80ffffff"
             android:contentDescription="@string/gift_image_description"

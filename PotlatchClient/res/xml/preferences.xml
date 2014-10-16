@@ -14,6 +14,18 @@
             android:defaultValue="false"
             android:key="pref_hide_flagged_content"
             android:title="@string/pref_hide_flagged_content" />
+        
+        <EditTextPreference
+           	android:defaultValue="@string/default_server_ip_addr"
+           	android:dialogTitle="@string/pref_server_ip_addr"
+           	android:title="@string/pref_server_ip_addr"
+           	android:key="pref_server_ip_addr"/>
+        
+        <EditTextPreference
+            android:defaultValue="@string/default_server_port"
+           	android:dialogTitle="@string/pref_server_port"
+           	android:title="@string/pref_server_port"
+           	android:key="pref_server_port"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

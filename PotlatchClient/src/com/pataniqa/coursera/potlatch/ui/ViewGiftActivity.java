@@ -36,7 +36,7 @@ import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.store.local.LocalStorageUtilities;
-import com.squareup.picasso.Picasso;
+import com.pataniqa.coursera.potlatch.utils.ImageUtils;
 
 /**
  * Abstract class that forms the basis of the CreateGiftActivity and
@@ -80,7 +80,7 @@ abstract class ViewGiftActivity extends GiftActivity {
         Log.d(LOG_TAG, "onPause");
         super.onPause();
         if (isFinishing()) {
-            customPicasso(this).cancelRequest(image);
+            getPicasso().with(this).cancelRequest(image);
         }
     }
 
@@ -202,8 +202,11 @@ abstract class ViewGiftActivity extends GiftActivity {
         File imageFile = new File(path);
         if (imageFile != null && imageFile.exists()) {
             image.setVisibility(View.VISIBLE);
-            customPicasso(this).load(Uri.fromFile(imageFile))
-                    .resize(image.getWidth(), image.getHeight())
+            
+            int maxsize = ImageUtils.getMaxSize(getWindowManager());
+            
+            getPicasso().with(this).load(Uri.fromFile(imageFile))
+                    .resize(maxsize, maxsize)
                     .placeholder(R.drawable.ic_fa_image).centerInside().into(image);
         } else {
             Log.e(LOG_TAG, "Failed to find image.");

@@ -63,7 +63,7 @@ public class CreateGiftActivity extends ViewGiftActivity {
                                 getEndpoint(),
                                 getUserName(),
                                 getPassword(),
-                                getClient());
+                                getClientId());
                         finish();
                     }
                 });

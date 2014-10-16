@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -18,7 +19,8 @@ import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
-import com.squareup.picasso.Picasso;
+import com.pataniqa.coursera.potlatch.utils.PicassoFactory;
+import com.pataniqa.coursera.potlatch.utils.ImageUtils;
 
 /**
  * This is an ArrayAdapter for an array of GiftData.
@@ -30,16 +32,19 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
     private final LayoutInflater inflater;
     private final ListGiftsCallback listGiftsCallback;
     private int resource;
+    private final PicassoFactory picasso;
 
     public GiftDataArrayAdapter(Context context,
             int resource,
             List<GiftResult> items,
-            ListGiftsCallback listGiftsCallback) {
+            ListGiftsCallback listGiftsCallback,
+            PicassoFactory picasso) {
         super(context, resource, items);
         Log.v(LOG_TAG, "constructor");
         this.resource = resource;
         inflater = LayoutInflater.from(context);
         this.listGiftsCallback = listGiftsCallback;
+        this.picasso = picasso;
     }
 
     /**
@@ -59,8 +64,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
                 holder = (ViewHolder) convertView.getTag();
             } else {
                 convertView = inflater.inflate(resource, parent, false);
-                holder = new ViewHolder(convertView, listGiftsCallback, Picasso.with(convertView
-                        .getContext()));
+                holder = new ViewHolder(convertView, listGiftsCallback, picasso);
                 convertView.setTag(holder);
             }
             holder.setGiftData(getItem(position));
@@ -82,10 +86,12 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
         @InjectView(R.id.gift_listview_custom_row_user) ImageButton moreFromThisUserButton;
 
         private final ListGiftsCallback listGiftsCallback;
-        private final Picasso picasso;
+        private final View view;
+        private final PicassoFactory picasso;
 
-        public ViewHolder(View view, ListGiftsCallback listGiftsCallback, Picasso picasso) {
+        public ViewHolder(View view, ListGiftsCallback listGiftsCallback, PicassoFactory picasso) {
             ButterKnife.inject(this, view);
+            this.view = view;
             this.listGiftsCallback = listGiftsCallback;
             this.picasso = picasso;
         }
@@ -95,7 +101,12 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
                     gift.getVideoUri() + " " + gift.getImageUri() + " " + gift.getGiftChainName());
 
             image.setVisibility(View.VISIBLE);
-            picasso.load(Uri.parse(gift.getImageUri())).resize(image.getWidth(), image.getHeight())
+            
+            WindowManager windowManager = (WindowManager) view.getContext()
+                    .getSystemService(Context.WINDOW_SERVICE);
+            int maxsize = ImageUtils.getMaxSize(windowManager);
+            
+            picasso.with(view.getContext()).load(Uri.parse(gift.getImageUri())).resize(maxsize, maxsize)
                     .placeholder(R.drawable.ic_fa_image).centerInside().into(image);
 
             if (gift.getGiftChainName() != null && !gift.getGiftChainName().isEmpty()) {

@@ -16,6 +16,10 @@ public class SettingsActivity extends PreferenceActivity {
     public final static String HIDE_FLAGGED_CONTENT = "pref_hide_flagged_content";
     
     public final static String UPDATE_FREQUENCY = "pref_update_frequency";
+    
+    public final static String SERVER_ADDRESS = "pref_server_ip_addr";
+    
+    public final static String SERVER_PORT= "pref_server_port";
 
     private final static String LOG_TAG = SettingsActivity.class.getCanonicalName();
 

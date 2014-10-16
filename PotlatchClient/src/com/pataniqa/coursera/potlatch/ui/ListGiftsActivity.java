@@ -81,7 +81,8 @@ public class ListGiftsActivity extends GiftActivity implements
         arrayAdapter = new GiftDataArrayAdapter(this,
                 R.layout.gift_listview_custom_row,
                 giftData,
-                this);
+                this,
+                getPicasso());
 
         loadPreferences();
         setUpdateFrequency();

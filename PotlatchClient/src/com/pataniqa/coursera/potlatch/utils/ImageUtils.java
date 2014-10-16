@@ -7,11 +7,14 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.Bitmap.CompressFormat;
+import android.graphics.Point;
 import android.media.ExifInterface;
 import android.util.Log;
+import android.view.Display;
+import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
 
 public class ImageUtils {
@@ -128,5 +131,12 @@ public class ImageUtils {
         final ByteArrayOutputStream bao = new ByteArrayOutputStream();
         resizedBitmap.compress(CompressFormat.PNG, imageQuality, bao);
         FileUtils.writeByteArrayToFile(outputFile, bao.toByteArray());
+    }
+    
+    public static int getMaxSize(WindowManager windowManager) {
+        Display display = windowManager.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return Math.min(size.x, size.y);
     }
 }
