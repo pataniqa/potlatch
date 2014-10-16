@@ -23,6 +23,7 @@ import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
+import com.pataniqa.coursera.potlatch.utils.ImageUtils;
 
 /**
  * This is an ArrayAdapter for an array of GiftData.

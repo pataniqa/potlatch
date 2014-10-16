@@ -1,4 +1,4 @@
-package com.pataniqa.coursera.potlatch.ui;
+package com.pataniqa.coursera.potlatch.utils;
 
 import java.util.ArrayList;
 
@@ -11,9 +11,9 @@ import com.pataniqa.coursera.potlatch.model.GiftResult;
 import com.pataniqa.coursera.potlatch.store.Gifts;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
-import com.pataniqa.coursera.potlatch.ui.GiftActivity.QueryType;
+import com.pataniqa.coursera.potlatch.ui.SettingsActivity;
 
-class GiftQuery {
+public class GiftQuery {
 
     public final static String GIFT_CHAIN_ID_TAG = "gift_chain_ID";
     public final static String GIFT_CHAIN_NAME_TAG = "gift_chain_name";
@@ -37,7 +37,7 @@ class GiftQuery {
     private String username;
     private boolean hide;
 
-    GiftQuery(long userID, String username, SharedPreferences prefs) {
+    public GiftQuery(long userID, String username, SharedPreferences prefs) {
         this.userID = userID;
         this.username = username;
         this.queryUserID = userID;
@@ -52,7 +52,7 @@ class GiftQuery {
                     .getInt(RESULT_ORDER_DIRECTION_TAG, resultDirection.ordinal())];
         if (prefs.contains(QUERY_TYPE_TAG))
             queryType = QueryType.values()[prefs.getInt(QUERY_TYPE_TAG, getQueryType().ordinal())];
-        if (prefs.contains(GIFT_CHAIN_NAME_TAG)) 
+        if (prefs.contains(GIFT_CHAIN_NAME_TAG))
             giftChainName = prefs.getString(GIFT_CHAIN_NAME_TAG, null);
         if (prefs.contains(GIFT_CHAIN_ID_TAG))
             giftChainID = prefs.getLong(GIFT_CHAIN_ID_TAG, 0);
@@ -67,23 +67,23 @@ class GiftQuery {
 
     }
 
-    void clearTitle() {
+    public void clearTitle() {
         title = DEFAULT_QUERY;
     }
 
-    void setChainQuery(long giftChainID, String giftChainName) {
+    public void setChainQuery(long giftChainID, String giftChainName) {
         this.queryType = QueryType.CHAIN;
         this.giftChainID = giftChainID;
         this.giftChainName = giftChainName;
     }
 
-    void setUserQuery(long userID, String username) {
+    public void setUserQuery(long userID, String username) {
         this.queryType = QueryType.USER;
         this.queryUserID = userID;
         this.queryUsername = username;
     }
 
-    void rotateQueryType() {
+    public void rotateQueryType() {
         queryType = QueryType.values()[(queryType.ordinal() + 1) % 3];
         if (queryType == QueryType.USER) {
             queryUserID = userID;
@@ -92,16 +92,16 @@ class GiftQuery {
 
     }
 
-    void changeResultDirection() {
+    public void changeResultDirection() {
         resultDirection = resultDirection == ResultOrderDirection.DESCENDING ? ResultOrderDirection.ASCENDING
                 : ResultOrderDirection.DESCENDING;
     }
 
-    void changeResultOrder() {
+    public void changeResultOrder() {
         resultOrder = resultOrder == ResultOrder.LIKES ? ResultOrder.TIME : ResultOrder.LIKES;
     }
 
-    String getDescription() {
+    public String getDescription() {
         switch (queryType) {
         case USER:
             return "User: " + queryUsername;
@@ -117,7 +117,7 @@ class GiftQuery {
         }
     }
 
-    Observable<ArrayList<GiftResult>> query(Gifts gifts) {
+    public Observable<ArrayList<GiftResult>> query(Gifts gifts) {
         switch (queryType) {
         case USER:
             return gifts.queryByUser(title, queryUserID, resultOrder, resultDirection, hide);
@@ -130,7 +130,7 @@ class GiftQuery {
         }
     }
 
-    void saveToSharedPreferences(SharedPreferences prefs) {
+    public void saveToSharedPreferences(SharedPreferences prefs) {
         SharedPreferences.Editor ed = prefs.edit();
         ed.putString(TITLE_QUERY_TAG, getTitle());
         ed.putInt(RESULT_ORDER_TAG, resultOrder.ordinal());

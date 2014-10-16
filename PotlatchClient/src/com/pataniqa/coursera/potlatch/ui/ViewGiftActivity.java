@@ -38,6 +38,7 @@ import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.store.local.LocalStorageUtilities;
+import com.pataniqa.coursera.potlatch.utils.ImageUtils;
 
 /**
  * Abstract class that forms the basis of the CreateGiftActivity and

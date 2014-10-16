@@ -1,4 +1,4 @@
-package com.pataniqa.coursera.potlatch.unsafe;
+package com.pataniqa.coursera.potlatch.utils;
 
 /* 
 **
@@ -91,7 +91,7 @@ import org.apache.http.protocol.HttpContext;
  * @author match2blue software development GmbH
  * @author Ren� Fischer, Ulrich Scheller
  */
-public class EasyHttpClient extends DefaultHttpClient {
+public class UnsafeHttpClient extends DefaultHttpClient {
     /**
      * Default http port
      */
@@ -110,7 +110,7 @@ public class EasyHttpClient extends DefaultHttpClient {
      * Default constructor that initializes gzip handling. It adds the 
      * Accept-Encoding gzip flag and also decompresses the response from the server. 
      */
-    public EasyHttpClient() {
+    public UnsafeHttpClient() {
         addRequestInterceptor(new HttpRequestInterceptor() {
             public void process(final HttpRequest request,
                     final HttpContext context) throws HttpException, IOException {
@@ -144,7 +144,7 @@ public class EasyHttpClient extends DefaultHttpClient {
      * @param username
      * @param password
      */
-    public EasyHttpClient(String username, String password) {
+    public UnsafeHttpClient(String username, String password) {
         if(username != null && password != null) {          
             UsernamePasswordCredentials c = new UsernamePasswordCredentials(username,password);
             BasicCredentialsProvider cP = new BasicCredentialsProvider(); 
@@ -201,7 +201,7 @@ public class EasyHttpClient extends DefaultHttpClient {
     }
     
     public static void main(String[] args) {
-        EasyHttpClient client = new EasyHttpClient();
+        UnsafeHttpClient client = new UnsafeHttpClient();
         System.out.println(client.get("https://encrypted.google.com/"));        
     }
 }

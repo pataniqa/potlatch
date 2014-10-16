@@ -23,10 +23,6 @@ import com.pataniqa.coursera.potlatch.store.local.LocalService;
 @SuppressLint("Registered")
 abstract class GiftActivity extends Activity {
     
-    enum QueryType {
-        USER, TOP_GIFT_GIVERS, ALL, CHAIN
-    };
-
     public final static String ROW_IDENTIFIER_TAG = "row_index";
     public final static String VIEW_MODE_TAG = "view_mode";
     public final static String USER_ID_TAG = "user_id";

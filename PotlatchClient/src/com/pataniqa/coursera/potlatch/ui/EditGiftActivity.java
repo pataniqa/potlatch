@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
+import com.pataniqa.coursera.potlatch.utils.ImageUtils;
 
 public class EditGiftActivity extends ViewGiftActivity {
 

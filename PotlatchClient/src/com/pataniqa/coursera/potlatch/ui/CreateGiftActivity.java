@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.model.Gift;
-import com.pataniqa.coursera.potlatch.service.UploadService;
+import com.pataniqa.coursera.potlatch.utils.UploadService;
 
 /**
  * The activity that allows a user to create and save a Gift.

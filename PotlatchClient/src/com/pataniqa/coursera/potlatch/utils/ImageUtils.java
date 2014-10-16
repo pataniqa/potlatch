@@ -1,4 +1,4 @@
-package com.pataniqa.coursera.potlatch.ui;
+package com.pataniqa.coursera.potlatch.utils;
 
 import java.io.File;
 

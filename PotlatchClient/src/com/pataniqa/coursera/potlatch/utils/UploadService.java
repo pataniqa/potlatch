@@ -1,4 +1,4 @@
-package com.pataniqa.coursera.potlatch.service;
+package com.pataniqa.coursera.potlatch.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -24,8 +24,6 @@ import android.util.Log;
 
 import com.pataniqa.coursera.potlatch.store.Media;
 import com.pataniqa.coursera.potlatch.store.remote.RemoteService;
-import com.pataniqa.coursera.potlatch.ui.ImageUtils;
-import com.pataniqa.coursera.potlatch.unsafe.EasyHttpClient;
 
 public class UploadService extends IntentService {
 
@@ -80,7 +78,7 @@ public class UploadService extends IntentService {
         final String endpoint =  intent.getStringExtra(ENDPOINT_TAG);
         final String client = intent.getStringExtra(CLIENT_TAG);
 
-        final Media media = new RemoteService(new EasyHttpClient(),
+        final Media media = new RemoteService(new UnsafeHttpClient(),
                 endpoint,
                 username,
                 password,

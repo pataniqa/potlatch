@@ -1,4 +1,4 @@
-package com.pataniqa.coursera.potlatch.store.local;
+package com.pataniqa.coursera.potlatch.utils;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
