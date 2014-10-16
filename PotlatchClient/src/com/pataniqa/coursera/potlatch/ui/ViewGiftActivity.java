@@ -142,7 +142,7 @@ abstract class ViewGiftActivity extends GiftActivity {
             if (resultCode == Activity.RESULT_OK) {
                 this.imagePathFinal = imagePath;
                 displayBitmap(imagePathFinal.getPath());
-                updateButtonsAfterCreate();
+                readyToSave();
             } else {
                 Log.e(LOG_TAG, "Image capture failed.");
             }
@@ -152,7 +152,7 @@ abstract class ViewGiftActivity extends GiftActivity {
                 String picturePath = getImageUriFromGallery(data);
                 this.imagePathFinal = Uri.fromFile(new File(picturePath));
                 displayBitmap(imagePathFinal.getPath());
-                updateButtonsAfterCreate();
+                readyToSave();
             } else {
                 Log.e(LOG_TAG, "Image selection failed.");
             }
@@ -163,7 +163,7 @@ abstract class ViewGiftActivity extends GiftActivity {
                 videoPathFinal = videoPath;
                 this.imagePathFinal = createVideoThumbnail(new File(videoPathFinal.getPath()));
                 displayBitmap(imagePathFinal.getPath());
-                updateButtonsAfterCreate();
+                readyToSave();
             } else if (resultCode != CreateGiftActivity.RESULT_CANCELED) {
                 Log.e(LOG_TAG, "Video capture failed.");
             }
@@ -200,9 +200,9 @@ abstract class ViewGiftActivity extends GiftActivity {
     void displayBitmap(String path) {
         File imageFile = new File(path);
         if (imageFile != null && imageFile.exists()) {
-            Bitmap thumbnail = (BitmapFactory.decodeFile(path));
+            Bitmap bitmap = (BitmapFactory.decodeFile(path));
             image.setVisibility(View.VISIBLE);
-            image.setImageBitmap(thumbnail);
+            image.setImageBitmap(bitmap);
             image.setScaleType(ScaleType.FIT_CENTER);
             float rotation = ImageUtils.getPhotoOrientation(this, imageFile);
             image.setRotation(rotation);
@@ -211,7 +211,7 @@ abstract class ViewGiftActivity extends GiftActivity {
         }
     }
 
-    void updateButtonsAfterCreate() {
+    void readyToSave() {
         saveButton.setVisibility(View.VISIBLE);
         selectImageButton.setVisibility(View.GONE);
         newImageButton.setVisibility(View.GONE);

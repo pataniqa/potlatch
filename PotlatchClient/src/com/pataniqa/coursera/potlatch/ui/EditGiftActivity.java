@@ -1,28 +1,19 @@
 package com.pataniqa.coursera.potlatch.ui;
 
-import java.io.File;
-
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.media.ThumbnailUtils;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.ImageView.ScaleType;
 import butterknife.ButterKnife;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
-import com.pataniqa.coursera.potlatch.utils.ImageUtils;
 
 public class EditGiftActivity extends ViewGiftActivity {
 
@@ -40,12 +31,8 @@ public class EditGiftActivity extends ViewGiftActivity {
         ButterKnife.inject(this);
 
         initializeSpinner();
-        selectImageButton.setVisibility(View.GONE);
-        newImageButton.setVisibility(View.GONE);
-        newVideoButton.setVisibility(View.GONE);
-        saveButton.setVisibility(View.VISIBLE);
         deleteButton.setVisibility(View.VISIBLE);
-        image.setBackgroundColor(0x00000000);
+        readyToSave();
 
         // set the EditTexts to this Gift's Values
         Observable<Boolean> set = setValuesToDefault();
@@ -59,45 +46,31 @@ public class EditGiftActivity extends ViewGiftActivity {
 
     Observable<Boolean> setValuesToDefault() {
         Log.d(LOG_TAG, "setValuesToDefault");
-        final Context context = this;
-        return service.gifts().findOne(getRowIdentifier())
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map(new Func1<GiftResult, Boolean>() {
-            @Override
-            public Boolean call(GiftResult gift) {
-                Log.d(LOG_TAG, "setValuesToDefault :" + gift);
-                if (gift != null) {
-                    // set the EditTexts to the current values
-                    titleInput.setText(gift.getTitle());
-                    descriptionInput.setText(gift.getDescription());
+        return service.gifts().findOne(getRowIdentifier()).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread()).map(new Func1<GiftResult, Boolean>() {
+                    @Override
+                    public Boolean call(GiftResult gift) {
+                        Log.d(LOG_TAG, "setValuesToDefault :" + gift);
+                        if (gift != null) {
+                            // set the EditTexts to the current values
+                            titleInput.setText(gift.getTitle());
+                            descriptionInput.setText(gift.getDescription());
+                            
+                            displayBitmap(gift.getImageUri());
 
-                    if (gift.getVideoUri() != null && !gift.getVideoUri().isEmpty()) {
-                        File videoFile = new File(Uri.parse(gift.getVideoUri()).getPath());
-                        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(videoFile
-                                .getAbsolutePath(), MediaStore.Images.Thumbnails.MINI_KIND);
-                        image.setImageBitmap(thumb);
-                    } else {
-                        image.setImageURI(Uri.parse(gift.getImageUri()));
-                        image.setVisibility(View.VISIBLE);
-                        image.setScaleType(ScaleType.FIT_CENTER);
-                        File imageFile = new File(Uri.parse(gift.getImageUri()).getPath());
-                        float rotation = ImageUtils.getPhotoOrientation(context, imageFile);
-                        image.setRotation(rotation);
+                            if (gift.getGiftChainName() != null
+                                    && !gift.getGiftChainName().isEmpty())
+                                giftChain.setText(gift.getGiftChainName());
+
+                            imagePathFinal = stringToUri(gift.getImageUri());
+                            videoPathFinal = stringToUri(gift.getVideoUri());
+                            image.requestFocus();
+                            return true;
+                        }
+                        return false;
                     }
 
-                    if (gift.getGiftChainName() != null && !gift.getGiftChainName().isEmpty())
-                        giftChain.setText(gift.getGiftChainName());
-
-                    imagePathFinal = stringToUri(gift.getImageUri());
-                    videoPathFinal = stringToUri(gift.getVideoUri());
-                    image.requestFocus();
-                    return true;
-                }
-                return false;
-            }
-
-        });
+                });
     }
 
     public void saveButtonClicked(View v) {
