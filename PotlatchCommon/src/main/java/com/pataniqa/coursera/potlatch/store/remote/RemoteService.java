@@ -46,7 +46,6 @@ public class RemoteService implements DataService {
         JacksonConverter converter = new JacksonConverter(new ObjectMapper());
         
         RestAdapter restAdapter = new SecuredRestBuilder()
-        //.setClient(new ApacheClient(UnsafeHttpsClient.createUnsafeClient()))
         .setClient(new ApacheClient(httpClient))
         .setEndpoint(endpoint)
         .loginUrl(endpoint + RemoteGiftApi.TOKEN_PATH)
