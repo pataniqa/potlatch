@@ -36,18 +36,12 @@ public class EditGiftActivity extends ViewGiftActivity {
         readyToSave();
 
         // set the EditTexts to this Gift's Values
-        Observable<Boolean> set = setValuesToDefault();
-        set.forEach(new Action1<Boolean>() {
-            @Override
-            public void call(Boolean arg0) {
-                Log.d(LOG_TAG, "Finished setting up item");
-            }
-        });
+        setValuesToDefault();
     }
 
-    Observable<Boolean> setValuesToDefault() {
+    void setValuesToDefault() {
         Log.d(LOG_TAG, "setValuesToDefault");
-        return service.gifts().findOne(getRowIdentifier()).subscribeOn(Schedulers.newThread())
+        service.gifts().findOne(getRowIdentifier()).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread()).map(new Func1<GiftResult, Boolean>() {
                     @Override
                     public Boolean call(GiftResult gift) {
@@ -56,7 +50,7 @@ public class EditGiftActivity extends ViewGiftActivity {
                             // set the EditTexts to the current values
                             titleInput.setText(gift.getTitle());
                             descriptionInput.setText(gift.getDescription());
-                            
+
                             displayBitmap(Uri.parse(gift.getImageUri()).getPath());
 
                             if (gift.getGiftChainName() != null
@@ -71,36 +65,42 @@ public class EditGiftActivity extends ViewGiftActivity {
                         return false;
                     }
 
+                }).forEach(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean arg0) {
+                        Log.d(LOG_TAG, "Finished setting up item");
+                    }
                 });
     }
 
     public void saveButtonClicked(View v) {
         Log.d(LOG_TAG, "saveButtonClicked");
-        Observable<Gift> gift = makeGiftDataFromUI(getRowIdentifier())
+        makeGiftDataFromUI(getRowIdentifier()).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(new Func1<Gift, Observable<Gift>>() {
                     @Override
                     public Observable<Gift> call(Gift gift) {
                         Log.d(LOG_TAG, "newGiftData:" + gift);
                         return service.gifts().save(gift);
                     }
+                }).forEach(new Action1<Gift>() {
+                    @Override
+                    public void call(Gift arg0) {
+                        finish();
+                    }
                 });
-        gift.forEach(new Action1<Gift>() {
-            @Override
-            public void call(Gift arg0) {
-                finish();
-            }
-        });
     }
 
     public void deleteButtonClicked(View v) {
         Log.d(LOG_TAG, "deleteButtonClicked");
         final long identifier = getRowIdentifier();
         Log.d(LOG_TAG, "Deleting gift with " + identifier);
-        service.gifts().delete(identifier).forEach(new Action1<Boolean>() {
-            @Override
-            public void call(Boolean arg0) {
-                finish();
-            }
-        });
+        service.gifts().delete(identifier).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread()).forEach(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean arg0) {
+                        finish();
+                    }
+                });
     }
 }

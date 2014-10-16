@@ -1,10 +1,15 @@
 package com.pataniqa.coursera.potlatch.utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.Bitmap.CompressFormat;
 import android.media.ExifInterface;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
@@ -112,5 +117,16 @@ public class ImageUtils {
             Log.e(LOG_TAG, "Failed to find image.");
         }
         return null;
+    }
+
+    public static void compressImageFile(String path,
+            int imageWidth,
+            int imageHeight,
+            int imageQuality,
+            File outputFile) throws IOException {
+        Bitmap resizedBitmap = ImageUtils.fileToBitmap(path, imageWidth, imageHeight);
+        final ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        resizedBitmap.compress(CompressFormat.PNG, imageQuality, bao);
+        FileUtils.writeByteArrayToFile(outputFile, bao.toByteArray());
     }
 }

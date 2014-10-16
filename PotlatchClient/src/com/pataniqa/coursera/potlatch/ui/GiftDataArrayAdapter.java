@@ -1,13 +1,10 @@
 package com.pataniqa.coursera.potlatch.ui;
 
-import java.io.File;
 import java.util.List;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -1,9 +1,6 @@
 package com.pataniqa.coursera.potlatch.utils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-
-import org.apache.commons.io.FileUtils;
 
 import retrofit.mime.TypedFile;
 import rx.Observable;
@@ -15,8 +12,6 @@ import rx.schedulers.Schedulers;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.util.Log;
 
 import com.pataniqa.coursera.potlatch.store.Media;
@@ -87,6 +82,7 @@ public class UploadService extends IntentService {
             final File outputFile = File.createTempFile("potlatch", "png", outputDir);
             Observable<Boolean> result;
             if (isImage) {
+                
                 // resize the image and correct the orientation
 
                 Observable<TypedFile> a = Observable
@@ -98,12 +94,11 @@ public class UploadService extends IntentService {
                                     int imageHeight = 440;
                                     int imageQuality = 80;
 
-                                    Bitmap resizedBitmap = ImageUtils.fileToBitmap(path,
+                                    ImageUtils.compressImageFile(path,
                                             imageWidth,
-                                            imageHeight);
-                                    final ByteArrayOutputStream bao = new ByteArrayOutputStream();
-                                    resizedBitmap.compress(CompressFormat.PNG, imageQuality, bao);
-                                    FileUtils.writeByteArrayToFile(outputFile, bao.toByteArray());
+                                            imageHeight,
+                                            imageQuality,
+                                            outputFile);
                                 } catch (Exception e) {
                                     subscriber.onError(e);
                                 }

@@ -143,7 +143,8 @@ public class ListGiftsActivity extends GiftActivity implements
                 query.clearTitle();
                 updateGifts();
                 return false;
-            }});
+            }
+        });
 
         return true;
     }
@@ -278,9 +279,8 @@ public class ListGiftsActivity extends GiftActivity implements
     void updateGifts() {
         Log.d(LOG_TAG, "updateGifts");
         swipeLayout.setRefreshing(true);
-        query.query(service.gifts())
-        .subscribeOn(Schedulers.newThread())
-        .observeOn(AndroidSchedulers.mainThread())
+        query.query(service.gifts()).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .forEach(new Action1<ArrayList<GiftResult>>() {
                     @Override
                     public void call(ArrayList<GiftResult> results) {
@@ -318,12 +318,28 @@ public class ListGiftsActivity extends GiftActivity implements
     }
 
     @Override
-    public void setLike(GiftResult gift) {
-        service.giftMetadata().setLike(gift.getId(), gift.isLike());
+    public void setLike(final GiftResult gift) {
+        Log.d(LOG_TAG, "Setting like for gift " + gift.getId());
+        service.giftMetadata().setLike(gift.getId(), gift.isLike())
+                .subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+                .forEach(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean arg0) {
+                        Log.d(LOG_TAG, "Set like for gift " + gift.getId() + " successfully");
+                    }
+                });
     }
 
     @Override
-    public void setFlag(GiftResult gift) {
-        service.giftMetadata().setFlag(gift.getId(), gift.isFlag());
+    public void setFlag(final GiftResult gift) {
+        Log.d(LOG_TAG, "Setting flag for gift " + gift.getId());
+        service.giftMetadata().setFlag(gift.getId(), gift.isFlag())
+                .subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+                .forEach(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean arg0) {
+                        Log.d(LOG_TAG, "Set flag for gift " + gift.getId() + " successfully");
+                    }
+                });
     }
 }

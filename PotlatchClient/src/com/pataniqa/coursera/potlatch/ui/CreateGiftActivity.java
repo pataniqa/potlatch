@@ -44,31 +44,30 @@ public class CreateGiftActivity extends ViewGiftActivity {
     public void saveButtonClicked(View v) {
         Log.d(LOG_TAG, "createButtonClicked");
         final Context context = this;
-        Observable<Gift> gift = makeGiftDataFromUI(GetId.UNDEFINED_ID)
-                .subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+        makeGiftDataFromUI(GetId.UNDEFINED_ID).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(new Func1<Gift, Observable<Gift>>() {
                     @Override
                     public Observable<Gift> call(Gift gift) {
                         Log.d(LOG_TAG, "newGiftData: " + gift);
                         return service.gifts().save(gift);
                     }
+                }).forEach(new Action1<Gift>() {
+                    @Override
+                    public void call(Gift gift) {
+                        File imageFile = new File(Uri.parse(gift.getImageUri()).getPath());
+                        String endpoint = "https://192.168.1.71:8443";
+                        String client = "mobile";
+                        UploadService.startUpload(context,
+                                gift.getId(),
+                                true,
+                                imageFile,
+                                endpoint,
+                                getUserName(),
+                                getPassword(),
+                                client);
+                        finish();
+                    }
                 });
-        gift.forEach(new Action1<Gift>() {
-            @Override
-            public void call(Gift gift) {
-                File imageFile = new File(Uri.parse(gift.getImageUri()).getPath());
-                String endpoint = "https://192.168.1.71:8443";
-                String client = "mobile";
-                UploadService.startUpload(context,
-                        gift.getId(),
-                        true,
-                        imageFile,
-                        endpoint,
-                        getUserName(),
-                        getPassword(),
-                        client);
-                finish();
-            }
-        });
     }
 }

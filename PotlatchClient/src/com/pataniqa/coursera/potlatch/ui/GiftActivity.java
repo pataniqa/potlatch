@@ -40,7 +40,6 @@ abstract class GiftActivity extends Activity {
         Log.d(LOG_TAG, "onCreate");
         super.onCreate(savedInstanceState);
         service = new LocalService(this);
-        
     }
 
     void openLoginActivity() {
