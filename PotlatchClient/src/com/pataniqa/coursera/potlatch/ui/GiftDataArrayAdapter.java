@@ -109,19 +109,11 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
         public void setGiftData(final GiftResult gift) {
             Log.d(LOG_TAG,
                     gift.getVideoUri() + " " + gift.getImageUri() + " " + gift.getGiftChainName());
-
-            if (gift.getVideoUri() != null && !gift.getVideoUri().isEmpty()) {
-                File videoFile = new File(Uri.parse(gift.getVideoUri()).getPath());
-                Bitmap thumb = ThumbnailUtils.createVideoThumbnail(videoFile.getAbsolutePath(),
-                        MediaStore.Images.Thumbnails.MINI_KIND);
-                image.setImageBitmap(thumb);
-            } else {
-                image.setImageURI(Uri.parse(gift.getImageUri()));
-                File imageFile = new File(Uri.parse(gift.getImageUri()).getPath());
-                float rotation = ImageUtils.getPhotoOrientation(imageFile);
-                image.setRotation(rotation);
-            }
+            
+            String path = Uri.parse(gift.getImageUri()).getPath();
+            Bitmap bitmap = ImageUtils.fileToBitmap(path, image.getWidth(), image.getHeight());
             image.setVisibility(View.VISIBLE);
+            image.setImageBitmap(bitmap);
             image.setScaleType(ScaleType.FIT_CENTER);
 
             if (gift.getGiftChainName() != null && !gift.getGiftChainName().isEmpty()) {
