@@ -104,8 +104,8 @@ public class ImageUtils {
             return Bitmap.createBitmap(bitmap,
                     0,
                     0,
-                    width,
-                    height,
+                    bitmap.getWidth(),
+                    bitmap.getHeight(),
                     matrix,
                     true);
         } else {
