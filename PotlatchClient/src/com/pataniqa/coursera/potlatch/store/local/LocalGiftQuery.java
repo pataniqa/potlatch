@@ -1,36 +1,30 @@
 package com.pataniqa.coursera.potlatch.store.local;
 
-import static com.pataniqa.coursera.potlatch.store.GiftResults.hideFlaggedContent;
-
 import java.util.ArrayList;
 import java.util.Date;
 
-import rx.Observable;
 import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
 import com.pataniqa.coursera.potlatch.model.TimeUtils;
-import com.pataniqa.coursera.potlatch.store.GiftChains;
-import com.pataniqa.coursera.potlatch.store.Gifts;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
-import com.pataniqa.coursera.potlatch.store.Users;
 
-public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
+public class LocalGiftQuery extends BaseQuery<GiftResult> implements LocalGifts {
 
     private static String LIKE_QUERY = LocalSchema.Cols.TITLE + " LIKE ? ";
 
     private final LocalGiftStore store;
 
-    public LocalGiftQuery(LocalDatabase helper, Users users, GiftChains chains, LocalGiftStore store) {
+    public LocalGiftQuery(LocalDatabase helper, LocalGiftStore store) {
         super(new GiftResultCreator(), LocalSchema.Gift.TABLE_NAME, helper);
         this.store = store;
     }
 
     @Override
-    public Observable<ArrayList<GiftResult>> queryByTitle(String title,
+    public ArrayList<GiftResult> queryByTitle(String title,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection,
             boolean hide) {
@@ -44,7 +38,7 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
     }
 
     @Override
-    public Observable<ArrayList<GiftResult>> queryByUser(String title,
+    public ArrayList<GiftResult> queryByUser(String title,
             long userID,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection,
@@ -58,7 +52,7 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
     }
 
     @Override
-    public Observable<ArrayList<GiftResult>> queryByTopGiftGivers(String title,
+    public ArrayList<GiftResult> queryByTopGiftGivers(String title,
             ResultOrderDirection resultOrderDirection,
             boolean hide) {
         // don't implement this locally as there is only one user
@@ -67,7 +61,7 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
     }
 
     @Override
-    public Observable<ArrayList<GiftResult>> queryByGiftChain(String title,
+    public ArrayList<GiftResult> queryByGiftChain(String title,
             long giftChainID,
             ResultOrder resultOrder,
             ResultOrderDirection resultOrderDirection,
@@ -81,16 +75,16 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
     }
 
     @Override
-    public <S extends Gift> Observable<S> save(S data) {
+    public <S extends Gift> S save(S data) {
         return store.save(data);
     }
 
     @Override
-    public Observable<Boolean> delete(long id) {
+    public Boolean delete(long id) {
         return store.delete(id);
     }
 
-    private Observable<ArrayList<GiftResult>> query(String queryProperty,
+    private ArrayList<GiftResult> query(String queryProperty,
             String queryValue,
             String title,
             ResultOrder resultOrder,
@@ -123,6 +117,18 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements Gifts {
 
     private String toLike(String s) {
         return "%" + s + "%";
+    }
+
+    public static ArrayList<GiftResult> hideFlaggedContent(ArrayList<GiftResult> results,
+            final boolean hide) {
+        if (hide)
+            return results;
+        ArrayList<GiftResult> out = new ArrayList<GiftResult>();
+        for (GiftResult gift : results) {
+            if (!gift.isFlagged())
+                out.add(gift);
+        }
+        return out;
     }
 
     private static class GiftResultCreator extends BaseCreator<GiftResult> implements

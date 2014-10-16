@@ -1,14 +1,11 @@
 package com.pataniqa.coursera.potlatch.store.local;
 
-import rx.Observable;
-import rx.functions.Func1;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.pataniqa.coursera.potlatch.model.GiftResult;
-import com.pataniqa.coursera.potlatch.store.GiftMetadata;
 
-public class LocalGiftMetadataStore implements GiftMetadata {
+public class LocalGiftMetadataStore implements LocalGiftMetadata {
 
     private final String tableName = LocalSchema.Gift.TABLE_NAME;
     private final SQLiteOpenHelper helper;
@@ -16,34 +13,25 @@ public class LocalGiftMetadataStore implements GiftMetadata {
 
     public LocalGiftMetadataStore(LocalDatabase helper, LocalGiftQuery localGiftStore) {
         this.helper = helper;
-        this.localGiftStore = localGiftStore; 
+        this.localGiftStore = localGiftStore;
     }
 
     @Override
-    public Observable<Boolean> setLike(final long giftID, final boolean like) {
-        Observable<GiftResult> gift = localGiftStore.findOne(giftID);
-        return gift.map(new Func1<GiftResult, Boolean>() {
-            @Override
-            public Boolean call(GiftResult gift) {
-                gift.setLike(like);
-                gift.setLikes(gift.isLike() ? 1 : 0);
-                update(gift);
-                return true;
-            }
-        });
+    public Boolean setLike(final long giftID, final boolean like) {
+        GiftResult gift = localGiftStore.findOne(giftID);
+        gift.setLike(like);
+        gift.setLikes(gift.isLike() ? 1 : 0);
+        update(gift);
+        return true;
     }
 
     @Override
-    public Observable<Boolean> setFlag(final long giftID, final boolean flag) {
-        Observable<GiftResult> gift = localGiftStore.findOne(giftID);
-        return gift.map(new Func1<GiftResult, Boolean>() {
-            @Override
-            public Boolean call(GiftResult gift) {
-                gift.setFlag(flag);
-                gift.setFlagged(flag);
-                update(gift);
-                return true;
-            }});
+    public Boolean setFlag(final long giftID, final boolean flag) {
+        GiftResult gift = localGiftStore.findOne(giftID);
+        gift.setFlag(flag);
+        gift.setFlagged(flag);
+        update(gift);
+        return true;
     }
 
     private void update(GiftResult gift) {

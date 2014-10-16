@@ -8,19 +8,16 @@ import android.util.Log;
 
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.TimeUtils;
-import com.pataniqa.coursera.potlatch.store.GiftChains;
-import com.pataniqa.coursera.potlatch.store.SaveDelete;
-import com.pataniqa.coursera.potlatch.store.Users;
 import com.pataniqa.coursera.potlatch.ui.EditGiftActivity;
 
 /**
  * Stores GiftData in a local SQLite Database that is hosted by the device.
  */
-public class LocalGiftStore extends BaseCreateUpdateDelete<Gift> implements SaveDelete<Gift> {
+public class LocalGiftStore extends BaseCreateUpdateDelete<Gift> implements LocalSaveDelete<Gift> {
     
     private final static String LOG_TAG = EditGiftActivity.class.getCanonicalName();
 
-    public LocalGiftStore(LocalDatabase helper, Users users, GiftChains chains) {
+    public LocalGiftStore(LocalDatabase helper, LocalUsers users, LocalGiftChains chains) {
         super(new GiftCreator(users, chains),
                 LocalSchema.Gift.TABLE_NAME,
                 helper);
@@ -28,10 +25,10 @@ public class LocalGiftStore extends BaseCreateUpdateDelete<Gift> implements Save
 
     private static class GiftCreator extends BaseCreator<Gift> implements Creator<Gift> {
         
-        private final Users users;
-        private final GiftChains chains;
+        private final LocalUsers users;
+        private final LocalGiftChains chains;
 
-        GiftCreator(Users users, GiftChains chains) {
+        GiftCreator(LocalUsers users, LocalGiftChains chains) {
             this.users = users;
             this.chains = chains;
         }
@@ -51,10 +48,10 @@ public class LocalGiftStore extends BaseCreateUpdateDelete<Gift> implements Save
             rValue.put(LocalSchema.Cols.LIKES, 0);
             rValue.put(LocalSchema.Cols.FLAGGED, false);
             rValue.put(LocalSchema.Cols.GIFT_CHAIN_ID, data.getGiftChainID());
-            String chain = chains.findOne(data.getGiftChainID()).toBlocking().first().getName();
+            String chain = chains.findOne(data.getGiftChainID()).getName();
             rValue.put(LocalSchema.Cols.GIFT_CHAIN_NAME, chain);
             rValue.put(LocalSchema.Cols.USER_LIKES, 0);
-            String user = users.findOne(data.getUserID()).toBlocking().first().getName();
+            String user = users.findOne(data.getUserID()).getName();
             rValue.put(LocalSchema.Cols.USER_NAME, user);
             } catch (Exception e) {
                 Log.e(LOG_TAG, e.getMessage(), e);
