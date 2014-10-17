@@ -21,5 +21,10 @@ public interface DataService {
      * @return The interface to manage users.
      */
     Users users();
+    
+    /**
+     * @return The interface to manage media.
+     */
+    Media media();
 
 }
