@@ -10,6 +10,7 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -93,6 +94,7 @@ public class ListGiftsActivity extends GiftActivity implements
         listView.setAdapter(arrayAdapter);
 
         // Set the click listener for the list view
+        final Context context = this;
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Log.d(LOG_TAG, "onListItemClick");
@@ -103,6 +105,10 @@ public class ListGiftsActivity extends GiftActivity implements
                 // user can view it in full screen
                 if (gift.getUserID() == getUserID()) {
                     openEditGiftActivity((giftData.get(position)).getId());
+                } else if (gift.getVideoUri() != null) {
+                    Intent intent = new Intent(context, VideoDetailActivity.class);
+                    intent.putExtra(GIFT_ID_TAG, gift.getId());
+                    startActivity(intent);
                 } else {
                     Log.d(LOG_TAG, "cannot edit this gift - not created by this user");
                 }

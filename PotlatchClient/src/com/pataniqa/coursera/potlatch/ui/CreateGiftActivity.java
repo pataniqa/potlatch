@@ -55,15 +55,28 @@ public class CreateGiftActivity extends ViewGiftActivity {
                 }).forEach(new Action1<Gift>() {
                     @Override
                     public void call(Gift gift) {
-                        File imageFile = new File(Uri.parse(gift.getImageUri()).getPath());
-                        UploadService.startUpload(context,
-                                gift.getId(),
-                                true,
-                                imageFile,
-                                getEndpoint(),
-                                getUserName(),
-                                getPassword(),
-                                getClientId());
+                        if (gift.getImageUri() != null) {
+                            File imageFile = new File(Uri.parse(gift.getImageUri()).getPath());
+                            UploadService.startUpload(context,
+                                    gift.getId(),
+                                    true,
+                                    imageFile,
+                                    getEndpoint(),
+                                    getUserName(),
+                                    getPassword(),
+                                    GiftActivity.CLIENT_ID);
+                        }
+                        if (gift.getVideoUri() != null) {
+                            File videoFile = new File(Uri.parse(gift.getImageUri()).getPath());
+                            UploadService.startUpload(context,
+                                    gift.getId(),
+                                    false,
+                                    videoFile,
+                                    getEndpoint(),
+                                    getUserName(),
+                                    getPassword(),
+                                    GiftActivity.CLIENT_ID);
+                        }
                         finish();
                     }
                 });

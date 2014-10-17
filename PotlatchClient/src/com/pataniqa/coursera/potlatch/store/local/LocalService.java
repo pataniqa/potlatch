@@ -19,6 +19,7 @@ import com.pataniqa.coursera.potlatch.store.DataService;
 import com.pataniqa.coursera.potlatch.store.GiftChains;
 import com.pataniqa.coursera.potlatch.store.GiftMetadata;
 import com.pataniqa.coursera.potlatch.store.Gifts;
+import com.pataniqa.coursera.potlatch.store.Media;
 import com.pataniqa.coursera.potlatch.store.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 import com.pataniqa.coursera.potlatch.store.Users;
@@ -40,6 +41,12 @@ public class LocalService implements DataService {
         giftMetadata = new LocalGiftMetadataStore(helper, gifts);
     }
 
+    @Override
+    public Media media() {
+        // We never use the media store locally
+        throw new RuntimeException("Media store interface should never be called on local store");
+    }
+    
     @Override
     public Gifts gifts() {
         return new Gifts() {

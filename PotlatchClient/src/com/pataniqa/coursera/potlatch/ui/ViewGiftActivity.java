@@ -199,19 +199,12 @@ abstract class ViewGiftActivity extends GiftActivity {
     }
 
     void displayImage(String path) {
-        File imageFile = new File(path);
-        if (imageFile != null && imageFile.exists()) {
-            image.setVisibility(View.VISIBLE);
-            
-            int maxsize = ImageUtils.getMaxSize(getWindowManager());
-            
-            getPicasso().with(this).load(Uri.fromFile(imageFile))
-                    .resize(maxsize, maxsize)
-                    .placeholder(R.drawable.ic_fa_image).centerInside().into(image);
-        } else {
-            Log.e(LOG_TAG, "Failed to find image.");
-        }
+        image.setVisibility(View.VISIBLE);
 
+        int maxsize = ImageUtils.getMaxSize(getWindowManager());
+
+        getPicasso().load(this, path).resize(maxsize, maxsize)
+                .placeholder(R.drawable.ic_fa_image).centerInside().into(image);
     }
 
     void readyToSave() {

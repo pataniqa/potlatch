@@ -4,7 +4,6 @@ import org.apache.http.client.HttpClient;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -17,11 +16,10 @@ import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.store.DataService;
 import com.pataniqa.coursera.potlatch.store.local.LocalService;
 import com.pataniqa.coursera.potlatch.store.remote.RemoteService;
-import com.pataniqa.coursera.potlatch.store.remote.RemoteUtils;
 import com.pataniqa.coursera.potlatch.store.remote.UnsafeHttpsClient;
+import com.pataniqa.coursera.potlatch.utils.LocalPicassoFactory;
 import com.pataniqa.coursera.potlatch.utils.OAuthPicassoClient;
 import com.pataniqa.coursera.potlatch.utils.PicassoFactory;
-import com.squareup.picasso.Picasso;
 
 /**
  * Base class for all GiftData UI activities.
@@ -39,6 +37,9 @@ abstract class GiftActivity extends Activity {
     public final static String PASSWORD_TAG = "password";
     public final static String IMAGE_URL_TAG = "image_url";
     public final static String VIDEO_URL_TAG = "video_url";
+    public final static String CLIENT_ID = "mobile";
+    public final static String CLIENT_SECRET = "";
+    public final static String GIFT_ID_TAG = "id";
 
     private static final String LOG_TAG = GiftActivity.class.getCanonicalName();
 
@@ -107,21 +108,18 @@ abstract class GiftActivity extends Activity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         return prefs.getString(PASSWORD_TAG, "Unknown");
     }
-
-    String getClientId() {
-        return "mobile";
-    }
-
-    String getSecret() {
-        return "";
+    
+    boolean useLocalStore() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        return prefs.getBoolean(SettingsActivity.USE_LOCAL_STORE, true);
     }
 
     DataService getDataService() {
-        return localDataService();
+        return useLocalStore() ? localDataService() : remoteDataService();
     }
 
     PicassoFactory getPicasso() {
-        return localPicasso();
+        return useLocalStore() ? localPicasso() : remotePicasso();
     }
 
     DataService localDataService() {
@@ -134,24 +132,19 @@ abstract class GiftActivity extends Activity {
                 getEndpoint(),
                 getUserName(),
                 getPassword(),
-                getClientId());
+                GiftActivity.CLIENT_ID);
     }
 
     PicassoFactory localPicasso() {
-        return new PicassoFactory() {
-            @Override
-            public Picasso with(Context context) {
-                return Picasso.with(context);
-            }
-        };
+        return new LocalPicassoFactory();
     }
 
     PicassoFactory remotePicasso() {
         return new OAuthPicassoClient(getUserName(),
                 getPassword(),
-                RemoteUtils.getLoginUrl(getEndpoint()),
-                getClientId(),
-                getSecret());
+                getEndpoint(),
+                GiftActivity.CLIENT_ID,
+                GiftActivity.CLIENT_SECRET);
     }
 
     String getEndpoint() {

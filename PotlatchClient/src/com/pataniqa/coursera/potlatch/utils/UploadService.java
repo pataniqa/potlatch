@@ -2,6 +2,8 @@ package com.pataniqa.coursera.potlatch.utils;
 
 import java.io.File;
 
+import org.apache.commons.io.FileUtils;
+
 import retrofit.mime.TypedFile;
 import rx.Observable;
 import rx.Subscriber;
@@ -82,36 +84,34 @@ public class UploadService extends IntentService {
             final File outputFile = File.createTempFile("potlatch", "png", outputDir);
             Observable<Boolean> result;
             if (isImage) {
-                
+
                 // resize the image and correct the orientation
 
-                Observable<TypedFile> a = Observable
-                        .create(new Observable.OnSubscribe<TypedFile>() {
-                            @Override
-                            public void call(Subscriber<? super TypedFile> subscriber) {
-                                try {
-                                    int imageWidth = 440;
-                                    int imageHeight = 440;
-                                    int imageQuality = 80;
+                result = Observable.create(new Observable.OnSubscribe<TypedFile>() {
+                    @Override
+                    public void call(Subscriber<? super TypedFile> subscriber) {
+                        try {
+                            int imageWidth = 440;
+                            int imageHeight = 440;
+                            int imageQuality = 80;
 
-                                    ImageUtils.compressImageFile(path,
-                                            imageWidth,
-                                            imageHeight,
-                                            imageQuality,
-                                            outputFile);
-                                } catch (Exception e) {
-                                    subscriber.onError(e);
-                                }
-                                TypedFile imageData = new TypedFile("image/png", outputFile);
-                                Log.d(LOG_TAG, "Uploading image");
-                                subscriber.onNext(imageData);
-                                subscriber.onCompleted();
-                            }
-                        });
-
-                result = a.flatMap(new Func1<TypedFile, Observable<Boolean>>() {
+                            ImageUtils.compressImageFile(path,
+                                    imageWidth,
+                                    imageHeight,
+                                    imageQuality,
+                                    outputFile);
+                        } catch (Exception e) {
+                            subscriber.onError(e);
+                        }
+                        TypedFile imageData = new TypedFile("image/png", outputFile);
+                        Log.d(LOG_TAG, "Uploading image");
+                        subscriber.onNext(imageData);
+                        subscriber.onCompleted();
+                    }
+                }).flatMap(new Func1<TypedFile, Observable<Boolean>>() {
                     @Override
                     public Observable<Boolean> call(TypedFile imageData) {
+                        FileUtils.deleteQuietly(outputFile);
                         return media.setImageData(id, imageData);
                     }
                 });

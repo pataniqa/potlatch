@@ -40,8 +40,6 @@ import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
 @Controller
 public class GiftService {
     
-    private static final String ENDPOINT = "https://192.168.1.71:8443";
-    
     @Autowired private GiftRepository gifts;
 
     @Autowired private UserRepository users;
@@ -246,9 +244,9 @@ public class GiftService {
         if (gifts.exists(id)) {
             ServerFileManager.saveData(dir, extension, id, data.getInputStream());
             if (dir.equals("video"))
-                gifts.findOne(id).setVideoUri(ENDPOINT + "/gift/" + id + "/video");
+                gifts.findOne(id).setVideoUri("/gift/" + id + "/video");
             else 
-                gifts.findOne(id).setImageUri(ENDPOINT + "/gift/" + id + "/image");
+                gifts.findOne(id).setImageUri("/gift/" + id + "/image");
         } else
             throw new ResourceNotFoundException();
     }

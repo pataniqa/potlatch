@@ -3,7 +3,6 @@ package com.pataniqa.coursera.potlatch.ui;
 import java.util.List;
 
 import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +18,8 @@ import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
-import com.pataniqa.coursera.potlatch.utils.PicassoFactory;
 import com.pataniqa.coursera.potlatch.utils.ImageUtils;
+import com.pataniqa.coursera.potlatch.utils.PicassoFactory;
 
 /**
  * This is an ArrayAdapter for an array of GiftData.
@@ -106,7 +105,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
                     .getSystemService(Context.WINDOW_SERVICE);
             int maxsize = ImageUtils.getMaxSize(windowManager);
             
-            picasso.with(view.getContext()).load(Uri.parse(gift.getImageUri())).resize(maxsize, maxsize)
+            picasso.load(view.getContext(), gift.getImageUri()).resize(maxsize, maxsize)
                     .placeholder(R.drawable.ic_fa_image).centerInside().into(image);
 
             if (gift.getGiftChainName() != null && !gift.getGiftChainName().isEmpty()) {

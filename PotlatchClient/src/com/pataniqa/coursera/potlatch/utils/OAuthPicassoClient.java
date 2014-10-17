@@ -9,34 +9,54 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.pataniqa.coursera.potlatch.store.remote.OAuthUtils;
+import com.pataniqa.coursera.potlatch.store.remote.RemoteUtils;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 public class OAuthPicassoClient implements PicassoFactory {
     private final String accessToken;
     private Picasso picasso;
+    private String endpoint;
 
     public OAuthPicassoClient(String username,
             String password,
-            String loginUrl,
+            String endpoint,
             String clientId,
             String clientSecret) {
         Client client = new OkClient();
         accessToken = OAuthUtils.getAccessToken(client,
                 username,
                 password,
-                loginUrl,
+                RemoteUtils.getLoginUrl(endpoint),
                 clientId,
                 clientSecret);
+        this.endpoint = endpoint;
     }
 
-    public Picasso with(final Context context) {
+    private void setPicasso(Context context) {
         if (picasso == null) {
             Picasso.Builder builder = new Picasso.Builder(context);
             builder.downloader(new CustomOkHttpDownloader(context, accessToken));
             picasso = builder.build();
         }
+    }
+
+    @Override
+    public Picasso with(final Context context) {
+        setPicasso(context);
         return picasso;
+    }
+
+    @Override
+    public RequestCreator load(Context context, String url) {
+        String fullUrl;
+        if (url.startsWith("/gift"))
+            fullUrl = endpoint + url;
+        else
+            fullUrl = url;
+        setPicasso(context);
+        return picasso.load(Uri.parse(fullUrl));
     }
 
     static class CustomOkHttpDownloader extends OkHttpDownloader {

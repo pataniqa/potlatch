@@ -1,7 +1,6 @@
 package com.pataniqa.coursera.potlatch.ui;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
@@ -36,7 +35,7 @@ public class ImageDetailActivity extends GiftActivity {
         if (!imageUrl.isEmpty()) {
 
             int maxsize = ImageUtils.getMaxSize(getWindowManager());
-            getPicasso().with(this).load(Uri.parse(imageUrl)).resize(maxsize, maxsize)
+            getPicasso().load(this, imageUrl).resize(maxsize, maxsize)
                     .placeholder(R.drawable.ic_fa_image).centerInside().into(image);
 
         }

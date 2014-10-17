@@ -8,31 +8,31 @@ import android.provider.BaseColumns;
 
 class LocalSchema {
 
-     static final String ORGANIZATIONAL_NAME = "org.pataniqa";
-     static final String PROJECT_NAME = ORGANIZATIONAL_NAME + "potlatch";
-     static final String INTEGER = "integer";
-     static final String TEXT = "text";
-     static final String PARENT_DATABASE = "PotlatchDatabase";
-    
-     static class User {
-         static final String TABLE_NAME = "users";
-         
-         static Map<String, String> COLUMNS = new TreeMap<String, String>() {
-             {
-                 put(Cols.ID, INTEGER);
-                 put(Cols.USER_NAME, TEXT);
-             }
-         };
+    static final String ORGANIZATIONAL_NAME = "org.pataniqa";
+    static final String PROJECT_NAME = ORGANIZATIONAL_NAME + "potlatch";
+    static final String INTEGER = "integer";
+    static final String TEXT = "text";
+    static final String PARENT_DATABASE = "PotlatchDatabase";
 
-          static ContentValues initializeWithDefault(final ContentValues assignedValues) {
-             return initialize(COLUMNS, assignedValues);
-         }
-     }
+    static class User {
+        static final String TABLE_NAME = "users";
 
-     static class Gift {
-         static final String TABLE_NAME = "gifts";
+        @SuppressWarnings("serial") static Map<String, String> COLUMNS = new TreeMap<String, String>() {
+            {
+                put(Cols.ID, INTEGER);
+                put(Cols.USER_NAME, TEXT);
+            }
+        };
 
-         static Map<String, String> COLUMNS = new TreeMap<String, String>() {
+        static ContentValues initializeWithDefault(final ContentValues assignedValues) {
+            return initialize(COLUMNS, assignedValues);
+        }
+    }
+
+    static class Gift {
+        static final String TABLE_NAME = "gifts";
+
+        @SuppressWarnings("serial") static Map<String, String> COLUMNS = new TreeMap<String, String>() {
             {
                 put(Cols.ID, INTEGER);
                 put(Cols.TITLE, TEXT);
@@ -52,54 +52,53 @@ class LocalSchema {
             }
         };
 
-         static ContentValues initializeWithDefault(final ContentValues assignedValues) {
+        static ContentValues initializeWithDefault(final ContentValues assignedValues) {
             return initialize(COLUMNS, assignedValues);
         }
 
     }
-    
-     static class GiftChain {
-         static final String TABLE_NAME = "giftchains";
 
-         static Map<String, String> COLUMNS = new TreeMap<String, String>() {
+    static class GiftChain {
+        static final String TABLE_NAME = "giftchains";
+
+        @SuppressWarnings("serial") static Map<String, String> COLUMNS = new TreeMap<String, String>() {
             {
                 put(Cols.ID, INTEGER);
                 put(Cols.GIFT_CHAIN_NAME, TEXT);
             }
         };
 
-         static ContentValues initializeWithDefault(final ContentValues assignedValues) {
+        static ContentValues initializeWithDefault(final ContentValues assignedValues) {
             return initialize(COLUMNS, assignedValues);
         }
 
     }
-    
-     static class GiftMetadata {
-         static final String TABLE_NAME = "giftmetadata";
+
+    static class GiftMetadata {
+        static final String TABLE_NAME = "giftmetadata";
     }
-    
+
     // a static class to store columns in entity
-     static class Cols {
-         static final String ID = BaseColumns._ID;
-         static final String TITLE = "TITLE";
-         static final String DESCRIPTION = "DESCRIPTION";
-         static final String VIDEO_URI = "VIDEO_URI";
-         static final String IMAGE_URI = "IMAGE_URI";
-         static final String CREATED = "CREATED";
-         static final String USER_ID = "USER_ID";
-         static final String LIKE = "ULIKE";
-         static final String FLAG = "UFLAG";
-         static final String LIKES = "LIKES";
-         static final String FLAGGED = "FLAGGED";
-         static final String GIFT_CHAIN_NAME = "GIFT_CHAIN_NAME";
-         static final String USER_LIKES = "USER_LIKES";
-         static final String GIFT_ID = "GIFT_ID";
-         static final String USER_NAME = "USERNAME";
-         static final String GIFT_CHAIN_ID = "GIFT_CHAIN_ID";
+    static class Cols {
+        static final String ID = BaseColumns._ID;
+        static final String TITLE = "TITLE";
+        static final String DESCRIPTION = "DESCRIPTION";
+        static final String VIDEO_URI = "VIDEO_URI";
+        static final String IMAGE_URI = "IMAGE_URI";
+        static final String CREATED = "CREATED";
+        static final String USER_ID = "USER_ID";
+        static final String LIKE = "ULIKE";
+        static final String FLAG = "UFLAG";
+        static final String LIKES = "LIKES";
+        static final String FLAGGED = "FLAGGED";
+        static final String GIFT_CHAIN_NAME = "GIFT_CHAIN_NAME";
+        static final String USER_LIKES = "USER_LIKES";
+        static final String GIFT_ID = "GIFT_ID";
+        static final String USER_NAME = "USERNAME";
+        static final String GIFT_CHAIN_ID = "GIFT_CHAIN_ID";
     }
-    
-    static ContentValues initialize(Map<String, String> columns,
-            final ContentValues assignedValues) {
+
+    static ContentValues initialize(Map<String, String> columns, final ContentValues assignedValues) {
         final ContentValues setValues = (assignedValues == null) ? new ContentValues()
                 : assignedValues;
         for (Map.Entry<String, String> entry : columns.entrySet()) {

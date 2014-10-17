@@ -66,5 +66,6 @@
     <string name="default_server_ip_addr">192.168.1.71</string>
     <string name="default_server_port">8443</string>
     <string name="pref_server_port">Server Port</string>
+    <string name="pref_use_local_store">Use local test store (rather than remote server)</string>
 
 </resources>

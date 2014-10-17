@@ -15,6 +15,8 @@ import android.util.Log;
 /**
  * This utility class provides several options for storing temporary and
  * permanent files on the file system with varying degrees of security.
+ * 
+ * Based on example code from the iRemember project on the POSA MOOC.
  */
 public class LocalStorageUtilities {
 
@@ -25,6 +27,7 @@ public class LocalStorageUtilities {
     // Constant that denotes what media type a file should be stored as.
     public enum MediaType {IMAGE, VIDEO, TEXT};
 
+    @SuppressWarnings("serial")
     public final static Map<Integer, String> MEDIA_TYPES = new TreeMap<Integer, String>() {
         {
             put(MediaType.IMAGE.ordinal(), "IMG_");
