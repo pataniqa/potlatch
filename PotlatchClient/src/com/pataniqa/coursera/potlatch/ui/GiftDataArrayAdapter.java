@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -54,24 +53,26 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
      * @param parent The parent ViewGroup.
      */
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, final View convertView, final ViewGroup parent) {
         Log.d(LOG_TAG, "getView");
         ViewHolder holder;
 
+        View view = null;
         try {
             if (convertView != null) {
                 holder = (ViewHolder) convertView.getTag();
+                view = convertView;
             } else {
-                convertView = inflater.inflate(resource, parent, false);
+                view = inflater.inflate(resource, parent, false);
                 holder = new ViewHolder(convertView, listGiftsCallback, picasso);
-                convertView.setTag(holder);
+                view.setTag(holder);
             }
             holder.setGiftData(getItem(position));
         } catch (Exception e) {
             Log.e(LOG_TAG, e.getMessage(), e);
         }
 
-        return convertView;
+        return view;
     }
 
     static class ViewHolder {
@@ -109,9 +110,9 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
                     .placeholder(R.drawable.ic_fa_image).centerInside().into(image);
 
             if (gift.getGiftChainName() != null && !gift.getGiftChainName().isEmpty()) {
-                giftChainButton.setVisibility(Button.VISIBLE);
+                giftChainButton.setVisibility(View.VISIBLE);
             } else {
-                giftChainButton.setVisibility(Button.INVISIBLE);
+                giftChainButton.setVisibility(View.INVISIBLE);
             }
 
             likeButton.setImageResource(gift.isLike() ? R.drawable.ic_fa_heart

@@ -30,3 +30,7 @@ sourceSets.each{ sourceSet ->
     sourceSet.compileClasspath += configurations.lombok
     sourceSet.ext.delombok = new File(buildDir, "generated-src/delombok/" + sourceSet.name);
 }
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.12'
+}

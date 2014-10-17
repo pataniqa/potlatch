@@ -1,7 +1,5 @@
 package com.pataniqa.coursera.potlatch.ui;
 
-import org.apache.http.client.HttpClient;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -16,7 +14,7 @@ import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.store.DataService;
 import com.pataniqa.coursera.potlatch.store.local.LocalService;
 import com.pataniqa.coursera.potlatch.store.remote.RemoteService;
-import com.pataniqa.coursera.potlatch.store.remote.UnsafeHttpsClient;
+import com.pataniqa.coursera.potlatch.utils.AndroidUnsafeHttpClient;
 import com.pataniqa.coursera.potlatch.utils.LocalPicassoFactory;
 import com.pataniqa.coursera.potlatch.utils.OAuthPicassoClient;
 import com.pataniqa.coursera.potlatch.utils.PicassoFactory;
@@ -127,8 +125,7 @@ abstract class GiftActivity extends Activity {
     }
 
     DataService remoteDataService() {
-        HttpClient httpClient = UnsafeHttpsClient.createUnsafeClient();
-        return new RemoteService(httpClient,
+        return new RemoteService(new AndroidUnsafeHttpClient(),
                 getEndpoint(),
                 getUserName(),
                 getPassword(),

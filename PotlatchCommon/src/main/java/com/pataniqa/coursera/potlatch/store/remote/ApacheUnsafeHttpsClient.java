@@ -16,8 +16,10 @@ import org.apache.http.impl.client.HttpClients;
  * 
  * @author jules
  *
+ * Note this does not work with Android because Android does not ship with all
+ * the Apache library.
  */
-public class UnsafeHttpsClient {
+public class ApacheUnsafeHttpsClient {
 
 	public static HttpClient createUnsafeClient() {
 		try {

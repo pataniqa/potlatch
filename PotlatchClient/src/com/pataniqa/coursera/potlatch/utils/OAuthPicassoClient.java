@@ -3,8 +3,12 @@ package com.pataniqa.coursera.potlatch.utils;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
-import retrofit.client.Client;
-import retrofit.client.OkClient;
+import retrofit.client.ApacheClient;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import android.content.Context;
 import android.net.Uri;
 
@@ -15,23 +19,37 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
 public class OAuthPicassoClient implements PicassoFactory {
-    private final String accessToken;
+    private String accessToken;
     private Picasso picasso;
     private String endpoint;
 
-    public OAuthPicassoClient(String username,
-            String password,
-            String endpoint,
-            String clientId,
-            String clientSecret) {
-        Client client = new OkClient();
-        accessToken = OAuthUtils.getAccessToken(client,
-                username,
-                password,
-                RemoteUtils.getLoginUrl(endpoint),
-                clientId,
-                clientSecret);
+    public OAuthPicassoClient(final String username,
+            final String password,
+            final String endpoint,
+            final String clientId,
+            final String clientSecret) {
         this.endpoint = endpoint;
+        Observable
+                .create(new Observable.OnSubscribe<String>() {
+
+                    @Override
+                    public void call(Subscriber<? super String> arg0) {
+                        String result = OAuthUtils.getAccessToken(new ApacheClient(new AndroidUnsafeHttpClient()),
+                                username,
+                                password,
+                                RemoteUtils.getLoginUrl(endpoint),
+                                clientId,
+                                clientSecret);
+                        arg0.onNext(result);
+                        arg0.onCompleted();
+                    }
+                }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+                .forEach(new Action1<String>() {
+                    @Override
+                    public void call(String arg0) {
+                        accessToken = arg0;
+                    }
+                });
     }
 
     private void setPicasso(Context context) {

@@ -12,7 +12,12 @@ public class LocalPicassoFactory implements PicassoFactory {
     
     @Override
     public RequestCreator load(final Context context, String url) {
-        return Picasso.with(context).load(Uri.fromFile(new File(url)));
+        Uri uri;
+        if (url.startsWith("file")) 
+            uri = Uri.parse(url);
+        else
+            uri = Uri.fromFile(new File(url));
+        return Picasso.with(context).load(uri);
     }
 
     @Override

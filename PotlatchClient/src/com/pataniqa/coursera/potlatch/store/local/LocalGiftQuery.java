@@ -99,7 +99,7 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements LocalGifts 
         }
     }
 
-    private String sortOrder(ResultOrder resultOrder, ResultOrderDirection resultOrderDirection) {
+    private static String sortOrder(ResultOrder resultOrder, ResultOrderDirection resultOrderDirection) {
         String sortCol;
         if (resultOrder == ResultOrder.LIKES)
             sortCol = LocalSchema.Cols.LIKES;
@@ -111,11 +111,11 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements LocalGifts 
         return sortCol + " " + order;
     }
 
-    private String direction(ResultOrderDirection resultOrderDirection) {
+    private static String direction(ResultOrderDirection resultOrderDirection) {
         return resultOrderDirection == ResultOrderDirection.ASCENDING ? "ASC" : "DESC";
     }
 
-    private String toLike(String s) {
+    private static String toLike(String s) {
         return "%" + s + "%";
     }
 

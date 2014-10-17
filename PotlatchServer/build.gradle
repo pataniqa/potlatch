@@ -82,4 +82,8 @@ task integration(type: Test) {
     classpath = sourceSets.test.runtimeClasspath
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.12'
+}
+
 check.dependsOn integration

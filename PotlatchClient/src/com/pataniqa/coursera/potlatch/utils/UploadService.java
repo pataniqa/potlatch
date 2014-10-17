@@ -72,7 +72,7 @@ public class UploadService extends IntentService {
         final String endpoint = intent.getStringExtra(ENDPOINT_TAG);
         final String client = intent.getStringExtra(CLIENT_TAG);
 
-        final Media media = new RemoteService(new UnsafeHttpClient(),
+        final Media media = new RemoteService(new AndroidUnsafeHttpClient(),
                 endpoint,
                 username,
                 password,

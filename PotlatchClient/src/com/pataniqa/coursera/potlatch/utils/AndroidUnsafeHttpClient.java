@@ -91,7 +91,7 @@ import org.apache.http.protocol.HttpContext;
  * @author match2blue software development GmbH
  * @author Ren� Fischer, Ulrich Scheller
  */
-public class UnsafeHttpClient extends DefaultHttpClient {
+public class AndroidUnsafeHttpClient extends DefaultHttpClient {
     /**
      * Default http port
      */
@@ -110,7 +110,7 @@ public class UnsafeHttpClient extends DefaultHttpClient {
      * Default constructor that initializes gzip handling. It adds the 
      * Accept-Encoding gzip flag and also decompresses the response from the server. 
      */
-    public UnsafeHttpClient() {
+    public AndroidUnsafeHttpClient() {
         addRequestInterceptor(new HttpRequestInterceptor() {
             public void process(final HttpRequest request,
                     final HttpContext context) throws HttpException, IOException {
@@ -144,7 +144,7 @@ public class UnsafeHttpClient extends DefaultHttpClient {
      * @param username
      * @param password
      */
-    public UnsafeHttpClient(String username, String password) {
+    public AndroidUnsafeHttpClient(String username, String password) {
         if(username != null && password != null) {          
             UsernamePasswordCredentials c = new UsernamePasswordCredentials(username,password);
             BasicCredentialsProvider cP = new BasicCredentialsProvider(); 
@@ -201,7 +201,7 @@ public class UnsafeHttpClient extends DefaultHttpClient {
     }
     
     public static void main(String[] args) {
-        UnsafeHttpClient client = new UnsafeHttpClient();
+        AndroidUnsafeHttpClient client = new AndroidUnsafeHttpClient();
         System.out.println(client.get("https://encrypted.google.com/"));        
     }
 }
@@ -315,10 +315,12 @@ class EasySSLSocketFactory implements SocketFactory, LayeredSocketFactory {
 class TrivialTrustManager implements X509TrustManager {
     public void checkClientTrusted(X509Certificate[] chain, String authType)
             throws CertificateException {
+        //
     }
 
     public void checkServerTrusted(X509Certificate[] chain, String authType)
             throws CertificateException {
+        //
     }
 
     public X509Certificate[] getAcceptedIssuers() {

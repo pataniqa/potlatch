@@ -165,7 +165,7 @@ abstract class ViewGiftActivity extends GiftActivity {
                 this.imagePathFinal = createVideoThumbnail(new File(videoPathFinal.getPath()));
                 displayImage(imagePathFinal.getPath());
                 readyToSave();
-            } else if (resultCode != CreateGiftActivity.RESULT_CANCELED) {
+            } else if (resultCode != Activity.RESULT_CANCELED) {
                 Log.e(LOG_TAG, "Video capture failed.");
             }
             break;
@@ -193,16 +193,14 @@ abstract class ViewGiftActivity extends GiftActivity {
         String[] filePath = { MediaStore.Images.Media.DATA };
         Cursor cursor = getContentResolver().query(data.getData(), filePath, null, null, null);
         cursor.moveToFirst();
-        String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
+        String path = cursor.getString(cursor.getColumnIndex(filePath[0]));
         cursor.close();
-        return imagePath;
+        return path;
     }
 
     void displayImage(String path) {
         image.setVisibility(View.VISIBLE);
-
         int maxsize = ImageUtils.getMaxSize(getWindowManager());
-
         getPicasso().load(this, path).resize(maxsize, maxsize)
                 .placeholder(R.drawable.ic_fa_image).centerInside().into(image);
     }
@@ -219,18 +217,18 @@ abstract class ViewGiftActivity extends GiftActivity {
         final String giftChainName = editTextToString(giftChain);
         Observable<GiftChain> result = null;
         if (giftChains.containsKey(giftChainName)) {
-            GiftChain giftChain = new GiftChain(giftChains.get(giftChainName), giftChainName);
-            result = Observable.just(giftChain);
+            GiftChain chain = new GiftChain(giftChains.get(giftChainName), giftChainName);
+            result = Observable.just(chain);
         } else {
-            GiftChain giftChain = new GiftChain(GetId.UNDEFINED_ID, giftChainName);
-            result = getDataService().giftChains().save(giftChain)
+            GiftChain chain = new GiftChain(GetId.UNDEFINED_ID, giftChainName);
+            result = getDataService().giftChains().save(chain)
                     .subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread());
         }
         return result.map(new Func1<GiftChain, Gift>() {
             @Override
-            public Gift call(GiftChain result) {
-                long giftChainID = result.getId();
-                Log.d(LOG_TAG, "Creating gift for giftchain " + result);
+            public Gift call(GiftChain chain) {
+                long giftChainID = chain.getId();
+                Log.d(LOG_TAG, "Creating gift for giftchain " + chain);
                 String title = editTextToString(titleInput);
                 String description = editTextToString(descriptionInput);
                 String videoUri = uriToString(videoPathFinal);

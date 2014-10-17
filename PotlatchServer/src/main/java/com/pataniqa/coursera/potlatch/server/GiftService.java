@@ -157,7 +157,7 @@ public class GiftService {
         return toResult(gifts.findByUserAndTitleLike(user, likeTitle(title), sort), principal, hide);
     }
 
-    private String likeTitle(String title) {
+    private static String likeTitle(String title) {
         return "%" + title + "%";
     }
 
@@ -263,12 +263,12 @@ public class GiftService {
 
     }
 
-    private Sort.Direction getDirection(ResultOrderDirection direction) {
+    private static Sort.Direction getDirection(ResultOrderDirection direction) {
         return direction == ResultOrderDirection.ASCENDING ? Sort.Direction.ASC
                 : Sort.Direction.DESC;
     }
 
-    private Sort getSort(ResultOrder order, ResultOrderDirection direction) {
+    private static Sort getSort(ResultOrder order, ResultOrderDirection direction) {
         String col = order == ResultOrder.LIKES ? "likes" : "created";
         return new Sort(getDirection(direction), col);
     }
@@ -322,7 +322,7 @@ public class GiftService {
         return giftChains.findOne(gift.getGiftChainID());
     }
 
-    private <T> T head(Collection<T> collection) {
+    private static <T> T head(Collection<T> collection) {
         return collection.size() > 0 ? collection.iterator().next() : null;
     }
 
