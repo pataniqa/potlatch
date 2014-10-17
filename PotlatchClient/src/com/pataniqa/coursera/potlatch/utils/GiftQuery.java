@@ -25,6 +25,7 @@ public class GiftQuery {
     public final static String RESULT_ORDER_DIRECTION_TAG = "result_order_direction";
     public final static String DEFAULT_QUERY = "";
 
+    private final SharedPreferences prefs;
     @Getter @Setter private String title = DEFAULT_QUERY;
     @Getter @Setter private QueryType queryType = QueryType.ALL;
     @Getter private ResultOrder resultOrder = ResultOrder.TIME;
@@ -35,9 +36,9 @@ public class GiftQuery {
     private String queryUsername;
     private long userID;
     private String username;
-    private boolean hide;
 
     public GiftQuery(long userID, String username, SharedPreferences prefs) {
+        this.prefs = prefs;
         this.userID = userID;
         this.username = username;
         this.queryUserID = userID;
@@ -60,7 +61,6 @@ public class GiftQuery {
             queryUsername = prefs.getString(QUERY_USER_NAME_TAG, null);
         if (prefs.contains(QUERY_USER_ID_TAG))
             queryUserID = prefs.getLong(QUERY_USER_ID_TAG, 0);
-        hide = prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, true);
         if ((queryType == QueryType.USER && queryUsername == null)
                 || (queryType == QueryType.CHAIN && giftChainName == null))
             queryType = QueryType.ALL;
@@ -116,8 +116,9 @@ public class GiftQuery {
                 return "Title query: " + title;
         }
     }
-
+    
     public Observable<ArrayList<GiftResult>> query(Gifts gifts) {
+        boolean hide = prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, true);
         switch (queryType) {
         case USER:
             return gifts.queryByUser(title, queryUserID, resultOrder, resultDirection, hide);

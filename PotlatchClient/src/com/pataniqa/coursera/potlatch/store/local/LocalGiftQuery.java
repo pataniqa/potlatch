@@ -121,7 +121,7 @@ public class LocalGiftQuery extends BaseQuery<GiftResult> implements LocalGifts 
 
     public static ArrayList<GiftResult> hideFlaggedContent(ArrayList<GiftResult> results,
             final boolean hide) {
-        if (hide)
+        if (!hide)
             return results;
         ArrayList<GiftResult> out = new ArrayList<GiftResult>();
         for (GiftResult gift : results) {
