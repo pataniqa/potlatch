@@ -2,10 +2,8 @@ package com.pataniqa.coursera.potlatch.ui;
 
 import java.io.File;
 
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import android.content.Context;
 import android.net.Uri;
@@ -16,8 +14,8 @@ import android.view.Window;
 import butterknife.ButterKnife;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.model.HasId;
 import com.pataniqa.coursera.potlatch.model.Gift;
+import com.pataniqa.coursera.potlatch.model.HasId;
 import com.pataniqa.coursera.potlatch.utils.UploadService;
 
 /**
@@ -48,66 +46,57 @@ public class CreateGiftActivity extends ViewGiftActivity {
         // create the gift from the UI
 
         makeGiftDataFromUI(HasId.UNDEFINED_ID).subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .flatMap(new Func1<Gift, Observable<Gift>>() {
+                .observeOn(AndroidSchedulers.mainThread()).forEach(new Action1<Gift>() {
                     @Override
-                    public Observable<Gift> call(final Gift gift) {
-
-                        // save the gift data to the server
-
+                    public void call(final Gift gift) {
                         Log.d(LOG_TAG, "newGiftData: " + gift);
-                        return getDataService().gifts().save(gift).map(new Func1<Gift, Gift>() {
+                        getDataService().gifts().save(gift).forEach(new Action1<Gift>() {
                             @Override
-                            public Gift call(Gift serverGift) {
+                            public void call(final Gift serverGift) {
 
                                 // update the local gift with the ID from the
                                 // server
 
-                                Log.d(LOG_TAG, "The server returned ID: " + serverGift.getId()
-                                        + " for the gift");
+                                Log.d(LOG_TAG, "The server returned gift ID: " + serverGift.getId());
                                 gift.setId(serverGift.getId());
-                                return gift;
+                                Log.d(LOG_TAG,
+                                        "Starting service to upload image " + gift.getImageUri());
+                                File imageFile = new File(Uri.parse(gift.getImageUri()).getPath());
+                                UploadService.startUpload(context,
+                                        gift.getId(),
+                                        true,
+                                        imageFile,
+                                        getEndpoint(),
+                                        getUserName(),
+                                        getPassword(),
+                                        GiftActivity.CLIENT_ID);
+                                Log.d(LOG_TAG, "Request successfully sent to upload service");
+                                if (gift.getVideoUri() != null && !gift.getVideoUri().isEmpty()) {
+
+                                    // if the gift has a video, upload that to
+                                    // the server
+
+                                    Log.d(LOG_TAG,
+                                            "Starting service to upload video "
+                                                    + gift.getVideoUri());
+                                    File videoFile = new File(Uri.parse(gift.getVideoUri())
+                                            .getPath());
+                                    UploadService.startUpload(context,
+                                            gift.getId(),
+                                            false,
+                                            videoFile,
+                                            getEndpoint(),
+                                            getUserName(),
+                                            getPassword(),
+                                            GiftActivity.CLIENT_ID);
+                                    Log.d(LOG_TAG, "Request successfully sent to upload service");
+                                }
+                                Log.d(LOG_TAG, "Calling finish()");
+                                finish();
                             }
                         });
                     }
-                }).forEach(new Action1<Gift>() {
-                    @Override
-                    public void call(Gift gift) {
-                        Log.d(LOG_TAG, "Uploaded gift data to server");
-                        
-                        // all gifts have an associated image - upload to server
-
-                        Log.d(LOG_TAG, "Starting service to upload image " + gift.getImageUri());
-                        File imageFile = new File(Uri.parse(gift.getImageUri()).getPath());
-                        UploadService.startUpload(context,
-                                gift.getId(),
-                                true,
-                                imageFile,
-                                getEndpoint(),
-                                getUserName(),
-                                getPassword(),
-                                GiftActivity.CLIENT_ID);
-                        
-                        Log.d(LOG_TAG, "Request successfully sent to upload service");
-                        if (gift.getVideoUri() != null && !gift.getVideoUri().isEmpty()) {
-                            
-                            // if the gift has a video, upload that to the server
-                            
-                            Log.d(LOG_TAG, "Starting service to upload video " + gift.getVideoUri());
-                            File videoFile = new File(Uri.parse(gift.getVideoUri()).getPath());
-                            UploadService.startUpload(context,
-                                    gift.getId(),
-                                    false,
-                                    videoFile,
-                                    getEndpoint(),
-                                    getUserName(),
-                                    getPassword(),
-                                    GiftActivity.CLIENT_ID);
-                            Log.d(LOG_TAG, "Request successfully sent to upload service");
-                        }
-                        Log.d(LOG_TAG, "Calling finish()");
-                        finish();
-                    }
                 });
     }
+
 }

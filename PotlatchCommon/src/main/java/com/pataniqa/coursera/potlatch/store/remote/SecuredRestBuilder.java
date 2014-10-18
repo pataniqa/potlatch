@@ -158,7 +158,7 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
     @Override
     public RestAdapter build() {
         if (username == null || password == null) {
-            throw new SecuredRestException("You must specify both a username and password for a "
+            throw new RuntimeException("You must specify both a username and password for a "
                     + "SecuredRestBuilder before calling the build() method.");
         }
 
@@ -172,7 +172,7 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
     }
     
     private static String accessToken = null;
-
+    
     public static String getAccessToken(Client client,
             String username,
             String password,
@@ -223,9 +223,7 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
                 String body = IOUtils.toString(resp.getBody().in());
 
                 // Extract the access_token (bearer token) from the response so
-                // that
-                // we
-                // can add it to future requests.
+                // that we can add it to future requests.
                 ObjectMapper mapper = new ObjectMapper();
                 TypeReference<HashMap<String, String>> typeRef = new TypeReference<HashMap<String, String>>() {
                 };
@@ -237,9 +235,8 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
                         + resp.getReason());
             }
         } catch (IOException e) {
-            //
+            throw new SecuredRestException();
         }
-        throw new SecuredRestException();
     }
 
     public static String getLoginUrl(String endpoint) {

@@ -10,8 +10,10 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import android.app.SearchManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -36,9 +38,10 @@ import com.pataniqa.coursera.potlatch.model.GiftResult;
 import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrderDirection;
 import com.pataniqa.coursera.potlatch.utils.GiftQuery;
+import com.pataniqa.coursera.potlatch.utils.UploadService;
 
 public class ListGiftsActivity extends GiftActivity implements
-        SwipeRefreshLayout.OnRefreshListener, ListGiftsCallback, UpdateGifts {
+        SwipeRefreshLayout.OnRefreshListener, ListGiftsCallback {
 
     private static int UNDEFINED = -1;
 
@@ -56,6 +59,7 @@ public class ListGiftsActivity extends GiftActivity implements
     private SharedPreferences prefs;
     private int updateFrequency = UNDEFINED;
     private Subscription subscription = null;
+    private ResponseReceiver receiver = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +123,11 @@ public class ListGiftsActivity extends GiftActivity implements
                 }
             }
         });
+        
+        IntentFilter filter = new IntentFilter(UploadService.UPLOAD_RESPONSE);
+        filter.addCategory(Intent.CATEGORY_DEFAULT);
+        receiver = new ResponseReceiver();
+        registerReceiver(receiver, filter);
     }
 
     @Override
@@ -290,7 +299,6 @@ public class ListGiftsActivity extends GiftActivity implements
                         : R.drawable.ic_fa_sort_amount_asc);
     }
 
-    @Override
     public void updateGifts() {
         Log.d(LOG_TAG, "updateGifts");
         swipeLayout.setRefreshing(true);
@@ -360,5 +368,12 @@ public class ListGiftsActivity extends GiftActivity implements
                     }
                 });
     }
+    
+    public class ResponseReceiver extends BroadcastReceiver {
+        @Override
+         public void onReceive(Context context, Intent intent) {
+            updateGifts();
+         }
+     }
 
 }

@@ -14,6 +14,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.pataniqa.coursera.potlatch.store.remote.SecuredRestBuilder;
+import com.pataniqa.coursera.potlatch.store.remote.SecuredRestException;
 import com.pataniqa.coursera.potlatch.store.remote.unsafe.UnsafeHttpClient;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
@@ -34,18 +35,24 @@ public class OAuthPicassoClient implements PicassoFactory {
                 .create(new Observable.OnSubscribe<String>() {
 
                     @Override
-                    public void call(Subscriber<? super String> arg0) {
-                        String result = SecuredRestBuilder.getAccessToken(new ApacheClient(new UnsafeHttpClient()),
-                                username,
-                                password,
-                                SecuredRestBuilder.getLoginUrl(endpoint),
-                                clientId,
-                                clientSecret);
-                        arg0.onNext(result);
-                        arg0.onCompleted();
+                    public void call(Subscriber<? super String> subscriber) {
+                        String result;
+                        try {
+                            result = SecuredRestBuilder.getAccessToken(new ApacheClient(new UnsafeHttpClient()),
+                                    username,
+                                    password,
+                                    SecuredRestBuilder.getLoginUrl(endpoint),
+                                    clientId,
+                                    clientSecret);
+                            subscriber.onNext(result);
+                            subscriber.onCompleted();
+                        } catch (SecuredRestException e) {
+                            subscriber.onError(e);
+                        }
+                        
                     }
                 }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
-                .forEach(new Action1<String>() {
+                .retry(1).forEach(new Action1<String>() {
                     @Override
                     public void call(String arg0) {
                         accessToken = arg0;
