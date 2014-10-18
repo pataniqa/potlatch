@@ -10,10 +10,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.pataniqa.coursera.potlatch.model.HasId;
+
 @Accessors(fluent = true)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-abstract class BaseQuery<T> implements LocalQuery<T> {
+abstract class BaseQuery<T extends HasId> implements LocalQuery<T> {
 
     private final Creator<T> creator;
     private final String tableName;

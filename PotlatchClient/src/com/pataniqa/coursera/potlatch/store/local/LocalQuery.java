@@ -2,7 +2,9 @@ package com.pataniqa.coursera.potlatch.store.local;
 
 import java.util.ArrayList;
 
-interface LocalQuery<T> {
+import com.pataniqa.coursera.potlatch.model.HasId;
+
+interface LocalQuery<T extends HasId> {
     
     /**
      * Query <T>.

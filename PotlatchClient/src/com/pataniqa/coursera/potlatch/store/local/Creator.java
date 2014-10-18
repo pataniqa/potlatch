@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-interface Creator<T> {
+import com.pataniqa.coursera.potlatch.model.HasId;
+
+interface Creator<T extends HasId> {
     /**
      * Create a ContentValues from a provided <T>
      * 
@@ -31,7 +33,7 @@ interface Creator<T> {
     T getFromCursor(Cursor cursor);
 }
 
-abstract class BaseCreator<T> implements Creator<T> {
+abstract class BaseCreator<T extends HasId> implements Creator<T> {
     
     @Override
     public ArrayList<T> getListFromCursor(Cursor cursor) {

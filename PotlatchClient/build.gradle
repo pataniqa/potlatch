@@ -3,32 +3,23 @@
 assert gradle.gradleVersion >= "1.10" 
 assert gradle.gradleVersion <= "1.12"
 
-configurations {
-    lombok
-    umljavadoc
-}
-
 buildscript {
     repositories {
         mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:0.12+'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
     }
 }
 
 apply plugin: 'android'
+apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
-
-// Add the lombok configuration to all of the compile classpaths
-sourceSets.each{ sourceSet -> 
-    sourceSet.compileClasspath += configurations.lombok
-    sourceSet.ext.delombok = new File(buildDir, "generated-src/delombok/" + sourceSet.name);
-}
 
 repositories {
     mavenCentral()
@@ -90,54 +81,17 @@ dependencies {
     compile project(":PotlatchCommon")
 
     compile files("libs/android-support-v4.jar")
+
     compile 'com.netflix.rxjava:rxjava-android:0.20.5'
     compile 'com.jakewharton:butterknife:5.1.2'
     compile 'com.squareup.picasso:picasso:2.3.4'
     compile 'com.squareup.okhttp:okhttp:2.0.0'
     compile 'com.squareup.okio:okio:1.0.1'
 
-    umljavadoc 'org.umlgraph:umlgraph:5.6.6'
-    
-    lombok 'org.projectlombok:lombok:+'
+    provided 'org.projectlombok:lombok:+'
+    apt "org.projectlombok:lombok:+"
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.12'
 }
-
-// https://github.com/kercheval/GradleCMPlugin/wiki/Create-Javadoc-with-Class-Diagrams-using-UMLGraph-with-Gradle
-
-// Override the javadoc task to use umlgraph doclet.  This depends on the presence
-// of GraphViz on the path in your environment (http://www.graphviz.org)
-//
-/*
-task javadoc(overwrite: true, dependsOn: compileJava) {
-    setDescription('Generates Javadoc API documentation with UMLGraph diagrams')
-    setGroup(JavaBasePlugin.DOCUMENTATION_GROUP)
-
-    doLast {
-        def javaFilePath = file('src/main/java')
-        if (javaFilePath.exists()) {
-            ant.javadoc(classpath: (configurations.runtime + configurations.lombok + configurations.umljavadoc).asPath, 
-                        sourcepath: file('src/main/java'), 
-                        packagenames: '*',
-                        destdir: "${docsDir}/javadoc",
-                        private: 'true',
-                        docletpath: configurations.umljavadoc.asPath) {
-                doclet(name: 'org.umlgraph.doclet.UmlGraphDoc') {
-                    param(name: '-inferrel')
-                    param(name: '-inferdep')
-                    param(name: '-qualify')
-                    param(name: '-postfixpackage')
-                    param(name: '-hide', value: 'java.*')
-                    param(name: '-collpackages', value: 'java.util.*')
-                    param(name: '-nodefontsize', value: '9')
-                    param(name: '-nodefontpackagesize', value: '7')
-                    param(name: '-link', value: 'http://java.sun.com/j2se/1.5.0/docs/guide/javadoc/doclet/spec')
-                    param(name: '-link', value: 'http://java.sun.com/j2se/1.5/docs/api')
-                }
-            }
-        }
-    }
-}*/
-
