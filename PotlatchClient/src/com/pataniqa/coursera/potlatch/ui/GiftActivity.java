@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -47,49 +46,15 @@ abstract class GiftActivity extends Activity {
         super.onCreate(savedInstanceState);
     }
 
-    void openLoginActivity() {
-        Log.d(LOG_TAG, "openLoginActivity");
-        startActivity(new Intent(this, LoginActivity.class));
-    }
-
-    void openPreferenceActivity() {
-        Log.d(LOG_TAG, "openPreferencesActivity");
-        startActivity(new Intent(this, SettingsActivity.class));
-    }
-
-    void openEditGiftActivity(final long index) {
-        Log.d(LOG_TAG, "openEditGiftActivity(" + index + ")");
-        Intent intent = new Intent(this, EditGiftActivity.class);
-        intent.putExtra(ROW_IDENTIFIER_TAG, index);
-        startActivity(intent);
-    }
-
-    void openCreateGiftActivity() {
-        Log.d(LOG_TAG, "openCreateGiftActivity");
-        startActivity(new Intent(this, CreateGiftActivity.class));
-    }
-
     void openListGiftActivity() {
         Log.d(LOG_TAG, "openCreateGiftActivity");
         startActivity(new Intent(this, ListGiftsActivity.class));
-    }
-
-    long getRowIdentifier() {
-        return getIntent().getLongExtra(ROW_IDENTIFIER_TAG, 0);
     }
 
     // Utility methods
 
     static String editTextToString(EditText et) {
         return String.valueOf(et.getText().toString());
-    }
-
-    static String uriToString(Uri u) {
-        return u != null ? u.toString() : "";
-    }
-
-    static Uri stringToUri(String s) {
-        return !s.isEmpty() ? Uri.parse(s) : null;
     }
 
     long getUserID() {

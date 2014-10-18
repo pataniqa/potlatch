@@ -21,7 +21,7 @@ class ServerFileManager {
     private static Logger log = Logger.getLogger(ServerFileManager.class.getName());
 
     private static Path getPath(String dirpath, String extension, long id) {
-        String path = "target" + File.separator + dirpath;
+        String path = "store" + File.separator + dirpath;
         Path targetDir = Paths.get(path);
         if (!Files.exists(targetDir))
             try {

@@ -245,10 +245,15 @@ public class GiftService {
             throws IOException {
         if (gifts.exists(id)) {
             ServerFileManager.saveData(dir, extension, id, data.getInputStream());
-            if (dir.equals("video"))
-                gifts.findOne(id).setVideoUri("/gift/" + id + "/video");
-            else 
-                gifts.findOne(id).setImageUri("/gift/" + id + "/image");
+            if (dir.equals("video")) {
+                ServerGift gift = gifts.findOne(id);
+                gift.setVideoUri("/gift/" + id + "/video");
+                gifts.save(gift);
+            } else { 
+                ServerGift gift = gifts.findOne(id);
+                gift.setImageUri("/gift/" + id + "/image");
+                gifts.save(gift);
+            }
         } else
             throw new ResourceNotFoundException();
     }

@@ -201,8 +201,8 @@ abstract class ViewGiftActivity extends GiftActivity {
     void displayImage(String path) {
         image.setVisibility(View.VISIBLE);
         int maxsize = ImageUtils.getMaxSize(getWindowManager());
-        getPicasso().load(this, path).resize(maxsize, maxsize)
-                .placeholder(R.drawable.ic_fa_image).centerInside().into(image);
+        getPicasso().load(this, path).resize(maxsize, maxsize).placeholder(R.drawable.ic_fa_image)
+                .centerInside().into(image);
     }
 
     void readyToSave() {
@@ -221,8 +221,8 @@ abstract class ViewGiftActivity extends GiftActivity {
             result = Observable.just(chain);
         } else {
             GiftChain chain = new GiftChain(HasId.UNDEFINED_ID, giftChainName);
-            result = getDataService().giftChains().save(chain)
-                    .subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread());
+            result = getDataService().giftChains().save(chain).subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread());
         }
         return result.map(new Func1<GiftChain, Gift>() {
             @Override
@@ -235,7 +235,7 @@ abstract class ViewGiftActivity extends GiftActivity {
                 String imageData = uriToString(imagePathFinal);
                 Time created = new Time();
                 created.setToNow();
-                return new Gift(key, title, description, videoUri, imageData, new Date(created
+                return new Gift(key, title, description, imageData, videoUri, new Date(created
                         .toMillis(false)), getUserID(), giftChainID);
             }
         });
@@ -260,5 +260,9 @@ abstract class ViewGiftActivity extends GiftActivity {
                         giftChain.setAdapter(spinnerArrayAdapter);
                     }
                 });
+    }
+
+    static String uriToString(Uri u) {
+        return u != null ? u.toString() : "";
     }
 }

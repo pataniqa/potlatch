@@ -87,23 +87,14 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
                             loginUrl,
                             clientId,
                             clientSecret);
-                    // Add the access_token to this request as the
-                    // "Authorization"
-                    // header.
-                    request.addHeader("Authorization", "Bearer " + accessToken);
-
                     // Let future calls know we've already fetched the access
                     // token
                     loggedIn = true;
                 } catch (Exception e) {
 
                 }
-            } else {
-                // Add the access_token that we previously obtained to this
-                // request as
-                // the "Authorization" header.
-                request.addHeader("Authorization", "Bearer " + accessToken);
             }
+            request.addHeader("Authorization", "Bearer " + accessToken);
         }
     }
 
@@ -180,12 +171,16 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
         return super.build();
     }
     
+    private static String accessToken = null;
+
     public static String getAccessToken(Client client,
             String username,
             String password,
             String loginUrl,
             String clientId,
             String clientSecret) throws SecuredRestException {
+        if (accessToken != null)
+            return accessToken;
         // This code below programmatically builds an OAuth 2.0 password
         // grant request and sends it to the server.
 
@@ -235,7 +230,8 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
                 TypeReference<HashMap<String, String>> typeRef = new TypeReference<HashMap<String, String>>() {
                 };
                 HashMap<String, String> o = mapper.readValue(body, typeRef);
-                return o.get("access_token");
+                accessToken = o.get("access_token");
+                return accessToken;
             } else {
                 throw new SecuredRestException("Login failure: " + resp.getStatus() + " - "
                         + resp.getReason());
@@ -245,7 +241,7 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
         }
         throw new SecuredRestException();
     }
-    
+
     public static String getLoginUrl(String endpoint) {
         return endpoint + RemoteGiftApi.TOKEN_PATH;
     }

@@ -1,6 +1,7 @@
 package com.pataniqa.coursera.potlatch.ui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import rx.Subscription;
@@ -37,7 +38,7 @@ import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrderDirection;
 import com.pataniqa.coursera.potlatch.utils.GiftQuery;
 
 public class ListGiftsActivity extends GiftActivity implements
-        SwipeRefreshLayout.OnRefreshListener, ListGiftsCallback {
+        SwipeRefreshLayout.OnRefreshListener, ListGiftsCallback, UpdateGifts {
 
     private static int UNDEFINED = -1;
 
@@ -104,7 +105,11 @@ public class ListGiftsActivity extends GiftActivity implements
                 // When an item is clicked, open the ViewGiftActivity so the
                 // user can view it in full screen
                 if (gift.getUserID() == getUserID()) {
-                    openEditGiftActivity((giftData.get(position)).getId());
+                    long index = giftData.get(position).getId();
+                    Log.d(LOG_TAG, "openEditGiftActivity(" + index + ")");
+                    Intent intent = new Intent(context, EditGiftActivity.class);
+                    intent.putExtra(ROW_IDENTIFIER_TAG, index);
+                    startActivity(intent);
                 } else if (gift.getVideoUri() != null) {
                     Intent intent = new Intent(context, VideoDetailActivity.class);
                     intent.putExtra(GIFT_ID_TAG, gift.getId());
@@ -226,7 +231,8 @@ public class ListGiftsActivity extends GiftActivity implements
         switch (item.getItemId()) {
         // action with ID action_refresh was selected
         case R.id.action_new:
-            openCreateGiftActivity();
+            Log.d(LOG_TAG, "openCreateGiftActivity");
+            startActivity(new Intent(this, CreateGiftActivity.class));
             break;
         case R.id.action_query_type:
             query.rotateQueryType();
@@ -241,7 +247,8 @@ public class ListGiftsActivity extends GiftActivity implements
             update();
             break;
         case R.id.action_settings:
-            openPreferenceActivity();
+            Log.d(LOG_TAG, "openPreferencesActivity");
+            startActivity(new Intent(this, SettingsActivity.class));
             break;
         default:
             break;
@@ -283,7 +290,8 @@ public class ListGiftsActivity extends GiftActivity implements
                         : R.drawable.ic_fa_sort_amount_asc);
     }
 
-    void updateGifts() {
+    @Override
+    public void updateGifts() {
         Log.d(LOG_TAG, "updateGifts");
         swipeLayout.setRefreshing(true);
         query.query(getDataService().gifts()).subscribeOn(Schedulers.newThread())
@@ -292,8 +300,11 @@ public class ListGiftsActivity extends GiftActivity implements
                     @Override
                     public void call(ArrayList<GiftResult> results) {
                         giftData.clear();
+                        Log.d(LOG_TAG, Arrays.toString(results.toArray()));
                         if (results != null)
-                            giftData.addAll(results);
+                            for (GiftResult result : results)
+                                if (result.getImageUri() != null)
+                                    giftData.add(result);
                         swipeLayout.setRefreshing(false);
                         queryDescription.setText(query.getDescription());
                         arrayAdapter.notifyDataSetChanged();
@@ -349,4 +360,5 @@ public class ListGiftsActivity extends GiftActivity implements
                     }
                 });
     }
+
 }

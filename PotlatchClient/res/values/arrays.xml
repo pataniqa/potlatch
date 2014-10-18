@@ -10,7 +10,7 @@
         <item name="900">15 minutes</item>
     </string-array>
     <string-array name="pref_update_frequency_values">
-        <item name="m">Manual</item>
+        <item name="m">-1</item>
         <item name="1">10</item>
         <item name="10">30</item>
         <item name="60">60</item>

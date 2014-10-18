@@ -82,7 +82,7 @@ public class UploadService extends IntentService {
         final Context context = this;
         final File outputDir = context.getCacheDir();
         try {
-            final File outputFile = File.createTempFile("potlatch", "png", outputDir);
+            final File outputFile = File.createTempFile("potlatch", ".png", outputDir);
             Observable<Boolean> result;
             if (isImage) {
 
@@ -112,7 +112,6 @@ public class UploadService extends IntentService {
                 }).flatMap(new Func1<TypedFile, Observable<Boolean>>() {
                     @Override
                     public Observable<Boolean> call(TypedFile imageData) {
-                        FileUtils.deleteQuietly(outputFile);
                         return gifts.setImageData(id, imageData);
                     }
                 });
@@ -125,6 +124,7 @@ public class UploadService extends IntentService {
                     .forEach(new Action1<Boolean>() {
                         @Override
                         public void call(Boolean arg0) {
+                            FileUtils.deleteQuietly(outputFile);
                             Log.d(LOG_TAG, "Uploaded  " + file.getAbsolutePath());
                         }
                     });
@@ -132,5 +132,4 @@ public class UploadService extends IntentService {
             Log.e(LOG_TAG, e.getMessage(), e);
         }
     }
-
 }

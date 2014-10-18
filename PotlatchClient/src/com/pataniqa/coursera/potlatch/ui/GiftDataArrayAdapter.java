@@ -97,6 +97,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
         }
 
         public void setGiftData(final GiftResult gift) {
+            try {
             Log.d(LOG_TAG,
                     gift.getVideoUri() + " " + gift.getImageUri() + " " + gift.getGiftChainName());
 
@@ -160,6 +161,9 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
                     listGiftsCallback.createUserQuery(gift.getUserID(), gift.getUsername());
                 }
             });
+            } catch (Exception e) {
+                Log.e(LOG_TAG, e.getMessage(), e);
+            }
         }
     }
 }

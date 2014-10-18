@@ -103,4 +103,12 @@ public class EditGiftActivity extends ViewGiftActivity {
                     }
                 });
     }
+    
+    long getRowIdentifier() {
+        return getIntent().getLongExtra(ROW_IDENTIFIER_TAG, 0);
+    }
+    
+    static Uri stringToUri(String s) {
+        return !s.isEmpty() ? Uri.parse(s) : null;
+    }
 }

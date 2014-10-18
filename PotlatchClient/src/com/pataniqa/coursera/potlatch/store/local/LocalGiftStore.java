@@ -78,8 +78,8 @@ class LocalGiftStore extends BaseCreateUpdateDelete<Gift> implements LocalSaveDe
             return new Gift(rowID,
                     title,
                     description,
-                    videoUri,
                     imageUri,
+                    videoUri,
                     created,
                     userID,
                     giftChainID);

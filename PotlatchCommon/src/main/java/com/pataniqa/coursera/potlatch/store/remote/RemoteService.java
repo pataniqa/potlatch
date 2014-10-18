@@ -26,7 +26,8 @@ import com.pataniqa.coursera.potlatch.store.GiftMetadata;
 import com.pataniqa.coursera.potlatch.store.Gifts;
 
 /**
- * A store implementation that connects to the remote store's REST API via Retrofit.
+ * A store implementation that connects to the remote store's REST API via
+ * Retrofit.
  */
 @Accessors(fluent = true)
 public class RemoteService implements DataService {
