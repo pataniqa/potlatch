@@ -104,7 +104,7 @@ task javadoc(overwrite: true, dependsOn: compileJava) {
                         sourcepath: file('src/main/java'), 
                         packagenames: '*',
                         destdir: "${docsDir}/javadoc",
-                        private: 'true',
+                        private: 'false',
                         docletpath: configurations.umljavadoc.asPath) {
                 doclet(name: 'org.umlgraph.doclet.UmlGraphDoc') {
                     param(name: '-inferrel')

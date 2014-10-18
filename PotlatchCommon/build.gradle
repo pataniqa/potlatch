@@ -56,13 +56,12 @@ task javadoc(overwrite: true, dependsOn: compileJava) {
                         sourcepath: file('src/main/java'), 
                         packagenames: '*',
                         destdir: "${docsDir}/javadoc",
-                        private: 'true',
+                        private: 'false',
                         docletpath: configurations.umljavadoc.asPath) {
                 doclet(name: 'org.umlgraph.doclet.UmlGraphDoc') {
                     param(name: '-inferrel')
                     param(name: '-inferdep')
                     param(name: '-qualify')
-                    param(name: '-public')
                     param(name: '-postfixpackage')
                     param(name: '-hide', value: 'java.*')
                     param(name: '-collpackages', value: 'java.util.*')
