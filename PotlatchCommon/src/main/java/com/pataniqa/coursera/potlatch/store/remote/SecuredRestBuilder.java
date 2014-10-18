@@ -6,14 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executor;
 
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import lombok.Setter;
-import lombok.experimental.Accessors;
 import retrofit.Endpoint;
 import retrofit.ErrorHandler;
 import retrofit.Profiler;
@@ -22,13 +20,16 @@ import retrofit.RestAdapter;
 import retrofit.RestAdapter.Log;
 import retrofit.RestAdapter.LogLevel;
 import retrofit.client.Client;
+import retrofit.client.Client.Provider;
 import retrofit.client.Header;
+import retrofit.client.OkClient;
 import retrofit.client.Request;
 import retrofit.client.Response;
-import retrofit.client.Client.Provider;
-import retrofit.client.OkClient;
 import retrofit.converter.Converter;
 import retrofit.mime.FormUrlEncodedTypedOutput;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * A Builder class for a Retrofit REST Adapter. Extends the default

@@ -1,22 +1,32 @@
 package com.pataniqa.coursera.potlatch.ui;
 
+import java.io.File;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Display;
+import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 
+import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.HasId;
 import com.pataniqa.coursera.potlatch.store.DataService;
 import com.pataniqa.coursera.potlatch.store.local.LocalService;
 import com.pataniqa.coursera.potlatch.store.remote.RemoteService;
 import com.pataniqa.coursera.potlatch.store.remote.unsafe.UnsafeHttpClient;
-import com.pataniqa.coursera.potlatch.utils.LocalPicassoFactory;
-import com.pataniqa.coursera.potlatch.utils.OAuthPicassoClient;
-import com.pataniqa.coursera.potlatch.utils.PicassoFactory;
+import com.squareup.picasso.Picasso;
 
 /**
  * Base class for all GiftData UI activities.
@@ -71,7 +81,7 @@ abstract class GiftActivity extends Activity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         return prefs.getString(PASSWORD_TAG, "Unknown");
     }
-    
+
     boolean useLocalStore() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         return prefs.getBoolean(SettingsActivity.USE_LOCAL_STORE, true);
@@ -79,10 +89,6 @@ abstract class GiftActivity extends Activity {
 
     DataService getDataService() {
         return useLocalStore() ? localDataService() : remoteDataService();
-    }
-
-    PicassoFactory getPicasso() {
-        return useLocalStore() ? localPicasso() : remotePicasso();
     }
 
     DataService localDataService() {
@@ -97,12 +103,8 @@ abstract class GiftActivity extends Activity {
                 GiftActivity.CLIENT_ID);
     }
 
-    PicassoFactory localPicasso() {
-        return new LocalPicassoFactory();
-    }
-
-    PicassoFactory remotePicasso() {
-        return new OAuthPicassoClient(getUserName(),
+    AuthenticationTokenFactory getTokenFactory() {
+        return new AuthenticationTokenFactoryImpl(getUserName(),
                 getPassword(),
                 getEndpoint(),
                 GiftActivity.CLIENT_ID,
@@ -114,5 +116,40 @@ abstract class GiftActivity extends Activity {
         String host = prefs.getString(SettingsActivity.SERVER_ADDRESS, "192.168.1.71");
         String port = prefs.getString(SettingsActivity.SERVER_PORT, "8443");
         return "https://" + host + ":" + port;
+    }
+
+    static int getMaxSize(WindowManager windowManager) {
+        Display display = windowManager.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return Math.min(size.x, size.y);
+    }
+    
+    static void getImage(final boolean useLocalStore, final AuthenticationTokenFactory tokenFactory, final String url, final int maxsize, final Context context, final ImageView image) {
+        if (useLocalStore) {
+            Uri uri = url.startsWith("file") ? Uri.parse(url) : Uri.fromFile(new File(url));
+            Picasso.with(context).load(uri).resize(maxsize, maxsize)
+                    .placeholder(R.drawable.ic_fa_image).centerInside().into(image);
+        } else {
+            tokenFactory.getToken().subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread()).forEach(new Action1<String>() {
+                        @Override
+                        public void call(String accessToken) {
+                            OAuthPicasso
+                                    .load(context,
+                                            tokenFactory.getEndpoint(),
+                                            accessToken,
+                                            url).resize(maxsize, maxsize)
+                                    .placeholder(R.drawable.ic_fa_image).centerInside()
+                                    .into(image);
+
+                        }
+                    });
+        }
+    }
+    
+    void getImage(final String url, final ImageView image) {
+        final int maxsize = GiftActivity.getMaxSize(getWindowManager());
+        getImage(useLocalStore(), getTokenFactory(), url, maxsize, this, image);
     }
 }

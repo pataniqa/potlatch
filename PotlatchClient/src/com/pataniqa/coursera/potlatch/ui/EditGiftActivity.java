@@ -109,6 +109,6 @@ public class EditGiftActivity extends ViewGiftActivity {
     }
     
     static Uri stringToUri(String s) {
-        return !s.isEmpty() ? Uri.parse(s) : null;
+        return s != null && !s.isEmpty() ? Uri.parse(s) : null;
     }
 }

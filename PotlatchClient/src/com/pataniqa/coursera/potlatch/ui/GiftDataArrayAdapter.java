@@ -17,8 +17,6 @@ import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
-import com.pataniqa.coursera.potlatch.utils.ImageUtils;
-import com.pataniqa.coursera.potlatch.utils.PicassoFactory;
 
 /**
  * This is an ArrayAdapter for an array of GiftData.
@@ -30,19 +28,22 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
     private final LayoutInflater inflater;
     private final ListGiftsCallback listGiftsCallback;
     private int resource;
-    private final PicassoFactory picasso;
+    private final boolean useLocalStore;
+    private final AuthenticationTokenFactory tokenFactory;
 
     public GiftDataArrayAdapter(Context context,
             int resource,
             List<GiftResult> items,
             ListGiftsCallback listGiftsCallback,
-            PicassoFactory picasso) {
+            boolean useLocalStore,
+            AuthenticationTokenFactory tokenFactory) {
         super(context, resource, items);
         Log.v(LOG_TAG, "constructor");
         this.resource = resource;
         inflater = LayoutInflater.from(context);
         this.listGiftsCallback = listGiftsCallback;
-        this.picasso = picasso;
+        this.useLocalStore = useLocalStore;
+        this.tokenFactory = tokenFactory;
     }
 
     /**
@@ -64,7 +65,7 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
                 view = convertView;
             } else {
                 view = inflater.inflate(resource, parent, false);
-                holder = new ViewHolder(convertView, listGiftsCallback, picasso);
+                holder = new ViewHolder(view, listGiftsCallback, useLocalStore, tokenFactory);
                 view.setTag(holder);
             }
             holder.setGiftData(getItem(position));
@@ -87,28 +88,29 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
 
         private final ListGiftsCallback listGiftsCallback;
         private final View view;
-        private final PicassoFactory picasso;
+        private final boolean useLocalStore;
+        private final AuthenticationTokenFactory tokenFactory;
 
-        public ViewHolder(View view, ListGiftsCallback listGiftsCallback, PicassoFactory picasso) {
+        public ViewHolder(View view,
+                ListGiftsCallback listGiftsCallback,
+                boolean useLocalStore,
+                AuthenticationTokenFactory tokenFactory) {
             ButterKnife.inject(this, view);
             this.view = view;
             this.listGiftsCallback = listGiftsCallback;
-            this.picasso = picasso;
+            this.useLocalStore = useLocalStore;
+            this.tokenFactory = tokenFactory;
         }
-
+        
         public void setGiftData(final GiftResult gift) {
-            try {
-            Log.d(LOG_TAG,
-                    gift.getVideoUri() + " " + gift.getImageUri() + " " + gift.getGiftChainName());
-
             image.setVisibility(View.VISIBLE);
-            
+
             WindowManager windowManager = (WindowManager) view.getContext()
                     .getSystemService(Context.WINDOW_SERVICE);
-            int maxsize = ImageUtils.getMaxSize(windowManager);
-            
-            picasso.load(view.getContext(), gift.getImageUri()).resize(maxsize, maxsize)
-                    .placeholder(R.drawable.ic_fa_image).centerInside().into(image);
+            final int maxsize = GiftActivity.getMaxSize(windowManager);
+            final String url = gift.getImageUri();
+            GiftActivity.getImage(useLocalStore, tokenFactory, url, maxsize, view.getContext(), image);
+
 
             if (gift.getGiftChainName() != null && !gift.getGiftChainName().isEmpty()) {
                 giftChainButton.setVisibility(View.VISIBLE);
@@ -161,9 +163,6 @@ public class GiftDataArrayAdapter extends ArrayAdapter<GiftResult> {
                     listGiftsCallback.createUserQuery(gift.getUserID(), gift.getUsername());
                 }
             });
-            } catch (Exception e) {
-                Log.e(LOG_TAG, e.getMessage(), e);
-            }
         }
     }
 }

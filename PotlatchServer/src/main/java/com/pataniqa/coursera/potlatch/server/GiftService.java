@@ -1,6 +1,25 @@
 package com.pataniqa.coursera.potlatch.server;
 
-import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.*;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.DATA;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.DIRECTION;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.FLAG;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.GIFT_CHAIN;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.GIFT_FLAG_PATH;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.GIFT_ID_PATH;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.GIFT_IMAGE_PATH;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.GIFT_LIKE_PATH;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.GIFT_PATH;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.GIFT_VIDEO_PATH;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.HIDE;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.ID;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.LIKE;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.ORDER;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.QUERY_BY_GIFT_CHAIN;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.QUERY_BY_TITLE;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.QUERY_BY_TOP_GIFT_GIVERS;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.QUERY_BY_USER;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.TITLE;
+import static com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi.USER;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -13,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,12 +56,13 @@ import com.pataniqa.coursera.potlatch.server.repository.GiftRepository;
 import com.pataniqa.coursera.potlatch.server.repository.UserRepository;
 import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrderDirection;
+
 /**
  * The gift service controller.
  */
 @Controller
 public class GiftService {
-    
+
     @Autowired private GiftRepository gifts;
 
     @Autowired private UserRepository users;
@@ -214,28 +235,28 @@ public class GiftService {
     }
 
     @RequestMapping(value = GIFT_VIDEO_PATH, method = RequestMethod.POST)
-    public @ResponseBody
-    boolean setVideoData(@PathVariable(ID) long id,
+    @ResponseBody
+    public boolean setVideoData(@PathVariable(ID) long id,
             @RequestParam(DATA) MultipartFile videoData) throws IOException {
         setData("video", "mp4", id, videoData);
         return true;
     }
 
-    @RequestMapping(value = GIFT_VIDEO_PATH, method = RequestMethod.GET)
+    @RequestMapping(value = GIFT_VIDEO_PATH, method = RequestMethod.GET, produces = "video/mp4")
     public void getVideoData(@PathVariable(ID) long id, HttpServletResponse response)
             throws IOException {
         getData("video", "mp4", id, response);
     }
 
     @RequestMapping(value = GIFT_IMAGE_PATH, method = RequestMethod.POST)
-    public @ResponseBody
-    boolean setImageData(@PathVariable(ID) long id,
+    @ResponseBody
+    public boolean setImageData(@PathVariable(ID) long id,
             @RequestParam(DATA) MultipartFile imageData) throws IOException {
         setData("image", "png", id, imageData);
         return true;
     }
 
-    @RequestMapping(value = GIFT_IMAGE_PATH, method = RequestMethod.GET)
+    @RequestMapping(value = GIFT_IMAGE_PATH, method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
     public void getImageData(@PathVariable(ID) long id, HttpServletResponse response)
             throws IOException {
         getData("image", "png", id, response);
@@ -249,7 +270,7 @@ public class GiftService {
                 ServerGift gift = gifts.findOne(id);
                 gift.setVideoUri("/gift/" + id + "/video");
                 gifts.save(gift);
-            } else { 
+            } else {
                 ServerGift gift = gifts.findOne(id);
                 gift.setImageUri("/gift/" + id + "/image");
                 gifts.save(gift);
@@ -260,12 +281,9 @@ public class GiftService {
 
     private void getData(String dir, String extension, long id, HttpServletResponse response)
             throws IOException {
-        if (gifts.exists(id)) {
-            if (ServerFileManager.hasData(dir, extension, id)) {
-                ServerFileManager.getData(dir, extension, id, response.getOutputStream());
-            } else
-                throw new ResourceNotFoundException();
-        } else
+        if (gifts.exists(id) && ServerFileManager.hasData(dir, extension, id))
+            ServerFileManager.getData(dir, extension, id, response.getOutputStream());
+        else
             throw new ResourceNotFoundException();
 
     }
@@ -285,7 +303,6 @@ public class GiftService {
     }
 
     private GiftResult fromGift(ServerGift gift, ServerUser user) {
-        // TODO - do proper join!
         if (gift == null)
             return null;
         ServerGiftMetadata metadata = getMetadata(user, gift);

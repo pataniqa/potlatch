@@ -9,7 +9,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.utils.ImageUtils;
 
 public class ImageDetailActivity extends GiftActivity {
 
@@ -30,23 +29,9 @@ public class ImageDetailActivity extends GiftActivity {
         ButterKnife.inject(this);
 
         Intent intent = getIntent();
-        String imageUrl = intent.getStringExtra(IMAGE_URL_TAG);
-        Log.d(LOG_TAG, "Displaying image " + imageUrl);
-        if (!imageUrl.isEmpty()) {
-
-            int maxsize = ImageUtils.getMaxSize(getWindowManager());
-            getPicasso().load(this, imageUrl).resize(maxsize, maxsize)
-                    .placeholder(R.drawable.ic_fa_image).centerInside().into(image);
-
-        }
+        final String url = intent.getStringExtra(IMAGE_URL_TAG);
+        Log.d(LOG_TAG, "Displaying image " + url);
+        if (!url.isEmpty()) 
+            getImage(url, image);
     }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (isFinishing()) {
-            getPicasso().with(this).cancelRequest(image);
-        }
-    }
-
 }

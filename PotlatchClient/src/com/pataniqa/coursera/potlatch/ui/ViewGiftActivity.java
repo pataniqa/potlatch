@@ -32,11 +32,10 @@ import android.widget.ImageView;
 import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.model.HasId;
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
+import com.pataniqa.coursera.potlatch.model.HasId;
 import com.pataniqa.coursera.potlatch.store.local.LocalStorageUtilities;
-import com.pataniqa.coursera.potlatch.utils.ImageUtils;
 
 /**
  * Abstract class that forms the basis of the CreateGiftActivity and
@@ -73,15 +72,6 @@ abstract class ViewGiftActivity extends GiftActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    protected void onPause() {
-        Log.d(LOG_TAG, "onPause");
-        super.onPause();
-        if (isFinishing()) {
-            getPicasso().with(this).cancelRequest(image);
-        }
     }
 
     @Override
@@ -198,11 +188,9 @@ abstract class ViewGiftActivity extends GiftActivity {
         return path;
     }
 
-    void displayImage(String path) {
+    void displayImage(final String url) {
         image.setVisibility(View.VISIBLE);
-        int maxsize = ImageUtils.getMaxSize(getWindowManager());
-        getPicasso().load(this, path).resize(maxsize, maxsize).placeholder(R.drawable.ic_fa_image)
-                .centerInside().into(image);
+        getImage(url, image);
     }
 
     void readyToSave() {

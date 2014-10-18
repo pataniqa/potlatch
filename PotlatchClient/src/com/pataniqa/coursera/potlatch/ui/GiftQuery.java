@@ -1,4 +1,4 @@
-package com.pataniqa.coursera.potlatch.utils;
+package com.pataniqa.coursera.potlatch.ui;
 
 import java.util.ArrayList;
 
@@ -11,7 +11,6 @@ import com.pataniqa.coursera.potlatch.model.GiftResult;
 import com.pataniqa.coursera.potlatch.store.Gifts;
 import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrderDirection;
-import com.pataniqa.coursera.potlatch.ui.SettingsActivity;
 
 public class GiftQuery {
     

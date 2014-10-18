@@ -390,6 +390,7 @@ class ApiSpec extends Specification {
         
         then: "they should match"
         Arrays.equals(expected, getResponse)
+        expected.size() == getResponse.size()
         
         when: "a gift is deleted"
         numberOfGiftsBefore = numberOfGifts()

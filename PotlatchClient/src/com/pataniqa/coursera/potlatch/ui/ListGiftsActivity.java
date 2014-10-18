@@ -37,8 +37,6 @@ import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
 import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrderDirection;
-import com.pataniqa.coursera.potlatch.utils.GiftQuery;
-import com.pataniqa.coursera.potlatch.utils.UploadService;
 
 public class ListGiftsActivity extends GiftActivity implements
         SwipeRefreshLayout.OnRefreshListener, ListGiftsCallback {
@@ -88,7 +86,8 @@ public class ListGiftsActivity extends GiftActivity implements
                 R.layout.gift_listview_custom_row,
                 giftData,
                 this,
-                getPicasso());
+                useLocalStore(),
+                getTokenFactory());
 
         loadPreferences();
         setUpdateFrequency();
@@ -123,7 +122,7 @@ public class ListGiftsActivity extends GiftActivity implements
                 }
             }
         });
-        
+
         IntentFilter filter = new IntentFilter(UploadService.UPLOAD_RESPONSE);
         filter.addCategory(Intent.CATEGORY_DEFAULT);
         receiver = new ResponseReceiver();
@@ -368,12 +367,12 @@ public class ListGiftsActivity extends GiftActivity implements
                     }
                 });
     }
-    
+
     public class ResponseReceiver extends BroadcastReceiver {
         @Override
-         public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, Intent intent) {
             updateGifts();
-         }
-     }
+        }
+    }
 
 }
