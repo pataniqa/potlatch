@@ -17,6 +17,9 @@ import com.pataniqa.coursera.potlatch.server.repository.GiftChainRepository;
 import com.pataniqa.coursera.potlatch.store.remote.RemoteGiftApi;
 import com.pataniqa.coursera.potlatch.store.remote.RemoteGiftChainApi;
 
+/**
+ * The gift chain service controller.
+ */
 @Controller
 public class GiftChainService {
 

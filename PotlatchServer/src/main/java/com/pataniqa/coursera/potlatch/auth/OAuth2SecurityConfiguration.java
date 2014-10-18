@@ -49,7 +49,8 @@ import com.pataniqa.coursera.potlatch.server.repository.UserRepository;
  *  
  *  OAuth2SecurityConfiguration.containerCustomizer(...) - update this method to use a real keystore
  *  and certificate signed by a CA. This current version is highly insecure.
- *  
+ * 
+ *  This code was provided as sample code by Jules White.
  */
 @Configuration
 public class OAuth2SecurityConfiguration {

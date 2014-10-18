@@ -31,6 +31,7 @@ sourceSets.each{ sourceSet ->
 }
 
 repositories {
+    mavenCentral()
     flatDir {
        dirs 'libs'
     }
@@ -89,9 +90,7 @@ dependencies {
     compile project(":PotlatchCommon")
 
     compile files("libs/android-support-v4.jar")
-    compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'com.netflix.rxjava:rxjava-android:0.20.5'
-    compile 'com.squareup.retrofit:retrofit:1.6.0'
     compile 'com.jakewharton:butterknife:5.1.2'
     compile 'com.squareup.picasso:picasso:2.3.4'
     compile 'com.squareup.okhttp:okhttp:2.0.0'

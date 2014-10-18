@@ -11,6 +11,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
+/**
+ * The user representation used by the OAuth security service.
+ * This code is based on sample code provided by Jules White.
+ */
+@Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class User implements UserDetails {
 
@@ -20,9 +25,9 @@ public class User implements UserDetails {
         return new User(username, password, authorities);
     }
 
-    @Getter private final String username;
-    @Getter private final String password;
-    @Getter private final Collection<GrantedAuthority> authorities;
+    private final String username;
+    private final String password;
+    private final Collection<GrantedAuthority> authorities;
 
     @SuppressWarnings("unchecked")
     private User(String username, String password) {

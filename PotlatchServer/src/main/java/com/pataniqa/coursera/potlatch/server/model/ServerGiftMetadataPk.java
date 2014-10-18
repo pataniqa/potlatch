@@ -12,17 +12,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * A primary key for the metadata table.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
 @Embeddable
+@Setter
 public class ServerGiftMetadataPk implements Serializable {
 
     private static final long serialVersionUID = -707960766740593473L;
     
-    @Setter private ServerUser user;
-    @Setter private ServerGift gift;    
+    private ServerUser user;
+    private ServerGift gift;    
 
     @ManyToOne
     public ServerUser getUser() {

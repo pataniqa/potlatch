@@ -22,6 +22,11 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.pataniqa.coursera.potlatch.auth.OAuth2SecurityConfiguration;
 
+/**
+ * The server application.
+ * 
+ * This code is taken from example code provided by Jules White.
+ */
 @EnableAutoConfiguration
 @EnableWebMvc
 @ComponentScan

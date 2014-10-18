@@ -10,6 +10,9 @@ import com.pataniqa.coursera.potlatch.server.model.ServerGift;
 import com.pataniqa.coursera.potlatch.server.model.ServerGiftChain;
 import com.pataniqa.coursera.potlatch.server.model.ServerUser;
 
+/**
+ * A repository that stores gifts.
+ */
 @Repository
 public interface GiftRepository extends PagingAndSortingRepository<ServerGift, Long> {
 

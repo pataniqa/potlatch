@@ -19,6 +19,9 @@ import com.pataniqa.coursera.potlatch.server.model.ServerUser;
 import com.pataniqa.coursera.potlatch.server.repository.UserRepository;
 import com.pataniqa.coursera.potlatch.store.remote.RemoteUserApi;
 
+/**
+ * The user service controller.
+ */
 @Controller
 public class UserService {
 

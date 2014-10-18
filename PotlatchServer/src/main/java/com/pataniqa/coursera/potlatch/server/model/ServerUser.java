@@ -14,19 +14,23 @@ import lombok.ToString;
 
 import com.pataniqa.coursera.potlatch.model.User;
 
+/**
+ * A user.
+ */
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = { "name", "likes" })
 @ToString
 @Entity
+@Getter
 public class ServerUser {
 
     public static final String ID = "user_id";
-    @Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = ID) private long id;
+    @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = ID) private long id;
 
-    @Getter @Setter private String name;
+    @Setter private String name;
 
     public static final String USER_LIKES = "user_likes";
-    @Getter @Column(name = USER_LIKES) private long likes = 0;
+    @Column(name = USER_LIKES) private long likes = 0;
 
     public void incrementLikes() {
         this.likes += 1;

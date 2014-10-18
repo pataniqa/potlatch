@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.provider.client.ClientDetailsUserDeta
  * 
  * @author jules
  * 
+ * This code was provided by Jules White.
  */
 public class ClientAndUserDetailsService implements UserDetailsService, ClientDetailsService {
 

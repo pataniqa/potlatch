@@ -36,7 +36,9 @@ import com.pataniqa.coursera.potlatch.server.repository.GiftRepository;
 import com.pataniqa.coursera.potlatch.server.repository.UserRepository;
 import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrder;
 import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrderDirection;
-
+/**
+ * The gift service controller.
+ */
 @Controller
 public class GiftService {
     

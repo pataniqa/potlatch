@@ -12,7 +12,11 @@ import java.nio.file.StandardCopyOption;
 
 import org.apache.log4j.Logger;
 
-public class ServerFileManager {
+/**
+ * A utility class used to store videos and images on the file system. This code
+ * is based on example code provided by Jules White.
+ */
+class ServerFileManager {
 
     private static Logger log = Logger.getLogger(ServerFileManager.class.getName());
 

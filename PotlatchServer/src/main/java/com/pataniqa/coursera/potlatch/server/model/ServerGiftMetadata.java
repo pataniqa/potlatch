@@ -16,23 +16,27 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.NoArgsConstructor;
 
+/**
+ * The metadata table that stores likes and whether a gift has been flagged.
+ */
 @EqualsAndHashCode(exclude = { "liked", "flagged" })
 @NoArgsConstructor
 @ToString
 @Entity
+@Setter
 @Table(name = "gift_metadata")
 @AssociationOverrides({
         @AssociationOverride(name = "pk.user", joinColumns = @JoinColumn(name = ServerUser.ID)),
         @AssociationOverride(name = "pk.gift", joinColumns = @JoinColumn(name = ServerGift.ID)) })
 public class ServerGiftMetadata {
 
-    @Setter private ServerGiftMetadataPk pk = new ServerGiftMetadataPk();
+    private ServerGiftMetadataPk pk = new ServerGiftMetadataPk();
 
     public static final String LIKED = "user_liked";
-    @Getter @Setter @Column(name = LIKED) private boolean liked = false;
+    @Getter @Column(name = LIKED) private boolean liked = false;
     
     public static final String FLAGGED = "user_flagged";
-    @Getter @Setter @Column(name = FLAGGED) private boolean flagged = false;
+    @Getter @Column(name = FLAGGED) private boolean flagged = false;
 
     @EmbeddedId
     public ServerGiftMetadataPk getPk() {

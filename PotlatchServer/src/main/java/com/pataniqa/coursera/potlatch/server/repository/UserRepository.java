@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import com.pataniqa.coursera.potlatch.server.model.ServerUser;
 
+/**
+ * A repository that stores users.
+ */
 @Repository
 public interface UserRepository extends
 		PagingAndSortingRepository<ServerUser, Long> {

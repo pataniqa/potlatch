@@ -14,16 +14,20 @@ import lombok.ToString;
 
 import com.pataniqa.coursera.potlatch.model.GiftChain;
 
+/**
+ * A gift chain.
+ */
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = { "name" })
 @ToString
 @Entity
+@Getter
 public class ServerGiftChain {
     
     public static final String ID = "gift_chainid";
-    @Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = ID) private long id;
+    @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = ID) private long id;
 
-    @Getter @Setter private String name;
+    @Setter private String name;
 
     public ServerGiftChain(GiftChain giftChain) {
         this.id = giftChain.getId();

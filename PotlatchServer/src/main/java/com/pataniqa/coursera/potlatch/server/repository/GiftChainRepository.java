@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import com.pataniqa.coursera.potlatch.server.model.ServerGiftChain;
 
+/**
+ * A repository that stores gift chains.
+ */
 @Repository
 public interface GiftChainRepository extends CrudRepository<ServerGiftChain, Long> {
     

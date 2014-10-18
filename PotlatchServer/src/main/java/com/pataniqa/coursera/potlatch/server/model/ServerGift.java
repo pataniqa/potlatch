@@ -21,35 +21,39 @@ import lombok.ToString;
 
 import com.pataniqa.coursera.potlatch.model.Gift;
 
+/**
+ * A gift.
+ */
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = { "title", "description", "likes", "flagged", "created", "user", "giftChain" })
 @ToString
 @Entity
 @Table(name = "gift")
+@Getter
 public class ServerGift {
 
     public static final String ID = "gift_id";
-    @Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = ID) private long id;
+    @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = ID) private long id;
 
-    @Getter @Setter private String title;
-    @Getter @Setter private String description;
-    @Getter @Setter private String videoUri;
-    @Getter @Setter private String imageUri;
+    @Setter private String title;
+    @Setter private String description;
+    @Setter private String videoUri;
+    @Setter private String imageUri;
 
     public static final String LIKES = "gift_likes";
-    @Getter @Column(name = LIKES) private long likes = 0;
+    @Column(name = LIKES) private long likes = 0;
     
     public static final String FLAGGED = "gift_flagged";
     @Column(name = FLAGGED) private long flagged = 0;
 
     public static final String CREATED = "created";
-    @Getter @Temporal(TemporalType.TIMESTAMP) @Column(name = CREATED) private Date created;
+    @Temporal(TemporalType.TIMESTAMP) @Column(name = CREATED) private Date created;
 
-    @Getter @ManyToOne 
+    @ManyToOne 
     @PrimaryKeyJoinColumn(name = ServerUser.ID, referencedColumnName = ServerUser.ID) 
     private ServerUser user;
 
-    @Getter @ManyToOne 
+    @ManyToOne 
     @PrimaryKeyJoinColumn(name = ServerGiftChain.ID, referencedColumnName = ServerGiftChain.ID) 
     private ServerGiftChain giftChain;
 
