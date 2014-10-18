@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
-import com.pataniqa.coursera.potlatch.store.ResultOrder;
-import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
+import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrder;
+import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrderDirection;
 
-public interface LocalGifts extends LocalQuery<GiftResult>, LocalSaveDelete<Gift> {
+interface LocalGifts extends LocalQuery<GiftResult>, LocalSaveDelete<Gift> {
 
     ArrayList<GiftResult> queryByTitle(String title,
             ResultOrder resultOrder,

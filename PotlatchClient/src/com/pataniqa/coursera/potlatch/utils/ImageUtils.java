@@ -21,10 +21,9 @@ public class ImageUtils {
     private final static String LOG_TAG = ImageUtils.class.getCanonicalName();
 
     /**
-     * Find out the correction orientation of the image. See
-     * http://stackoverflow
-     * .com/questions/12726860/android-how-to-detect-the-image
-     * -orientation-portrait-or-landscape-picked-fro
+     * Find out the correction orientation of the image. See <a href=
+     * "http://stackoverflow.com/questions/12726860/android-how-to-detect-the-image-orientation-portrait-or-landscape-picked-fro"
+     * >Stack Overflow</a>
      */
     public static float getPhotoOrientation(File imageFile) {
         float rotate = 0;
@@ -132,7 +131,7 @@ public class ImageUtils {
         resizedBitmap.compress(CompressFormat.PNG, imageQuality, bao);
         FileUtils.writeByteArrayToFile(outputFile, bao.toByteArray());
     }
-    
+
     public static int getMaxSize(WindowManager windowManager) {
         Display display = windowManager.getDefaultDisplay();
         Point size = new Point();

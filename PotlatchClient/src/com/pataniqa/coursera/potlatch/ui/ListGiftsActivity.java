@@ -32,8 +32,8 @@ import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
-import com.pataniqa.coursera.potlatch.store.ResultOrder;
-import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
+import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrder;
+import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrderDirection;
 import com.pataniqa.coursera.potlatch.utils.GiftQuery;
 
 public class ListGiftsActivity extends GiftActivity implements

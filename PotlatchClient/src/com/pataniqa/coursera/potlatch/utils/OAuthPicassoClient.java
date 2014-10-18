@@ -12,8 +12,8 @@ import rx.schedulers.Schedulers;
 import android.content.Context;
 import android.net.Uri;
 
-import com.pataniqa.coursera.potlatch.store.remote.OAuthUtils;
-import com.pataniqa.coursera.potlatch.store.remote.RemoteUtils;
+import com.pataniqa.coursera.potlatch.store.remote.SecuredRestBuilder;
+import com.pataniqa.coursera.potlatch.store.remote.unsafe.UnsafeHttpClient;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
@@ -34,10 +34,10 @@ public class OAuthPicassoClient implements PicassoFactory {
 
                     @Override
                     public void call(Subscriber<? super String> arg0) {
-                        String result = OAuthUtils.getAccessToken(new ApacheClient(new AndroidUnsafeHttpClient()),
+                        String result = SecuredRestBuilder.getAccessToken(new ApacheClient(new UnsafeHttpClient()),
                                 username,
                                 password,
-                                RemoteUtils.getLoginUrl(endpoint),
+                                SecuredRestBuilder.getLoginUrl(endpoint),
                                 clientId,
                                 clientSecret);
                         arg0.onNext(result);

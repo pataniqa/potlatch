@@ -9,7 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * GiftResult is a de-normalized version of the data to make it easy to present
+ * GiftResult is a de-normalized version of the gift / gift chain / user data to make it easy to present
  * in the user interface.
  */
 @NoArgsConstructor

@@ -32,7 +32,7 @@ import android.widget.ImageView;
 import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.model.GetId;
+import com.pataniqa.coursera.potlatch.model.HasId;
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.store.local.LocalStorageUtilities;
@@ -220,7 +220,7 @@ abstract class ViewGiftActivity extends GiftActivity {
             GiftChain chain = new GiftChain(giftChains.get(giftChainName), giftChainName);
             result = Observable.just(chain);
         } else {
-            GiftChain chain = new GiftChain(GetId.UNDEFINED_ID, giftChainName);
+            GiftChain chain = new GiftChain(HasId.UNDEFINED_ID, giftChainName);
             result = getDataService().giftChains().save(chain)
                     .subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread());
         }

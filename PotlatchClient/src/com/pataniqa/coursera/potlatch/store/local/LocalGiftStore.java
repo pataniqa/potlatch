@@ -7,17 +7,19 @@ import android.database.Cursor;
 import android.util.Log;
 
 import com.pataniqa.coursera.potlatch.model.Gift;
+import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.model.TimeUtils;
+import com.pataniqa.coursera.potlatch.model.User;
 import com.pataniqa.coursera.potlatch.ui.EditGiftActivity;
 
 /**
  * Stores GiftData in a local SQLite Database that is hosted by the device.
  */
-public class LocalGiftStore extends BaseCreateUpdateDelete<Gift> implements LocalSaveDelete<Gift> {
+class LocalGiftStore extends BaseCreateUpdateDelete<Gift> implements LocalSaveDelete<Gift> {
     
     private final static String LOG_TAG = EditGiftActivity.class.getCanonicalName();
 
-    public LocalGiftStore(LocalDatabase helper, LocalUsers users, LocalGiftChains chains) {
+    LocalGiftStore(LocalDatabase helper, LocalCRUD<User> users, LocalCRUD<GiftChain> chains) {
         super(new GiftCreator(users, chains),
                 LocalSchema.Gift.TABLE_NAME,
                 helper);
@@ -25,10 +27,10 @@ public class LocalGiftStore extends BaseCreateUpdateDelete<Gift> implements Loca
 
     private static class GiftCreator extends BaseCreator<Gift> implements Creator<Gift> {
         
-        private final LocalUsers users;
-        private final LocalGiftChains chains;
+        private final LocalCRUD<User> users;
+        private final LocalCRUD<GiftChain> chains;
 
-        GiftCreator(LocalUsers users, LocalGiftChains chains) {
+        GiftCreator(LocalCRUD<User> users, LocalCRUD<GiftChain>chains) {
             this.users = users;
             this.chains = chains;
         }

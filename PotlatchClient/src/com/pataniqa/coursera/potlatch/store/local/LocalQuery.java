@@ -2,7 +2,7 @@ package com.pataniqa.coursera.potlatch.store.local;
 
 import java.util.ArrayList;
 
-public interface LocalQuery<T> {
+interface LocalQuery<T> {
     
     /**
      * Query <T>.

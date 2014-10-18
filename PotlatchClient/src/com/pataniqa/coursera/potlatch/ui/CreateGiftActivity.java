@@ -16,7 +16,7 @@ import android.view.Window;
 import butterknife.ButterKnife;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.model.GetId;
+import com.pataniqa.coursera.potlatch.model.HasId;
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.utils.UploadService;
 
@@ -44,7 +44,7 @@ public class CreateGiftActivity extends ViewGiftActivity {
     public void saveButtonClicked(View v) {
         Log.d(LOG_TAG, "createButtonClicked");
         final Context context = this;
-        makeGiftDataFromUI(GetId.UNDEFINED_ID).subscribeOn(Schedulers.newThread())
+        makeGiftDataFromUI(HasId.UNDEFINED_ID).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(new Func1<Gift, Observable<Gift>>() {
                     @Override

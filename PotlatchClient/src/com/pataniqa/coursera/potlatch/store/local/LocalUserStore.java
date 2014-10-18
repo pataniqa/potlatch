@@ -5,9 +5,9 @@ import android.database.Cursor;
 
 import com.pataniqa.coursera.potlatch.model.User;
 
-public class LocalUserStore extends BaseCreateUpdateDelete<User> implements LocalUsers {
+class LocalUserStore extends BaseCreateUpdateDelete<User> implements LocalCRUD<User> {
 
-    public LocalUserStore(LocalDatabase helper) {
+    LocalUserStore(LocalDatabase helper) {
         super(new UserCreator(), LocalSchema.User.TABLE_NAME, helper);
     }
 

@@ -34,8 +34,8 @@ import com.pataniqa.coursera.potlatch.server.repository.GiftChainRepository;
 import com.pataniqa.coursera.potlatch.server.repository.GiftMetadataRepository;
 import com.pataniqa.coursera.potlatch.server.repository.GiftRepository;
 import com.pataniqa.coursera.potlatch.server.repository.UserRepository;
-import com.pataniqa.coursera.potlatch.store.ResultOrder;
-import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
+import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrder;
+import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrderDirection;
 
 @Controller
 public class GiftService {

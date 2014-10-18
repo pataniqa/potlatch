@@ -5,10 +5,10 @@ import android.database.Cursor;
 
 import com.pataniqa.coursera.potlatch.model.GiftChain;
 
-public class LocalGiftChainStore extends BaseCreateUpdateDelete<GiftChain> implements
-        LocalGiftChains {
+class LocalGiftChainStore extends BaseCreateUpdateDelete<GiftChain> implements
+        LocalCRUD<GiftChain> {
 
-    public LocalGiftChainStore(LocalDatabase helper) {
+    LocalGiftChainStore(LocalDatabase helper) {
         super(new GiftChainCreator(), LocalSchema.GiftChain.TABLE_NAME, helper);
     }
 

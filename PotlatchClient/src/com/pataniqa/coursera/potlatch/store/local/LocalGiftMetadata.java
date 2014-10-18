@@ -1,6 +1,6 @@
 package com.pataniqa.coursera.potlatch.store.local;
 
-public interface LocalGiftMetadata {
+interface LocalGiftMetadata {
 
     Boolean setLike(long giftID, boolean like);
 

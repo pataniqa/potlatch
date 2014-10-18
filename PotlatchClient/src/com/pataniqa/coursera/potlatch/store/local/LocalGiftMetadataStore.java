@@ -5,13 +5,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.pataniqa.coursera.potlatch.model.GiftResult;
 
-public class LocalGiftMetadataStore implements LocalGiftMetadata {
+class LocalGiftMetadataStore implements LocalGiftMetadata {
 
     private final String tableName = LocalSchema.Gift.TABLE_NAME;
     private final SQLiteOpenHelper helper;
     private final LocalGiftQuery localGiftStore;
 
-    public LocalGiftMetadataStore(LocalDatabase helper, LocalGiftQuery localGiftStore) {
+    LocalGiftMetadataStore(LocalDatabase helper, LocalGiftQuery localGiftStore) {
         this.helper = helper;
         this.localGiftStore = localGiftStore;
     }

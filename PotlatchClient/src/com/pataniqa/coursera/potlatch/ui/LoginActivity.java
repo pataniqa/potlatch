@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.model.GetId;
+import com.pataniqa.coursera.potlatch.model.HasId;
 import com.pataniqa.coursera.potlatch.model.User;
 
 /**
@@ -87,7 +87,7 @@ public class LoginActivity extends GiftActivity {
             ed.putString(PASSWORD_TAG, editTextToString(passwordET));
             ed.commit();
         }
-        if (userID == GetId.UNDEFINED_ID) {
+        if (userID == HasId.UNDEFINED_ID) {
             getDataService().users().save(new User(userID, username)).subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread()).forEach(new Action1<User>() {
                         @Override

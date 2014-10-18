@@ -1,4 +1,4 @@
-package com.pataniqa.coursera.potlatch.store.remote;
+package com.pataniqa.coursera.potlatch.store.remote.unsafe;
 
 /* 
  **
@@ -29,18 +29,6 @@ package com.pataniqa.coursera.potlatch.store.remote;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.util.zip.GZIPInputStream;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
@@ -56,21 +44,17 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.ConnectTimeoutException;
-import org.apache.http.conn.scheme.LayeredSocketFactory;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.scheme.SocketFactory;
-import org.apache.http.entity.HttpEntityWrapper;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HttpContext;
+
 
 /**
  * Easy to use Http and Https client, that transparently adds gzip compression
@@ -210,123 +194,4 @@ public class UnsafeHttpClient extends DefaultHttpClient {
         UnsafeHttpClient client = new UnsafeHttpClient();
         System.out.println(client.get("https://encrypted.google.com/"));
     }
-
-    private static class GzipEntityWrapper extends HttpEntityWrapper {
-        public GzipEntityWrapper(HttpEntity wrapped) {
-            super(wrapped);
-        }
-
-        @Override
-        public InputStream getContent() throws IOException, IllegalStateException {
-            return new GZIPInputStream(wrappedEntity.getContent());
-        }
-    }
-
-    private static/**
-                   * This socket factory will create ssl socket that accepts self signed
-                   * certificate
-                   */
-    class EasySSLSocketFactory implements SocketFactory, LayeredSocketFactory {
-        private SSLContext sslcontext = null;
-
-        private static SSLContext createEasySSLContext() throws IOException {
-            try {
-                SSLContext context = SSLContext.getInstance("TLS");
-                context.init(null, new TrustManager[] { new TrivialTrustManager() }, null);
-                return context;
-            } catch (Exception e) {
-                throw new IOException(e.getMessage());
-            }
-        }
-
-        private SSLContext getSSLContext() throws IOException {
-            if (this.sslcontext == null) {
-                this.sslcontext = createEasySSLContext();
-            }
-            return this.sslcontext;
-        }
-
-        /**
-         * @see org.apache.http.conn.scheme.SocketFactory#connectSocket(java.net.Socket,
-         *      java.lang.String, int, java.net.InetAddress, int,
-         *      org.apache.http.params.HttpParams)
-         */
-        public Socket connectSocket(final Socket sock,
-                final String host,
-                final int port,
-                final InetAddress localAddress,
-                final int localPort,
-                final HttpParams params) throws IOException, UnknownHostException,
-                ConnectTimeoutException {
-            int connTimeout = HttpConnectionParams.getConnectionTimeout(params);
-            int soTimeout = HttpConnectionParams.getSoTimeout(params);
-
-            InetSocketAddress remoteAddress = new InetSocketAddress(host, port);
-            SSLSocket sslsock = (SSLSocket) ((sock != null) ? sock : createSocket());
-
-            if ((localAddress != null) || (localPort > 0)) {
-                InetSocketAddress isa = new InetSocketAddress(localAddress, localPort < 0 ? 0
-                        : localPort);
-                sslsock.bind(isa);
-            }
-
-            sslsock.connect(remoteAddress, connTimeout);
-            sslsock.setSoTimeout(soTimeout);
-            return sslsock;
-        }
-
-        /**
-         * @see org.apache.http.conn.scheme.SocketFactory#createSocket()
-         */
-        public Socket createSocket() throws IOException {
-            return getSSLContext().getSocketFactory().createSocket();
-        }
-
-        /**
-         * @see org.apache.http.conn.scheme.SocketFactory#isSecure(java.net.Socket)
-         */
-        public boolean isSecure(Socket socket) throws IllegalArgumentException {
-            return true;
-        }
-
-        /**
-         * @see org.apache.http.conn.scheme.LayeredSocketFactory#createSocket(java.net.Socket,
-         *      java.lang.String, int, boolean)
-         */
-        public Socket createSocket(Socket socket, String host, int port, boolean autoClose)
-                throws IOException, UnknownHostException {
-            return getSSLContext().getSocketFactory().createSocket(socket, host, port, autoClose);
-        }
-
-        // -------------------------------------------------------------------
-        // javadoc in org.apache.http.conn.scheme.SocketFactory says :
-        // Both Object.equals() and Object.hashCode() must be overridden
-        // for the correct operation of some connection managers
-        // -------------------------------------------------------------------
-
-        public boolean equals(Object obj) {
-            return ((obj != null) && obj.getClass() == this.getClass());
-        }
-
-        public int hashCode() {
-            return EasySSLSocketFactory.class.hashCode();
-        }
-
-        private static class TrivialTrustManager implements X509TrustManager {
-            public void checkClientTrusted(X509Certificate[] chain, String authType)
-                    throws CertificateException {
-                //
-            }
-
-            public void checkServerTrusted(X509Certificate[] chain, String authType)
-                    throws CertificateException {
-                //
-            }
-
-            public X509Certificate[] getAcceptedIssuers() {
-                return new X509Certificate[0];
-            }
-        }
-    }
-
 }

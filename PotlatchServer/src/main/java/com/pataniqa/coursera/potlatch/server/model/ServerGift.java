@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import com.pataniqa.coursera.potlatch.model.GetId;
 import com.pataniqa.coursera.potlatch.model.Gift;
 
 @NoArgsConstructor
@@ -27,7 +26,7 @@ import com.pataniqa.coursera.potlatch.model.Gift;
 @ToString
 @Entity
 @Table(name = "gift")
-public class ServerGift implements GetId {
+public class ServerGift {
 
     public static final String ID = "gift_id";
     @Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = ID) private long id;

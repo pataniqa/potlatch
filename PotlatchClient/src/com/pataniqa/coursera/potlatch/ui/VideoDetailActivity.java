@@ -65,7 +65,7 @@ public class VideoDetailActivity extends GiftActivity {
 
             long giftId = intent.getLongExtra(GIFT_ID_TAG, 0);
             progressBar.setVisibility(View.VISIBLE);
-            getDataService().media().getVideoData(giftId).subscribeOn(Schedulers.newThread())
+            getDataService().gifts().getVideoData(giftId).subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread()).forEach(new Action1<Response>() {
                         @Override
                         public void call(Response response) {

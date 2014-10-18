@@ -5,22 +5,21 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.pataniqa.coursera.potlatch.model.GetId;
-import com.pataniqa.coursera.potlatch.model.SetId;
+import com.pataniqa.coursera.potlatch.model.HasId;
 
-abstract class BaseCreateUpdateDelete<T extends SetId> extends BaseQuery<T> implements LocalSaveDelete<T> {
+abstract class BaseCreateUpdateDelete<T extends HasId> extends BaseQuery<T> implements LocalSaveDelete<T> {
 
     private final static String LOG_TAG = BaseCreateUpdateDelete.class.getCanonicalName();
 
     private static String selection = LocalSchema.Cols.ID + " = ?";
 
-    protected BaseCreateUpdateDelete(Creator<T> creator, String tableName, SQLiteOpenHelper helper) {
+    BaseCreateUpdateDelete(Creator<T> creator, String tableName, SQLiteOpenHelper helper) {
         super(creator, tableName, helper);
     }
 
     @Override
     public <S extends T> S save(final S data) {
-        if (data.getId() == GetId.UNDEFINED_ID) {
+        if (data.getId() == HasId.UNDEFINED_ID) {
             ContentValues tempCV = creator().getCV(data);
             tempCV.remove(LocalSchema.Cols.ID);
             SQLiteDatabase db = helper().getWritableDatabase();

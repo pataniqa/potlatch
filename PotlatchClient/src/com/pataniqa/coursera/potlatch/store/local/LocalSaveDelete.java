@@ -1,8 +1,8 @@
 package com.pataniqa.coursera.potlatch.store.local;
 
-import com.pataniqa.coursera.potlatch.model.GetId;
+import com.pataniqa.coursera.potlatch.model.HasId;
 
-public interface LocalSaveDelete <T extends GetId> {
+interface LocalSaveDelete <T extends HasId> {
     
     /**
      * Delete a <T> object.

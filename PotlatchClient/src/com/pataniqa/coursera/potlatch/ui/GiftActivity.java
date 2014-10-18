@@ -10,11 +10,11 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.EditText;
 
-import com.pataniqa.coursera.potlatch.model.GetId;
+import com.pataniqa.coursera.potlatch.model.HasId;
 import com.pataniqa.coursera.potlatch.store.DataService;
 import com.pataniqa.coursera.potlatch.store.local.LocalService;
 import com.pataniqa.coursera.potlatch.store.remote.RemoteService;
-import com.pataniqa.coursera.potlatch.utils.AndroidUnsafeHttpClient;
+import com.pataniqa.coursera.potlatch.store.remote.unsafe.UnsafeHttpClient;
 import com.pataniqa.coursera.potlatch.utils.LocalPicassoFactory;
 import com.pataniqa.coursera.potlatch.utils.OAuthPicassoClient;
 import com.pataniqa.coursera.potlatch.utils.PicassoFactory;
@@ -94,7 +94,7 @@ abstract class GiftActivity extends Activity {
 
     long getUserID() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        return prefs.getLong(USER_ID_TAG, GetId.UNDEFINED_ID);
+        return prefs.getLong(USER_ID_TAG, HasId.UNDEFINED_ID);
     }
 
     String getUserName() {
@@ -125,7 +125,7 @@ abstract class GiftActivity extends Activity {
     }
 
     DataService remoteDataService() {
-        return new RemoteService(new AndroidUnsafeHttpClient(),
+        return new RemoteService(new UnsafeHttpClient(),
                 getEndpoint(),
                 getUserName(),
                 getPassword(),

@@ -6,7 +6,10 @@ import retrofit.client.ApacheClient
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.pataniqa.coursera.potlatch.model.*
 import com.pataniqa.coursera.potlatch.store.*
+import com.pataniqa.coursera.potlatch.store.Gifts.*
 import com.pataniqa.coursera.potlatch.store.remote.*
+import com.pataniqa.coursera.potlatch.store.remote.unsafe.*
+
 import retrofit.mime.*
 import org.apache.commons.io.*
 import spock.lang.Specification
@@ -30,7 +33,7 @@ class ApiSpec extends Specification {
     def converter = new JacksonConverter(new ObjectMapper())
 
     def svcUser = new SecuredRestBuilder()
-    .setClient(new ApacheClient(UnsafeHttpsClient.createUnsafeClient()))
+    .setClient(new ApacheClient(new UnsafeHttpClient()))
     .setEndpoint(TEST_URL)
     .loginUrl(TEST_URL + RemoteGiftApi.TOKEN_PATH)
     .setLogLevel(LogLevel.NONE)
@@ -132,7 +135,7 @@ class ApiSpec extends Specification {
         def userId = findAllUser().get(0).getId()
         def giftChainId = giftChain.getId()
         
-        def gift = new Gift(GetId.UNDEFINED_ID, title, description, null, null, created, userId, giftChainId) 
+        def gift = new Gift(HasId.UNDEFINED_ID, title, description, null, null, created, userId, giftChainId) 
         def newGift = insertGift(gift)
 
         then: "the new gift should have the same properties"
@@ -168,7 +171,7 @@ class ApiSpec extends Specification {
         def giftChain = insertChain(new GiftChain(chain))
         def created = new Date()
         def user = insertUser(new User(name))
-        def gift = new Gift(GetId.UNDEFINED_ID, 
+        def gift = new Gift(HasId.UNDEFINED_ID, 
             title, 
             description, 
             null, 
@@ -332,7 +335,7 @@ class ApiSpec extends Specification {
         def userId = findAllUser().get(0).getId()
         def giftChainId = giftChain.getId()
         
-        def gift = new Gift(GetId.UNDEFINED_ID, title, description, null, null, created, userId, giftChainId)
+        def gift = new Gift(HasId.UNDEFINED_ID, title, description, null, null, created, userId, giftChainId)
         def newGift = insertGift(gift)
         
         and: "an image is uploaded"
@@ -370,7 +373,7 @@ class ApiSpec extends Specification {
         def userId = findAllUser().get(0).getId()
         def giftChainId = giftChain.getId()
         
-        def gift = new Gift(GetId.UNDEFINED_ID, title, description, null, null, created, userId, giftChainId)
+        def gift = new Gift(HasId.UNDEFINED_ID, title, description, null, null, created, userId, giftChainId)
         def newGift = insertGift(gift)
         
         and: "an image is uploaded"

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import lombok.experimental.Accessors;
+import retrofit.client.Response;
+import retrofit.mime.TypedFile;
 import rx.Observable;
 import android.content.Context;
 import android.database.SQLException;
@@ -15,20 +17,16 @@ import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
 import com.pataniqa.coursera.potlatch.model.User;
+import com.pataniqa.coursera.potlatch.store.CRUD;
 import com.pataniqa.coursera.potlatch.store.DataService;
-import com.pataniqa.coursera.potlatch.store.GiftChains;
 import com.pataniqa.coursera.potlatch.store.GiftMetadata;
 import com.pataniqa.coursera.potlatch.store.Gifts;
-import com.pataniqa.coursera.potlatch.store.Media;
-import com.pataniqa.coursera.potlatch.store.ResultOrder;
-import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
-import com.pataniqa.coursera.potlatch.store.Users;
 
 @Accessors(fluent = true)
 public class LocalService implements DataService {
 
     private final LocalGiftQuery gifts;
-    private final LocalGiftChains giftChains;
+    private final LocalCRUD<GiftChain> giftChains;
     private final LocalGiftMetadata giftMetadata;
     private final LocalUserStore users;
 
@@ -41,12 +39,6 @@ public class LocalService implements DataService {
         giftMetadata = new LocalGiftMetadataStore(helper, gifts);
     }
 
-    @Override
-    public Media media() {
-        // We never use the media store locally
-        throw new RuntimeException("Media store interface should never be called on local store");
-    }
-    
     @Override
     public Gifts gifts() {
         return new Gifts() {
@@ -115,12 +107,40 @@ public class LocalService implements DataService {
                         resultOrderDirection,
                         hide));
             }
+
+            @Override
+            public Observable<Boolean> setImageData(long id, TypedFile imageData) {
+                // We never use the media store locally
+                throw new RuntimeException("Media store interface should never be called on local store");
+
+            }
+
+            @Override
+            public Observable<Response> getImageData(long id) {
+                // We never use the media store locally
+                throw new RuntimeException("Media store interface should never be called on local store");
+
+            }
+
+            @Override
+            public Observable<Boolean> setVideoData(long id, TypedFile videoData) {
+                // We never use the media store locally
+                throw new RuntimeException("Media store interface should never be called on local store");
+
+            }
+
+            @Override
+            public Observable<Response> getVideoData(long id) {
+                // We never use the media store locally
+                throw new RuntimeException("Media store interface should never be called on local store");
+
+            }
         };
     }
 
     @Override
-    public GiftChains giftChains() {
-        return new GiftChains() {
+    public CRUD<GiftChain> giftChains() {
+        return new CRUD<GiftChain>() {
 
             @Override
             public Observable<ArrayList<GiftChain>> findAll() {
@@ -161,8 +181,8 @@ public class LocalService implements DataService {
     }
 
     @Override
-    public Users users() {
-        return new Users() {
+    public CRUD<User> users() {
+        return new CRUD<User>() {
 
             @Override
             public Observable<ArrayList<User>> findAll() {

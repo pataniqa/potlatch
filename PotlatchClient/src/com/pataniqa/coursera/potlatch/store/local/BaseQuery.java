@@ -12,13 +12,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 @Accessors(fluent = true)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 abstract class BaseQuery<T> implements LocalQuery<T> {
 
-    @Getter private final Creator<T> creator;
-    @Getter private final String tableName;
-    @Getter private final SQLiteOpenHelper helper;
+    private final Creator<T> creator;
+    private final String tableName;
+    private final SQLiteOpenHelper helper;
 
-    protected ArrayList<T> query(final String[] projection,
+    ArrayList<T> query(final String[] projection,
             final String selection,
             final String[] selectionArgs,
             final String sortOrder) {

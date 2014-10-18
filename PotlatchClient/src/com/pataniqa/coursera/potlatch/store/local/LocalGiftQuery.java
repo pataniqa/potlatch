@@ -9,16 +9,16 @@ import android.database.Cursor;
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
 import com.pataniqa.coursera.potlatch.model.TimeUtils;
-import com.pataniqa.coursera.potlatch.store.ResultOrder;
-import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
+import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrder;
+import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrderDirection;
 
-public class LocalGiftQuery extends BaseQuery<GiftResult> implements LocalGifts {
+class LocalGiftQuery extends BaseQuery<GiftResult> implements LocalGifts {
 
     private static String LIKE_QUERY = LocalSchema.Cols.TITLE + " LIKE ? ";
 
     private final LocalGiftStore store;
 
-    public LocalGiftQuery(LocalDatabase helper, LocalGiftStore store) {
+    LocalGiftQuery(LocalDatabase helper, LocalGiftStore store) {
         super(new GiftResultCreator(), LocalSchema.Gift.TABLE_NAME, helper);
         this.store = store;
     }

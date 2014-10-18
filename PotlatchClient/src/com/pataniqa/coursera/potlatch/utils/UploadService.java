@@ -16,8 +16,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.pataniqa.coursera.potlatch.store.Media;
+import com.pataniqa.coursera.potlatch.store.Gifts;
 import com.pataniqa.coursera.potlatch.store.remote.RemoteService;
+import com.pataniqa.coursera.potlatch.store.remote.unsafe.UnsafeHttpClient;
 
 public class UploadService extends IntentService {
 
@@ -72,11 +73,11 @@ public class UploadService extends IntentService {
         final String endpoint = intent.getStringExtra(ENDPOINT_TAG);
         final String client = intent.getStringExtra(CLIENT_TAG);
 
-        final Media media = new RemoteService(new AndroidUnsafeHttpClient(),
+        final Gifts gifts = new RemoteService(new UnsafeHttpClient(),
                 endpoint,
                 username,
                 password,
-                client).media();
+                client).gifts();
         final File file = new File(path);
         final Context context = this;
         final File outputDir = context.getCacheDir();
@@ -112,13 +113,13 @@ public class UploadService extends IntentService {
                     @Override
                     public Observable<Boolean> call(TypedFile imageData) {
                         FileUtils.deleteQuietly(outputFile);
-                        return media.setImageData(id, imageData);
+                        return gifts.setImageData(id, imageData);
                     }
                 });
 
             } else {
                 TypedFile videoData = new TypedFile("video/mp4", file);
-                result = media.setVideoData(id, videoData);
+                result = gifts.setVideoData(id, videoData);
             }
             result.subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
                     .forEach(new Action1<Boolean>() {
