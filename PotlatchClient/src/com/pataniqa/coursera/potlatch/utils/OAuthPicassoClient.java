@@ -1,5 +1,6 @@
 package com.pataniqa.coursera.potlatch.utils;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
@@ -68,13 +69,15 @@ public class OAuthPicassoClient implements PicassoFactory {
 
     @Override
     public RequestCreator load(Context context, String url) {
-        String fullUrl;
+        Uri uri;
         if (url.startsWith("/gift"))
-            fullUrl = endpoint + url;
+            uri = Uri.parse(endpoint + url);
+        else if (url.startsWith("file")) 
+            uri = Uri.parse(url);
         else
-            fullUrl = url;
+            uri = Uri.fromFile(new File(url));
         setPicasso(context);
-        return picasso.load(Uri.parse(fullUrl));
+        return picasso.load(uri);
     }
 
     static class CustomOkHttpDownloader extends OkHttpDownloader {

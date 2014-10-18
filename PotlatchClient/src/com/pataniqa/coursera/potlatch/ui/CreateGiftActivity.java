@@ -55,7 +55,9 @@ public class CreateGiftActivity extends ViewGiftActivity {
                 }).forEach(new Action1<Gift>() {
                     @Override
                     public void call(Gift gift) {
+                        Log.d(LOG_TAG, "Uploaded gift data to server");
                         if (gift.getImageUri() != null) {
+                            Log.d(LOG_TAG, "Starting service to upload image " + gift.getImageUri());
                             File imageFile = new File(Uri.parse(gift.getImageUri()).getPath());
                             UploadService.startUpload(context,
                                     gift.getId(),
@@ -65,9 +67,11 @@ public class CreateGiftActivity extends ViewGiftActivity {
                                     getUserName(),
                                     getPassword(),
                                     GiftActivity.CLIENT_ID);
+                            Log.d(LOG_TAG, "Request successfully sent to upload service");
                         }
                         if (gift.getVideoUri() != null) {
-                            File videoFile = new File(Uri.parse(gift.getImageUri()).getPath());
+                            Log.d(LOG_TAG, "Starting service to upload video " + gift.getVideoUri());
+                            File videoFile = new File(Uri.parse(gift.getVideoUri()).getPath());
                             UploadService.startUpload(context,
                                     gift.getId(),
                                     false,
@@ -76,7 +80,9 @@ public class CreateGiftActivity extends ViewGiftActivity {
                                     getUserName(),
                                     getPassword(),
                                     GiftActivity.CLIENT_ID);
+                            Log.d(LOG_TAG, "Request successfully sent to upload service");
                         }
+                        Log.d(LOG_TAG, "Calling finish()");
                         finish();
                     }
                 });
