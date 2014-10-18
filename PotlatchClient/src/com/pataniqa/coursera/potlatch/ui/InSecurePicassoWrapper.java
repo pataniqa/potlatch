@@ -3,14 +3,6 @@ package com.pataniqa.coursera.potlatch.ui;
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.security.cert.CertificateException;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -78,7 +70,7 @@ class OAuthPicasso {
 
     private static Picasso picasso;
 
-    public static RequestCreator load(Context context,
+    public static RequestCreator load(OkHttpClient client, Context context,
             String endpoint,
             String accessToken,
             String url) {
@@ -91,7 +83,7 @@ class OAuthPicasso {
             uri = Uri.fromFile(new File(url));
         if (picasso == null) {
             Picasso.Builder builder = new Picasso.Builder(context);
-            builder.downloader(new CustomOkHttpDownloader(context, accessToken));
+            builder.downloader(new CustomOkHttpDownloader(context, client, accessToken));
             picasso = builder.build();
             picasso.setLoggingEnabled(true);
         }
@@ -99,53 +91,12 @@ class OAuthPicasso {
         return picasso.load(uri);
     }
 
-    private static OkHttpClient getUnsafeOkHttpClient() {
-        try {
-            // Create a trust manager that does not validate certificate chains
-            final TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
-                @Override
-                public void checkClientTrusted(java.security.cert.X509Certificate[] chain,
-                        String authType) throws CertificateException {
-                }
-
-                @Override
-                public void checkServerTrusted(java.security.cert.X509Certificate[] chain,
-                        String authType) throws CertificateException {
-                }
-
-                @Override
-                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                    return null;
-                }
-            } };
-
-            // Install the all-trusting trust manager
-            final SSLContext sslContext = SSLContext.getInstance("SSL");
-            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
-            // Create an ssl socket factory with our all-trusting manager
-            final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-
-            OkHttpClient okHttpClient = new OkHttpClient();
-            okHttpClient.setSslSocketFactory(sslSocketFactory);
-            okHttpClient.setHostnameVerifier(new HostnameVerifier() {
-                @Override
-                public boolean verify(String hostname, SSLSession session) {
-                    return true;
-                }
-            });
-
-            return okHttpClient;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     static class CustomOkHttpDownloader extends OkHttpDownloader {
 
         private String accessToken;
 
-        public CustomOkHttpDownloader(Context context, String accessToken) {
-            super(getUnsafeOkHttpClient());
+        public CustomOkHttpDownloader(Context context, OkHttpClient client, String accessToken) {
+            super(client);
             this.accessToken = accessToken;
         }
 

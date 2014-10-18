@@ -124,8 +124,13 @@ abstract class GiftActivity extends Activity {
         display.getSize(size);
         return Math.min(size.x, size.y);
     }
-    
-    static void getImage(final boolean useLocalStore, final AuthenticationTokenFactory tokenFactory, final String url, final int maxsize, final Context context, final ImageView image) {
+
+    static void getImage(final boolean useLocalStore,
+            final AuthenticationTokenFactory tokenFactory,
+            final String url,
+            final int maxsize,
+            final Context context,
+            final ImageView image) {
         if (useLocalStore) {
             Uri uri = url.startsWith("file") ? Uri.parse(url) : Uri.fromFile(new File(url));
             Picasso.with(context).load(uri).resize(maxsize, maxsize)
@@ -136,18 +141,18 @@ abstract class GiftActivity extends Activity {
                         @Override
                         public void call(String accessToken) {
                             OAuthPicasso
-                                    .load(context,
+                                    .load(UnsafeOkHttpClient.getUnsafeOkHttpClient(),
+                                            context,
                                             tokenFactory.getEndpoint(),
                                             accessToken,
                                             url).resize(maxsize, maxsize)
-                                    .placeholder(R.drawable.ic_fa_image).centerInside()
-                                    .into(image);
+                                    .placeholder(R.drawable.ic_fa_image).centerInside().into(image);
 
                         }
                     });
         }
     }
-    
+
     void getImage(final String url, final ImageView image) {
         final int maxsize = GiftActivity.getMaxSize(getWindowManager());
         getImage(useLocalStore(), getTokenFactory(), url, maxsize, this, image);

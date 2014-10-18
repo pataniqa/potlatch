@@ -31,13 +31,10 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.scheme.LayeredSocketFactory;
@@ -56,7 +53,7 @@ class EasySSLSocketFactory implements SocketFactory, LayeredSocketFactory {
     private static SSLContext createEasySSLContext() throws IOException {
         try {
             SSLContext context = SSLContext.getInstance("TLS");
-            context.init(null, new TrustManager[] { new TrivialTrustManager() }, null);
+            context.init(null, new TrustManager[] { new TrustAllCerts() }, null);
             return context;
         } catch (Exception e) {
             throw new IOException(e.getMessage());
@@ -134,22 +131,6 @@ class EasySSLSocketFactory implements SocketFactory, LayeredSocketFactory {
 
     public int hashCode() {
         return EasySSLSocketFactory.class.hashCode();
-    }
-
-    private static class TrivialTrustManager implements X509TrustManager {
-        public void checkClientTrusted(X509Certificate[] chain, String authType)
-                throws CertificateException {
-            //
-        }
-
-        public void checkServerTrusted(X509Certificate[] chain, String authType)
-                throws CertificateException {
-            //
-        }
-
-        public X509Certificate[] getAcceptedIssuers() {
-            return new X509Certificate[0];
-        }
     }
 }
 
