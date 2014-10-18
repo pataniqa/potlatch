@@ -14,6 +14,10 @@ import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrderDirection;
 import com.pataniqa.coursera.potlatch.ui.SettingsActivity;
 
 public class GiftQuery {
+    
+    public enum QueryType {
+        USER, TOP_GIFT_GIVERS, ALL, CHAIN
+    };
 
     public final static String GIFT_CHAIN_ID_TAG = "gift_chain_ID";
     public final static String GIFT_CHAIN_NAME_TAG = "gift_chain_name";

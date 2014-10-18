@@ -17,6 +17,7 @@ import android.util.Log;
 import com.pataniqa.coursera.potlatch.store.Gifts;
 import com.pataniqa.coursera.potlatch.store.remote.RemoteService;
 import com.pataniqa.coursera.potlatch.store.remote.unsafe.UnsafeHttpClient;
+import com.pataniqa.coursera.potlatch.ui.CreateGiftActivity;
 import com.pataniqa.coursera.potlatch.ui.ListGiftsActivity;
 
 public class UploadService extends IntentService {
@@ -25,40 +26,16 @@ public class UploadService extends IntentService {
             + ".FILE_UPLOADED";
 
     private static final String LOG_TAG = UploadService.class.getName();
-    private static final String SERVICE_NAME = UploadService.class.getName();
-    private static final String UPLOAD_ACTION = "potlatch.upload";
-    private static final String ID_TAG = "id";
-    private static final String IS_IMAGE_TAG = "isImage";
-    private static final String FILE_TAG = "file";
-    private static final String ENDPOINT_TAG = "endpoint";
-    private static final String CLIENT_TAG = "client";
-    public final static String USER_NAME_TAG = "user_name";
-    public final static String PASSWORD_TAG = "password";
+    private static final String SERVICE_NAME = UploadService.class.getCanonicalName();
+    
+    public static final String IS_IMAGE_TAG = "is_image";
+    public static final String FILE_TAG = "file";
+    public static final String ENDPOINT_TAG = "endpoint";
+    public static final String CLIENT_TAG = "client";
     public final static String UPLOAD_HANDLER_TAG="handler";
 
     public UploadService() {
         super(SERVICE_NAME);
-    }
-
-    public static void startUpload(Context context,
-            long id,
-            boolean isImage,
-            File file,
-            String endpoint,
-            String username,
-            String password,
-            String client) {
-        Log.d(LOG_TAG, "startUpload for " + file);
-        final Intent intent = new Intent(context, UploadService.class);
-        intent.setAction(UPLOAD_ACTION);
-        intent.putExtra(ID_TAG, id);
-        intent.putExtra(IS_IMAGE_TAG, isImage);
-        intent.putExtra(FILE_TAG, file.getAbsolutePath());
-        intent.putExtra(USER_NAME_TAG, username);
-        intent.putExtra(PASSWORD_TAG, password);
-        intent.putExtra(ENDPOINT_TAG, endpoint);
-        intent.putExtra(CLIENT_TAG, client);
-        context.startService(intent);
     }
 
     @Override
@@ -69,11 +46,11 @@ public class UploadService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.d(LOG_TAG, "onHandleIntent");
-        final long id = intent.getLongExtra(ID_TAG, 0);
+        final long id = intent.getLongExtra(CreateGiftActivity.GIFT_ID_TAG, 0);
         final boolean isImage = intent.getBooleanExtra(IS_IMAGE_TAG, true);
         final String path = intent.getStringExtra(FILE_TAG);
-        final String username = intent.getStringExtra(USER_NAME_TAG);
-        final String password = intent.getStringExtra(PASSWORD_TAG);
+        final String username = intent.getStringExtra(CreateGiftActivity.USER_NAME_TAG);
+        final String password = intent.getStringExtra(CreateGiftActivity.PASSWORD_TAG);
         final String endpoint = intent.getStringExtra(ENDPOINT_TAG);
         final String client = intent.getStringExtra(CLIENT_TAG);
 

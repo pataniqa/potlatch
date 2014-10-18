@@ -6,6 +6,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -62,7 +63,7 @@ public class CreateGiftActivity extends ViewGiftActivity {
                                 Log.d(LOG_TAG,
                                         "Starting service to upload image " + gift.getImageUri());
                                 File imageFile = new File(Uri.parse(gift.getImageUri()).getPath());
-                                UploadService.startUpload(context,
+                                startUpload(context,
                                         gift.getId(),
                                         true,
                                         imageFile,
@@ -81,7 +82,7 @@ public class CreateGiftActivity extends ViewGiftActivity {
                                                     + gift.getVideoUri());
                                     File videoFile = new File(Uri.parse(gift.getVideoUri())
                                             .getPath());
-                                    UploadService.startUpload(context,
+                                    startUpload(context,
                                             gift.getId(),
                                             false,
                                             videoFile,
@@ -97,6 +98,26 @@ public class CreateGiftActivity extends ViewGiftActivity {
                         });
                     }
                 });
+    }
+
+    private static void startUpload(Context context,
+            long id,
+            boolean isImage,
+            File file,
+            String endpoint,
+            String username,
+            String password,
+            String client) {
+        Log.d(LOG_TAG, "startUpload for " + file);
+        final Intent intent = new Intent(context, UploadService.class);
+        intent.putExtra(GIFT_ID_TAG, id);
+        intent.putExtra(UploadService.IS_IMAGE_TAG, isImage);
+        intent.putExtra(UploadService.FILE_TAG, file.getAbsolutePath());
+        intent.putExtra(USER_NAME_TAG, username);
+        intent.putExtra(PASSWORD_TAG, password);
+        intent.putExtra(UploadService.ENDPOINT_TAG, endpoint);
+        intent.putExtra(UploadService.CLIENT_TAG, client);
+        context.startService(intent);
     }
 
 }
