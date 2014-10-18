@@ -12,18 +12,19 @@ import retrofit.mime.TypedInput;
 import retrofit.mime.TypedOutput;
 
 /**
- * This code was copied from
- * 
- * https://github.com/kdubb1337/retrofit-examples/tree/master/src/main/java/com/
- * kdubb/retrofitexamples/converter
+ * Replacement JSON converter for Retrofit that uses Jackson rather than JSON.
  * 
  * It makes it possible to use a Jackson converter in Retrofit rather than a
  * GSON converter. This solves problems when round tripping dates between
  * Retrofit and Spring.
  * 
- * See
+ * This code was copied from <a href=
+ * "https://github.com/kdubb1337/retrofit-examples/tree/master/src/main/java/com/kdubb/retrofitexamples/converter"
+ * >here</a>.
  * 
- * http://kdubblabs.com/java/retrofit-by-square/retrofit-return-date/
+ * For further details see this <a
+ * href="http://kdubblabs.com/java/retrofit-by-square/retrofit-return-date/"
+ * >blog post</a>.
  * 
  * for more details.
  */

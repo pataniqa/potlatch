@@ -7,14 +7,25 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * A gift chain.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class GiftChain implements SetId {
+@Getter
+public class GiftChain implements HasId {
 
-    @Getter @Setter private long id = GetId.UNDEFINED_ID;
-    @Getter private String name;
+    /**
+     * The unique ID.
+     */
+    @Setter private long id = HasId.UNDEFINED_ID;
+    
+    /**
+     * The name of the gift chain. 
+     */
+    private String name;
 
     public GiftChain(String name) {
         this.name = name;

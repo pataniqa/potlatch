@@ -14,6 +14,9 @@ import rx.Observable;
 
 import com.pataniqa.coursera.potlatch.model.GiftChain;
 
+/**
+ * Retrofit GiftChain REST API definition.
+ */
 public interface RemoteGiftChainApi {
 
     static final String GIFT_CHAIN_PATH = "/giftchain";

@@ -14,6 +14,9 @@ import rx.Observable;
 
 import com.pataniqa.coursera.potlatch.model.User;
 
+/**
+ * Retrofit User REST API definition.
+ */
 public interface RemoteUserApi {
     
     static final String USER_PATH = "/user";

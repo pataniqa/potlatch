@@ -1,15 +1,20 @@
 package com.pataniqa.coursera.potlatch.store;
 
-import com.pataniqa.coursera.potlatch.model.GetId;
+import com.pataniqa.coursera.potlatch.model.HasId;
 
 import rx.Observable;
 
-public interface SaveDelete <T extends GetId> {
+/**
+ * An interface for saving and deleting records.
+ *
+ * @param <T> The record type.
+ */
+public interface SaveDelete <T extends HasId> {
     
     /**
      * Delete a <T> object.
      * 
-     * @param id
+     * @param id The record ID>
      */
     Observable<Boolean> delete(long id);
     

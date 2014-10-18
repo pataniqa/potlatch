@@ -1,9 +1,11 @@
 configurations {
     lombok
+    umljavadoc
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
@@ -14,13 +16,15 @@ repositories {
 
 dependencies {
     
-    compile("org.apache.commons:commons-lang3:3.3.2")
-    compile("org.apache.httpcomponents:httpclient:4.3.4")
-    compile("com.squareup.retrofit:retrofit:1.6.0")
-    compile("commons-io:commons-io:2.4")
-    compile("com.netflix.rxjava:rxjava-core:0.20.5")
-    compile('com.fasterxml.jackson.core:jackson-core:2.4.3')
-    compile('com.fasterxml.jackson.core:jackson-databind:2.4.3')
+    compile 'org.apache.commons:commons-lang3:3.3.2'
+    compile 'org.apache.httpcomponents:httpclient:4.3.4'
+    compile 'com.squareup.retrofit:retrofit:1.6.0'
+    compile 'commons-io:commons-io:2.4'
+    compile 'com.netflix.rxjava:rxjava-core:0.20.5'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.4.3'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.4.3'
+
+    umljavadoc 'org.umlgraph:umlgraph:5.6.6'
     
     lombok 'org.projectlombok:lombok:+'
 }
@@ -34,3 +38,40 @@ sourceSets.each{ sourceSet ->
 task wrapper(type: Wrapper) {
     gradleVersion = '1.12'
 }
+
+// https://github.com/kercheval/GradleCMPlugin/wiki/Create-Javadoc-with-Class-Diagrams-using-UMLGraph-with-Gradle
+
+// Override the javadoc task to use umlgraph doclet.  This depends on the presence
+// of GraphViz on the path in your environment (http://www.graphviz.org)
+//
+
+task javadoc(overwrite: true, dependsOn: compileJava) {
+    setDescription('Generates Javadoc API documentation with UMLGraph diagrams')
+    setGroup(JavaBasePlugin.DOCUMENTATION_GROUP)
+
+    doLast {
+        def javaFilePath = file('src/main/java')
+        if (javaFilePath.exists()) {
+            ant.javadoc(classpath: (configurations.runtime + configurations.lombok + configurations.umljavadoc).asPath, 
+                        sourcepath: file('src/main/java'), 
+                        packagenames: '*',
+                        destdir: "${docsDir}/javadoc",
+                        private: 'true',
+                        docletpath: configurations.umljavadoc.asPath) {
+                doclet(name: 'org.umlgraph.doclet.UmlGraphDoc') {
+                    param(name: '-inferrel')
+                    param(name: '-inferdep')
+                    param(name: '-qualify')
+                    param(name: '-postfixpackage')
+                    param(name: '-hide', value: 'java.*')
+                    param(name: '-collpackages', value: 'java.util.*')
+                    param(name: '-nodefontsize', value: '9')
+                    param(name: '-nodefontpackagesize', value: '7')
+                    param(name: '-link', value: 'http://java.sun.com/j2se/1.5.0/docs/guide/javadoc/doclet/spec')
+                    param(name: '-link', value: 'http://java.sun.com/j2se/1.5/docs/api')
+                }
+            }
+        }
+    }
+}
+

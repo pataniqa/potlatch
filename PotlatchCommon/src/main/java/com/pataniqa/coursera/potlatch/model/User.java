@@ -7,14 +7,25 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * A User.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class User implements SetId {
+@Getter
+public class User implements HasId {
 
-    @Getter @Setter private long id = GetId.UNDEFINED_ID;
-    @Getter private String name;
+    /**
+     * The unique ID.
+     */
+    @Setter private long id = HasId.UNDEFINED_ID;
+    
+    /**
+     * The name of the user.
+     */
+    private String name;
     
     public User(String name) {
         this.name = name;

@@ -4,20 +4,27 @@ import java.util.ArrayList;
 
 import rx.Observable;
 
-public interface Query<T> {
+import com.pataniqa.coursera.potlatch.model.HasId;
+
+/**
+ * An interface for querying stores.
+ * 
+ * @param <T> The record type.
+ */
+public interface Query<T extends HasId> {
     
     /**
-     * Query <T>.
+     * Get all the <T> objects.
      * 
-     * @return an ArrayList of GiftData objects
+     * @return an ArrayList of <T> objects
      */
     Observable<ArrayList<T>> findAll();
     
     /**
      * Retrieve a <T> object with a specific rowID.
      * 
-     * @param id
-     * @return GiftData at the given rowID
+     * @param id The unique ID.
+     * @return <T> with the unique ID.
      */
     Observable<T> findOne(long id);
 }

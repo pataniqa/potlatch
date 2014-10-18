@@ -19,9 +19,12 @@ import rx.Observable;
 
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
-import com.pataniqa.coursera.potlatch.store.ResultOrder;
-import com.pataniqa.coursera.potlatch.store.ResultOrderDirection;
+import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrder;
+import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrderDirection;
 
+/**
+ * Retrofit Gift REST API definition.
+ */
 public interface RemoteGiftApi {
 
     static final String TOKEN_PATH = "/oauth/token";

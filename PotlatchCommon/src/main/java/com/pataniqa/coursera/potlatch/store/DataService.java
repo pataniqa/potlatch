@@ -1,30 +1,30 @@
 package com.pataniqa.coursera.potlatch.store;
 
+import com.pataniqa.coursera.potlatch.model.GiftChain;
+import com.pataniqa.coursera.potlatch.model.User;
+
+/**
+ * Facade for local and remote implementations of the store.
+ */
 public interface DataService {
 
     /**
-     * @return Get the interface to query all gifts.
+     * @return The gift store.
      */
     Gifts gifts();
 
     /**
-     * @return Get the interface to manage gift chains.
+     * @return The gift chain store.
      */
-    GiftChains giftChains();
+    CRUD<GiftChain> giftChains();
 
     /**
-     * @return Get the interface to manage gift metadata.
+     * @return The gift metadata store.
      */
     GiftMetadata giftMetadata();
     
     /**
-     * @return The interface to manage users.
+     * @return The user store..
      */
-    Users users();
-    
-    /**
-     * @return The interface to manage media.
-     */
-    Media media();
-
+    CRUD<User> users();
 }
