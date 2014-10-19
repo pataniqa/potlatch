@@ -18,17 +18,17 @@ import com.pataniqa.coursera.potlatch.model.User;
  * Retrofit User REST API definition.
  */
 public interface RemoteUserApi {
-    
+
     static final String USER_PATH = "/user";
-    
+
     static final String USER_ID_PATH = "/user/{id}";
-    
+
     @POST(USER_PATH)
     Observable<User> insert(@Body User data);
-    
+
     @GET(USER_PATH)
     Observable<ArrayList<User>> findAll();
-    
+
     @GET(USER_ID_PATH)
     Observable<User> findOne(@Path(ID) long id);
 

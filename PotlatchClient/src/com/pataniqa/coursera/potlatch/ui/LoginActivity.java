@@ -6,6 +6,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -17,8 +18,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
-import com.pataniqa.coursera.potlatch.model.HasId;
 import com.pataniqa.coursera.potlatch.model.User;
+import com.pataniqa.coursera.potlatch.store.Gifts;
 
 /**
  * The activity that allows the user to provide login information.
@@ -49,8 +50,8 @@ public class LoginActivity extends GiftActivity {
         String username = editTextToString(usernameET);
         String password = editTextToString(passwordET);
         savePreferences();
-        if (!username.isEmpty() && !password.isEmpty())
-            openListGiftActivity();
+        if (username != null && password != null && !username.isEmpty() && !password.isEmpty())
+            startActivity(new Intent(this, ListGiftsActivity.class));
     }
 
     @Override
@@ -69,38 +70,42 @@ public class LoginActivity extends GiftActivity {
 
     private void loadPreferences() {
         Log.d(LOG_TAG, "loadPreferences");
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String username = prefs.getString(USER_NAME_TAG, "");
-        if (username != null && !username.isEmpty())
+        String username = getUserName();
+        if (username != null && !username.isEmpty() && usernameET != null)
             usernameET.setText(username);
     }
 
     private void savePreferences() {
-        String username = editTextToString(usernameET);
-        long userID = getUserID();
-        Log.d(LOG_TAG, "savePreferences: username " + username + " " + userID);
+        final String username = editTextToString(usernameET);
         final Context context = this;
-        if (username != null && !username.isEmpty()) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            SharedPreferences.Editor ed = prefs.edit();
-            ed.putString(USER_NAME_TAG, username);
-            ed.putString(PASSWORD_TAG, editTextToString(passwordET));
-            ed.commit();
-        }
-        if (userID == HasId.UNDEFINED_ID) {
-            getDataService().users().save(new User(userID, username)).subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread()).forEach(new Action1<User>() {
-                        @Override
-                        public void call(User user) {
-                            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-                            SharedPreferences.Editor ed = prefs.edit();
-                            ed.putLong(USER_ID_TAG, user.getId());
-                            ed.commit();
-                            Log.d(LOG_TAG,
-                                    Arrays.toString(getDataService().users().findAll().toBlocking().first()
-                                            .toArray()));
-                        }
-                    });
-        }
+        getDataService().users().save(new User(username))
+                .subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+                .forEach(new Action1<User>() {
+                    @Override
+                    public void call(User user) {
+                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+                        SharedPreferences.Editor ed = prefs.edit();
+                        ed.putLong(USER_ID_TAG, user.getId());
+                        ed.putString(USER_NAME_TAG, username);
+                        ed.putString(PASSWORD_TAG, editTextToString(passwordET));
+                        Log.d(LOG_TAG, "savePreferences: username " + username + " " + user.getId());
+
+                        // the user logged in so reset the query parameters
+
+                        ed.putString(GiftQuery.TITLE_QUERY_TAG, "");
+                        ed.putInt(GiftQuery.RESULT_ORDER_TAG, Gifts.ResultOrder.LIKES.ordinal());
+                        ed.putInt(GiftQuery.RESULT_ORDER_DIRECTION_TAG,
+                                Gifts.ResultOrderDirection.DESCENDING.ordinal());
+                        ed.putInt(GiftQuery.QUERY_TYPE_TAG, GiftQuery.QueryType.ALL.ordinal());
+                        ed.putString(GiftQuery.GIFT_CHAIN_NAME_TAG, "");
+                        ed.putLong(GiftQuery.GIFT_CHAIN_ID_TAG, 0);
+                        ed.putString(GiftQuery.QUERY_USER_NAME_TAG, user.getName());
+                        ed.putLong(GiftQuery.QUERY_USER_ID_TAG, user.getId());
+                        ed.commit();
+                        Log.d(LOG_TAG,
+                                Arrays.toString(getDataService().users().findAll().toBlocking()
+                                        .first().toArray()));
+                    }
+                });
     }
 }

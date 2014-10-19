@@ -8,7 +8,6 @@ import rx.schedulers.Schedulers;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.net.Uri;
@@ -56,15 +55,10 @@ abstract class GiftActivity extends Activity {
         super.onCreate(savedInstanceState);
     }
 
-    void openListGiftActivity() {
-        Log.d(LOG_TAG, "openCreateGiftActivity");
-        startActivity(new Intent(this, ListGiftsActivity.class));
-    }
-
     // Utility methods
 
     static String editTextToString(EditText et) {
-        return String.valueOf(et.getText().toString());
+        return et != null && et.getText() != null ? String.valueOf(et.getText().toString()) : null;
     }
 
     long getUserID() {

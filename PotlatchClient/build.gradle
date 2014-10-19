@@ -81,15 +81,17 @@ dependencies {
     compile project(":PotlatchCommon")
 
     compile files("libs/android-support-v4.jar")
+    compile 'com.squareup.okhttp:okhttp:2.0.0'
+    compile 'com.squareup.okio:okio:1.0.1'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
 
     compile 'com.netflix.rxjava:rxjava-android:0.20.5'
     compile 'com.jakewharton:butterknife:5.1.2'
     compile 'com.squareup.picasso:picasso:2.3.4'
-    compile 'com.squareup.okhttp:okhttp:2.0.0'
-    compile 'com.squareup.okio:okio:1.0.1'
 
     provided 'org.projectlombok:lombok:+'
     apt "org.projectlombok:lombok:+"
+    apt "com.jakewharton:butterknife:5.1.2"
 }
 
 task wrapper(type: Wrapper) {

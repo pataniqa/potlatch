@@ -130,9 +130,9 @@ public class OAuth2SecurityConfiguration {
         
         private final List<UserDetails> users = Arrays.asList(
                 User.create("mark", "one", "USER"),
-                User.create("john", "two", "USER"),
-                User.create("sarah", "three", "USER"),
-                User.create("oliva", "four", "USER"));
+                User.create("peter", "two", "USER"),
+                User.create("sophia", "three", "USER"),
+                User.create("olivia", "four", "USER"));
 
         /**
          * 
