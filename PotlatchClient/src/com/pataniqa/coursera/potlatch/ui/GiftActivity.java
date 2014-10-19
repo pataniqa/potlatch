@@ -2,6 +2,9 @@ package com.pataniqa.coursera.potlatch.ui;
 
 import java.io.File;
 
+import retrofit.RestAdapter;
+import retrofit.RestAdapter.LogLevel;
+import retrofit.client.OkClient;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -19,12 +22,15 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.HasId;
 import com.pataniqa.coursera.potlatch.store.DataService;
 import com.pataniqa.coursera.potlatch.store.local.LocalService;
+import com.pataniqa.coursera.potlatch.store.remote.JacksonConverter;
 import com.pataniqa.coursera.potlatch.store.remote.RemoteService;
-import com.pataniqa.coursera.potlatch.store.remote.unsafe.UnsafeHttpClient;
+import com.pataniqa.coursera.potlatch.store.remote.SecuredRestBuilder;
+import com.pataniqa.coursera.potlatch.store.remote.UnsafeOkHttpClient;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -90,11 +96,12 @@ abstract class GiftActivity extends Activity {
     }
 
     DataService remoteDataService() {
-        return new RemoteService(new UnsafeHttpClient(),
-                getEndpoint(),
-                getUserName(),
-                getPassword(),
-                GiftActivity.CLIENT_ID);
+        JacksonConverter converter = new JacksonConverter(new ObjectMapper());
+        RestAdapter restAdapter = new SecuredRestBuilder()
+                .setClient(new OkClient(UnsafeOkHttpClient.getUnsafeOkHttpClient())).setEndpoint(getEndpoint())
+                .setLogLevel(LogLevel.FULL).username(getUserName()).password(getPassword())
+                .clientId(GiftActivity.CLIENT_ID).setConverter(converter).build();
+        return new RemoteService(restAdapter);
     }
 
     AuthenticationTokenFactory getTokenFactory() {

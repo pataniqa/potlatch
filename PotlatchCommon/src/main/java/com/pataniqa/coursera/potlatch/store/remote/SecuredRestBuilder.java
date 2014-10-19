@@ -55,15 +55,14 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
 
     @Setter private String username;
     @Setter private String password;
-    @Setter private String loginUrl;
-    @Setter private String clientId;
+    private String endpoint;
+    @Setter private String clientId = "mobile";
     @Setter private String clientSecret = "";
     private Client client;
 
     private class OAuthHandler implements RequestInterceptor {
 
-        private boolean loggedIn;
-        private String accessToken;
+        private String token = null;
 
         /**
          * Every time a method on the client interface is invoked, this method
@@ -79,28 +78,27 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
          */
         @Override
         public void intercept(RequestFacade request) {
-            // If we're not logged in, login and store the authentication token.
-            if (!loggedIn) {
+            if (token == null) {
                 try {
-                    accessToken = getAccessToken(client,
-                            username,
-                            password,
-                            loginUrl,
-                            clientId,
-                            clientSecret);
-                    // Let future calls know we've already fetched the access
-                    // token
-                    loggedIn = true;
+                    request.addHeader("Authorization",
+                            "Bearer "
+                                    + getAccessToken(client,
+                                            username,
+                                            password,
+                                            SecuredRestBuilder.getLoginUrl(endpoint),
+                                            clientId,
+                                            clientSecret));
                 } catch (Exception e) {
 
                 }
             }
-            request.addHeader("Authorization", "Bearer " + accessToken);
+
         }
     }
 
     @Override
     public SecuredRestBuilder setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
         return (SecuredRestBuilder) super.setEndpoint(endpoint);
     }
 
@@ -171,13 +169,13 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
 
         return super.build();
     }
-    
+
     private static String accessToken = null;
-    
+
     public static void reset() {
         accessToken = null;
     }
-    
+
     private static String getAccessTokenHelper(Client client,
             String username,
             String password,
@@ -185,8 +183,6 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
             String clientId,
             String clientSecret,
             String grantType) throws SecuredRestException {
-        if (accessToken != null)
-            return accessToken;
         // This code below programmatically builds an OAuth 2.0 password
         // grant request and sends it to the server.
 
@@ -232,8 +228,7 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
                 TypeReference<HashMap<String, String>> typeRef = new TypeReference<HashMap<String, String>>() {
                 };
                 HashMap<String, String> o = mapper.readValue(body, typeRef);
-                accessToken = o.get("access_token");
-                return accessToken;
+                return o.get("access_token");
             } else {
                 throw new SecuredRestException("Login failure: " + resp.getStatus() + " - "
                         + resp.getReason());
@@ -242,7 +237,7 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
             throw new SecuredRestException();
         }
     }
-    
+
     public static String getAccessToken(Client client,
             String username,
             String password,
@@ -251,17 +246,31 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
             String clientSecret) throws SecuredRestException {
         if (accessToken != null)
             return accessToken;
-        
+
         // Request the password grant.
         try {
-            return getAccessTokenHelper(client, username, password, loginUrl, clientId, clientSecret, "password");
+            accessToken = getAccessTokenHelper(client,
+                    username,
+                    password,
+                    loginUrl,
+                    clientId,
+                    clientSecret,
+                    "password");
+            return accessToken;
         } catch (SecuredRestException e) {
             //
         }
-        
+
         // if that fails try refresh token
         try {
-            return getAccessTokenHelper(client, username, password, loginUrl, clientId, clientSecret, "refresh_token");
+            accessToken = getAccessTokenHelper(client,
+                    username,
+                    password,
+                    loginUrl,
+                    clientId,
+                    clientSecret,
+                    "password");
+            return accessToken;
         } catch (SecuredRestException e) {
             throw new SecuredRestException(e);
         }

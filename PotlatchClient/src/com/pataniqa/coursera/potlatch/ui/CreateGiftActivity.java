@@ -68,8 +68,7 @@ public class CreateGiftActivity extends ViewGiftActivity {
                                         imageFile,
                                         getEndpoint(),
                                         getUserName(),
-                                        getPassword(),
-                                        GiftActivity.CLIENT_ID);
+                                        getPassword());
                                 Log.d(LOG_TAG, "Request successfully sent to upload service");
                                 if (gift.getVideoUri() != null && !gift.getVideoUri().isEmpty()) {
 
@@ -87,8 +86,7 @@ public class CreateGiftActivity extends ViewGiftActivity {
                                             videoFile,
                                             getEndpoint(),
                                             getUserName(),
-                                            getPassword(),
-                                            GiftActivity.CLIENT_ID);
+                                            getPassword());
                                     Log.d(LOG_TAG, "Request successfully sent to upload service");
                                 }
                                 Log.d(LOG_TAG, "Calling finish()");
@@ -105,8 +103,7 @@ public class CreateGiftActivity extends ViewGiftActivity {
             File file,
             String endpoint,
             String username,
-            String password,
-            String client) {
+            String password) {
         Log.d(LOG_TAG, "startUpload for " + file);
         final Intent intent = new Intent(context, UploadService.class);
         intent.putExtra(GIFT_ID_TAG, id);
@@ -115,7 +112,6 @@ public class CreateGiftActivity extends ViewGiftActivity {
         intent.putExtra(USER_NAME_TAG, username);
         intent.putExtra(PASSWORD_TAG, password);
         intent.putExtra(UploadService.ENDPOINT_TAG, endpoint);
-        intent.putExtra(UploadService.CLIENT_TAG, client);
         context.startService(intent);
     }
 

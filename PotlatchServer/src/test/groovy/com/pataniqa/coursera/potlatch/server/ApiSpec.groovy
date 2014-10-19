@@ -1,7 +1,8 @@
 package com.pataniqa.coursera.potlatch.server
 
+import retrofit.RestAdapter
 import retrofit.RestAdapter.LogLevel
-import retrofit.client.ApacheClient
+import retrofit.client.*
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.pataniqa.coursera.potlatch.model.*
@@ -26,22 +27,17 @@ import rx.Observable
 class ApiSpec extends Specification {
     
     def TEST_URL = "https://localhost:8443"
-    def USERNAME1 = "mark"
+    def USERNAME = "mark"
     def PASSWORD = "one"
     def CLIENT_ID = "mobile"
 
     def converter = new JacksonConverter(new ObjectMapper())
-
+    
     def svcUser = new SecuredRestBuilder()
-    .setClient(new ApacheClient(new UnsafeHttpClient()))
-    .setEndpoint(TEST_URL)
-    .loginUrl(TEST_URL + RemoteGiftApi.TOKEN_PATH)
+    .setClient(new OkClient(UnsafeOkHttpClient.getUnsafeOkHttpClient())).setEndpoint(TEST_URL)
     .setLogLevel(LogLevel.NONE)
-    .username(USERNAME1)
-    .password(PASSWORD)
-    .clientId(CLIENT_ID)
-    .setConverter(converter)
-    .build()
+    .username(USERNAME).password(PASSWORD).clientId(CLIENT_ID)
+    .setConverter(converter).build()
 
     def userSvcUser = svcUser.create(RemoteUserApi.class)
     def giftChainSvcUser = svcUser.create(RemoteGiftChainApi.class)
@@ -92,6 +88,8 @@ class ApiSpec extends Specification {
 
         then: "there should be one less gift chain"
         numberOfGiftChains() == numberOfGiftChainsBefore - 1
+        
+        SecuredRestBuilder.reset();
         
     }
 

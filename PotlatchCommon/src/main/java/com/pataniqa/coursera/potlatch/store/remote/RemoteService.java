@@ -4,17 +4,11 @@ import java.util.ArrayList;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
-
-import org.apache.http.client.HttpClient;
-
 import retrofit.RestAdapter;
-import retrofit.RestAdapter.LogLevel;
-import retrofit.client.ApacheClient;
 import retrofit.client.Response;
 import retrofit.mime.TypedFile;
 import rx.Observable;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pataniqa.coursera.potlatch.model.Gift;
 import com.pataniqa.coursera.potlatch.model.GiftChain;
 import com.pataniqa.coursera.potlatch.model.GiftResult;
@@ -41,18 +35,7 @@ public class RemoteService implements DataService {
     private final RemoteGiftChainApi giftChainService;
     private final RemoteUserApi userService;
 
-    public RemoteService(HttpClient httpClient,
-            String endpoint,
-            String username,
-            String password,
-            String clientId) {
-        JacksonConverter converter = new JacksonConverter(new ObjectMapper());
-
-        RestAdapter restAdapter = new SecuredRestBuilder().setClient(new ApacheClient(httpClient))
-                .setEndpoint(endpoint).loginUrl(SecuredRestBuilder.getLoginUrl(endpoint))
-                .setLogLevel(LogLevel.FULL).username(username).password(password)
-                .clientId(clientId).setConverter(converter).build();
-
+    public RemoteService(RestAdapter restAdapter) {
         giftService = restAdapter.create(RemoteGiftApi.class);
         giftChainService = restAdapter.create(RemoteGiftChainApi.class);
         userService = restAdapter.create(RemoteUserApi.class);

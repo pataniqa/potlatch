@@ -6,7 +6,7 @@ import java.net.HttpURLConnection;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import retrofit.client.ApacheClient;
+import retrofit.client.OkClient;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -17,7 +17,7 @@ import android.util.Log;
 
 import com.pataniqa.coursera.potlatch.store.remote.SecuredRestBuilder;
 import com.pataniqa.coursera.potlatch.store.remote.SecuredRestException;
-import com.pataniqa.coursera.potlatch.store.remote.unsafe.UnsafeHttpClient;
+import com.pataniqa.coursera.potlatch.store.remote.UnsafeOkHttpClient;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
@@ -46,7 +46,7 @@ class AuthenticationTokenFactoryImpl implements AuthenticationTokenFactory {
             public void call(Subscriber<? super String> subscriber) {
                 String result;
                 try {
-                    result = SecuredRestBuilder.getAccessToken(new ApacheClient(new UnsafeHttpClient()),
+                    result = SecuredRestBuilder.getAccessToken(new OkClient(UnsafeOkHttpClient.getUnsafeOkHttpClient()),
                             username,
                             password,
                             SecuredRestBuilder.getLoginUrl(endpoint),

@@ -6,6 +6,9 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
+import retrofit.RestAdapter;
+import retrofit.RestAdapter.LogLevel;
+import retrofit.client.OkClient;
 import retrofit.mime.TypedFile;
 import rx.Observable;
 import rx.Subscriber;
@@ -21,9 +24,12 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.util.Log;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pataniqa.coursera.potlatch.store.Gifts;
+import com.pataniqa.coursera.potlatch.store.remote.JacksonConverter;
 import com.pataniqa.coursera.potlatch.store.remote.RemoteService;
-import com.pataniqa.coursera.potlatch.store.remote.unsafe.UnsafeHttpClient;
+import com.pataniqa.coursera.potlatch.store.remote.SecuredRestBuilder;
+import com.pataniqa.coursera.potlatch.store.remote.UnsafeOkHttpClient;
 
 public class UploadService extends IntentService {
 
@@ -36,7 +42,6 @@ public class UploadService extends IntentService {
     public static final String IS_IMAGE_TAG = "is_image";
     public static final String FILE_TAG = "file";
     public static final String ENDPOINT_TAG = "endpoint";
-    public static final String CLIENT_TAG = "client";
     public final static String UPLOAD_HANDLER_TAG = "handler";
 
     public UploadService() {
@@ -57,13 +62,14 @@ public class UploadService extends IntentService {
         final String username = intent.getStringExtra(CreateGiftActivity.USER_NAME_TAG);
         final String password = intent.getStringExtra(CreateGiftActivity.PASSWORD_TAG);
         final String endpoint = intent.getStringExtra(ENDPOINT_TAG);
-        final String client = intent.getStringExtra(CLIENT_TAG);
 
-        final Gifts gifts = new RemoteService(new UnsafeHttpClient(),
-                endpoint,
-                username,
-                password,
-                client).gifts();
+        JacksonConverter converter = new JacksonConverter(new ObjectMapper());
+        RestAdapter restAdapter = new SecuredRestBuilder()
+                .setClient(new OkClient(UnsafeOkHttpClient.getUnsafeOkHttpClient())).setEndpoint(endpoint)
+                .setLogLevel(LogLevel.FULL).username(username).password(password)
+                .clientId(GiftActivity.CLIENT_ID).setConverter(converter).build();
+
+        final Gifts gifts = new RemoteService(restAdapter).gifts();
         final File file = new File(path);
         final Context context = this;
         final File outputDir = context.getCacheDir();
@@ -207,11 +213,9 @@ public class UploadService extends IntentService {
         return rotate;
     }
 
-  
-    
     /**
-     * Sample down the image to get the right size. This
-     * is based on sample code for <a href=
+     * Sample down the image to get the right size. This is based on sample code
+     * for <a href=
      * "http://developer.android.com/training/displaying-bitmaps/load-bitmap.html"
      * >loading large bitmaps</a>.
      */

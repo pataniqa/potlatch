@@ -18,6 +18,9 @@ dependencies {
     
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'org.apache.httpcomponents:httpclient:4.3.4'
+    compile 'com.squareup.okhttp:okhttp:2.0.0'
+    compile 'com.squareup.okio:okio:1.0.1'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
     compile 'com.squareup.retrofit:retrofit:1.6.0'
     compile 'commons-io:commons-io:2.4'
     compile 'com.netflix.rxjava:rxjava-core:0.20.5'

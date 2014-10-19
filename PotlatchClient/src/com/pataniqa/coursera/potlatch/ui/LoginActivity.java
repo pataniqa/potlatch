@@ -50,12 +50,12 @@ public class LoginActivity extends GiftActivity {
         Log.d(LOG_TAG, "loginClicked");
         String username = editTextToString(usernameET);
         String password = editTextToString(passwordET);
-        savePreferences();
         if (username != null && password != null && !username.isEmpty() && !password.isEmpty()) {
             // reset the authorization tokens to force a new log in
             Log.d(LOG_TAG, "Logging the previous user out");
             OAuthPicasso.reset();
             SecuredRestBuilder.reset();
+            savePreferences();
             startActivity(new Intent(this, ListGiftsActivity.class));
         }
     }
