@@ -30,6 +30,7 @@ import android.widget.SearchView;
 import android.widget.SearchView.OnCloseListener;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -138,6 +139,7 @@ public class ListGiftsActivity extends GiftActivity implements
 
         updateMenu();
 
+        final Context context = this;
         SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         final SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
         search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
@@ -151,8 +153,17 @@ public class ListGiftsActivity extends GiftActivity implements
             public boolean onQueryTextSubmit(String title) {
                 Log.d(LOG_TAG, "onQueryTextSubmit: " + title);
                 query.setTitle(title);
-                updateGifts();
-                search.clearFocus();
+                
+                // check the query to protect against SQL injection attacks
+                if (title.matches("[\\d\\w\\s]*")) {
+                    updateGifts();
+                    search.clearFocus();
+                } else {
+                    CharSequence text = "Invalid query";
+                    Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                
                 return false;
             }
 

@@ -53,6 +53,7 @@ abstract class GiftActivity extends Activity {
     public final static String CLIENT_ID = "mobile";
     public final static String CLIENT_SECRET = "";
     public final static String GIFT_ID_TAG = "id";
+    public final static String ENDPOINT_TAG = "endpoint";
 
     private static final String LOG_TAG = GiftActivity.class.getCanonicalName();
 
@@ -114,9 +115,8 @@ abstract class GiftActivity extends Activity {
 
     String getEndpoint() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String host = prefs.getString(SettingsActivity.SERVER_ADDRESS, "192.168.1.71");
-        String port = prefs.getString(SettingsActivity.SERVER_PORT, "8443");
-        return "https://" + host + ":" + port;
+        String host = prefs.getString(ENDPOINT_TAG, "192.168.1.71:8443");
+        return "https://" + host;
     }
 
     static int getMaxSize(WindowManager windowManager) {

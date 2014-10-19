@@ -53,12 +53,27 @@
         android:inputType="textPassword"
         android:padding="12dp" >
     </EditText>
+    
+        <EditText
+        android:id="@+id/server_and_port"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_password"
+        android:layout_marginBottom="30dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:background="#a0ffffff"
+        android:hint="@string/server_and_port"
+        android:inputType="text"
+        android:text="@string/default_endpoint"
+        android:padding="12dp" >
+    </EditText>
 
     <Button
         android:id="@+id/do_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/login_password"
+        android:layout_below="@id/server_and_port"
         android:layout_centerHorizontal="true"
         android:background="#a0ffffff"
         android:onClick="loginClicked"

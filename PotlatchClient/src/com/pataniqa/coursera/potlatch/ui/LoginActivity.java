@@ -2,7 +2,6 @@ package com.pataniqa.coursera.potlatch.ui;
 
 import java.util.Arrays;
 
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import android.content.Context;
@@ -31,6 +30,7 @@ public class LoginActivity extends GiftActivity {
 
     @InjectView(R.id.login_username) EditText usernameET;
     @InjectView(R.id.login_password) EditText passwordET;
+    @InjectView(R.id.server_and_port) EditText endpointET;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +50,14 @@ public class LoginActivity extends GiftActivity {
         Log.d(LOG_TAG, "loginClicked");
         String username = editTextToString(usernameET);
         String password = editTextToString(passwordET);
-        if (username != null && password != null && !username.isEmpty() && !password.isEmpty()) {
+        String endpoint = editTextToString(endpointET);
+        if (username != null && password != null && endpoint != null 
+                && !username.isEmpty() && !password.isEmpty() && !endpoint.isEmpty()) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor ed = prefs.edit();
             ed.putString(USER_NAME_TAG, username);
             ed.putString(PASSWORD_TAG, password);
+            ed.putString(ENDPOINT_TAG,  endpoint);
             ed.commit();
             savePreferences();
         }

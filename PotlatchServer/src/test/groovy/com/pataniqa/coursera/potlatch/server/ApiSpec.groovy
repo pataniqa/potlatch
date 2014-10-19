@@ -95,7 +95,7 @@ class ApiSpec extends Specification {
         
         when: "a user is added"
         def numberOfUsersBefore = numberOfUsers()
-        def user = new User("some-random-user-" + new Random().nextLong())
+        def user = new User("sophia")
         def newUser = insertUser(user)
 
         then: "the new user should have the same name"
@@ -109,13 +109,6 @@ class ApiSpec extends Specification {
 
         then: "there should be the same number of users"
         numberOfUsers() == numberOfUsersBefore
-
-        when: "a user is deleted"
-        numberOfUsersBefore = numberOfUsers()
-        deleteUser(newUser)
-
-        then: "there should be one less user"
-        numberOfUsers() == numberOfUsersBefore - 1
     }
 
     def "Create, retrieve, update and delete a gift"() {
@@ -139,7 +132,8 @@ class ApiSpec extends Specification {
         gift.getDescription() == newGift.getDescription()
         gift.getGiftChainID() == newGift.getGiftChainID()
         gift.getUserID() == newGift.getUserID()
-        and: "there should be one more user"
+        
+        and: "there should be one more gift"
         numberOfGifts() == numberOfGiftsBefore + 1
 
         when: "a gift is updated"

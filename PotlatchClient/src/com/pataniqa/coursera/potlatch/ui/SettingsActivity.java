@@ -17,10 +17,6 @@ public class SettingsActivity extends PreferenceActivity {
     
     public final static String UPDATE_FREQUENCY = "pref_update_frequency";
     
-    public final static String SERVER_ADDRESS = "pref_server_ip_addr";
-    
-    public final static String SERVER_PORT= "pref_server_port";
-    
     public final static String USE_LOCAL_STORE = "pref_use_local_store";
 
     private final static String LOG_TAG = SettingsActivity.class.getCanonicalName();

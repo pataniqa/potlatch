@@ -121,8 +121,6 @@ public class OAuth2SecurityConfiguration {
         // UserDetailsService
         private ClientAndUserDetailsService combinedService;
 
-        @Autowired private UserRepository userRepo;
-
         private final List<UserDetails> users = Arrays.asList(User.create("mark", "one", "USER"),
                 User.create("peter", "two", "USER"),
                 User.create("sophia", "three", "USER"),
@@ -168,14 +166,6 @@ public class OAuth2SecurityConfiguration {
             // the
             // client is a valid "user".
             this.combinedService = new ClientAndUserDetailsService(csvc, svc);
-        }
-
-        @PostConstruct
-        protected void createUsers() {
-            for (UserDetails user : users) {
-                ServerUser u = new ServerUser(user.getUsername());
-                userRepo.save(u);
-            }
         }
 
         /**
