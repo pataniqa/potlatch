@@ -67,6 +67,7 @@ dependencies {
     compile 'com.google.guava:guava:18.0'
     
     testCompile 'junit:junit'
+    groovy "org.codehaus.groovy:groovy-all:2.1.8"
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
     testCompile 'org.spockframework:spock-spring:0.7-groovy-2.0'
     testCompile 'org.springframework.boot:spring-boot-starter-test'

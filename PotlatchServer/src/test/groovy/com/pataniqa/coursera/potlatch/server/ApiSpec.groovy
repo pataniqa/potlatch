@@ -8,7 +8,9 @@ import retrofit.client.*
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.pataniqa.coursera.potlatch.model.*
 import com.pataniqa.coursera.potlatch.store.*
-import com.pataniqa.coursera.potlatch.store.Gifts.*
+import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrder
+import com.pataniqa.coursera.potlatch.store.Gifts.ResultOrderDirection
+
 import com.pataniqa.coursera.potlatch.store.remote.*
 import com.pataniqa.coursera.potlatch.store.remote.unsafe.*
 
