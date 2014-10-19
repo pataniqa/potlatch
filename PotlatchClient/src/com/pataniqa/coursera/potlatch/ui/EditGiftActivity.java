@@ -76,7 +76,7 @@ public class EditGiftActivity extends ViewGiftActivity {
     public void saveButtonClicked(View v) {
         Log.d(LOG_TAG, "saveButtonClicked");
         makeGiftDataFromUI(getRowIdentifier()).subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.newThread())
                 .flatMap(new Func1<Gift, Observable<Gift>>() {
                     @Override
                     public Observable<Gift> call(Gift gift) {

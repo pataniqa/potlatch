@@ -121,7 +121,7 @@ public class GiftQuery {
     }
     
     public Observable<ArrayList<GiftResult>> query(Gifts gifts) {
-        boolean hide = prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, true);
+        boolean hide = prefs.getBoolean(SettingsActivity.HIDE_FLAGGED_CONTENT, false);
         switch (queryType) {
         case USER:
             return gifts.queryByUser(title, queryUserID, resultOrder, resultDirection, hide);

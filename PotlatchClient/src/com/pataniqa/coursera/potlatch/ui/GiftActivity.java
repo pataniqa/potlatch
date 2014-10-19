@@ -86,7 +86,7 @@ abstract class GiftActivity extends Activity {
 
     boolean useLocalStore() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        return prefs.getBoolean(SettingsActivity.USE_LOCAL_STORE, true);
+        return prefs.getBoolean(SettingsActivity.USE_LOCAL_STORE, false);
     }
 
     DataService getDataService() {
