@@ -12,5 +12,5 @@ import com.pataniqa.coursera.potlatch.server.model.ServerGiftMetadataPk;
 @Repository
 public interface GiftMetadataRepository extends
         CrudRepository<ServerGiftMetadata, ServerGiftMetadataPk> {
-
+    
 }

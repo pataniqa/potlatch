@@ -101,6 +101,13 @@ public class GiftService {
     @RequestMapping(value = GIFT_ID_PATH, method = RequestMethod.DELETE)
     public @ResponseBody
     boolean deleteGift(@PathVariable(ID) long id) {
+        // I found this bug at the last minute
+        // so this is a horrible hack because I do an entire table scan
+        // to do a cascade delete
+        for (ServerGiftMetadata metadata : giftMetadata.findAll()) {
+            if (metadata.getGift().getId() == id)
+                giftMetadata.delete(metadata);
+        }
         gifts.delete(id);
         return true;
     }
