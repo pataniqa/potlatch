@@ -152,9 +152,8 @@ public class OAuth2SecurityConfiguration {
                     // Create a client that has "read" and "write" access to the
                     // video service
                     .withClient("mobile").authorizedGrantTypes("password")
-                    .authorizedGrantTypes("refresh_token")
                     .authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT").scopes("read", "write")
-                    .resourceIds("video").accessTokenValiditySeconds(3600).and().build();
+                    .accessTokenValiditySeconds(3600).and().build();
 
             // Create a series of hard-coded users.
             UserDetailsService svc = new InMemoryUserDetailsManager(users);

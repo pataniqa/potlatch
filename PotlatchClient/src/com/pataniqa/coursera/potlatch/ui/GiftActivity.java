@@ -2,8 +2,10 @@ package com.pataniqa.coursera.potlatch.ui;
 
 import java.io.File;
 
+import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.RestAdapter.LogLevel;
+import retrofit.client.Client;
 import retrofit.client.OkClient;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -29,7 +31,6 @@ import com.pataniqa.coursera.potlatch.store.DataService;
 import com.pataniqa.coursera.potlatch.store.local.LocalService;
 import com.pataniqa.coursera.potlatch.store.remote.JacksonConverter;
 import com.pataniqa.coursera.potlatch.store.remote.RemoteService;
-import com.pataniqa.coursera.potlatch.store.remote.SecuredRestBuilder;
 import com.pataniqa.coursera.potlatch.store.remote.UnsafeOkHttpClient;
 import com.squareup.picasso.Picasso;
 
@@ -97,19 +98,18 @@ abstract class GiftActivity extends Activity {
 
     DataService remoteDataService() {
         JacksonConverter converter = new JacksonConverter(new ObjectMapper());
-        RestAdapter restAdapter = new SecuredRestBuilder()
-                .setClient(new OkClient(UnsafeOkHttpClient.getUnsafeOkHttpClient())).setEndpoint(getEndpoint())
-                .setLogLevel(LogLevel.FULL).username(getUserName()).password(getPassword())
-                .clientId(GiftActivity.CLIENT_ID).setConverter(converter).build();
+        Client client = new OkClient(UnsafeOkHttpClient.getUnsafeOkHttpClient());
+        RequestInterceptor interceptor = new AndroidOAuthHandler(client, getUserName(), getPassword(), getEndpoint());
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setClient(client).setEndpoint(getEndpoint())
+                .setLogLevel(LogLevel.FULL).setRequestInterceptor(interceptor).setConverter(converter).build();
         return new RemoteService(restAdapter);
     }
 
     AuthenticationTokenFactory getTokenFactory() {
         return new AuthenticationTokenFactoryImpl(getUserName(),
                 getPassword(),
-                getEndpoint(),
-                GiftActivity.CLIENT_ID,
-                GiftActivity.CLIENT_SECRET);
+                getEndpoint());
     }
 
     String getEndpoint() {

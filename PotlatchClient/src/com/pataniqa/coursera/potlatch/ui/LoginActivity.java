@@ -19,8 +19,8 @@ import butterknife.InjectView;
 
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.User;
+import com.pataniqa.coursera.potlatch.store.CRUD;
 import com.pataniqa.coursera.potlatch.store.Gifts;
-import com.pataniqa.coursera.potlatch.store.remote.SecuredRestBuilder;
 
 /**
  * The activity that allows the user to provide login information.
@@ -51,26 +51,24 @@ public class LoginActivity extends GiftActivity {
         String username = editTextToString(usernameET);
         String password = editTextToString(passwordET);
         if (username != null && password != null && !username.isEmpty() && !password.isEmpty()) {
-            // reset the authorization tokens to force a new log in
-            Log.d(LOG_TAG, "Logging the previous user out");
-            OAuthPicasso.reset();
-            SecuredRestBuilder.reset();
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor ed = prefs.edit();
+            ed.putString(USER_NAME_TAG, username);
+            ed.putString(PASSWORD_TAG, password);
+            ed.commit();
             savePreferences();
-            startActivity(new Intent(this, ListGiftsActivity.class));
         }
     }
 
     @Override
     protected void onPause() {
         Log.d(LOG_TAG, "onPause");
-        savePreferences();
         super.onPause();
     }
 
     @Override
     protected void onStop() {
         Log.d(LOG_TAG, "onStop");
-        savePreferences();
         super.onStop();
     }
 
@@ -84,8 +82,9 @@ public class LoginActivity extends GiftActivity {
     private void savePreferences() {
         final String username = editTextToString(usernameET);
         final Context context = this;
-        getDataService().users().save(new User(username))
-                .subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+        final CRUD<User> users = getDataService().users(); 
+        users.save(new User(username))
+                .subscribeOn(Schedulers.newThread()).observeOn(Schedulers.newThread())//.observeOn(AndroidSchedulers.mainThread())
                 .forEach(new Action1<User>() {
                     @Override
                     public void call(User user) {
@@ -111,6 +110,7 @@ public class LoginActivity extends GiftActivity {
                         Log.d(LOG_TAG,
                                 Arrays.toString(getDataService().users().findAll().toBlocking()
                                         .first().toArray()));
+                        startActivity(new Intent(context, ListGiftsActivity.class));
                     }
                 });
     }

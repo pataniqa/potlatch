@@ -15,7 +15,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
-import com.pataniqa.coursera.potlatch.store.remote.SecuredRestBuilder;
 import com.pataniqa.coursera.potlatch.store.remote.SecuredRestException;
 import com.pataniqa.coursera.potlatch.store.remote.UnsafeOkHttpClient;
 import com.squareup.okhttp.OkHttpClient;
@@ -35,8 +34,6 @@ class AuthenticationTokenFactoryImpl implements AuthenticationTokenFactory {
     private final String username;
     private final String password;
     @Getter private final String endpoint;
-    private final String clientId;
-    private final String clientSecret;
 
     @Override
     public Observable<String> getToken() {
@@ -46,12 +43,11 @@ class AuthenticationTokenFactoryImpl implements AuthenticationTokenFactory {
             public void call(Subscriber<? super String> subscriber) {
                 String result;
                 try {
-                    result = SecuredRestBuilder.getAccessToken(new OkClient(UnsafeOkHttpClient.getUnsafeOkHttpClient()),
+                    result = AndroidOAuthHandler.getAccessToken(new OkClient(UnsafeOkHttpClient
+                            .getUnsafeOkHttpClient()),
                             username,
                             password,
-                            SecuredRestBuilder.getLoginUrl(endpoint),
-                            clientId,
-                            clientSecret);
+                            endpoint);
                     subscriber.onNext(result);
                     subscriber.onCompleted();
                 } catch (SecuredRestException e) {
@@ -69,14 +65,12 @@ class OAuthPicasso {
     private final static String LOG_TAG = OAuthPicasso.class.getCanonicalName();
 
     private static Picasso picasso;
-    
-    public static void reset() {
-        picasso = null;
-    }
+    private static String accessToken;
 
-    public static RequestCreator load(OkHttpClient client, Context context,
+    public static RequestCreator load(OkHttpClient client,
+            Context context,
             String endpoint,
-            String accessToken,
+            String token,
             String url) {
         Uri uri;
         if (url.startsWith("/gift"))
@@ -85,11 +79,12 @@ class OAuthPicasso {
             uri = Uri.parse(url);
         else
             uri = Uri.fromFile(new File(url));
-        if (picasso == null) {
+        if (picasso == null || !accessToken.equals(token)) {
             Picasso.Builder builder = new Picasso.Builder(context);
-            builder.downloader(new CustomOkHttpDownloader(context, client, accessToken));
+            builder.downloader(new CustomOkHttpDownloader(context, client, token));
             picasso = builder.build();
             picasso.setLoggingEnabled(true);
+            accessToken = token;
         }
         Log.d(LOG_TAG, "Loading image: " + uri.toString());
         return picasso.load(uri);

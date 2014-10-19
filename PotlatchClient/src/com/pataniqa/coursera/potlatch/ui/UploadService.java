@@ -6,8 +6,10 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
+import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.RestAdapter.LogLevel;
+import retrofit.client.Client;
 import retrofit.client.OkClient;
 import retrofit.mime.TypedFile;
 import rx.Observable;
@@ -28,7 +30,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pataniqa.coursera.potlatch.store.Gifts;
 import com.pataniqa.coursera.potlatch.store.remote.JacksonConverter;
 import com.pataniqa.coursera.potlatch.store.remote.RemoteService;
-import com.pataniqa.coursera.potlatch.store.remote.SecuredRestBuilder;
 import com.pataniqa.coursera.potlatch.store.remote.UnsafeOkHttpClient;
 
 public class UploadService extends IntentService {
@@ -64,10 +65,11 @@ public class UploadService extends IntentService {
         final String endpoint = intent.getStringExtra(ENDPOINT_TAG);
 
         JacksonConverter converter = new JacksonConverter(new ObjectMapper());
-        RestAdapter restAdapter = new SecuredRestBuilder()
-                .setClient(new OkClient(UnsafeOkHttpClient.getUnsafeOkHttpClient())).setEndpoint(endpoint)
-                .setLogLevel(LogLevel.FULL).username(username).password(password)
-                .clientId(GiftActivity.CLIENT_ID).setConverter(converter).build();
+        Client client = new OkClient(UnsafeOkHttpClient.getUnsafeOkHttpClient());
+        RequestInterceptor interceptor = new AndroidOAuthHandler(client, username, password, endpoint);
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setClient(client).setEndpoint(endpoint)
+                .setLogLevel(LogLevel.FULL).setRequestInterceptor(interceptor).setConverter(converter).build();
 
         final Gifts gifts = new RemoteService(restAdapter).gifts();
         final File file = new File(path);

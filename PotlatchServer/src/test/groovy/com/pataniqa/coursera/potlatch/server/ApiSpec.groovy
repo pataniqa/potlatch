@@ -1,5 +1,6 @@
 package com.pataniqa.coursera.potlatch.server
 
+import retrofit.RequestInterceptor;
 import retrofit.RestAdapter
 import retrofit.RestAdapter.LogLevel
 import retrofit.client.*
@@ -26,19 +27,19 @@ import rx.Observable
 @IntegrationTest
 class ApiSpec extends Specification {
     
-    def TEST_URL = "https://localhost:8443"
-    def USERNAME = "mark"
-    def PASSWORD = "one"
+    def ENDPOINT = "https://localhost:8443"
+    def USERNAME = "sophia"
+    def PASSWORD = "three"
     def CLIENT_ID = "mobile"
 
     def converter = new JacksonConverter(new ObjectMapper())
     
-    def svcUser = new SecuredRestBuilder()
-    .setClient(new OkClient(UnsafeOkHttpClient.getUnsafeOkHttpClient())).setEndpoint(TEST_URL)
-    .setLogLevel(LogLevel.NONE)
-    .username(USERNAME).password(PASSWORD).clientId(CLIENT_ID)
-    .setConverter(converter).build()
-
+    def client = new OkClient(UnsafeOkHttpClient.getUnsafeOkHttpClient());
+    def interceptor = new OAuthHandler(client, USERNAME, PASSWORD, ENDPOINT);
+    def svcUser = new RestAdapter.Builder()
+            .setClient(client).setEndpoint(ENDPOINT)
+            .setLogLevel(LogLevel.FULL).setRequestInterceptor(interceptor).setConverter(converter).build();
+    
     def userSvcUser = svcUser.create(RemoteUserApi.class)
     def giftChainSvcUser = svcUser.create(RemoteGiftChainApi.class)
     def giftSvcUser = svcUser.create(RemoteGiftApi.class)
@@ -88,9 +89,6 @@ class ApiSpec extends Specification {
 
         then: "there should be one less gift chain"
         numberOfGiftChains() == numberOfGiftChainsBefore - 1
-        
-        SecuredRestBuilder.reset();
-        
     }
 
     def "Create, retrieve, update and delete a user"() {

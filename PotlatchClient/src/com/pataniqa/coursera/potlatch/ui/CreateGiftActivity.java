@@ -46,7 +46,7 @@ public class CreateGiftActivity extends ViewGiftActivity {
         // create the gift from the UI
 
         makeGiftDataFromUI(HasId.UNDEFINED_ID).subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread()).forEach(new Action1<Gift>() {
+                .observeOn(Schedulers.newThread()).forEach(new Action1<Gift>() {
                     @Override
                     public void call(final Gift gift) {
                         Log.d(LOG_TAG, "newGiftData: " + gift);
