@@ -69,6 +69,10 @@ class OAuthPicasso {
     private final static String LOG_TAG = OAuthPicasso.class.getCanonicalName();
 
     private static Picasso picasso;
+    
+    public static void reset() {
+        picasso = null;
+    }
 
     public static RequestCreator load(OkHttpClient client, Context context,
             String endpoint,

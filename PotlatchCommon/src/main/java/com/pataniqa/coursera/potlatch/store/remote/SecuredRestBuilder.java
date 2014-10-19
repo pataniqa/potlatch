@@ -174,12 +174,17 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
     
     private static String accessToken = null;
     
-    public static String getAccessToken(Client client,
+    public static void reset() {
+        accessToken = null;
+    }
+    
+    private static String getAccessTokenHelper(Client client,
             String username,
             String password,
             String loginUrl,
             String clientId,
-            String clientSecret) throws SecuredRestException {
+            String clientSecret,
+            String grantType) throws SecuredRestException {
         if (accessToken != null)
             return accessToken;
         // This code below programmatically builds an OAuth 2.0 password
@@ -194,9 +199,7 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
         to.addField("client_id", clientId);
         to.addField("client_secret", clientSecret);
 
-        // Indicate that we're using the OAuth Password Grant Flow
-        // by adding grant_type=password to the body
-        to.addField("grant_type", "password");
+        to.addField("grant_type", grantType);
 
         // The password grant requires BASIC authentication of the client.
         // In order to do BASIC authentication, we need to concatenate the
@@ -237,6 +240,30 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
             }
         } catch (IOException e) {
             throw new SecuredRestException();
+        }
+    }
+    
+    public static String getAccessToken(Client client,
+            String username,
+            String password,
+            String loginUrl,
+            String clientId,
+            String clientSecret) throws SecuredRestException {
+        if (accessToken != null)
+            return accessToken;
+        
+        // Request the password grant.
+        try {
+            return getAccessTokenHelper(client, username, password, loginUrl, clientId, clientSecret, "password");
+        } catch (SecuredRestException e) {
+            //
+        }
+        
+        // if that fails try refresh token
+        try {
+            return getAccessTokenHelper(client, username, password, loginUrl, clientId, clientSecret, "refresh_token");
+        } catch (SecuredRestException e) {
+            throw new SecuredRestException(e);
         }
     }
 

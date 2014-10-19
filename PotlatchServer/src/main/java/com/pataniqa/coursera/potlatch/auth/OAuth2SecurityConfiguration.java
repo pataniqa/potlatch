@@ -32,147 +32,146 @@ import com.pataniqa.coursera.potlatch.server.model.ServerUser;
 import com.pataniqa.coursera.potlatch.server.repository.UserRepository;
 
 /**
- *  Configure this web application to use OAuth 2.0.
- *
- *  The resource server is located at "/video", and can be accessed only by retrieving a token from "/oauth/token"
- *  using the Password Grant Flow as specified by OAuth 2.0.
- *  
- *  Most of this code can be reused in other applications. The key methods that would definitely need to
- *  be changed are:
- *  
- *  ResourceServer.configure(...) - update this method to apply the appropriate 
- *  set of scope requirements on client requests
- *  
- *  OAuth2Config constructor - update this constructor to create a "real" (not hard-coded) UserDetailsService
- *  and ClientDetailsService for authentication. The current implementation should never be used in any
- *  type of production environment as these hard-coded credentials are highly insecure.
- *  
- *  OAuth2SecurityConfiguration.containerCustomizer(...) - update this method to use a real keystore
- *  and certificate signed by a CA. This current version is highly insecure.
+ * Configure this web application to use OAuth 2.0.
  * 
- *  This code was provided as sample code by Jules White.
+ * The resource server is located at "/video", and can be accessed only by
+ * retrieving a token from "/oauth/token" using the Password Grant Flow as
+ * specified by OAuth 2.0.
+ * 
+ * Most of this code can be reused in other applications. The key methods that
+ * would definitely need to be changed are:
+ * 
+ * ResourceServer.configure(...) - update this method to apply the appropriate
+ * set of scope requirements on client requests
+ * 
+ * OAuth2Config constructor - update this constructor to create a "real" (not
+ * hard-coded) UserDetailsService and ClientDetailsService for authentication.
+ * The current implementation should never be used in any type of production
+ * environment as these hard-coded credentials are highly insecure.
+ * 
+ * OAuth2SecurityConfiguration.containerCustomizer(...) - update this method to
+ * use a real keystore and certificate signed by a CA. This current version is
+ * highly insecure.
+ * 
+ * This code was provided as sample code by Jules White.
  */
 @Configuration
 public class OAuth2SecurityConfiguration {
-    
-    // This first section of the configuration just makes sure that Spring Security picks
-    // up the UserDetailsService that we create below. 
+
+    // This first section of the configuration just makes sure that Spring
+    // Security picks
+    // up the UserDetailsService that we create below.
     @Configuration
     @EnableWebSecurity
     protected static class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-        
+
+        @Autowired private UserDetailsService userDetailsService;
+
         @Autowired
-        private UserDetailsService userDetailsService;
-        
-        @Autowired
-        protected void registerAuthentication(
-                final AuthenticationManagerBuilder auth) throws Exception {
+        protected void registerAuthentication(final AuthenticationManagerBuilder auth)
+                throws Exception {
             auth.userDetailsService(userDetailsService);
         }
     }
-    
+
     /**
-     *  This method is used to configure who is allowed to access which parts of our
-     *  resource server
+     * This method is used to configure who is allowed to access which parts of
+     * our resource server
      */
     @Configuration
     @EnableResourceServer
-    protected static class ResourceServer extends
-            ResourceServerConfigurerAdapter {
+    protected static class ResourceServer extends ResourceServerConfigurerAdapter {
 
         // This method configures the OAuth scopes required by clients to access
         // all of the paths in the video service.
         @Override
         public void configure(HttpSecurity http) throws Exception {
-            
+
             http.csrf().disable();
-            
+
             http.authorizeRequests().antMatchers("/oauth/token").anonymous();
-            
+
             // If you were going to reuse this class in another
             // application, this is one of the key sections that you
             // would want to change
-            
+
             // Require all GET requests to have client "read" scope
-            http
-            .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/**")
-                .access("#oauth2.hasScope('read')");
-            
+            http.authorizeRequests().antMatchers(HttpMethod.GET, "/**")
+                    .access("#oauth2.hasScope('read')");
+
             // Require all other requests to have "write" scope
-            http
-            .authorizeRequests()
-                .antMatchers("/**")
-                .access("#oauth2.hasScope('write')");
+            http.authorizeRequests().antMatchers("/**").access("#oauth2.hasScope('write')");
         }
 
     }
 
     /**
-     * This class is used to configure how our authorization server (the "/oauth/token" endpoint) 
-     * validates client credentials.
+     * This class is used to configure how our authorization server (the
+     * "/oauth/token" endpoint) validates client credentials.
      */
     @Configuration
     @EnableAuthorizationServer
     @Order(Ordered.LOWEST_PRECEDENCE - 100)
-    protected static class OAuth2Config extends
-            AuthorizationServerConfigurerAdapter {
+    protected static class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
         // Delegate the processing of Authentication requests to the framework
-        @Autowired
-        private AuthenticationManager authenticationManager;
+        @Autowired private AuthenticationManager authenticationManager;
 
-        // A data structure used to store both a ClientDetailsService and a UserDetailsService
+        // A data structure used to store both a ClientDetailsService and a
+        // UserDetailsService
         private ClientAndUserDetailsService combinedService;
-        
-        @Autowired
-        private UserRepository userRepo;
-        
-        private final List<UserDetails> users = Arrays.asList(
-                User.create("mark", "one", "USER"),
+
+        @Autowired private UserRepository userRepo;
+
+        private final List<UserDetails> users = Arrays.asList(User.create("mark", "one", "USER"),
                 User.create("peter", "two", "USER"),
                 User.create("sophia", "three", "USER"),
                 User.create("olivia", "four", "USER"));
 
         /**
          * 
-         * This constructor is used to setup the clients and users that will be able to login to the
-         * system. This is a VERY insecure setup that is using hard-coded lists of clients / users /
-         * passwords and should never be used for anything other than local testing
-         * on a machine that is not accessible via the Internet. Even if you use
-         * this code for testing, at the bare minimum, you should consider changing the
+         * This constructor is used to setup the clients and users that will be
+         * able to login to the system. This is a VERY insecure setup that is
+         * using hard-coded lists of clients / users / passwords and should
+         * never be used for anything other than local testing on a machine that
+         * is not accessible via the Internet. Even if you use this code for
+         * testing, at the bare minimum, you should consider changing the
          * passwords listed below and updating the VideoSvcClientApiTest.
          * 
          * @param auth
          * @throws Exception
          */
         public OAuth2Config() throws Exception {
-            
+
             // If you were going to reuse this class in another
             // application, this is one of the key sections that you
             // would want to change
-            
+
             // Create a service that has the credentials for all our clients
             ClientDetailsService csvc = new InMemoryClientDetailsServiceBuilder()
                     // Create a client that has "read" and "write" access to the
                     // video service
                     .withClient("mobile").authorizedGrantTypes("password")
-                    .authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT")
-                    .scopes("read","write").resourceIds("video")
-                    .accessTokenValiditySeconds(3600).and().build();
+                    .authorizedGrantTypes("refresh_token")
+                    .authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT").scopes("read", "write")
+                    .resourceIds("video").accessTokenValiditySeconds(3600).and().build();
 
-            // Create a series of hard-coded users. 
+            // Create a series of hard-coded users.
             UserDetailsService svc = new InMemoryUserDetailsManager(users);
 
-            // Since clients have to use BASIC authentication with the client's id/secret,
-            // when sending a request for a password grant, we make each client a user
-            // as well. When the BASIC authentication information is pulled from the
-            // request, this combined UserDetailsService will authenticate that the
-            // client is a valid "user". 
+            // Since clients have to use BASIC authentication with the client's
+            // id/secret,
+            // when sending a request for a password grant, we make each client
+            // a user
+            // as well. When the BASIC authentication information is pulled from
+            // the
+            // request, this combined UserDetailsService will authenticate that
+            // the
+            // client is a valid "user".
             this.combinedService = new ClientAndUserDetailsService(csvc, svc);
         }
-        
-        @PostConstruct 
+
+        @PostConstruct
         protected void createUsers() {
             for (UserDetails user : users) {
                 ServerUser u = new ServerUser(user.getUsername());
@@ -181,7 +180,8 @@ public class OAuth2SecurityConfiguration {
         }
 
         /**
-         * Return the list of trusted client information to anyone who asks for it.
+         * Return the list of trusted client information to anyone who asks for
+         * it.
          */
         @Bean
         public ClientDetailsService clientDetailsService() throws Exception {
@@ -189,7 +189,8 @@ public class OAuth2SecurityConfiguration {
         }
 
         /**
-         * Return all of our user information to anyone in the framework who requests it.
+         * Return all of our user information to anyone in the framework who
+         * requests it.
          */
         @Bean
         public UserDetailsService userDetailsService() {
@@ -197,22 +198,20 @@ public class OAuth2SecurityConfiguration {
         }
 
         /**
-         * This method tells our AuthorizationServerConfigurerAdapter to use the delegated AuthenticationManager
-         * to process authentication requests.
+         * This method tells our AuthorizationServerConfigurerAdapter to use the
+         * delegated AuthenticationManager to process authentication requests.
          */
         @Override
-        public void configure(AuthorizationServerEndpointsConfigurer endpoints)
-                throws Exception {
+        public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
             endpoints.authenticationManager(authenticationManager);
         }
 
         /**
-         * This method tells the AuthorizationServerConfigurerAdapter to use our self-defined client details service to
-         * authenticate clients with.
+         * This method tells the AuthorizationServerConfigurerAdapter to use our
+         * self-defined client details service to authenticate clients with.
          */
         @Override
-        public void configure(ClientDetailsServiceConfigurer clients)
-                throws Exception {
+        public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
             clients.withClientDetails(clientDetailsService());
         }
 

@@ -20,6 +20,7 @@ import butterknife.InjectView;
 import com.pataniqa.coursera.potlatch.R;
 import com.pataniqa.coursera.potlatch.model.User;
 import com.pataniqa.coursera.potlatch.store.Gifts;
+import com.pataniqa.coursera.potlatch.store.remote.SecuredRestBuilder;
 
 /**
  * The activity that allows the user to provide login information.
@@ -50,8 +51,13 @@ public class LoginActivity extends GiftActivity {
         String username = editTextToString(usernameET);
         String password = editTextToString(passwordET);
         savePreferences();
-        if (username != null && password != null && !username.isEmpty() && !password.isEmpty())
+        if (username != null && password != null && !username.isEmpty() && !password.isEmpty()) {
+            // reset the authorization tokens to force a new log in
+            Log.d(LOG_TAG, "Logging the previous user out");
+            OAuthPicasso.reset();
+            SecuredRestBuilder.reset();
             startActivity(new Intent(this, ListGiftsActivity.class));
+        }
     }
 
     @Override
