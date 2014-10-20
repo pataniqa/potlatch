@@ -2,7 +2,7 @@
 
 # Quick Intro
 
-To keep it short - here are the commands you need to know:
+To keep it short - here are the commands you need to know. These instructions are for Linux - I think you need `gradlew.bat` not `./gradlew` on Windows:
 
   cd PotlatchServer
   ./gradlew test          # run the Spock integration tests
