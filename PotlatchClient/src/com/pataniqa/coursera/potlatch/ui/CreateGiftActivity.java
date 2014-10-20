@@ -2,7 +2,6 @@ package com.pataniqa.coursera.potlatch.ui;
 
 import java.io.File;
 
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import android.content.Context;
