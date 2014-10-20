@@ -24,13 +24,13 @@ Note the `#` indicates a comment so you can understand what is going on - please
 
     cd PotlatchServer
     ./gradlew test          # run the Spock integration tests
-	  ./gradlew run			      # run the server ready to connect a client to it.
+    ./gradlew run           # run the server ready to connect a client to it.
                             # note the server drops its database everytime you restart it
 
 ## Building the client
 
     cd PotlatchClient
-	  ./gradlew installDebug	# build and install client. Note there needs to be a connected handset 
+    ./gradlew installDebug  # build and install client. Note there needs to be a connected handset 
                             # or a running emulator for this task to succeed
 
 Once you have the server and client running, you need to find out the IP address of the server - if you run Linux
@@ -130,9 +130,11 @@ Good luck with all this and have fun!
 
 # Libraries used:
 
+This is an area which could do with further work to reduce the size of the APK. For example, I could not get the client to work without both GSON and Jackson even though I tried to get rid of this dependency. I switched to using Jackson with Retrofit because the server uses Jackson and otherwise I found there are problems round tripping dates but I couldn't get it to work. Similiarly the Apache HttpComponents jar is the `libs` directory, but it shouldn't need to be there. 
+
 - Apache Commons Codec http://commons.apache.org/proper/commons-codec/
 - Apache Commons IO http://commons.apache.org/proper/commons-io/
-- GSON https://code.google.com/p/google-gson/ (I tried to get rid of this dependency and switch to Jackson in Retrofit because the server uses Jackson and otherwise there are problems round tripping dates but I couldn't get it to work)
+- GSON https://code.google.com/p/google-gson/ 
 - Jackson http://wiki.fasterxml.com/JacksonHome
 - Picasso http://square.github.io/picasso/
 - OkHttp http://square.github.io/okhttp/ and OkHttpUrlConnection
