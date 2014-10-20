@@ -33,3 +33,6 @@ uml/
 .factorypath
 target
 store
+.Rhistory
+*.log
+.~lock.*
